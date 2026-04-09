@@ -862,12 +862,15 @@ function resetPorto(){
 }
 
 // ═══════════════════════════════════════════
-// LIVE PRICE — Multi-source fallback engine
-// Tier 1: Stooq CSV (most reliable, no CORS)
-// Tier 2: Yahoo Finance v7 via corsproxy.io
-// Tier 3: Yahoo Finance v8 via allorigins.win
+// LIVE PRICE — Twelve Data (primary) + fallback
+// Twelve Data: proper CORS support, IDX coverage
+// Fallback: Stooq CSV, Yahoo v8 via proxy
 // ═══════════════════════════════════════════
 
+const TD_SYMBOLS = {
+  ADMF: 'ADMF:IDX', ASII: 'ASII:IDX', BMRI: 'BMRI:IDX',
+  ITMG: 'ITMG:IDX', POWR: 'POWR:IDX'
+};
 const STOOQ_MAP = {
   ADMF: 'admf.jk', ASII: 'asii.jk', BMRI: 'bmri.jk',
   ITMG: 'itmg.jk', POWR: 'powr.jk'
@@ -877,16 +880,33 @@ const YF_MAP = {
   ITMG: 'ITMG.JK', POWR: 'POWR.JK'
 };
 
-// Tier 1: Stooq — returns CSV, no auth, no CORS issues via proxy
+// API key stored in localStorage so user only inputs once
+function getTDApiKey() {
+  return localStorage.getItem('td_api_key') || '561e92a38303419da3f0b871da2a0a58';
+}
+
+// Tier 1: Twelve Data — proper REST API, CORS supported, IDX native
+async function fetchTwelveData(ticker) {
+  const sym = TD_SYMBOLS[ticker];
+  const key = getTDApiKey();
+  const url = `https://api.twelvedata.com/price?symbol=${sym}&apikey=${key}`;
+  const resp = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (!resp.ok) throw new Error('td HTTP ' + resp.status);
+  const data = await resp.json();
+  if (data.status === 'error') throw new Error('td: ' + data.message);
+  const price = parseFloat(data.price);
+  if (!price || price <= 0) throw new Error('td no price');
+  return Math.round(price);
+}
+
+// Tier 2: Stooq CSV via corsproxy
 async function fetchStooq(ticker) {
   const sym = STOOQ_MAP[ticker];
   const url = `https://stooq.com/q/l/?s=${sym}&f=sd2t2ohlcv&h&e=csv`;
-  // stooq needs proxy too since browser can't fetch cross-origin CSV directly
   const proxied = `https://corsproxy.io/?${encodeURIComponent(url)}`;
   const resp = await fetch(proxied, { signal: AbortSignal.timeout(9000) });
   if (!resp.ok) throw new Error('stooq HTTP ' + resp.status);
   const text = await resp.text();
-  // CSV format: Symbol,Date,Time,Open,High,Low,Close,Volume
   const lines = text.trim().split('\n');
   if (lines.length < 2) throw new Error('stooq empty');
   const cols = lines[1].split(',');
@@ -895,24 +915,7 @@ async function fetchStooq(ticker) {
   return Math.round(close);
 }
 
-// Tier 2: Yahoo Finance v7/quote via corsproxy.io
-async function fetchYahooV7(ticker) {
-  const sym = YF_MAP[ticker];
-  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${sym}&fields=regularMarketPrice,previousClose`;
-  const proxied = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-  const resp = await fetch(proxied, {
-    headers: { 'Accept': 'application/json' },
-    signal: AbortSignal.timeout(9000)
-  });
-  if (!resp.ok) throw new Error('yf-v7 HTTP ' + resp.status);
-  const data = await resp.json();
-  const q = data?.quoteResponse?.result?.[0];
-  const price = q?.regularMarketPrice || q?.previousClose;
-  if (!price || price <= 0) throw new Error('yf-v7 no price');
-  return Math.round(price);
-}
-
-// Tier 3: Yahoo Finance v8/chart via allorigins.win
+// Tier 3: Yahoo Finance v8 via allorigins
 async function fetchYahooV8(ticker) {
   const sym = YF_MAP[ticker];
   const url = `https://query2.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=5d`;
@@ -929,8 +932,8 @@ async function fetchYahooV8(ticker) {
 // Master fetch with tier fallback
 async function fetchTickerPrice(ticker) {
   const methods = [
+    { name: 'Twelve Data', fn: () => fetchTwelveData(ticker) },
     { name: 'Stooq', fn: () => fetchStooq(ticker) },
-    { name: 'Yahoo v7', fn: () => fetchYahooV7(ticker) },
     { name: 'Yahoo v8', fn: () => fetchYahooV8(ticker) },
   ];
   for (const m of methods) {
@@ -953,7 +956,7 @@ async function fetchLivePrices() {
 
   btn.textContent = '⏳ Fetching...';
   btn.disabled = true;
-  statusEl.innerHTML = '<span style="color:var(--amber);">Mencoba Stooq → Yahoo v7 → Yahoo v8...</span>';
+  statusEl.innerHTML = '<span style="color:var(--amber);">Menghubungi Twelve Data...</span>';
   headerStatus.textContent = '⏳ Fetching...';
   headerStatus.style.color = 'var(--amber)';
 
