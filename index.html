@@ -6,34 +6,58 @@
 <title>Aegis Compounder</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&display=swap" rel="stylesheet">
 <style>
+/* ─── DARK MODE (default) ─────────────────────── */
 :root {
-  --bg:#080808; --bg2:#101010; --bg3:#161616; --bg4:#1c1c1c;
-  --border:#1e1e1e; --border2:#2a2a2a; --border3:#333;
-  --text:#ede9e0; --muted:#5a5a5a; --dim:#383838;
-  --green:#5dba78; --green-bg:#091510; --green-border:#0f2a1a;
-  --red:#d96060; --red-bg:#150909; --red-border:#2a1010;
-  --amber:#c9a355; --amber-bg:#140f02; --amber-border:#2a2000;
-  --blue:#5a9fd4; --blue-bg:#070f18; --blue-border:#0d1e30;
-  --purple:#9b6dc9; --purple-bg:#0d0918;
-  --accent:#b8924a; --accent2:#d4aa62;
+  --bg:#080c12; --bg2:#0d1520; --bg3:#111c2a; --bg4:#162334;
+  --border:#1a2840; --border2:#1e3050; --border3:#2a4068;
+  --text:#e8f0fe; --muted:#4a6a9a; --dim:#253a58;
+  --green:#4caf82; --green-bg:#071812; --green-border:#0d3020;
+  --red:#e05555; --red-bg:#150808; --red-border:#2a1010;
+  --amber:#e8b84b; --amber-bg:#18120200; --amber-border:#3a2800;
+  --blue:#4d9de0; --blue-bg:#071020; --blue-border:#0d2040;
+  --purple:#8b6fc9; --purple-bg:#0d0918;
+  --accent:#3a7bd5; --accent2:#60a0f0;
+  --accent-bg:#071428; --accent-border:#0d2548;
+  --mode-icon:'☀️';
 }
+
+/* ─── LIGHT MODE ──────────────────────────────── */
+body.light {
+  --bg:#f0f4fc; --bg2:#ffffff; --bg3:#e8eef8; --bg4:#dde5f5;
+  --border:#c8d8f0; --border2:#b0c8e8; --border3:#90b0d8;
+  --text:#0d1e3a; --muted:#5a78a8; --dim:#8aa0c0;
+  --green:#1a8a50; --green-bg:#e8f8f0; --green-border:#b0e0c8;
+  --red:#c03030; --red-bg:#fceaea; --red-border:#f0b0b0;
+  --amber:#b07800; --amber-bg:#fff8e0; --amber-border:#f0d880;
+  --blue:#2060c0; --blue-bg:#e8f0fc; --blue-border:#b0c8f0;
+  --purple:#6040b0; --purple-bg:#f0ecfc;
+  --accent:#2060c0; --accent2:#1848a0;
+  --accent-bg:#e8f0fc; --accent-border:#b0c8f0;
+  --mode-icon:'🌙';
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;min-height:100vh;padding-bottom:80px}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;min-height:100vh;padding-bottom:80px;transition:background .25s,color .25s}
 
 /* ─── HEADER ─────────────────────────────────── */
-.hdr{padding:28px 24px 18px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 120% at 90% -10%,#1c1000 0%,transparent 65%);pointer-events:none}
+.hdr{padding:24px 24px 16px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 140% at 100% -20%,rgba(60,120,210,0.08) 0%,transparent 65%);pointer-events:none}
+.hdr-left{flex:1}
 .hdr-name{font-family:'Fraunces',serif;font-size:30px;font-weight:300;letter-spacing:-0.5px;color:var(--text)}
 .hdr-name em{font-style:italic;color:var(--accent2)}
 .hdr-sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.hdr-stats{display:flex;gap:28px;margin-top:14px;flex-wrap:wrap}
+.hdr-stats{display:flex;gap:24px;margin-top:14px;flex-wrap:wrap}
 .hs{display:flex;flex-direction:column;gap:2px}
 .hs-l{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .hs-v{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
 
+/* ─── MODE TOGGLE ─────────────────────────────── */
+.mode-toggle{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.05em;transition:all .2s;white-space:nowrap;flex-shrink:0;margin-top:4px}
+.mode-toggle:hover{border-color:var(--accent);color:var(--accent2)}
+
 /* ─── TABS ────────────────────────────────────── */
-.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;gap:0;position:sticky;top:0;z-index:50;background:var(--bg)}
+.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;gap:0;position:sticky;top:0;z-index:50;background:var(--bg);transition:background .25s}
 .tab{padding:11px 16px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:color .15s,border-color .15s}
 .tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
 .tab:hover:not(.active){color:var(--text)}
@@ -45,12 +69,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 .sec:first-child{margin-top:0}
 
 /* ─── CARDS ───────────────────────────────────── */
-.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;transition:background .25s,border-color .25s}
 .card+.card{margin-top:10px}
 
 /* ─── INPUTS ──────────────────────────────────── */
 .ig label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:5px}
-.ig input,.ig select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:8px 10px;outline:none;transition:border-color .15s}
+.ig input,.ig select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:8px 10px;outline:none;transition:border-color .15s,background .25s}
 .ig input:focus,.ig select:focus{border-color:var(--accent)}
 .ig select option{background:var(--bg2)}
 .ig-grid{display:grid;gap:10px}
@@ -62,7 +86,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 /* ─── BUTTONS ─────────────────────────────────── */
 .btn{border:none;border-radius:5px;padding:9px 18px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:opacity .15s}
 .btn:hover{opacity:.8}
-.btn-accent{background:var(--accent);color:var(--bg)}
+.btn-accent{background:var(--accent);color:#fff}
 .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--muted)}
 .btn-outline:hover{color:var(--text);border-color:var(--border3)}
 .btn-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
@@ -80,23 +104,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 .lot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
 @media(max-width:640px){.lot-grid{grid-template-columns:repeat(2,1fr)}}
 .lot-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px 10px;text-align:center;transition:border-color .2s,background .2s}
-.lot-card.winner{border-color:var(--accent);background:var(--amber-bg)}
+.lot-card.winner{border-color:var(--accent);background:var(--accent-bg)}
 .lot-card.blocked{opacity:.45}
 .lc-rank{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:5px;min-height:12px}
 .lc-ticker{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
 .lc-lots{font-size:26px;font-weight:500;margin:4px 0}
 .lc-price{font-size:10px;color:var(--muted)}
 .lc-cost{font-size:10px;color:var(--dim);margin-top:2px}
-.lc-note{font-size:9px;color:var(--accent);margin-top:5px;line-height:1.5}
+.lc-note{font-size:9px;color:var(--accent2);margin-top:5px;line-height:1.5}
 
 /* ─── PORTFOLIO EDIT ──────────────────────────── */
 .porto-edit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
 @media(max-width:640px){.porto-edit-grid{grid-template-columns:repeat(2,1fr)}}
-.pe-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 10px;position:relative}
+.pe-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 10px;position:relative;transition:background .25s}
 .pe-ticker{font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .pe-field{margin-bottom:6px}
 .pe-field label{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:block;margin-bottom:3px}
-.pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:5px 7px;outline:none}
+.pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:5px 7px;outline:none;transition:background .25s}
 .pe-field input:focus{border-color:var(--accent)}
 
 /* ─── REBALANCE ───────────────────────────────── */
@@ -119,9 +143,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 .matrix th,.matrix td{padding:9px 11px;border:1px solid var(--border);text-align:center}
 .matrix th{background:var(--bg3);color:var(--muted);font-size:8px;font-weight:400;text-transform:uppercase;letter-spacing:.09em}
 .matrix .from-l{text-align:left;color:var(--text);font-weight:500;background:var(--bg3);white-space:nowrap}
-.matrix .m-self{background:var(--border);color:var(--dim);font-size:10px}
+.matrix .m-self{background:var(--bg4);color:var(--dim);font-size:10px}
 .matrix .m-hi{background:var(--green-bg);color:var(--green);font-size:10px}
-.matrix .m-mid{background:var(--amber-bg);color:var(--amber);font-size:10px}
+.matrix .m-mid{background:var(--blue-bg);color:var(--blue);font-size:10px}
 .matrix .m-lo{background:var(--bg3);color:var(--dim);font-size:10px}
 
 /* ─── MISC ────────────────────────────────────── */
@@ -141,16 +165,19 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 
 <!-- ══════════════ HEADER ══════════════ -->
 <div class="hdr">
-  <div class="hdr-name">Aegis <em>Compounder</em></div>
-  <div class="hdr-sub">Dividend Flywheel · 5-Stock Closed Loop · Editable · Perpetual</div>
-  <div class="hdr-stats">
-    <div class="hs"><div class="hs-l">Total Equity</div><div class="hs-v green" id="h-equity">Rp 16,690,306</div></div>
-    <div class="hs"><div class="hs-l">Invested</div><div class="hs-v" id="h-invested">Rp 16,414,585</div></div>
-    <div class="hs"><div class="hs-l">P&amp;L</div><div class="hs-v green" id="h-pnl">+272,915 (+1.66%)</div></div>
-    <div class="hs"><div class="hs-l">Max Top-up/bln</div><div class="hs-v acc">Rp 750,000</div></div>
-    <div class="hs"><div class="hs-l">Terberat</div><div class="hs-v amber" id="h-heavy">ITMG 47.2%</div></div>
-    <div class="hs"><div class="hs-l">Harga Live</div><div class="hs-v" id="h-price-status" style="font-size:11px;cursor:pointer;" onclick="fetchLivePrices()" title="Klik untuk fetch harga live">— Klik refresh</div></div>
+  <div class="hdr-left">
+    <div class="hdr-name">Aegis <em>Compounder</em></div>
+    <div class="hdr-sub">Dividend Flywheel · 5-Stock Closed Loop · Editable · Perpetual</div>
+    <div class="hdr-stats">
+      <div class="hs"><div class="hs-l">Total Equity</div><div class="hs-v green" id="h-equity">Rp 16,690,306</div></div>
+      <div class="hs"><div class="hs-l">Invested</div><div class="hs-v" id="h-invested">Rp 16,414,585</div></div>
+      <div class="hs"><div class="hs-l">P&amp;L</div><div class="hs-v green" id="h-pnl">+272,915 (+1.66%)</div></div>
+      <div class="hs"><div class="hs-l">Max Top-up/bln</div><div class="hs-v acc">Rp 750,000</div></div>
+      <div class="hs"><div class="hs-l">Terberat</div><div class="hs-v amber" id="h-heavy">ITMG 47.2%</div></div>
+      <div class="hs"><div class="hs-l">Harga Live</div><div class="hs-v" id="h-price-status" style="font-size:11px;cursor:pointer;" onclick="fetchLivePrices()" title="Klik untuk fetch harga live">— Klik refresh</div></div>
+    </div>
   </div>
+  <button class="mode-toggle" id="mode-btn" onclick="toggleMode()">☀️ Light Mode</button>
 </div>
 
 <!-- ══════════════ TABS ══════════════ -->
@@ -1093,14 +1120,24 @@ function applyAllLivePrices(results) {
   statusEl.style.color = 'var(--green)';
 }
 
+// ═══════════════════════════════════════════
+// LIGHT / DARK MODE TOGGLE
+// ═══════════════════════════════════════════
+function toggleMode() {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('ac_mode', isLight ? 'light' : 'dark');
+  document.getElementById('mode-btn').textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+}
+
 window.addEventListener('load', ()=>{
+  // Restore saved mode
+  if (localStorage.getItem('ac_mode') === 'light') {
+    document.body.classList.add('light');
+    document.getElementById('mode-btn').textContent = '🌙 Dark Mode';
+  }
   updateHeader();
   calcLots();
   renderPortoEdit();
-  const body = document.getElementById('reb-body');
-  if(body) {
-    // will render when tab clicked
-  }
 });
 </script>
 </body>
