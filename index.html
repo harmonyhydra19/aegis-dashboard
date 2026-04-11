@@ -226,6 +226,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
   <button class="tab" onclick="switchTab('rebalance',this)">⚖️ Rebalancing</button>
   <button class="tab" onclick="switchTab('analysis',this)">🔬 Analysis</button>
   <button class="tab" onclick="switchTab('porto',this)">✏️ Edit Porto</button>
+  <button class="tab" onclick="switchTab('ocr',this)">📷 Scan Stockbit</button>
+  <button class="tab" onclick="switchTab('rules',this)">📜 Rules</button>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -422,7 +424,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 <div class="panel" id="panel-analysis">
 
   <!-- MARKET OVERVIEW -->
-  <div class="sec">Market Overview IDX — Update Manual Bulanan</div>
+  <div class="sec" style="display:flex;justify-content:space-between;align-items:center">
+    <span>Market Overview IDX — Update Manual Bulanan</span>
+    <button class="btn btn-green" onclick="syncAnalysis()" id="btn-sync-analysis" style="font-size:9px;padding:5px 12px">⟳ Sync Live</button>
+  </div>
   <div class="card mb12">
     <div class="card-title">Kondisi Pasar Terkini</div>
     <div class="g3" style="margin-bottom:14px">
@@ -507,6 +512,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 ══════════════════════════════════════════ -->
 <div class="panel" id="panel-porto">
 
+  <!-- PIE CHART KOMPOSISI DI ATAS -->
+  <div class="sec">Komposisi Porto Saat Ini</div>
+  <div class="card mb12" id="porto-composition"></div>
+
   <!-- LIVE PRICE FETCH -->
   <div class="live-panel mb12">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
@@ -539,16 +548,206 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
   <div class="btn-row mb12">
     <button class="btn btn-accent" onclick="savePorto()">Simpan Semua</button>
     <button class="btn btn-outline" onclick="resetPorto()">Reset ke Default</button>
+    <button class="btn btn-green" onclick="createSavepoint()">💾 Buat Savepoint</button>
   </div>
   <div id="save-msg" style="display:none" class="success-box">✓ Data disimpan. Semua tab terupdate.</div>
 
-  <div class="sec">Komposisi Setelah Update</div>
-  <div class="card" id="porto-composition"></div>
+  <!-- SAVEPOINT SYSTEM -->
+  <div class="sec">Savepoints — Snapshot Porto</div>
+  <div class="card mb12">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+      Simpan snapshot porto di momen tertentu. Gunakan Compare untuk lihat perubahan antar savepoint.
+    </div>
+    <div id="savepoint-list" style="margin-bottom:12px"></div>
+    <div id="savepoint-compare" style="display:none"></div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════
-     JAVASCRIPT
+     TAB 5: SCAN STOCKBIT (OCR)
 ══════════════════════════════════════════ -->
+<div class="panel" id="panel-ocr">
+
+  <div class="info-box">
+    📷 Upload screenshot dari Stockbit — bisa <strong>layar portfolio utama</strong> atau <strong>detail per saham</strong>. Claude akan baca angkanya dan update porto otomatis. Bisa upload beberapa sekaligus.
+  </div>
+
+  <!-- API KEY INPUT -->
+  <div class="card mb12">
+    <div class="card-title">Konfigurasi API</div>
+    <div class="ig mb12">
+      <label>Anthropic API Key</label>
+      <input type="password" id="ocr-api-key" placeholder="sk-ant-..." style="font-size:12px"
+        oninput="localStorage.setItem('ac_apikey', this.value)">
+    </div>
+    <div style="font-size:10px;color:var(--dim);line-height:1.6">
+      Key disimpan di localStorage browser lo — tidak dikirim ke server manapun selain Anthropic API langsung.
+      Dapatkan key di <span style="color:var(--accent2)">console.anthropic.com</span>
+    </div>
+  </div>
+
+  <!-- UPLOAD AREA -->
+  <div class="card mb12" id="ocr-upload-area"
+    style="border:2px dashed var(--border2);cursor:pointer;transition:border-color .2s;text-align:center;padding:32px 20px"
+    onclick="document.getElementById('ocr-file-input').click()"
+    ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+    ondragleave="this.style.borderColor='var(--border2)'"
+    ondrop="event.preventDefault();this.style.borderColor='var(--border2)';handleOCRFiles(event.dataTransfer.files)">
+    <div style="font-size:28px;margin-bottom:10px">📷</div>
+    <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px">Drop screenshot Stockbit di sini</div>
+    <div style="font-size:11px;color:var(--muted)">atau klik untuk pilih file · JPG / PNG · bisa multi-upload</div>
+    <input type="file" id="ocr-file-input" accept="image/*" multiple style="display:none"
+      onchange="handleOCRFiles(this.files)">
+  </div>
+
+  <!-- PREVIEW IMAGES -->
+  <div id="ocr-preview-row" style="display:none;margin-bottom:12px">
+    <div class="sec">Preview Screenshot</div>
+    <div id="ocr-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+
+  <!-- SCAN BUTTON -->
+  <div class="btn-row mb12">
+    <button class="btn btn-accent" id="btn-ocr-scan" onclick="runOCR()" disabled>
+      🔍 Scan & Extract Data
+    </button>
+    <button class="btn btn-outline" onclick="clearOCR()">Bersihkan</button>
+  </div>
+
+  <!-- OCR STATUS -->
+  <div id="ocr-status" style="display:none" class="info-box mb12"></div>
+
+  <!-- OCR RESULT -->
+  <div id="ocr-result" style="display:none">
+    <div class="sec">Hasil Ekstraksi Claude</div>
+    <div class="card mb12" id="ocr-parsed-preview"></div>
+    <div class="btn-row">
+      <button class="btn btn-accent" id="btn-apply-ocr" onclick="applyOCRToPorto()">
+        ✓ Terapkan ke Porto
+      </button>
+      <button class="btn btn-outline" onclick="document.getElementById('ocr-result').style.display='none'">Batal</button>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="sec">Tips Screenshot Terbaik</div>
+  <div class="g2">
+    <div class="card" style="padding:12px;border-left:3px solid var(--green)">
+      <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">✓ Screenshot Bagus</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">
+        · Layar portfolio utama Stockbit (list semua saham)<br>
+        · Detail per saham (Balance Lot, Avg Price, Invested, P&L)<br>
+        · Cahaya cukup, tidak blur<br>
+        · Semua angka terbaca jelas
+      </div>
+    </div>
+    <div class="card" style="padding:12px;border-left:3px solid var(--red)">
+      <div style="font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">✕ Hindari</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">
+        · Screenshot terpotong — angka tidak lengkap<br>
+        · Refleksi layar / glare<br>
+        · Zoom terlalu jauh — angka kecil<br>
+        · Screenshot saat animasi loading
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 6: RULES
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-rules">
+  <div class="info-box">📋 AEGIS ALPHA v2 — Master Rules. Baca sebelum eksekusi apapun.</div>
+
+  <div class="sec">Top Up — Saat Ada Modal Baru</div>
+  <div class="card mb12">
+    <div class="g2">
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-size:10px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #1 — 20% Vault Dulu</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Setiap ada injeksi modal baru dari pendapatan aktif, <strong style="color:var(--text)">potong 20% ke RDPU dulu</strong> sebelum apapun. Sisa 80% baru boleh dibelikan saham pilar.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-size:10px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #2 — Arahkan ke Pilar Paling Diskon</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Dari 80% yang masuk, beli saham pilar yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI → ASII → sisanya</strong>. Jangan tambah ITMG sebelum pilar lain seimbang.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-size:10px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Setiap 6 bulan, naikkan injeksi minimal <strong style="color:var(--text)">Rp100–200rb dari level sebelumnya</strong>. Kenaikan kecil tapi konsisten jauh lebih powerful dari sprint sesekali.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-size:10px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #4 — ITMG Dikunci</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20% secara natural akibat injeksi ke pilar lain. Biarkan dilusi sendiri.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Saving — Mengelola RDPU</div>
+  <div class="card mb12">
+    <div class="g2">
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #5 — RDPU Adalah Amunisi</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">RDPU <strong style="color:var(--text)">tidak boleh disentuh</strong> untuk kebutuhan harian. Hanya ditarik saat koreksi pasar brutal <strong style="color:var(--red)">&gt;5%</strong>, dan hanya untuk pilar yang fundamentalnya masih sehat.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #6 — Dividen di RDN</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Semua dividen yang cair <strong style="color:var(--text)">wajib tinggal di RDN</strong>. Jangan pindahkan ke rekening belanja. Biarkan akumulasi sampai cukup untuk beli lot.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #7 — Quarterly Check</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Evaluasi bisnis (bukan harga) dilakukan <strong style="color:var(--text)">4x setahun: Apr / Jul / Okt / Mar</strong>. Fokus: NPL bank, kas perusahaan, utang. Jika pilar kokoh, biarkan mesin bekerja.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #8 — Cek RDPU Hanya Saat Quarterly</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Jangan buka saldo RDPU setiap hari — itu godaan untuk dipakai. Cek hanya pada jadwal quarterly review.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Saat Dapat Dividen</div>
+  <div class="card mb12">
+    <div class="g2">
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--amber)">
+        <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #9 — Cross-Feeding Wajib</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, POWR</strong> tidak boleh digulirkan balik ke saham asalnya. Semua wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong> untuk perbesar fondasi defensif.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--amber)">
+        <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #10 — Beli Lot Segera</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Begitu dividen masuk dan cukup untuk 1 lot, <strong style="color:var(--text)">langsung eksekusi</strong>. Jangan tunggu harga lebih murah. Waktu di pasar lebih penting dari timing masuk.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--amber)">
+        <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #11 — Catat Semua Dividen</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7">Tracking dividen masuk per saham per periode. Ini cara lo tahu kapan target <strong style="color:var(--text)">Rp10jt/bulan</strong> makin dekat. Tanpa catatan, lo buta soal progress.</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--amber)">
+        <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rule #12 — Jangan Cairkan</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7"><strong style="color:var(--red)">Tidak cairkan satu rupiah pun</strong> dari porto sampai nilai porto menghasilkan Rp10jt/bulan secara konsisten. Snowball butuh waktu — jangan interupsi.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Coal Trap Protocol (Khusus ITMG)</div>
+  <div class="card mb12" style="border:1px solid var(--amber-border)">
+    <div style="font-size:11px;color:var(--amber);line-height:1.8">
+      ⚠ <strong>Jika harga batu bara global hancur</strong>, harga ITMG akan ikut jatuh. Tetap disiplin cicil di harga bawah menggunakan uang dingin bulanan, selama ITMG tidak mencetak kerugian parah atau menumpuk utang baru. Jangan panik sell saat semua orang takut — ini justru momen akumulasi terbaik.
+    </div>
+  </div>
+
+  <div class="sec">Target Utama</div>
+  <div class="g2">
+    <div style="padding:16px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);text-align:center">
+      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Target Pendapatan Pasif</div>
+      <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:300;color:var(--green)">Rp10jt</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">per bulan sebelum usia 40</div>
+    </div>
+    <div style="padding:16px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);text-align:center">
+      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Target Nilai Porto</div>
+      <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:300;color:var(--accent2)">Rp1 M</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">dalam 10 tahun</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
 <script>
 'use strict';
 
@@ -559,14 +758,14 @@ const TICKERS = ['ADMF','ASII','BMRI','ITMG','POWR'];
 const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#4caf82', POWR:'#8b6fc9' };
 
 const DEFAULT_PORTO = {
-  ADMF:{ price:8500, invested:3555325, pnl:24675, lots:42, divPerShare:630 },
-  ASII:{ price:6100, invested:1216822, pnl:18178, lots:19, divPerShare:320 },
-  BMRI:{ price:4950, invested:2318472, pnl:-33473, lots:46, divPerShare:580 },
-  ITMG:{ price:27000, invested:7871790, pnl:265710, lots:29, divPerShare:2245 },
-  POWR:{ price:710,  invested:1452175, pnl:-2175,  lots:204, divPerShare:45.58 }
+  ADMF:{ price:8950, invested:3555325, pnl:24675,  lots:4,  divPerShare:630 },
+  ASII:{ price:6100, invested:1216822, pnl:3178,   lots:2,  divPerShare:406 },
+  BMRI:{ price:4590, invested:2318472, pnl:-23473,  lots:5,  divPerShare:580 },
+  ITMG:{ price:27100,invested:7871790, pnl:258210, lots:3,  divPerShare:2245 },
+  POWR:{ price:725,  invested:1452175, pnl:-2175,  lots:20, divPerShare:45.58 }
 };
 
-const DEFAULT_TARGETS = { ADMF:20, ASII:15, BMRI:20, ITMG:30, POWR:15 };
+const DEFAULT_TARGETS = { ADMF:20, ASII:15, BMRI:25, ITMG:20, POWR:20 };
 
 // Static analysis data (update manually each month)
 const ANALYSIS_DATA = {
@@ -699,8 +898,124 @@ function switchTab(id, el) {
   el.classList.add('active');
   document.getElementById('panel-' + id).classList.add('active');
   if (id === 'rebalance') { renderRebalance(); renderDivForecast(); }
-  if (id === 'porto') renderPortoEdit();
+  if (id === 'porto') { renderPortoEdit(); renderSavepointList(); }
   if (id === 'analysis') renderAnalysis();
+}
+
+// ════════════════════════════════════════
+// SYNC ANALYSIS
+// ════════════════════════════════════════
+async function syncAnalysis() {
+  const btn = document.getElementById('btn-sync-analysis');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin">⟳</span> Syncing...'; }
+  await fetchAllPrices();
+  renderAnalysis();
+  if (btn) { btn.disabled = false; btn.innerHTML = '⟳ Sync Live'; }
+}
+
+// ════════════════════════════════════════
+// SAVEPOINT SYSTEM
+// ════════════════════════════════════════
+function createSavepoint() {
+  const name = prompt('Nama savepoint (contoh: "Apr 2026 sebelum rebalancing"):');
+  if (!name) return;
+  const savepoints = JSON.parse(localStorage.getItem('ac_savepoints') || '[]');
+  const sp = {
+    id: Date.now(),
+    name,
+    date: new Date().toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'}),
+    porto: JSON.parse(JSON.stringify(porto)),
+    totalInv: totalInvested(),
+    totalMkt: totalMktVal(),
+    totalDiv: annualDiv()
+  };
+  savepoints.unshift(sp);
+  if (savepoints.length > 5) savepoints.pop(); // max 5 savepoints
+  localStorage.setItem('ac_savepoints', JSON.stringify(savepoints));
+  renderSavepointList();
+  const msg = document.getElementById('save-msg');
+  if (msg) { msg.textContent = `✓ Savepoint "${name}" disimpan.`; msg.style.display = 'block'; setTimeout(() => { msg.style.display = 'none'; msg.textContent = '✓ Data disimpan. Semua tab terupdate.'; }, 3000); }
+}
+
+function deleteSavepoint(id) {
+  if (!confirm('Hapus savepoint ini?')) return;
+  let savepoints = JSON.parse(localStorage.getItem('ac_savepoints') || '[]');
+  savepoints = savepoints.filter(s => s.id !== id);
+  localStorage.setItem('ac_savepoints', JSON.stringify(savepoints));
+  renderSavepointList();
+  document.getElementById('savepoint-compare').style.display = 'none';
+}
+
+function renderSavepointList() {
+  const el = document.getElementById('savepoint-list');
+  if (!el) return;
+  const savepoints = JSON.parse(localStorage.getItem('ac_savepoints') || '[]');
+  if (savepoints.length === 0) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--dim);padding:8px 0">Belum ada savepoint. Klik "Buat Savepoint" untuk simpan snapshot pertama.</div>';
+    return;
+  }
+  el.innerHTML = savepoints.map((sp, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);margin-bottom:6px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--text)">${sp.name}</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px">${sp.date} · Invested: ${rp(sp.totalInv)} · MktVal: ${rp(sp.totalMkt)}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        ${savepoints.length > 1 && i < savepoints.length-1 ? `<button class="btn btn-outline" style="font-size:9px;padding:4px 10px" onclick="compareSavepoints(${i}, ${i+1})">Compare →</button>` : ''}
+        <button class="btn btn-outline" style="font-size:9px;padding:4px 10px;color:var(--red);border-color:var(--red-border)" onclick="deleteSavepoint(${sp.id})">Hapus</button>
+      </div>
+    </div>`).join('');
+}
+
+function compareSavepoints(idxA, idxB) {
+  const savepoints = JSON.parse(localStorage.getItem('ac_savepoints') || '[]');
+  const a = savepoints[idxA], b = savepoints[idxB];
+  if (!a || !b) return;
+  const el = document.getElementById('savepoint-compare');
+  if (!el) return;
+  el.style.display = 'block';
+
+  let rows = TICKERS.map(t => {
+    const pA = a.porto[t], pB = b.porto[t];
+    const invDiff = (pA.invested || 0) - (pB.invested || 0);
+    const lotDiff = (pA.lots || 0) - (pB.lots || 0);
+    const priceDiff = (pA.price || 0) - (pB.price || 0);
+    const dColor = invDiff > 0 ? 'var(--green)' : invDiff < 0 ? 'var(--red)' : 'var(--muted)';
+    return `<tr>
+      <td style="color:${COLORS[t]};font-weight:500">${t}</td>
+      <td class="num">${pB.lots} lot → ${pA.lots} lot <span style="color:${lotDiff>=0?'var(--green)':'var(--red)'}">(${lotDiff>=0?'+':''}${lotDiff})</span></td>
+      <td class="num">${rp(pB.price)} → ${rp(pA.price)} <span style="color:${priceDiff>=0?'var(--green)':'var(--red)'}">(${priceDiff>=0?'+':''}${Math.round(priceDiff).toLocaleString('id')})</span></td>
+      <td class="num" style="color:${dColor}">${invDiff>=0?'+':''}${rp(Math.abs(invDiff))}</td>
+    </tr>`;
+  }).join('');
+
+  const totalInvDiff = a.totalInv - b.totalInv;
+  const totalMktDiff = a.totalMkt - b.totalMkt;
+
+  el.innerHTML = `
+    <div style="font-size:11px;font-weight:500;color:var(--text);margin-bottom:10px">
+      Compare: <span style="color:var(--muted)">${b.name}</span> → <span style="color:var(--accent2)">${a.name}</span>
+    </div>
+    <div class="g3 mb12">
+      <div style="padding:10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Perubahan Invested</div>
+        <div style="font-size:16px;font-weight:500;color:${totalInvDiff>=0?'var(--green)':'var(--red)'}">${totalInvDiff>=0?'+':''}${rp(Math.abs(totalInvDiff))}</div>
+      </div>
+      <div style="padding:10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Perubahan Mkt Val</div>
+        <div style="font-size:16px;font-weight:500;color:${totalMktDiff>=0?'var(--green)':'var(--red)'}">${totalMktDiff>=0?'+':''}${rp(Math.abs(totalMktDiff))}</div>
+      </div>
+      <div style="padding:10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Selisih Periode</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text)">${b.date} → ${a.date}</div>
+      </div>
+    </div>
+    <div class="overflow-x">
+      <table class="tbl">
+        <thead><tr><th>Saham</th><th class="num">Lot</th><th class="num">Harga</th><th class="num">Δ Invested</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 // ════════════════════════════════════════
@@ -826,16 +1141,28 @@ async function fetchAllPrices() {
     results[t] = await fetchTickerFull(t);
   }));
 
+  // Load saved ichData from localStorage as fallback
+  const savedIch = JSON.parse(localStorage.getItem('ac_ichdata') || '{}');
+
   let successCount = 0;
   TICKERS.forEach(t => {
     if (results[t]) {
       porto[t].price = results[t].price;
       if (results[t].bars && results[t].bars.length >= 52) {
         ichData[t] = calcIchimoku(results[t].bars);
+        // Save to localStorage for fallback
+        if (ichData[t]) savedIch[t] = { ...ichData[t], savedAt: new Date().toLocaleDateString('id-ID') };
+      } else if (savedIch[t]) {
+        // Market closed / bars not enough — use saved data
+        ichData[t] = savedIch[t];
       }
       successCount++;
+    } else if (savedIch[t]) {
+      // Fetch failed — use saved data
+      ichData[t] = savedIch[t];
     }
   });
+  localStorage.setItem('ac_ichdata', JSON.stringify(savedIch));
 
   // Update live price preview
   const previewEl = document.getElementById('live-price-preview');
@@ -893,18 +1220,19 @@ function renderIchimokuGrid() {
     if (!ich) {
       grid.innerHTML += `
         <div class="ich-card">
-          <div class="ich-ticker">${t} <span class="badge bm">No Data</span></div>
-          <div style="font-size:10px;color:var(--dim);padding:8px 0">Fetch harga untuk kalkulasi Ichimoku</div>
+          <div class="ich-ticker">${t} <span class="badge bm">Belum Fetch</span></div>
+          <div style="font-size:10px;color:var(--dim);padding:8px 0">Klik "Fetch Harga Live" — atau data cached akan muncul otomatis</div>
         </div>`;
       return;
     }
+    const isCache = ich.savedAt ? true : false;
     const cloudTop = Math.max(ich.senkouA, ich.senkouB);
     const cloudBot = Math.min(ich.senkouA, ich.senkouB);
     const posLabel = ich.aboveCloud ? '↑ Atas Cloud' : ich.belowCloud ? '↓ Bawah Cloud' : '↔ Dalam Cloud';
     const posColor = ich.aboveCloud ? 'var(--green)' : ich.belowCloud ? 'var(--red)' : 'var(--amber)';
     grid.innerHTML += `
       <div class="ich-card" style="border-top:2px solid ${COLORS[t]}">
-        <div class="ich-ticker">${t} <span class="badge ${ich.sigClass}">${ich.signal}</span></div>
+        <div class="ich-ticker">${t} <span class="badge ${ich.sigClass}">${ich.signal}</span>${isCache ? `<span class="badge bm" style="margin-left:4px;font-size:7px">cache ${ich.savedAt}</span>` : ''}</div>
         <div class="ich-row"><span class="ich-label">Price</span><span class="ich-val" style="color:var(--text)">${rp(price)}</span></div>
         <div class="ich-row"><span class="ich-label">Tenkan (9)</span><span class="ich-val">${Math.round(ich.tenkan).toLocaleString('id')}</span></div>
         <div class="ich-row"><span class="ich-label">Kijun (26)</span><span class="ich-val">${Math.round(ich.kijun).toLocaleString('id')}</span></div>
@@ -1367,11 +1695,64 @@ function renderRiskGrid() {
   const grid = document.getElementById('risk-grid');
   if (!grid) return;
   grid.innerHTML = '';
+
+  // Overall risk score
+  const RISK_PROB = {
+    ADMF:{ 'Suku bunga BI tinggi':55, 'NPL otomotif creeping':40, 'Kompetisi fintech lending':25, 'Resesi demand otomotif':30 },
+    ASII:{ 'Perlambatan penjualan kendaraan':45, 'Tekanan margin alat berat':40, 'Forex risk (bahan baku impor)':50, 'Delisting risk (Jardine)':5 },
+    BMRI:{ 'Government-directed lending KUR':65, 'NPL corporate naik':45, 'Suku bunga BI menekan NIM':55, 'Tekanan politik dividen berlebihan':60 },
+    ITMG:{ 'Penurunan harga coal ICI4':50, 'Regulasi karbon global':70, 'Transisi energi jangka panjang':75, 'Gangguan produksi Kalimantan':20 },
+    POWR:{ 'Renegosiasi tarif PLN':35, 'Ekspansi capex menekan FCF':40, 'Ketergantungan satu pembeli (PLN)':55, 'Fluktuasi harga batubara input':45 }
+  };
+
+  const LEVEL_WEIGHT = { hi:3, mid:2, lo:1 };
+  const LEVEL_PROB_MOD = { hi:1.2, mid:1.0, lo:0.7 };
+
+  // Overall scores
+  let overallHtml = '<div class="sec">Overall Risk Score — 5 Saham</div><div class="g5" style="margin-bottom:16px">';
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    let weightedScore = 0, totalWeight = 0;
+    d.risks.forEach(r => {
+      const prob = RISK_PROB[t]?.[r.label] || 35;
+      const w = LEVEL_WEIGHT[r.level] || 1;
+      weightedScore += prob * w;
+      totalWeight += w * 100;
+    });
+    const overallPct = Math.round(weightedScore / totalWeight * 100);
+    const rColor = overallPct >= 55 ? 'var(--red)' : overallPct >= 40 ? 'var(--amber)' : 'var(--green)';
+    const rLabel = overallPct >= 55 ? 'HIGH' : overallPct >= 40 ? 'MODERATE' : 'LOW';
+    overallHtml += `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid ${COLORS[t]};border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:6px">${t}</div>
+        <div style="font-size:26px;font-weight:500;color:${rColor}">${overallPct}%</div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:${rColor};margin-top:2px">${rLabel}</div>
+        <div style="margin-top:8px;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">
+          <div style="width:${overallPct}%;height:5px;background:${rColor};border-radius:3px"></div>
+        </div>
+      </div>`;
+  });
+  overallHtml += '</div>';
+  grid.innerHTML = overallHtml;
+
+  // Per-stock detail
+  grid.innerHTML += '<div class="sec">Detail Risiko Per Saham</div>';
   TICKERS.forEach(t => {
     const d = ANALYSIS_DATA[t];
     let risksHtml = '';
     d.risks.forEach(r => {
-      risksHtml += `<div class="risk-cell risk-${r.level} mb8"><strong>${r.label}</strong></div>`;
+      const prob = RISK_PROB[t]?.[r.label] || 35;
+      const probColor = prob >= 60 ? 'var(--red)' : prob >= 40 ? 'var(--amber)' : 'var(--green)';
+      risksHtml += `
+        <div class="risk-cell risk-${r.level} mb8" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>${r.label}</strong>
+            <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-top:4px;overflow:hidden">
+              <div style="width:${prob}%;height:3px;background:${probColor};border-radius:2px"></div>
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:${probColor};margin-left:12px;flex-shrink:0">${prob}%</div>
+        </div>`;
     });
     grid.innerHTML += `
       <div class="card mb12" style="border-top:2px solid ${COLORS[t]}">
@@ -1385,6 +1766,7 @@ function renderRiskGrid() {
 // EDIT PORTO
 // ════════════════════════════════════════
 function renderPortoEdit() {
+  renderPortoComposition();
   const grid = document.getElementById('porto-edit-grid');
   if (!grid) return;
   grid.innerHTML = '';
@@ -1423,14 +1805,69 @@ function renderPortoComposition() {
   const el = document.getElementById('porto-composition');
   if (!el) return;
 
-  let bar = '<div style="display:flex;gap:2px;height:14px;border-radius:6px;overflow:hidden;margin-bottom:12px">';
-  let legend = '<div style="display:flex;gap:14px;flex-wrap:wrap">';
-  TICKERS.forEach(t => {
-    const p = (tempInv[t] / total * 100).toFixed(1);
-    bar += `<div style="width:${p}%;background:${COLORS[t]}" title="${t} ${p}%"></div>`;
-    legend += `<span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:${COLORS[t]};border-radius:1px;display:inline-block"></span>${t} ${p}%</span>`;
+  const pcts = TICKERS.map(t => ({ t, pct: tempInv[t]/total*100, color: COLORS[t], val: tempInv[t] }));
+
+  el.innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center">
+      <div style="position:relative;flex-shrink:0">
+        <canvas id="pie-canvas" width="160" height="160"></canvas>
+      </div>
+      <div style="flex:1;min-width:160px">
+        ${pcts.map(p=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:7px">
+              <span style="width:10px;height:10px;background:${p.color};border-radius:2px;display:inline-block;flex-shrink:0"></span>
+              <span style="font-size:12px;font-weight:500;color:var(--text)">${p.t}</span>
+            </div>
+            <div style="text-align:right">
+              <span style="font-size:12px;color:${p.color};font-weight:500">${p.pct.toFixed(1)}%</span>
+              <span style="font-size:10px;color:var(--dim);margin-left:8px">${rp(p.val)}</span>
+            </div>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:11px">
+          <span style="color:var(--muted)">Total invested</span>
+          <span style="font-weight:500;color:var(--text)">${rp(total)}</span>
+        </div>
+      </div>
+    </div>`;
+
+  // Draw pie
+  requestAnimationFrame(() => {
+    const canvas = document.getElementById('pie-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const cx = 80, cy = 80, r = 72;
+    let start = -Math.PI/2;
+    ctx.clearRect(0,0,160,160);
+    pcts.forEach(p => {
+      const angle = (p.pct/100) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r,start,start+angle);
+      ctx.closePath();
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      ctx.strokeStyle = '#00000040';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      start += angle;
+    });
+    // donut hole
+    ctx.beginPath();
+    ctx.arc(cx,cy,38,0,Math.PI*2);
+    const bg = document.body.classList.contains('light') ? '#ffffff' : '#0d1520';
+    ctx.fillStyle = bg;
+    ctx.fill();
+    // center text
+    ctx.fillStyle = document.body.classList.contains('light') ? '#1a1a2e' : '#e8f0fe';
+    ctx.font = '500 11px DM Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Porto', cx, cy-8);
+    ctx.font = '400 9px DM Mono, monospace';
+    ctx.fillStyle = document.body.classList.contains('light') ? '#5a78a8' : '#4a6a9a';
+    ctx.fillText('Komposisi', cx, cy+6);
   });
-  el.innerHTML = bar + '</div>' + legend + '</div>';
 }
 
 function savePorto() {
@@ -1465,10 +1902,275 @@ window.addEventListener('load', () => {
     document.body.classList.add('light');
     document.getElementById('mode-btn').textContent = '🌙 Dark';
   }
+  // Load cached ichimoku data
+  const savedIch = JSON.parse(localStorage.getItem('ac_ichdata') || '{}');
+  Object.keys(savedIch).forEach(t => { if (savedIch[t]) ichData[t] = savedIch[t]; });
+
   updateHeader();
   renderLotGrid();
   renderIchimokuGrid();
+  renderPortoComposition();
 });
+// ════════════════════════════════════════
+// OCR — SCAN STOCKBIT SCREENSHOT
+// ════════════════════════════════════════
+let ocrFiles = [];
+let ocrParsed = null;
+
+window.addEventListener('load', () => {
+  const savedKey = localStorage.getItem('ac_apikey');
+  if (savedKey) document.getElementById('ocr-api-key').value = savedKey;
+});
+
+function handleOCRFiles(files) {
+  ocrFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+  if (!ocrFiles.length) return;
+
+  const thumbs = document.getElementById('ocr-thumbs');
+  const preview = document.getElementById('ocr-preview-row');
+  thumbs.innerHTML = '';
+  ocrFiles.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    thumbs.innerHTML += `
+      <div style="position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--border2)">
+        <img src="${url}" style="height:120px;width:auto;display:block;object-fit:cover">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);font-size:9px;color:#fff;padding:3px 6px;text-align:center">${f.name.slice(0,20)}</div>
+      </div>`;
+  });
+  preview.style.display = 'block';
+  document.getElementById('btn-ocr-scan').disabled = false;
+  document.getElementById('ocr-result').style.display = 'none';
+  document.getElementById('ocr-status').style.display = 'none';
+}
+
+function clearOCR() {
+  ocrFiles = [];
+  ocrParsed = null;
+  document.getElementById('ocr-thumbs').innerHTML = '';
+  document.getElementById('ocr-preview-row').style.display = 'none';
+  document.getElementById('ocr-result').style.display = 'none';
+  document.getElementById('ocr-status').style.display = 'none';
+  document.getElementById('btn-ocr-scan').disabled = true;
+  document.getElementById('ocr-file-input').value = '';
+}
+
+function setOCRStatus(msg, type) {
+  const el = document.getElementById('ocr-status');
+  el.style.display = 'block';
+  el.className = type === 'error' ? 'warn-box mb12' : type === 'ok' ? 'success-box mb12' : 'info-box mb12';
+  el.innerHTML = msg;
+}
+
+async function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result.split(',')[1]);
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function runOCR() {
+  const apiKey = localStorage.getItem('ac_apikey') || document.getElementById('ocr-api-key').value;
+  if (!apiKey || !apiKey.startsWith('sk-ant-')) {
+    setOCRStatus('⚠ Masukkan Anthropic API Key dulu (format: sk-ant-...)', 'error');
+    return;
+  }
+  if (!ocrFiles.length) { setOCRStatus('⚠ Upload screenshot dulu', 'error'); return; }
+
+  const btn = document.getElementById('btn-ocr-scan');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin">⟳</span> Scanning...';
+  setOCRStatus('⟳ Mengirim screenshot ke Claude AI untuk dibaca...', 'info');
+
+  try {
+    // Build image content blocks
+    const imageBlocks = [];
+    for (const f of ocrFiles) {
+      const b64 = await fileToBase64(f);
+      const mediaType = f.type || 'image/jpeg';
+      imageBlocks.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } });
+    }
+
+    const prompt = `Kamu adalah sistem OCR khusus untuk membaca screenshot aplikasi Stockbit Indonesia.
+
+Dari screenshot ini, ekstrak data portfolio saham berikut. Perhatikan:
+- Ticker saham yang valid: ADMF, ASII, BMRI, ITMG, POWR
+- Jika ada ticker lain yang tidak masuk daftar di atas, abaikan
+- Angka bisa dalam format Indonesia: titik sebagai pemisah ribuan (1.234.567), koma sebagai desimal
+- P&L bisa positif atau negatif
+
+Kembalikan HANYA JSON berikut, tidak ada teks lain:
+{
+  "source": "portfolio_list" atau "detail_single",
+  "stocks": [
+    {
+      "ticker": "BMRI",
+      "lots": 5,
+      "avgPrice": 4636.94,
+      "currentPrice": 4590,
+      "invested": 2318472,
+      "pnl": -23473,
+      "pnlPct": -1.01
+    }
+  ],
+  "notes": "catatan singkat apa yang kamu baca dari screenshot ini"
+}
+
+Jika tidak ada data portfolio yang bisa dibaca, kembalikan: {"stocks": [], "notes": "alasan"}`;
+
+    imageBlocks.push({ type: 'text', text: prompt });
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: imageBlocks }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err?.error?.message || `HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const rawText = data.content?.map(c => c.text || '').join('') || '';
+
+    // Parse JSON from response
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Tidak dapat menemukan JSON dalam response');
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    if (!parsed.stocks || parsed.stocks.length === 0) {
+      setOCRStatus(`⚠ Tidak ada data saham yang bisa dibaca. ${parsed.notes || ''}`, 'error');
+      btn.disabled = false; btn.innerHTML = '🔍 Scan & Extract Data';
+      return;
+    }
+
+    // Filter ke tickers yang valid saja
+    parsed.stocks = parsed.stocks.filter(s => TICKERS.includes(s.ticker));
+
+    if (parsed.stocks.length === 0) {
+      setOCRStatus('⚠ Tidak ada ticker yang cocok (ADMF, ASII, BMRI, ITMG, POWR) dalam screenshot.', 'error');
+      btn.disabled = false; btn.innerHTML = '🔍 Scan & Extract Data';
+      return;
+    }
+
+    ocrParsed = parsed;
+    renderOCRResult(parsed);
+    setOCRStatus(`✓ Berhasil membaca ${parsed.stocks.length} saham. Review data di bawah sebelum diterapkan.`, 'ok');
+
+  } catch (e) {
+    setOCRStatus(`✕ Error: ${e.message}`, 'error');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '🔍 Scan & Extract Data';
+}
+
+function renderOCRResult(parsed) {
+  const el = document.getElementById('ocr-parsed-preview');
+  const res = document.getElementById('ocr-result');
+
+  let rows = parsed.stocks.map(s => {
+    const cur = porto[s.ticker];
+    const changes = [];
+    if (cur && Math.abs(cur.lots - s.lots) > 0) changes.push(`lots: ${cur.lots} → <strong style="color:var(--green)">${s.lots}</strong>`);
+    if (cur && Math.abs(cur.invested - s.invested) > 100) changes.push(`invested: ${rp(cur.invested)} → <strong style="color:var(--green)">${rp(s.invested)}</strong>`);
+    if (cur && Math.abs(cur.price - (s.currentPrice||s.avgPrice)) > 1) changes.push(`harga: ${rp(cur.price)} → <strong style="color:var(--green)">${rp(s.currentPrice||s.avgPrice)}</strong>`);
+
+    const pnlColor = (s.pnl||0) >= 0 ? 'var(--green)' : 'var(--red)';
+    return `
+      <tr>
+        <td style="font-weight:500;color:${COLORS[s.ticker]}">${s.ticker}</td>
+        <td class="num">${s.lots} lot</td>
+        <td class="num">${rp(s.avgPrice)}</td>
+        <td class="num">${s.currentPrice ? rp(s.currentPrice) : '—'}</td>
+        <td class="num">${rp(s.invested)}</td>
+        <td class="num" style="color:${pnlColor}">${(s.pnl||0) >= 0 ? '+' : ''}${Math.round(s.pnl||0).toLocaleString('id')}</td>
+        <td style="font-size:10px;color:var(--muted)">${changes.length ? changes.join(' · ') : '<span style="color:var(--green)">Tidak ada perubahan</span>'}</td>
+      </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+      <strong style="color:var(--text)">Tipe:</strong> ${parsed.source === 'detail_single' ? 'Detail Saham' : 'List Portfolio'} &nbsp;·&nbsp;
+      <strong style="color:var(--text)">Ditemukan:</strong> ${parsed.stocks.length} saham &nbsp;·&nbsp;
+      ${parsed.notes ? `<em>${parsed.notes}</em>` : ''}
+    </div>
+    <div class="overflow-x">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Ticker</th><th class="num">Lot</th><th class="num">Avg Price</th>
+            <th class="num">Harga Saat Ini</th><th class="num">Invested</th>
+            <th class="num">P&L</th><th>Perubahan</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  res.style.display = 'block';
+}
+
+function applyOCRToPorto() {
+  if (!ocrParsed || !ocrParsed.stocks.length) return;
+
+  // Auto-create savepoint sebelum apply
+  const savepoints = JSON.parse(localStorage.getItem('ac_savepoints') || '[]');
+  const autoSp = {
+    id: Date.now(),
+    name: `Auto-save sebelum OCR ${new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}`,
+    date: new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),
+    porto: JSON.parse(JSON.stringify(porto)),
+    totalInv: totalInvested(),
+    totalMkt: totalMktVal(),
+    totalDiv: annualDiv()
+  };
+  savepoints.unshift(autoSp);
+  if (savepoints.length > 5) savepoints.pop();
+  localStorage.setItem('ac_savepoints', JSON.stringify(savepoints));
+
+  // Apply data
+  ocrParsed.stocks.forEach(s => {
+    if (!porto[s.ticker]) return;
+    if (s.lots != null)        porto[s.ticker].lots     = s.lots;
+    if (s.avgPrice != null)    porto[s.ticker].avgPrice = s.avgPrice;
+    if (s.currentPrice != null) porto[s.ticker].price   = s.currentPrice;
+    else if (s.avgPrice != null) porto[s.ticker].price  = s.avgPrice;
+    if (s.invested != null)    porto[s.ticker].invested = s.invested;
+    if (s.pnl != null)         porto[s.ticker].pnl      = s.pnl;
+  });
+
+  localStorage.setItem('ac_porto', JSON.stringify(porto));
+  updateHeader();
+  renderPortoComposition();
+
+  setOCRStatus(`✓ Porto diupdate dari ${ocrParsed.stocks.length} saham. Savepoint otomatis dibuat sebelum perubahan.`, 'ok');
+  document.getElementById('ocr-result').style.display = 'none';
+
+  // Pindah ke tab porto untuk review
+  setTimeout(() => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[onclick*="porto"]').classList.add('active');
+    document.getElementById('panel-porto').classList.add('active');
+    renderPortoEdit();
+    renderSavepointList();
+  }, 1500);
+}
+
+// ────────────────────────────────────────
+// END OCR
+// ────────────────────────────────────────
 </script>
 </body>
 </html>
