@@ -1,0 +1,39 @@
+name: Fetch Aegis Prices
+
+on:
+  schedule:
+    # Every 15 minutes on weekdays (Mon-Fri), Jakarta trading hours 08:30-16:30 WIB = 01:30-09:30 UTC
+    - cron: '*/15 1-9 * * 1-5'
+    # Also run at 10:00 UTC (after market close) to get final prices
+    - cron: '0 10 * * 1-5'
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to push prices.json back to repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch prices
+        run: python scripts/fetch_prices.py
+
+      - name: Commit & push prices.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add prices.json
+          # Only commit if file actually changed
+          git diff --staged --quiet || git commit -m "chore: update prices $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

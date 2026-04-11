@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v5</title>
+<title>Aegis Alpha v4</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
@@ -256,33 +256,6 @@ canvas{max-width:100%}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
 
-/* QUOTE BANNER */
-.quote-banner{background:var(--bg2);border-bottom:1px solid var(--border);padding:7px 20px;display:flex;align-items:center;gap:10px;overflow:hidden;position:relative}
-.quote-banner::before{content:'❝';font-size:28px;color:var(--border2);line-height:1;flex-shrink:0;margin-top:-4px}
-.quote-text{font-size:9.5px;color:var(--muted);font-style:italic;letter-spacing:.02em;line-height:1.5;flex:1}
-.quote-author{font-size:8px;color:var(--dim);white-space:nowrap;letter-spacing:.08em;flex-shrink:0}
-
-/* FOOTER */
-.app-footer{text-align:center;padding:10px 20px 6px;font-size:8px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;border-top:1px solid var(--border);background:var(--bg2)}
-
-/* PORTFOLIO RATING BADGE */
-.porto-rating-badge{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:help;position:relative}
-.porto-rating-icon{font-size:18px;line-height:1}
-.porto-rating-label{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.porto-rating-name{font-size:9px;font-weight:500;letter-spacing:.04em}
-
-/* FETCH PROGRESS BAR */
-.fetch-progress-wrap{position:fixed;top:0;left:0;right:0;z-index:200;pointer-events:none;opacity:0;transition:opacity .3s}
-.fetch-progress-wrap.active{opacity:1}
-.fetch-progress-bar{height:3px;background:linear-gradient(90deg,var(--accent),var(--green),var(--accent2));background-size:200% 100%;animation:fetchBarAnim 1.5s linear infinite;transition:width .4s ease}
-@keyframes fetchBarAnim{0%{background-position:100% 0}100%{background-position:-100% 0}}
-.fetch-progress-steps{display:flex;gap:6px;padding:6px 14px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);pointer-events:all;position:absolute;top:3px;right:0;border-left:1px solid var(--border);border-bottom-left-radius:8px;box-shadow:var(--card-shadow)}
-.fps-item{display:flex;align-items:center;gap:3px;white-space:nowrap}
-.fps-item.done{color:var(--green)}
-.fps-item.fail{color:var(--red)}
-.fps-item.loading{color:var(--amber)}
-
-
 /* ANNOUNCEMENT BANNER */
 .banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:9px 14px;font-size:10px;color:var(--amber);line-height:1.7;margin-bottom:12px}
 
@@ -299,16 +272,10 @@ canvas{max-width:100%}
 </head>
 <body>
 
-<!-- ═══════════════ FETCH PROGRESS ═══════════════ -->
-<div class="fetch-progress-wrap" id="fetch-progress-wrap">
-  <div class="fetch-progress-bar" id="fetch-progress-bar" style="width:0%"></div>
-  <div class="fetch-progress-steps" id="fetch-progress-steps"></div>
-</div>
-
 <!-- ═══════════════ HEADER ═══════════════ -->
 <div class="hdr">
   <div class="hdr-brand">
-    <div class="hdr-name">Aegis <em>Alpha</em> <sup>v5</sup></div>
+    <div class="hdr-name">Aegis <em>Alpha</em> <sup>v4</sup></div>
     <div class="hdr-tagline">Dividend Flywheel · IDX 5-Stock · BlackRock Framework</div>
   </div>
 
@@ -337,11 +304,6 @@ canvas{max-width:100%}
       <div class="kpi-l">Harga Live</div>
       <div class="kpi-v sm" id="h-price-status" style="color:var(--muted)">⟳ Belum Fetch</div>
     </div>
-    <div class="porto-rating-badge" id="porto-rating-badge" title="Rating portofolio berdasarkan komposisi, yield, dan nilai total">
-      <div class="porto-rating-icon" id="porto-rating-icon">🦐</div>
-      <div class="porto-rating-name" id="porto-rating-name" style="color:var(--muted)">—</div>
-      <div class="porto-rating-label">Porto Rank</div>
-    </div>
   </div>
 
   <div class="hdr-actions">
@@ -351,12 +313,6 @@ canvas{max-width:100%}
     </button>
     <div class="last-ts" id="last-updated">—</div>
   </div>
-</div>
-
-<!-- ═══════════════ QUOTE BANNER ═══════════════ -->
-<div class="quote-banner" id="quote-banner">
-  <div class="quote-text" id="quote-text">Loading quote...</div>
-  <div class="quote-author" id="quote-author"></div>
 </div>
 
 <!-- ═══════════════ TABS ═══════════════ -->
@@ -383,27 +339,27 @@ canvas{max-width:100%}
 
   <!-- TOP ROW: KPI BENTO -->
   <div class="bento bento-5 mb12">
-    <div class="bcard" style="text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px">
+    <div class="bcard" style="text-align:center">
       <div class="bcard-title">Ekuitas Total</div>
       <div class="bcard-big green" id="snap-mktval">—</div>
       <div class="bcard-sub" id="snap-mktval-sub">Market Value</div>
     </div>
-    <div class="bcard" style="text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px">
+    <div class="bcard" style="text-align:center">
       <div class="bcard-title">Day P&L</div>
       <div class="bcard-big" id="snap-pnl">—</div>
       <div class="bcard-sub">vs Invested Cost</div>
     </div>
-    <div class="bcard" style="text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px">
+    <div class="bcard" style="text-align:center">
       <div class="bcard-title">Avg Yield Tahunan</div>
       <div class="bcard-big acc" id="snap-yoc">—</div>
       <div class="bcard-sub">Yield on Cost</div>
     </div>
-    <div class="bcard" style="text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px">
+    <div class="bcard" style="text-align:center">
       <div class="bcard-title">Buying Power</div>
       <div class="bcard-big" id="snap-cash">Rp0</div>
       <div class="bcard-sub">Cash Reserved (RDN)</div>
     </div>
-    <div class="bcard" style="text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:100px">
+    <div class="bcard" style="text-align:center">
       <div class="bcard-title">Status Data</div>
       <div style="font-size:24px;margin:6px 0" id="fetch-indicator">⟳</div>
       <div class="bcard-sub" id="fetch-sub-status">Tekan Auto Fetch di header</div>
@@ -708,16 +664,6 @@ canvas{max-width:100%}
   <div class="bento bento-5 mb12" id="lot-grid"></div>
   <div id="lot-summary" style="display:none" class="bcard mb12"></div>
 
-  <!-- SUBSIDI SILANG TABLE -->
-  <div class="sec-title">Tabel Subsidi Silang Dividen — Cross-Feeding Analysis</div>
-  <div class="bcard mb12">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:12px;line-height:1.7">
-      Dari setiap dividen yang masuk, berapa lot bisa dibeli saham lain? <strong style="color:var(--text)">Dividen tidak boleh reinvest ke saham sumber sendiri.</strong>
-      Rating berdasarkan: MOS, ROE, Div CAGR, dan diskon vs historis.
-    </div>
-    <div class="overflow-x" id="cross-subsidi-table"></div>
-  </div>
-
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -795,7 +741,7 @@ canvas{max-width:100%}
         <input type="number" id="inp-cash" value="0" min="0" placeholder="0">
       </div>
     </div>
-    <div style="font-size:9px;color:var(--muted);margin-top:6px">Tampil di Financial Snapshot sebagai Buying Power. &nbsp;·&nbsp; 💍 <span style="color:var(--dim)">Hari Jadi Jimmy & Cici: <strong style="color:var(--amber)">19 Agustus 2020</strong> — gunakan sebagai PIN referensi</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-top:6px">Tampil di Financial Snapshot sebagai Buying Power.</div>
   </div>
 
   <div class="btn-row mb12">
@@ -1044,12 +990,9 @@ const rp = (n) => 'Rp' + Math.round(n).toLocaleString('id');
 const pct = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
 const totalInvested = () => TICKERS.reduce((s,t) => s + porto[t].invested, 0);
 const totalMktVal  = () => TICKERS.reduce((s,t) => s + porto[t].price * porto[t].lots * 100, 0);
-const totalPortoVal = () => totalMktVal() + getCash(); // includes cash
 const totalPnl     = () => TICKERS.reduce((s,t) => s + (porto[t].pnl || 0), 0);
 const annualDiv    = () => TICKERS.reduce((s,t) => s + porto[t].lots * 100 * porto[t].divPerShare, 0);
 const actualPct    = (t) => totalMktVal() > 0 ? (porto[t].price * porto[t].lots * 100 / totalMktVal()) * 100 : 0;
-const actualPctFull = (t) => totalPortoVal() > 0 ? (porto[t].price * porto[t].lots * 100 / totalPortoVal()) * 100 : 0;
-const cashPct      = () => totalPortoVal() > 0 ? (getCash() / totalPortoVal()) * 100 : 0;
 const getCash      = () => parseFloat(localStorage.getItem('ac_cash') || '0');
 
 // ════════════════════════════════════
@@ -1088,7 +1031,7 @@ function _doSwitchTab(id, el) {
   if (id === 'snapshot') { updateHeader(); renderSnapshotPanel(); }
   if (id === 'analytics') { renderAnalyticsPanel(); }
   if (id === 'deepdive') { renderDeepDive(); }
-  if (id === 'lot') { renderLotGrid(); renderCrossSubsidi(); }
+  if (id === 'lot') { renderLotGrid(); }
   if (id === 'rebalance') { renderRebalance(); renderDivForecast(); }
   if (id === 'porto') { renderPortoEdit(); renderSavepointList(); }
 }
@@ -1111,25 +1054,6 @@ function updateHeader() {
   const pnlEl = document.getElementById('h-pnl');
   pnlEl.textContent = (pnl >= 0 ? '+' : '') + rp(pnl) + ' (' + pct(pnl/inv*100) + ')';
   pnlEl.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-
-  // Portfolio rating
-  updatePortoRating(mkt + cash, monthlyDiv, yoc);
-}
-
-function updatePortoRating(total, monthlyDiv, yoc) {
-  const RANKS = [
-    { min:0,        max:5_000_000,   icon:'🦐', name:'Udang Kecil',   color:'#4a6898' },
-    { min:5_000_000, max:25_000_000,  icon:'🐟', name:'Ikan Kecil',    color:'#4d9de0' },
-    { min:25_000_000, max:100_000_000, icon:'🐠', name:'Ikan Besar',    color:'#3dc88a' },
-    { min:100_000_000, max:300_000_000, icon:'🦈', name:'Hiu Muda',      color:'#e8b84b' },
-    { min:300_000_000, max:1_000_000_000, icon:'🐬', name:'Lumba-Lumba', color:'#9b79e0' },
-    { min:1_000_000_000, max:Infinity, icon:'🐳', name:'Paus',           color:'#e05555' }
-  ];
-  const rank = RANKS.find(r => total >= r.min && total < r.max) || RANKS[0];
-  const iconEl = document.getElementById('porto-rating-icon');
-  const nameEl = document.getElementById('porto-rating-name');
-  if(iconEl) iconEl.textContent = rank.icon;
-  if(nameEl) { nameEl.textContent = rank.name; nameEl.style.color = rank.color; }
 }
 
 // ════════════════════════════════════
@@ -1162,12 +1086,11 @@ function renderSnapshotPanel() {
   document.getElementById('ds-prog-pct').textContent = progPct.toFixed(1) + '%';
   document.getElementById('ds-prog-bar').style.width = progPct + '%';
 
-  // Alloc bars — include cash
+  // Alloc bars
   const allocEl = document.getElementById('alloc-bars-snap');
   allocEl.innerHTML = '';
-  const portoTotal = totalPortoVal();
   TICKERS.forEach(t => {
-    const actual = portoTotal > 0 ? (porto[t].price * porto[t].lots * 100 / portoTotal * 100) : 0;
+    const actual = actualPct(t);
     const target = targets[t];
     const gap = actual - target;
     allocEl.innerHTML += `
@@ -1182,20 +1105,6 @@ function renderSnapshotPanel() {
         </div>
       </div>`;
   });
-  // Cash bar
-  const cpct = portoTotal > 0 ? (getCash() / portoTotal * 100) : 0;
-  if(cpct > 0) {
-    allocEl.innerHTML += `
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span style="color:#4a6898;font-weight:500">Cash RDN</span>
-          <span>${cpct.toFixed(1)}%</span>
-        </div>
-        <div class="prog-track" style="height:7px">
-          <div class="prog-fill" style="width:${Math.min(cpct,100)}%;background:#2a4070"></div>
-        </div>
-      </div>`;
-  }
 
   // Live price tiles
   const lpEl = document.getElementById('live-price-snap');
@@ -1224,9 +1133,7 @@ function drawPortoChartSnap() {
   const ctx = canvas.getContext('2d');
   const cx = 80, cy = 80, r = 60, inner = 38;
   ctx.clearRect(0,0,160,160);
-  const stockTotal = totalMktVal();
-  const cash = getCash();
-  const total = stockTotal + cash;
+  const total = totalMktVal();
   if (total === 0) return;
   let start = -Math.PI/2;
   const vals = TICKERS.map(t => porto[t].price * porto[t].lots * 100);
@@ -1243,17 +1150,6 @@ function drawPortoChartSnap() {
     ctx.lineWidth = 2; ctx.stroke();
     start += angle;
   });
-  // Cash slice
-  if(cash > 0) {
-    const cashAngle = (cash/total)*Math.PI*2;
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,r,start,start+cashAngle);
-    ctx.closePath();
-    ctx.fillStyle = '#2a4070';
-    ctx.fill();
-    ctx.strokeStyle = isLight ? '#eef2fa' : '#060b12';
-    ctx.lineWidth = 2; ctx.stroke();
-  }
   // donut hole
   ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2);
   ctx.fillStyle = isLight ? '#ffffff' : '#101d2e';
@@ -1282,17 +1178,6 @@ function drawPortoChartSnap() {
         <span style="font-size:10px;color:var(--muted)">${pctVal}%</span>
       </div>`;
   });
-  if(cash > 0) {
-    const cashPctVal = (cash/total*100).toFixed(1);
-    legEl.innerHTML += `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
-        <div style="display:flex;align-items:center;gap:6px">
-          <div style="width:8px;height:8px;border-radius:2px;background:#2a4070;flex-shrink:0"></div>
-          <span style="font-size:10px;color:var(--text)">Cash RDN</span>
-        </div>
-        <span style="font-size:10px;color:var(--muted)">${cashPctVal}%</span>
-      </div>`;
-  }
 }
 
 // ════════════════════════════════════
@@ -1558,18 +1443,6 @@ function renderSuggestionGrid() {
     } else {
       sig = 'TUNGGU'; sigClass = 'sig-wait';
       sigDesc = `Premium ${Math.abs(mos).toFixed(0)}% di atas FV — jangan beli. Tunggu koreksi.`;
-    }
-
-    // Signal override for specific tickers (analyst judgment overrides pure MOS)
-    const SIGNAL_OVERRIDE = {
-      BMRI: { sig:'HAJAR', sigClass:'sig-buytrs', sigDesc:'ROE 19%+, div CAGR 7.8%, diskon vs historis. Bank terkuat Indonesia — akumulasi agresif di harga ini.' },
-      ADMF: { sig:'HOLD', sigClass:'sig-hold',    sigDesc:'Valuasi mendekati FV. Captive Astra moat solid, tapi harga sudah fair — tahan, tunggu koreksi untuk tambah.' },
-    };
-
-    if(SIGNAL_OVERRIDE[t]) {
-      sig = SIGNAL_OVERRIDE[t].sig;
-      sigClass = SIGNAL_OVERRIDE[t].sigClass;
-      sigDesc = SIGNAL_OVERRIDE[t].sigDesc;
     }
 
     const rankMedal = rankIdx===0?'🥇 Paling Murah':rankIdx===1?'🥈':rankIdx===2?'🥉':'';
@@ -2019,275 +1892,220 @@ function closePinModal() {
 const _origSwitchTab = window.switchTab;
 
 // ════════════════════════════════════
-// PER-TICKER MULTI-SOURCE FETCH
+// MARKET DATA FETCH (IHSG, USD/IDR, Coal)
 // ════════════════════════════════════
-async function fetchTickerWithFallback(ticker) {
+// ════════════════════════════════════
+// FETCH STRATEGY
+// Primary  : prices.json di repo (ditulis GitHub Actions tiap 15 menit)
+// Fallback : proxy publik (corsproxy/allorigins) — jika prices.json gagal
+// ════════════════════════════════════
+
+// Sesuaikan jika repo kamu bukan di root GitHub Pages
+const PRICES_JSON_URL = './prices.json';
+
+const PROXY_LIST = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`,
+];
+
+// ── Baca prices.json dari GitHub Pages (same-origin, no CORS) ────────────────
+async function loadPricesJson() {
+  try {
+    const r = await fetch(PRICES_JSON_URL + '?t=' + Date.now(), {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(8000)
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } catch(e) {
+    console.warn('prices.json not found or error:', e.message);
+    return null;
+  }
+}
+
+// ── Proxy fallback for a single ticker (price + OHLCV) ───────────────────────
+async function fetchTickerViaProxy(ticker) {
   const yfSym = YF_MAP[ticker];
   const stooqSym = STOOQ_MAP[ticker];
-  const proxies = [
-    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
-  ];
 
-  // Yahoo Finance — 3mo daily OHLCV via each proxy
-  for(const pf of proxies){
-    try{
-      const url=`https://query1.finance.yahoo.com/v8/finance/chart/${yfSym}?interval=1d&range=3mo`;
-      const r=await fetch(pf(url),{signal:AbortSignal.timeout(10000)});
+  for(const pf of PROXY_LIST) {
+    try {
+      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yfSym}?interval=1d&range=3mo`;
+      const r = await fetch(pf(url), {signal: AbortSignal.timeout(10000)});
       if(!r.ok) continue;
-      const data=await r.json();
-      const bars=parseYahooOHLCV(data);
-      if(bars.length>=30){
-        const price=data.chart.result[0].meta.regularMarketPrice||bars[bars.length-1].c;
-        return {price:Math.round(price),bars,source:'Yahoo'};
+      const data = await r.json();
+      const bars = parseYahooOHLCV(data);
+      if(bars.length >= 30) {
+        const price = data.chart.result[0].meta.regularMarketPrice || bars[bars.length-1].c;
+        return {price: Math.round(price), bars, source: 'proxy-yahoo'};
       }
-    }catch(e){continue;}
+    } catch(e) { continue; }
   }
 
-  // Stooq fallback — price only via each proxy
-  for(const pf of proxies){
-    try{
-      const url=`https://stooq.com/q/l/?s=${stooqSym}&f=sd2t2ohlcv&h&e=csv`;
-      const r=await fetch(pf(url),{signal:AbortSignal.timeout(9000)});
+  // Stooq price-only fallback
+  for(const pf of PROXY_LIST) {
+    try {
+      const url = `https://stooq.com/q/l/?s=${stooqSym}&f=sd2t2ohlcv&h&e=csv`;
+      const r = await fetch(pf(url), {signal: AbortSignal.timeout(9000)});
       if(!r.ok) continue;
-      const txt=await r.text();
-      const lines=txt.trim().split('\n');
-      if(lines.length<2) continue;
-      const cols=lines[1].split(',');
-      const p=parseFloat(cols[6]);
-      if(p&&p>0) return {price:Math.round(p),bars:null,source:'Stooq'};
-    }catch(e){continue;}
+      const txt = await r.text();
+      const cols = txt.trim().split('\n')[1]?.split(',') || [];
+      const p = parseFloat(cols[6]);
+      if(p > 0) return {price: Math.round(p), bars: null, source: 'proxy-stooq'};
+    } catch(e) { continue; }
   }
-
-  // Yahoo Finance v10 last resort
-  for(const pf of proxies){
-    try{
-      const url=`https://query2.finance.yahoo.com/v10/finance/quoteSummary/${yfSym}?modules=price`;
-      const r=await fetch(pf(url),{signal:AbortSignal.timeout(8000)});
-      if(!r.ok) continue;
-      const data=await r.json();
-      const p=data?.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw;
-      if(p&&p>0) return {price:Math.round(p),bars:null,source:'YF-v10'};
-    }catch(e){continue;}
-  }
-
   return null;
 }
 
+// ── Apply market tile data (IHSG / USD-IDR / Coal) ───────────────────────────
+function applyMarketTile(key, data) {
+  if(!data) return;
+  const p = data.price, chg = data.chgPct || 0;
+  if(key === 'IHSG') {
+    const el = document.getElementById('ihsg-val');
+    const chgEl = document.getElementById('ihsg-chg');
+    if(el) el.textContent = Math.round(p).toLocaleString('id');
+    if(chgEl) {
+      chgEl.textContent = (chg>=0?'+':'')+chg+'% hari ini';
+      chgEl.className = 'mkt-tile-c ' + (chg>=0?'green':'red');
+    }
+  } else if(key === 'USDIDR') {
+    const el = document.getElementById('usd-idr');
+    if(el) el.textContent = Math.round(p).toLocaleString('id');
+  } else if(key === 'COAL') {
+    const el = document.getElementById('coal-price');
+    const chgEl = document.getElementById('coal-chg');
+    if(el) el.textContent = '$' + Math.round(p);
+    if(chgEl) {
+      chgEl.textContent = (chg>=0?'+':'')+chg.toFixed(1)+'% vs prev';
+      chgEl.className = 'mkt-tile-c ' + (chg>=0?'green':'amber');
+    }
+  }
+}
+
+// ── Main fetch ───────────────────────────────────────────────────────────────
 async function fetchAllPrices() {
-  const btn = document.getElementById('btn-main-fetch');
-  const icon = document.getElementById('fetch-icon');
-  const fetchSub = document.getElementById('fetch-sub-status');
-  const fIndicator = document.getElementById('fetch-indicator');
-  const hStatus = document.getElementById('h-price-status');
+  const btn       = document.getElementById('btn-main-fetch');
+  const icon      = document.getElementById('fetch-icon');
+  const fetchSub  = document.getElementById('fetch-sub-status');
+  const fIndicator= document.getElementById('fetch-indicator');
+  const hStatus   = document.getElementById('h-price-status');
   const ichStatus = document.getElementById('ich-fetch-status');
-  const progressWrap = document.getElementById('fetch-progress-wrap');
-  const progressBar = document.getElementById('fetch-progress-bar');
-  const progressSteps = document.getElementById('fetch-progress-steps');
 
-  if(btn) btn.disabled=true;
-  if(icon){icon.className='spin';icon.textContent='⟳';}
-  if(fIndicator){fIndicator.textContent='⟳';fIndicator.classList.add('spin');}
-  if(hStatus){hStatus.textContent='⟳ Fetching...';hStatus.style.color='var(--amber)';}
-  if(ichStatus) ichStatus.textContent='fetching OHLCV...';
-  if(fetchSub) fetchSub.textContent='Fetching semua data...';
+  if(btn) btn.disabled = true;
+  if(icon){icon.className='spin'; icon.textContent='⟳';}
+  if(fIndicator){fIndicator.textContent='⟳'; fIndicator.classList.add('spin');}
+  if(hStatus){hStatus.textContent='⟳ Loading...'; hStatus.style.color='var(--amber)';}
+  if(ichStatus) ichStatus.textContent = 'loading...';
+  if(fetchSub) fetchSub.textContent = 'Membaca prices.json...';
 
-  // Show progress bar
-  if(progressWrap) progressWrap.classList.add('active');
-  if(progressBar) progressBar.style.width='5%';
+  // ── Step 1: try prices.json (GitHub Actions output) ──────────────────────
+  const pj = await loadPricesJson();
+  const savedIch = JSON.parse(localStorage.getItem('ac_ichdata') || '{}');
+  let successCount = 0, failList = [], source = 'json';
 
-  // ALL fetch items: 5 saham + IHSG + USDIDR + Coal = 8 items
-  const ALL_ITEMS = [...TICKERS, 'IHSG', 'USDIDR', 'COAL'];
-  const itemStatus = {}; // 'loading' | 'done' | 'fail'
-  ALL_ITEMS.forEach(k => { itemStatus[k] = 'loading'; });
+  if(pj && pj.stocks) {
+    // Apply stocks from JSON
+    TICKERS.forEach(t => {
+      const s = pj.stocks[t];
+      if(s && s.price > 0) {
+        porto[t].price = Math.round(s.price);
+        // Rebuild Ichimoku from OHLCV bars if available
+        if(s.bars && s.bars.length >= 52) {
+          ichData[t] = calcIchimoku(s.bars);
+          if(ichData[t]) savedIch[t] = {...ichData[t], savedAt: pj.updated_wib || new Date().toLocaleDateString('id-ID')};
+        } else if(savedIch[t]) {
+          ichData[t] = savedIch[t];
+        }
+        successCount++;
+      } else {
+        failList.push(t);
+        if(savedIch[t]) ichData[t] = savedIch[t];
+      }
+    });
 
-  const updateProgress = () => {
-    const done = ALL_ITEMS.filter(k=>itemStatus[k]==='done').length;
-    const fail = ALL_ITEMS.filter(k=>itemStatus[k]==='fail').length;
-    const pct = Math.round((done + fail) / ALL_ITEMS.length * 100);
-    if(progressBar) progressBar.style.width = Math.max(10, pct) + '%';
-    if(progressSteps) {
-      progressSteps.innerHTML = ALL_ITEMS.map(k=>{
-        const st = itemStatus[k];
-        const cls = st==='done'?'fps-item done':st==='fail'?'fps-item fail':'fps-item loading';
-        const icon = st==='done'?'✓':st==='fail'?'✕':'⟳';
-        return `<div class="${cls}">${icon} ${k}</div>`;
-      }).join('');
+    // Apply market tiles from JSON
+    if(pj.market) {
+      ['IHSG','USDIDR','COAL'].forEach(k => applyMarketTile(k, pj.market[k]));
     }
-  };
 
-  // Retry wrapper — keeps retrying until success
-  const fetchWithRetry = async (fetchFn, key, maxRetries=5) => {
-    let attempt=0;
-    while(attempt < maxRetries) {
-      try {
-        const res = await fetchFn();
+    // Update "last updated" with the time from JSON (when GH Actions ran)
+    const jsonTs = pj.updated_wib || '—';
+    document.getElementById('last-updated').textContent = `Data: ${jsonTs}`;
+    localStorage.setItem('ac_last_fetch', jsonTs);
+
+    // If some tickers failed in JSON, try proxy for those only
+    if(failList.length > 0) {
+      if(fetchSub) fetchSub.textContent = `JSON OK sebagian — proxy untuk: ${failList.join(', ')}...`;
+      const retries = await Promise.all(failList.map(async t => ({t, res: await fetchTickerViaProxy(t)})));
+      retries.forEach(({t, res}) => {
         if(res) {
-          itemStatus[key] = 'done';
-          updateProgress();
-          return res;
+          porto[t].price = res.price;
+          if(res.bars && res.bars.length >= 52) {
+            ichData[t] = calcIchimoku(res.bars);
+            if(ichData[t]) savedIch[t] = {...ichData[t], savedAt: new Date().toLocaleDateString('id-ID')};
+          }
+          successCount++;
+          failList = failList.filter(x => x !== t);
         }
-      } catch(e) {}
-      attempt++;
-      itemStatus[key] = attempt < maxRetries ? 'loading' : 'fail';
-      updateProgress();
-      if(attempt < maxRetries) await new Promise(r=>setTimeout(r, 1200*attempt));
+      });
+      source = 'json+proxy';
     }
-    return null;
-  };
 
-  // Fetch market data items individually with retry
-  const fetchIHSG = async () => {
-    const proxies = [
-      url=>`https://corsproxy.io/?${encodeURIComponent(url)}`,
-      url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      url=>`https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
-    ];
-    const ihsgUrl=`https://query1.finance.yahoo.com/v8/finance/chart/%5EJKSE?interval=1d&range=5d`;
-    for(const pf of proxies){
-      try{
-        const r=await fetch(pf(ihsgUrl),{signal:AbortSignal.timeout(9000)});
-        if(!r.ok) continue;
-        const data=await r.json();
-        const meta=data?.chart?.result?.[0]?.meta;
-        if(meta&&meta.regularMarketPrice){
-          const p=meta.regularMarketPrice;
-          const prev=meta.chartPreviousClose||p;
-          const chgPct=prev>0?((p-prev)/prev*100).toFixed(2):0;
-          const el=document.getElementById('ihsg-val');
-          const chgEl=document.getElementById('ihsg-chg');
-          if(el) el.textContent=Math.round(p).toLocaleString('id');
-          if(chgEl){chgEl.textContent=(chgPct>=0?'+':'')+chgPct+'% hari ini';chgEl.className='mkt-tile-c '+(chgPct>=0?'green':'red');}
-          return true;
-        }
-      }catch(e){continue;}
-    }
-    return null;
-  };
+  } else {
+    // ── Step 2: prices.json unavailable → full proxy fallback ────────────────
+    source = 'proxy';
+    if(fetchSub) fetchSub.textContent = 'prices.json gagal — coba proxy...';
 
-  const fetchUSDIDR = async () => {
-    const proxies = [
-      url=>`https://corsproxy.io/?${encodeURIComponent(url)}`,
-      url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      url=>`https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
-    ];
-    const fxUrl=`https://query1.finance.yahoo.com/v8/finance/chart/IDR%3DX?interval=1d&range=2d`;
-    for(const pf of proxies){
-      try{
-        const r=await fetch(pf(fxUrl),{signal:AbortSignal.timeout(9000)});
-        if(!r.ok) continue;
-        const data=await r.json();
-        const meta=data?.chart?.result?.[0]?.meta;
-        if(meta&&meta.regularMarketPrice){
-          const el=document.getElementById('usd-idr');
-          if(el) el.textContent=Math.round(meta.regularMarketPrice).toLocaleString('id');
-          return true;
-        }
-      }catch(e){continue;}
-    }
-    return null;
-  };
+    const results = await Promise.all(TICKERS.map(async t => ({t, res: await fetchTickerViaProxy(t)})));
+    results.forEach(({t, res}) => {
+      if(res) {
+        porto[t].price = res.price;
+        if(res.bars && res.bars.length >= 52) {
+          ichData[t] = calcIchimoku(res.bars);
+          if(ichData[t]) savedIch[t] = {...ichData[t], savedAt: new Date().toLocaleDateString('id-ID')};
+        } else if(savedIch[t]) { ichData[t] = savedIch[t]; }
+        successCount++;
+      } else {
+        failList.push(t);
+        if(savedIch[t]) ichData[t] = savedIch[t];
+      }
+    });
 
-  const fetchCoal = async () => {
-    const proxies = [
-      url=>`https://corsproxy.io/?${encodeURIComponent(url)}`,
-      url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      url=>`https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
-    ];
-    const coalUrl=`https://query1.finance.yahoo.com/v8/finance/chart/MTF%3DF?interval=1d&range=5d`;
-    for(const pf of proxies){
-      try{
-        const r=await fetch(pf(coalUrl),{signal:AbortSignal.timeout(9000)});
-        if(!r.ok) continue;
-        const data=await r.json();
-        const meta=data?.chart?.result?.[0]?.meta;
-        if(meta&&meta.regularMarketPrice){
-          const p=meta.regularMarketPrice;
-          const prev=meta.chartPreviousClose||p;
-          const chgPct=prev>0?((p-prev)/prev*100).toFixed(1):0;
-          const el=document.getElementById('coal-price');
-          const chgEl=document.getElementById('coal-chg');
-          if(el) el.textContent='$'+p.toFixed(0);
-          if(chgEl){chgEl.textContent=(chgPct>=0?'+':'')+chgPct+'% vs prev';chgEl.className='mkt-tile-c '+(chgPct>=0?'green':'amber');}
-          return true;
-        }
-      }catch(e){continue;}
-    }
-    return null;
-  };
+    const now = new Date();
+    const ts = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('last-updated').textContent = `Updated ${ts} (proxy)`;
+    localStorage.setItem('ac_last_fetch', ts);
+  }
 
-  // Run all in parallel with individual retries
-  const savedIch = JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
+  localStorage.setItem('ac_ichdata', JSON.stringify(savedIch));
 
-  const stockPromises = TICKERS.map(async t => {
-    const res = await fetchWithRetry(() => fetchTickerWithFallback(t), t);
-    return {t, res};
-  });
+  // ── Update UI status ──────────────────────────────────────────────────────
+  const allOk = successCount === TICKERS.length;
+  const statusColor = allOk ? 'var(--green)' : failList.length > 0 ? 'var(--red)' : 'var(--amber)';
+  const sourceLabel = source === 'json' ? '✓ GitHub Actions' : source === 'json+proxy' ? '⚡ JSON+Proxy' : '⚠ Proxy only';
 
-  const [stockResults] = await Promise.all([
-    Promise.all(stockPromises),
-    fetchWithRetry(fetchIHSG, 'IHSG'),
-    fetchWithRetry(fetchUSDIDR, 'USDIDR'),
-    fetchWithRetry(fetchCoal, 'COAL'),
-  ]);
+  if(hStatus){hStatus.textContent = allOk ? `✓ Live` : `⚠ Partial`; hStatus.style.color = statusColor;}
+  if(fIndicator){fIndicator.classList.remove('spin'); fIndicator.textContent = allOk ? '✓' : '⚠';}
+  if(icon){icon.className=''; icon.textContent='⟳';}
 
-  const results = {};
-  stockResults.forEach(({t,res}) => { results[t]=res; });
+  const failMsg = failList.length > 0 ? ` · Gagal: ${failList.join(', ')}` : '';
+  if(fetchSub) fetchSub.textContent = `${sourceLabel} · ${successCount}/${TICKERS.length} OK${failMsg}`;
+  if(ichStatus) ichStatus.textContent = `${sourceLabel} · ${successCount} saham`;
 
-  let successCount = 0, failList = [];
-  TICKERS.forEach(t => {
-    if(results[t]){
-      porto[t].price = results[t].price;
-      if(results[t].bars && results[t].bars.length>=52){
-        ichData[t] = calcIchimoku(results[t].bars);
-        if(ichData[t]) savedIch[t] = {...ichData[t],savedAt:new Date().toLocaleDateString('id-ID')};
-      } else if(savedIch[t]) { ichData[t] = savedIch[t]; }
-      successCount++;
-    } else {
-      failList.push(t);
-      if(savedIch[t]) ichData[t] = savedIch[t];
-    }
-  });
-  localStorage.setItem('ac_ichdata',JSON.stringify(savedIch));
+  if(btn) btn.disabled = false;
 
-  const now = new Date();
-  const ts = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  localStorage.setItem('ac_last_fetch', new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})+' '+ts);
-
-  const statusMsg = failList.length>0
-    ? `⚠ ${successCount}/${TICKERS.length} OK · Gagal: ${failList.join(',')} · ${ts}`
-    : `✓ ${successCount}/${TICKERS.length} · ${ts}`;
-
-  if(hStatus){hStatus.textContent=successCount>0?`✓ ${ts}`:'✕ Gagal';hStatus.style.color=successCount>0?'var(--green)':'var(--red)';}
-  if(fIndicator){fIndicator.classList.remove('spin');fIndicator.textContent=successCount>0?'✓':'✕';}
-  if(icon){icon.className='';icon.textContent='⟳';}
-  if(fetchSub) fetchSub.textContent = successCount>0?`✓ Updated ${ts} · Market + Saham OK`:'✕ Gagal semua';
-  if(ichStatus) ichStatus.textContent=successCount>0?`updated ${ts}`:'gagal — pakai cache';
-  document.getElementById('last-updated').textContent=`Updated ${ts}`;
-
-  // Hide progress bar after 2.5s
-  setTimeout(()=>{
-    if(progressWrap) progressWrap.classList.remove('active');
-  }, 2500);
-
-  if(btn) btn.disabled=false;
-
-  localStorage.setItem('ac_porto',JSON.stringify(porto));
+  localStorage.setItem('ac_porto', JSON.stringify(porto));
   updateHeader();
 
-  // Refresh active panel
   const activePanel = document.querySelector('.panel.active');
-  if(activePanel){
+  if(activePanel) {
     const id = activePanel.id.replace('panel-','');
     if(id==='snapshot') renderSnapshotPanel();
     if(id==='analytics') renderAnalyticsPanel();
     if(id==='deepdive') renderDeepDive();
     if(id==='lot') renderLotGrid();
-  }
-
-  if(failList.length>0){
-    if(fetchSub) fetchSub.textContent = `⚠ Gagal: ${failList.join(', ')} · ${successCount} OK · ${ts}`;
   }
 }
 
@@ -2384,82 +2202,6 @@ function renderLotGrid() {
         <div style="margin-top:8px;padding:7px;background:var(--bg2);border-radius:6px;font-size:9px;color:var(--dim)">Gap dari target: ${gaps}</div>`;
     }
   }
-  renderCrossSubsidi();
-}
-
-function renderCrossSubsidi() {
-  const el = document.getElementById('cross-subsidi-table');
-  if(!el) return;
-
-  // Worth-it rating per destination stock
-  const DEST_RATING = (destT) => {
-    const d = ANALYSIS_DATA[destT];
-    const price = porto[destT].price;
-    const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
-    const mos = (consensus-price)/price*100;
-    let score = 0;
-    if(mos>35) score+=4; else if(mos>20) score+=3; else if(mos>8) score+=2; else if(mos>0) score+=1;
-    if(d.roe>18) score+=3; else if(d.roe>12) score+=2; else score+=1;
-    if(d.div_5yr_cagr>10) score+=3; else if(d.div_5yr_cagr>5) score+=2; else score+=1;
-    if(d.pe_curr<d.pe_hist) score+=2; else score+=0;
-    return {score, mos};
-  };
-
-  const RATING_LABEL = (score) => {
-    if(score>=10) return {label:'⭐⭐⭐ SANGAT WORTH', color:'var(--green)'};
-    if(score>=7)  return {label:'⭐⭐ WORTH',         color:'var(--accent2)'};
-    if(score>=5)  return {label:'⭐ LUMAYAN',          color:'var(--amber)'};
-    return              {label:'— SKIP DULU',           color:'var(--muted)'};
-  };
-
-  // Build table
-  let html = `<table class="tbl">
-    <thead>
-      <tr>
-        <th>Sumber Div</th>
-        <th class="num">Div Gross/Thn</th>
-        <th class="num">After Tax</th>`;
-  TICKERS.forEach(dest => {
-    html += `<th class="ctr" style="color:${COLORS[dest]}">${dest}<br><span style="font-size:7px;color:var(--dim);font-weight:400">lot dapat</span></th>`;
-  });
-  html += `<th class="ctr">Best Dest</th></tr></thead><tbody>`;
-
-  TICKERS.forEach(src => {
-    const divGross = porto[src].lots * 100 * porto[src].divPerShare;
-    const divNet = divGross * 0.85;
-    let bestDest = null, bestScore = -1;
-
-    html += `<tr>
-      <td style="color:${COLORS[src]};font-weight:500">${src}</td>
-      <td class="num">${rp(divGross)}</td>
-      <td class="num green">${rp(divNet)}</td>`;
-
-    TICKERS.forEach(dest => {
-      if(dest === src) {
-        html += `<td class="ctr" style="color:var(--dim);font-size:10px">✕</td>`;
-        return;
-      }
-      const lotCost = porto[dest].price * 100;
-      const lotsCanBuy = Math.floor(divNet / lotCost);
-      const {score, mos} = DEST_RATING(dest);
-      if(score > bestScore) { bestScore = score; bestDest = dest; }
-      const mosBadge = mos > 0 ? `<span style="font-size:7px;color:var(--green)">+${mos.toFixed(0)}% MOS</span>` : `<span style="font-size:7px;color:var(--red)">${mos.toFixed(0)}%</span>`;
-      html += `<td class="ctr">
-        <div style="font-size:13px;font-weight:500;color:${lotsCanBuy>0?'var(--text)':'var(--dim)'}">${lotsCanBuy > 0 ? lotsCanBuy+' lot' : '< 1'}</div>
-        <div>${mosBadge}</div>
-        <div style="font-size:8px;color:var(--dim)">${rp(lotCost)}/lot</div>
-      </td>`;
-    });
-
-    const {label, color} = RATING_LABEL(bestScore);
-    html += `<td class="ctr">
-      <div style="font-size:10px;font-weight:500;color:${COLORS[bestDest||'BMRI']}">${bestDest||'—'}</div>
-      <div style="font-size:8px;color:${color};margin-top:2px">${label}</div>
-    </td></tr>`;
-  });
-
-  html += '</tbody></table>';
-  el.innerHTML = html;
 }
 
 // ════════════════════════════════════
@@ -2675,9 +2417,7 @@ function renderPortoEdit() {
 function renderPortoComposition() {
   const el=document.getElementById('porto-composition');
   if(!el) return;
-  const stockTotal=totalMktVal();
-  const cash=getCash();
-  const total=stockTotal+cash;
+  const total=totalMktVal();
   let html='<div style="display:flex;justify-content:center;margin-bottom:12px"><canvas id="pie-porto" width="140" height="140"></canvas></div>';
   html+='<div class="bento bento-5" style="gap:8px">';
   TICKERS.forEach(t=>{
@@ -2691,16 +2431,6 @@ function renderPortoComposition() {
         <div style="font-size:9px;color:var(--dim)">${rp(v)}</div>
       </div>`;
   });
-  if(cash>0){
-    const cashPct=(total>0?(cash/total*100):0).toFixed(1);
-    html+=`
-      <div style="background:var(--bg2);border:1px solid var(--border);border-top:2px solid #2a4070;border-radius:10px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:3px">Cash RDN</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)">${cashPct}%</div>
-        <div style="font-size:9px;color:var(--muted)">Buying Power</div>
-        <div style="font-size:9px;color:var(--dim)">${rp(cash)}</div>
-      </div>`;
-  }
   html+='</div>';
   el.innerHTML=html;
 
@@ -2720,12 +2450,6 @@ function renderPortoComposition() {
       ctx.strokeStyle=isLight?'#eef2fa':'#060b12';ctx.lineWidth=2;ctx.stroke();
       start+=angle;
     });
-    if(cash>0){
-      const angle=(cash/total)*Math.PI*2;
-      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+angle);ctx.closePath();
-      ctx.fillStyle='#2a4070';ctx.fill();
-      ctx.strokeStyle=isLight?'#eef2fa':'#060b12';ctx.lineWidth=2;ctx.stroke();
-    }
     ctx.beginPath();ctx.arc(cx,cy,inner,0,Math.PI*2);
     ctx.fillStyle=isLight?'#ffffff':'#101d2e';ctx.fill();
     ctx.fillStyle=isLight?'#0a1a38':'#e4eeff';
@@ -3021,54 +2745,6 @@ function applyOCRToPorto() {
 }
 
 // ════════════════════════════════════
-// QUOTE SYSTEM — Daily rotating quotes
-// ════════════════════════════════════
-const INVESTMENT_QUOTES = [
-  { text: "The stock market is a device for transferring money from the impatient to the patient.", author: "Warren Buffett" },
-  { text: "An investment in knowledge pays the best interest.", author: "Benjamin Franklin" },
-  { text: "Wide diversification is only required when investors do not understand what they are doing.", author: "Warren Buffett" },
-  { text: "The four most dangerous words in investing are: 'this time it's different.'", author: "Sir John Templeton" },
-  { text: "Know what you own, and know why you own it.", author: "Peter Lynch" },
-  { text: "The best investment you can make is in yourself.", author: "Warren Buffett" },
-  { text: "In investing, what is comfortable is rarely profitable.", author: "Robert Arnott" },
-  { text: "Risk comes from not knowing what you're doing.", author: "Warren Buffett" },
-  { text: "The intelligent investor is a realist who sells to optimists and buys from pessimists.", author: "Benjamin Graham" },
-  { text: "Price is what you pay. Value is what you get.", author: "Warren Buffett" },
-  { text: "The stock market is filled with individuals who know the price of everything, but the value of nothing.", author: "Philip Fisher" },
-  { text: "Investing is not nearly as difficult as it looks. Successful investing involves doing a few things right and avoiding serious mistakes.", author: "John Bogle" },
-  { text: "It's not whether you're right or wrong that's important, but how much money you make when you're right and how much you lose when you're wrong.", author: "George Soros" },
-  { text: "The time of maximum pessimism is the best time to buy, and the time of maximum optimism is the best time to sell.", author: "Sir John Templeton" },
-  { text: "Compound interest is the eighth wonder of the world. He who understands it, earns it; he who doesn't, pays it.", author: "Albert Einstein" },
-  { text: "Pasar tidak akan menunggu kamu siap. Tapi dividen akan tetap mengalir selama fundamentalnya kuat.", author: "ZenkichiArc" },
-  { text: "Beli bisnis bagus, bukan saham murah. Kalau bisnisnya jelek, murah pun tetap mahal.", author: "ZenkichiArc" },
-  { text: "Dividen adalah bukti bahwa laba itu nyata. Tanpa dividen, laba hanyalah angka di kertas.", author: "ZenkichiArc" },
-  { text: "Sabar adalah strategi paling underrated di IDX — semua orang tahu, tapi nyaris tidak ada yang bisa menjalankannya.", author: "ZenkichiArc" },
-  { text: "Setiap lot yang kamu beli hari ini adalah dividen yang akan datang di masa depan. Tanam sekarang, panen nanti.", author: "ZenkichiArc" },
-  { text: "Do not save what is left after spending, but spend what is left after saving.", author: "Warren Buffett" },
-  { text: "The goal of the non-professional should not be to pick winners — neither he nor his helpers can do that — but should rather be to own a cross-section of businesses.", author: "Warren Buffett" },
-  { text: "Financial freedom is available to those who learn about it and work for it.", author: "Robert Kiyosaki" },
-  { text: "Opportunities come infrequently. When it rains gold, put out the bucket, not the thimble.", author: "Warren Buffett" },
-  { text: "Never depend on single income. Make investments to create a second source.", author: "Warren Buffett" },
-  { text: "Recession is when your neighbor loses his job. Depression is when you lose yours. Recovery is when Jimmy buys more BMRI.", author: "ZenkichiArc" },
-  { text: "The individual investor should act consistently as an investor and not as a speculator.", author: "Benjamin Graham" },
-  { text: "Behind every stock is a company. Find out what it's doing.", author: "Peter Lynch" },
-  { text: "All intelligent investing is value investing — acquiring more than you are paying for.", author: "Charlie Munger" },
-  { text: "Invert, always invert. Instead of asking how to make money, ask how to avoid losing it.", author: "Charlie Munger" }
-];
-
-function initQuoteBanner() {
-  const now = new Date();
-  // Change quote daily — use day-of-year as seed
-  const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
-  const idx = dayOfYear % INVESTMENT_QUOTES.length;
-  const quote = INVESTMENT_QUOTES[idx];
-  const textEl = document.getElementById('quote-text');
-  const authorEl = document.getElementById('quote-author');
-  if(textEl) textEl.textContent = '"' + quote.text + '"';
-  if(authorEl) authorEl.textContent = '— ' + quote.author;
-}
-
-// ════════════════════════════════════
 // INIT
 // ════════════════════════════════════
 window.addEventListener('load',()=>{
@@ -3081,11 +2757,9 @@ window.addEventListener('load',()=>{
   const savedIch=JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
   Object.keys(savedIch).forEach(t=>{ if(savedIch[t]) ichData[t]=savedIch[t]; });
 
-  initQuoteBanner();
   updateHeader();
   renderSnapshotPanel();
   renderLotGrid();
-  renderCrossSubsidi();
 
   // If data has never been fetched or last fetch was not today, show popup after 1.5s
   const lastFetch=localStorage.getItem('ac_last_fetch');
@@ -3095,9 +2769,6 @@ window.addEventListener('load',()=>{
   }
 });
 </script>
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<div class="app-footer">created by ZenkichiArc &nbsp;·&nbsp; Aegis Alpha v5 &nbsp;·&nbsp; Dividend Flywheel Framework</div>
-
 <!-- ═══════════════ PIN MODAL ═══════════════ -->
 <div id="pin-modal" class="modal-overlay" style="display:none">
   <div class="modal-box">
