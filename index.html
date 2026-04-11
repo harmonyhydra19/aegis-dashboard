@@ -258,6 +258,16 @@ canvas{max-width:100%}
 
 /* ANNOUNCEMENT BANNER */
 .banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:9px 14px;font-size:10px;color:var(--amber);line-height:1.7;margin-bottom:12px}
+
+/* ──────── MODALS ──────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:28px 30px;min-width:300px;max-width:400px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.6)}
+.modal-title{font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--text);margin-bottom:6px}
+.modal-sub{font-size:10px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+.modal-pin-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:22px;padding:12px;text-align:center;letter-spacing:8px;outline:none;margin-bottom:14px}
+.modal-pin-input:focus{border-color:var(--accent)}
+.modal-err{font-size:10px;color:var(--red);min-height:16px;margin-bottom:10px}
+.modal-btns{display:flex;gap:8px;justify-content:center}
 </style>
 </head>
 <body>
@@ -287,18 +297,18 @@ canvas{max-width:100%}
       <div class="kpi-v" id="h-cash">Rp0</div>
     </div>
     <div class="kpi">
-      <div class="kpi-l">Annual Div</div>
+      <div class="kpi-l">Div / Bulan</div>
       <div class="kpi-v acc" id="h-div">—</div>
     </div>
     <div class="kpi">
       <div class="kpi-l">Harga Live</div>
-      <div class="kpi-v sm" id="h-price-status" style="cursor:pointer;color:var(--muted)" onclick="fetchAllPrices()" title="Klik untuk fetch harga">⟳ Fetch</div>
+      <div class="kpi-v sm" id="h-price-status" style="color:var(--muted)">⟳ Belum Fetch</div>
     </div>
   </div>
 
   <div class="hdr-actions">
     <button class="mode-btn" id="mode-btn" onclick="toggleMode()">☀️ Light</button>
-    <button class="auto-fetch-btn" id="btn-main-fetch" onclick="fetchAllPrices()">
+    <button class="auto-fetch-btn" id="btn-main-fetch" onclick="confirmAndFetch()">
       <span id="fetch-icon">⟳</span> Auto Fetch
     </button>
     <div class="last-ts" id="last-updated">—</div>
@@ -313,7 +323,6 @@ canvas{max-width:100%}
   <button class="tab" onclick="switchTab('lot',this)">💰 Lot Recommender</button>
   <button class="tab" onclick="switchTab('rebalance',this)">⚖️ Rebalancing</button>
   <button class="tab" onclick="switchTab('porto',this)">✏️ Edit Porto</button>
-  <button class="tab" onclick="switchTab('ocr',this)">📷 Scan Stockbit</button>
   <button class="tab" onclick="switchTab('rules',this)">📜 Rules</button>
 </div>
 
@@ -350,10 +359,10 @@ canvas{max-width:100%}
       <div class="bcard-big" id="snap-cash">Rp0</div>
       <div class="bcard-sub">Cash Reserved (RDN)</div>
     </div>
-    <div class="bcard" style="text-align:center;cursor:pointer" onclick="fetchAllPrices()">
-      <div class="bcard-title">Auto Fetch</div>
-      <div style="font-size:28px;margin:6px 0" id="fetch-indicator">⟳</div>
-      <div class="bcard-sub" id="fetch-sub-status">Klik untuk update semua</div>
+    <div class="bcard" style="text-align:center">
+      <div class="bcard-title">Status Data</div>
+      <div style="font-size:24px;margin:6px 0" id="fetch-indicator">⟳</div>
+      <div class="bcard-sub" id="fetch-sub-status">Tekan Auto Fetch di header</div>
     </div>
   </div>
 
@@ -378,9 +387,6 @@ canvas{max-width:100%}
     <div class="bcard">
       <div class="bcard-title">Harga Live — 5 Saham</div>
       <div id="live-price-snap" style="display:grid;grid-template-columns:1fr 1fr;gap:7px"></div>
-      <div style="margin-top:8px">
-        <button class="btn btn-green" style="width:100%" onclick="fetchAllPrices()">⟳ Update Harga</button>
-      </div>
     </div>
   </div>
 
@@ -442,15 +448,10 @@ canvas{max-width:100%}
 
   <!-- ROW 1: Charts overview -->
   <div class="bento bento-60-40 mb12">
-    <!-- Portfolio Performance (simulated line chart) -->
+    <!-- Portfolio Performance (interactive line chart) -->
     <div class="bcard">
-      <div class="bcard-title">Pergerakan Portofolio vs Benchmark<span style="color:var(--dim);font-size:7px">Simulasi | Update Manual</span></div>
-      <canvas id="portfolio-chart" height="180"></canvas>
-      <div style="display:flex;gap:12px;margin-top:8px;font-size:9px">
-        <span style="color:var(--accent2)">● Porto Aegis</span>
-        <span style="color:var(--amber)">● IHSG</span>
-        <span style="color:var(--blue)">● S&P 500</span>
-      </div>
+      <div class="bcard-title">Pergerakan Portofolio vs Benchmark<span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;Simulasi 12bln · Hover untuk detail</span></div>
+      <div id="portfolio-chart-container"></div>
     </div>
 
     <!-- Sector allocation donut -->
@@ -511,7 +512,7 @@ canvas{max-width:100%}
 
   <!-- KONDISI MARKET -->
   <div class="sec-title">Kondisi Market Terkini
-    <button class="btn btn-green" onclick="syncMarket()" style="font-size:7px;padding:4px 10px;margin-left:8px">⟳ Sync Live</button>
+    <span style="font-size:7px;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:8px">Update via tombol Auto Fetch di header</span>
   </div>
   <div class="bento bento-3 mb12">
     <div class="mkt-tile bcard">
@@ -564,7 +565,7 @@ canvas{max-width:100%}
         <tr>
           <th>Saham</th><th class="num">Harga</th>
           <th class="num">FV P/E</th><th class="num">FV DDM</th><th class="num">FV P/BV</th>
-          <th class="num">Consensus FV</th><th class="num">Upside</th><th class="num">MOS%</th><th class="ctr">Verdict</th>
+          <th class="num">Consensus FV</th><th class="num">Upside</th><th class="num">MOS%</th><th class="ctr">Verdict</th><th class="ctr">Data Per</th>
         </tr>
       </thead>
       <tbody id="fv-body"></tbody>
@@ -656,16 +657,12 @@ canvas{max-width:100%}
     <div class="btn-row">
       <button class="btn btn-accent" onclick="calcLots()">Hitung Lot →</button>
       <button class="btn btn-outline" onclick="resetLotForm()">Reset</button>
-      <button class="btn btn-green" onclick="fetchAllPrices()" id="btn-fetch">⟳ Fetch Harga Live</button>
     </div>
   </div>
 
   <div class="sec-title">Rekomendasi Lot</div>
   <div class="bento bento-5 mb12" id="lot-grid"></div>
   <div id="lot-summary" style="display:none" class="bcard mb12"></div>
-
-  <div class="sec-title">Sinyal Ichimoku 1D</div>
-  <div class="bento bento-5 mb12" id="ich-grid-lot"></div>
 
 </div>
 
@@ -724,23 +721,6 @@ canvas{max-width:100%}
   <!-- PIE -->
   <div class="sec-title">Komposisi Porto Saat Ini</div>
   <div class="bcard mb12" id="porto-composition"></div>
-
-  <!-- LIVE FETCH -->
-  <div class="bcard mb12" style="background:var(--green-bg);border-color:var(--green-border)">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-      <div>
-        <div style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">📡 Harga Live — Auto Fetch</div>
-        <div style="font-size:10px;color:var(--muted);line-height:1.5">Fetch dari Yahoo Finance + Stooq. Harga update otomatis.</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn btn-green" onclick="fetchAllPrices()" id="btn-fetch-porto">⟳ Fetch Harga Live</button>
-        <span id="fetch-status-porto" style="font-size:9px;color:var(--muted)"></span>
-      </div>
-    </div>
-    <div id="live-price-preview" style="display:none;margin-top:10px">
-      <div class="bento bento-5 mt8" id="live-price-cards"></div>
-    </div>
-  </div>
 
   <!-- PORTO EDIT -->
   <div class="sec-title">Data Saham — Update Manual</div>
@@ -1032,6 +1012,15 @@ function toggleMode() {
 // TAB SWITCH
 // ════════════════════════════════════
 function switchTab(id, el) {
+  // Porto tab requires PIN
+  if(id === 'porto') {
+    requirePin(()=>{ _doSwitchTab(id, el); });
+    return;
+  }
+  _doSwitchTab(id, el);
+}
+
+function _doSwitchTab(id, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   if (el) el.classList.add('active');
@@ -1042,7 +1031,7 @@ function switchTab(id, el) {
   if (id === 'snapshot') { updateHeader(); renderSnapshotPanel(); }
   if (id === 'analytics') { renderAnalyticsPanel(); }
   if (id === 'deepdive') { renderDeepDive(); }
-  if (id === 'lot') { renderLotGrid(); renderIchimokuGrid('ich-grid-lot'); }
+  if (id === 'lot') { renderLotGrid(); }
   if (id === 'rebalance') { renderRebalance(); renderDivForecast(); }
   if (id === 'porto') { renderPortoEdit(); renderSavepointList(); }
 }
@@ -1053,11 +1042,12 @@ function switchTab(id, el) {
 function updateHeader() {
   const mkt = totalMktVal(), inv = totalInvested(), pnl = totalPnl();
   const div = annualDiv() * 0.85;
+  const monthlyDiv = div / 12;
   const yoc = inv > 0 ? (annualDiv() / inv * 100) : 0;
   const cash = getCash();
 
   document.getElementById('h-mktval').textContent = rp(mkt);
-  document.getElementById('h-div').textContent = rp(div);
+  document.getElementById('h-div').textContent = rp(monthlyDiv);
   document.getElementById('h-yoc').textContent = yoc.toFixed(1) + '%';
   document.getElementById('h-cash').textContent = rp(cash);
 
@@ -1248,66 +1238,128 @@ function renderHeatmap() {
 }
 
 function drawPortfolioChart() {
-  const canvas = document.getElementById('portfolio-chart');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const w = canvas.parentElement.clientWidth - 32 || 400;
-  canvas.width = w; canvas.height = 180;
-  ctx.clearRect(0,0,w,180);
+  const container = document.getElementById('portfolio-chart-container');
+  if (!container) return;
 
-  // Simulated data (12 months)
   const months = ['Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des','Jan','Feb','Mar','Apr'];
   const aegis  = [100,102,99,103,105,107,104,109,112,110,114,117];
   const ihsg   = [100,101,99,100,102,103,100,104,106,104,107,105];
   const sp500  = [100,103,105,107,109,111,108,113,116,118,121,119];
 
-  const minY = 95, maxY = 125;
-  const pad = { top:10, right:10, bot:30, left:40 };
-  const plotW = w - pad.left - pad.right;
-  const plotH = 180 - pad.top - pad.bot;
   const isLight = document.body.classList.contains('light');
-  const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)';
-  const textColor = isLight ? '#4a6898' : '#4a6898';
 
-  // Grid lines
-  [100,105,110,115,120].forEach(v => {
-    const y = pad.top + plotH - ((v-minY)/(maxY-minY))*plotH;
-    ctx.strokeStyle = gridColor; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+plotW,y); ctx.stroke();
-    ctx.fillStyle = textColor; ctx.font = '9px DM Mono, monospace'; ctx.textAlign = 'right';
-    ctx.fillText(v+'%', pad.left-4, y+3);
+  // Calculate YTD (Jan=index 8 to Apr=index 11)
+  const ytdAegis = ((aegis[11]-aegis[8])/aegis[8]*100).toFixed(1);
+  const ytdIHSG  = ((ihsg[11]-ihsg[8])/ihsg[8]*100).toFixed(1);
+  const ytdSP500 = ((sp500[11]-sp500[8])/sp500[8]*100).toFixed(1);
+
+  container.innerHTML = `
+    <div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:9px;color:var(--green)">● Porto Aegis</span>
+      <span style="font-size:9px;color:var(--amber)">● IHSG</span>
+      <span style="font-size:9px;color:var(--blue)">● S&P 500</span>
+      <span style="font-size:8px;color:var(--dim);margin-left:auto">YTD 2026 (simulasi):</span>
+      <span style="font-size:9px;color:${ytdAegis>=0?'var(--green)':'var(--red)'}">Aegis ${ytdAegis>=0?'+':''}${ytdAegis}%</span>
+      <span style="font-size:9px;color:${ytdIHSG>=0?'var(--green)':'var(--red)'}">IHSG ${ytdIHSG>=0?'+':''}${ytdIHSG}%</span>
+      <span style="font-size:9px;color:${ytdSP500>=0?'var(--green)':'var(--red)'}">S&P ${ytdSP500>=0?'+':''}${ytdSP500}%</span>
+    </div>
+    <div style="position:relative;user-select:none">
+      <canvas id="portfolio-chart" height="180" style="cursor:crosshair"></canvas>
+      <div id="chart-tooltip" style="display:none;position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:9px;pointer-events:none;min-width:130px;box-shadow:var(--card-shadow);z-index:10"></div>
+    </div>`;
+
+  const canvas = document.getElementById('portfolio-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = container.clientWidth - 4 || 400;
+  canvas.width = w; canvas.height = 180;
+  ctx.clearRect(0,0,w,180);
+
+  const minY=95, maxY=125;
+  const pad={top:10,right:10,bot:30,left:42};
+  const plotW=w-pad.left-pad.right;
+  const plotH=180-pad.top-pad.bot;
+  const gridColor=isLight?'rgba(0,0,0,0.06)':'rgba(255,255,255,0.05)';
+  const textColor='#4a6898';
+
+  [100,105,110,115,120].forEach(v=>{
+    const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
+    ctx.strokeStyle=gridColor;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+plotW,y);ctx.stroke();
+    ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='right';
+    ctx.fillText(v+'%',pad.left-4,y+3);
   });
 
-  // X axis labels
-  ctx.textAlign = 'center'; ctx.fillStyle = textColor;
-  months.forEach((m,i) => {
-    const x = pad.left + (i/(months.length-1))*plotW;
-    ctx.fillText(m, x, 180-8);
+  ctx.textAlign='center';ctx.fillStyle=textColor;
+  months.forEach((m,i)=>{
+    const x=pad.left+(i/(months.length-1))*plotW;
+    ctx.fillText(m,x,180-8);
   });
 
-  // Draw lines
-  const drawLine = (data, color, dash=[]) => {
-    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-    if (dash.length) ctx.setLineDash(dash); else ctx.setLineDash([]);
-    data.forEach((v,i) => {
-      const x = pad.left + (i/(data.length-1))*plotW;
-      const y = pad.top + plotH - ((v-minY)/(maxY-minY))*plotH;
-      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  const drawLine=(data,color,dash=[])=>{
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
+    if(dash.length)ctx.setLineDash(dash);else ctx.setLineDash([]);
+    data.forEach((v,i)=>{
+      const x=pad.left+(i/(data.length-1))*plotW;
+      const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     });
     ctx.stroke();
   };
 
-  drawLine(sp500, '#4d9de0', [4,3]);
-  drawLine(ihsg, '#e8b84b', [4,3]);
-  drawLine(aegis, '#3dc88a');
+  drawLine(sp500,'#4d9de0',[4,3]);
+  drawLine(ihsg,'#e8b84b',[4,3]);
+  drawLine(aegis,'#3dc88a');
 
-  // Latest dot
-  const last = (data, color) => {
-    const x = pad.left + plotW;
-    const y = pad.top + plotH - ((data[data.length-1]-minY)/(maxY-minY))*plotH;
-    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
+  const drawDot=(data,color)=>{
+    const x=pad.left+plotW;
+    const y=pad.top+plotH-((data[data.length-1]-minY)/(maxY-minY))*plotH;
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
   };
-  last(aegis,'#3dc88a'); last(ihsg,'#e8b84b'); last(sp500,'#4d9de0');
+  drawDot(aegis,'#3dc88a');drawDot(ihsg,'#e8b84b');drawDot(sp500,'#4d9de0');
+
+  // Hover interaction
+  const tooltip = document.getElementById('chart-tooltip');
+  canvas.addEventListener('mousemove', e => {
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left;
+    const idx=Math.round((mx-pad.left)/plotW*(months.length-1));
+    if(idx<0||idx>=months.length){tooltip.style.display='none';return;}
+    const xPos=pad.left+(idx/(months.length-1))*plotW;
+    // vertical line
+    ctx.clearRect(0,0,w,180);
+    drawLine(sp500,'#4d9de0',[4,3]);drawLine(ihsg,'#e8b84b',[4,3]);drawLine(aegis,'#3dc88a');
+    drawDot(aegis,'#3dc88a');drawDot(ihsg,'#e8b84b');drawDot(sp500,'#4d9de0');
+    [100,105,110,115,120].forEach(v=>{
+      const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
+      ctx.strokeStyle=gridColor;ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+plotW,y);ctx.stroke();
+    });
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(xPos,pad.top);ctx.lineTo(xPos,pad.top+plotH);ctx.stroke();
+    ctx.setLineDash([]);
+    months.forEach((m,i)=>{ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='center';ctx.fillText(m,pad.left+(i/(months.length-1))*plotW,180-8);});
+    ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='right';
+    [100,105,110,115,120].forEach(v=>{const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;ctx.fillText(v+'%',pad.left-4,y+3);});
+    // dots at hover
+    [[aegis,'#3dc88a'],[ihsg,'#e8b84b'],[sp500,'#4d9de0']].forEach(([d,c])=>{
+      const y=pad.top+plotH-((d[idx]-minY)/(maxY-minY))*plotH;
+      ctx.beginPath();ctx.arc(xPos,y,5,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
+    });
+    const aegisChg=(aegis[idx]-100).toFixed(1);
+    const ihsgChg=(ihsg[idx]-100).toFixed(1);
+    const sp500Chg=(sp500[idx]-100).toFixed(1);
+    tooltip.innerHTML=`
+      <div style="font-weight:500;color:var(--text);margin-bottom:5px">${months[idx]}</div>
+      <div style="color:#3dc88a">Aegis: ${aegis[idx]}% (${aegisChg>=0?'+':''}${aegisChg}%)</div>
+      <div style="color:#e8b84b">IHSG: ${ihsg[idx]}% (${ihsgChg>=0?'+':''}${ihsgChg}%)</div>
+      <div style="color:#4d9de0">S&P: ${sp500[idx]}% (${sp500Chg>=0?'+':''}${sp500Chg}%)</div>`;
+    const tipLeft = Math.min(xPos+10, w-145);
+    tooltip.style.left=tipLeft+'px';
+    tooltip.style.top='10px';
+    tooltip.style.display='block';
+  });
+  canvas.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
 }
 
 function drawSectorChart() {
@@ -1357,47 +1409,63 @@ function renderSuggestionGrid() {
   const el = document.getElementById('suggestion-grid');
   if (!el) return;
   el.innerHTML = '';
-  TICKERS.forEach(t => {
+
+  // Sort by MOS descending (most discounted first = best buy opportunity)
+  const ranked = [...TICKERS].sort((a,b) => {
+    const da = ANALYSIS_DATA[a];
+    const db = ANALYSIS_DATA[b];
+    const mosA = ((Math.round((da.fv_pe+da.fv_ddm+da.fv_pbv)/3) - porto[a].price) / porto[a].price * 100);
+    const mosB = ((Math.round((db.fv_pe+db.fv_ddm+db.fv_pbv)/3) - porto[b].price) / porto[b].price * 100);
+    return mosB - mosA;
+  });
+
+  ranked.forEach((t, rankIdx) => {
     const d = ANALYSIS_DATA[t];
     const price = porto[t].price;
     const consensus = Math.round((d.fv_pe + d.fv_ddm + d.fv_pbv)/3);
-    const upside = (consensus - price)/price*100;
-    const mos = upside;
+    const mos = (consensus - price)/price*100;
     const ich = ichData[t];
 
-    // Signal logic
+    // Signal purely driven by MOS/discount — ichimoku is supplementary context only
     let sig, sigClass, sigDesc;
-    if (mos > 30 && ich && (ich.signal==='BUY'||ich.signal==='AKUMULASI')) {
-      sig = 'BUY TERUS'; sigClass = 'sig-buytrs';
-      sigDesc = `MOS ${mos.toFixed(0)}% besar + Ichimoku bullish — akumulasi agresif`;
-    } else if (mos > 15 && (ich && ich.signal !== 'HINDARI')) {
+    if (mos > 35) {
+      sig = 'HAJAR'; sigClass = 'sig-buytrs';
+      sigDesc = `Diskon ${mos.toFixed(0)}% dari FV — salah satu nilai terbaik sekarang. Akumulasi agresif.`;
+    } else if (mos > 20) {
       sig = 'BUY'; sigClass = 'sig-buy';
-      sigDesc = `Diskon ${mos.toFixed(0)}% dari FV — entry menarik`;
-    } else if (mos > 0) {
-      sig = 'AKUMULASI'; sigClass = 'sig-acc';
-      sigDesc = `Sedikit di bawah FV — cicil pelan`;
-    } else if (mos > -10) {
+      sigDesc = `MOS ${mos.toFixed(0)}% — masih murah vs fair value. Entry menarik.`;
+    } else if (mos > 8) {
+      sig = 'CICIL'; sigClass = 'sig-acc';
+      sigDesc = `Diskon ringan ${mos.toFixed(0)}% — cicil perlahan, bukan full deploy.`;
+    } else if (mos > -5) {
       sig = 'HOLD'; sigClass = 'sig-hold';
-      sigDesc = 'Harga mendekati FV — tahan posisi';
+      sigDesc = 'Harga mendekati FV — tahan, tunggu koreksi untuk entry baru.';
     } else {
-      sig = 'WAIT & SEE'; sigClass = 'sig-wait';
-      sigDesc = 'Harga di atas FV — tunggu koreksi';
+      sig = 'TUNGGU'; sigClass = 'sig-wait';
+      sigDesc = `Premium ${Math.abs(mos).toFixed(0)}% di atas FV — jangan beli. Tunggu koreksi.`;
     }
+
+    const rankMedal = rankIdx===0?'🥇 Paling Murah':rankIdx===1?'🥈':rankIdx===2?'🥉':'';
 
     el.innerHTML += `
       <div class="bcard" style="border-top:3px solid ${COLORS[t]}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-          <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:${COLORS[t]}">${t}</div>
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:${COLORS[t]}">${t}</div>
+            ${rankMedal?`<div style="font-size:8px;color:var(--amber);margin-top:1px">${rankMedal}</div>`:''}
+          </div>
           <span class="${sigClass}">${sig}</span>
         </div>
         <div style="font-size:9px;color:var(--muted);line-height:1.6;margin-bottom:8px">${sigDesc}</div>
         <div class="mrow"><span class="mrow-l">Harga</span><span class="mrow-v">${rp(price)}</span></div>
         <div class="mrow"><span class="mrow-l">FV Consensus</span><span class="mrow-v">${rp(consensus)}</span></div>
-        <div class="mrow"><span class="mrow-l">Upside/MOS</span><span class="mrow-v" style="color:${mos>=0?'var(--green)':'var(--red)'}">${mos>=0?'+':''}${mos.toFixed(1)}%</span></div>
-        ${ich ? `<div class="mrow"><span class="mrow-l">Ichimoku</span><span class="badge ${ich.sigClass}">${ich.signal}</span></div>` : ''}
+        <div class="mrow"><span class="mrow-l">MOS</span><span class="mrow-v" style="color:${mos>=0?'var(--green)':'var(--red)'}">${mos>=0?'+':''}${mos.toFixed(1)}%</span></div>
+        ${ich ? `<div class="mrow"><span class="mrow-l">Ichimoku</span><span class="badge ${ich.sigClass}" style="font-size:7px">${ich.signal}</span></div>` : ''}
       </div>`;
   });
 }
+
+const ANALYSIS_DATE = 'April 2026'; // analisa data per bulan ini
 
 function renderStockAnalysis() {
   const el = document.getElementById('stock-analysis-grid');
@@ -1407,19 +1475,53 @@ function renderStockAnalysis() {
     const d = ANALYSIS_DATA[t];
     const price = porto[t].price;
     const upside = ((d.fv_pe - price)/price*100).toFixed(0);
+    const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
+    const mos = ((consensus-price)/price*100);
+
+    // Technical score 1-100 composite
+    const ich = ichData[t];
+    let techScore = 50; // neutral base
+    // Component 1: MOS (max 40pts)
+    if(mos>35) techScore+=40; else if(mos>20) techScore+=28; else if(mos>8) techScore+=16; else if(mos>0) techScore+=6; else if(mos>-10) techScore-=8; else techScore-=20;
+    // Component 2: Ichimoku (max 25pts)
+    if(ich){
+      if(ich.signal==='BUY') techScore+=25; else if(ich.signal==='AKUMULASI') techScore+=15; else if(ich.signal==='HOLD') techScore+=5; else if(ich.signal==='HINDARI') techScore-=15;
+      if(ich.aboveCloud) techScore+=5; else if(ich.belowCloud) techScore-=5;
+    }
+    // Component 3: Fundamentals (max 20pts)
+    if(d.pe_curr<d.pe_hist) techScore+=12; else techScore-=8;
+    if(d.roe>18) techScore+=8; else if(d.roe>12) techScore+=4; else techScore-=2;
+    // Component 4: Dividend (max 15pts)
+    if(d.div_payout<70&&d.div_5yr_cagr>5) techScore+=15; else if(d.div_payout<80) techScore+=7; else techScore-=5;
+    // Clamp
+    techScore = Math.min(100, Math.max(1, Math.round(techScore)));
+
+    let signalLabel, signalClass, signalNote;
+    if(techScore>=75){signalLabel='STRONG BUY';signalClass='sig-buytrs';signalNote='Akumulasi sekarang — diskon besar, fundamental kuat';}
+    else if(techScore>=60){signalLabel='BUY';signalClass='sig-buy';signalNote='Entry menarik di harga ini';}
+    else if(techScore>=48){signalLabel='HOLD / CICIL';signalClass='sig-acc';signalNote='Tahan posisi, cicil kecil saat turun';}
+    else if(techScore>=35){signalLabel='HOLD';signalClass='sig-hold';signalNote='Tahan, jangan tambah di harga ini';}
+    else{signalLabel='WAIT / SELL';signalClass='sig-avoid';signalNote='Terlalu mahal atau momentum buruk — tunggu koreksi';}
+
+    const scoreColor = techScore>=75?'var(--green)':techScore>=60?'var(--accent2)':techScore>=48?'var(--amber)':techScore>=35?'var(--muted)':'var(--red)';
+
     el.innerHTML += `
       <div class="bcard mb12" style="border-left:3px solid ${COLORS[t]}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)">${t} <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace">— ${d.sector}</span></div>
-            <div style="font-size:9px;color:var(--dim);margin-top:1px">Controlling: ${d.holding}</div>
+            <div style="font-size:8px;color:var(--dim);margin-top:1px">Controlling: ${d.holding} &nbsp;·&nbsp; <span style="color:var(--muted)">Analisa per: ${ANALYSIS_DATE}</span></div>
           </div>
           <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-            <span class="badge bm">P/E ${d.pe_curr}x</span>
-            <span class="badge bm">P/BV ${d.pbv}x</span>
-            <span class="badge bg">ROE ${d.roe}%</span>
-            <span class="badge bb">Div CAGR ${d.div_5yr_cagr}%</span>
+            <span class="${signalClass}">${signalLabel}</span>
+            <div style="background:var(--bg5);border:1px solid var(--border2);border-radius:6px;padding:3px 9px;text-align:center;min-width:52px">
+              <div style="font-size:7px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">Score</div>
+              <div style="font-size:14px;font-weight:600;color:${scoreColor};line-height:1.2">${techScore}</div>
+            </div>
           </div>
+        </div>
+        <div style="font-size:9px;color:var(--amber);margin-bottom:6px;padding:5px 10px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px">
+          ▶ ${signalNote}
         </div>
         <div style="font-size:10px;color:var(--muted);line-height:1.7;margin-bottom:10px;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">${d.summary}</div>
         <div class="bento bento-4">
@@ -1439,10 +1541,13 @@ function renderStockAnalysis() {
             <div style="font-size:8px;color:${d.roa>5?'var(--green)':'var(--amber)'};">${d.roa>5?'✓ Efisien':'Moderate'}</div>
           </div>
           <div style="padding:9px;background:var(--bg2);border-radius:8px;border:1px solid var(--border);text-align:center">
-            <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">FV P/E Upside</div>
-            <div style="font-size:15px;font-family:'Fraunces',serif;font-weight:200;color:${upside>0?'var(--green)':'var(--red)'}">${upside>0?'+':''}${upside}%</div>
-            <div style="font-size:8px;color:var(--dim);">FV: ${rp(d.fv_pe)}</div>
+            <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Tech Score</div>
+            <div style="font-size:15px;font-family:'Fraunces',serif;font-weight:200;color:${scoreColor}">${techScore}/100</div>
+            <div style="font-size:8px;color:var(--dim);">MOS: ${mos>=0?'+':''}${mos.toFixed(0)}%</div>
           </div>
+        </div>
+        <div style="margin-top:8px;height:5px;background:var(--bg5);border-radius:3px;overflow:hidden">
+          <div style="width:${techScore}%;height:5px;background:${scoreColor};border-radius:3px;transition:width .5s"></div>
         </div>
       </div>`;
   });
@@ -1577,6 +1682,7 @@ function renderFairValue() {
   const body = document.getElementById('fv-body');
   if (!body) return;
   body.innerHTML = '';
+  const fvDate = ANALYSIS_DATE;
   TICKERS.forEach(t => {
     const d = ANALYSIS_DATA[t];
     const price = porto[t].price;
@@ -1600,6 +1706,7 @@ function renderFairValue() {
         <td class="num" style="color:${uColor};font-weight:500">${upside>0?'+':''}${upside}%</td>
         <td class="num" style="color:${uColor}">${upside>0?'+':''}${mos}%</td>
         <td class="ctr"><span class="badge ${vClass}">${verdict}</span></td>
+        <td class="ctr" style="font-size:8px;color:var(--dim)">${fvDate}</td>
       </tr>`;
   });
 }
@@ -1625,6 +1732,30 @@ function renderForecastTable() {
       </tr>`;
   });
 }
+
+// Risk explanations
+const RISK_EXPLAIN = {
+  'Suku bunga BI tinggi':'BI Rate tinggi menekan NIM (Net Interest Margin) lembaga keuangan. Cost of fund naik, margin bersih per pinjaman menyempit dan menekan laba.',
+  'NPL otomotif creeping':'Non-Performing Loan di segmen otomotif naik perlahan. Konsumen cicilan motor/mobil mulai gagal bayar akibat daya beli tertekan.',
+  'Kompetisi fintech lending':'Platform pinjaman digital mengambil ceruk konsumen muda dari multifinance konvensional. Potensi erosi market share jangka menengah.',
+  'Resesi demand otomotif':'Perlambatan ekonomi domestik menekan penjualan kendaraan baru. Volume pembiayaan baru berkurang langsung memangkas revenue.',
+  'Perlambatan penjualan kendaraan':'Permintaan mobil dan motor baru melambat seiring kenaikan harga dan stagnasi upah riil. Langsung memukul segmen otomotif ASII.',
+  'Tekanan margin alat berat':'Harga komoditas input (baja, komponen) naik sementara harga jual alat berat stagnan. Margin ASII Equipment tertekan.',
+  'Forex risk':'ASII punya eksposur impor komponen dalam USD. Rupiah melemah otomatis menaikkan biaya produksi dan menekan margin.',
+  'Delisting risk Jardine':'Jardine Matheson berpotensi merestrukturisasi kepemilikan regional. Bila ASII di-delist dari IDX, likuiditas dan valuasi akan terdampak besar.',
+  'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi.',
+  'NPL corporate naik':'Debitur korporasi besar mulai kesulitan membayar cicilan pinjaman. Bila beberapa kasus besar macet, provisi BMRI melonjak dan laba terpangkas.',
+  'Suku bunga BI menekan NIM':'Saat BI Rate turun, NIM bank ikut tertekan karena yield aset turun lebih cepat dari biaya dana. Profitabilitas jangka pendek terdampak.',
+  'Tekanan politik dividen':'Pemegang saham pemerintah dapat mendorong BMRI untuk membayar dividen besar demi penerimaan negara, meski kas internal kurang optimal.',
+  'Penurunan harga coal ICI4':'ICI4 adalah patokan batubara kalori rendah — produk utama ITMG. Penurunan harga langsung memangkas revenue dan laba per ton yang dijual.',
+  'Regulasi karbon global':'Negara maju menerapkan carbon border adjustment. Pembeli batubara di Eropa/Jepang terbebani tarif karbon, mengurangi daya saing ITMG.',
+  'Transisi energi jangka panjang':'Energi terbarukan makin murah dan demand batubara untuk pembangkit listrik menurun struktural 10-15 tahun ke depan. Risiko eksistensial jangka panjang.',
+  'Gangguan produksi Kalimantan':'Banjir, kecelakaan tambang, atau konflik perizinan di Kalimantan Timur bisa menghentikan produksi sementara dan memangkas target volume tahunan.',
+  'Renegosiasi tarif PLN':'PLN sebagai pembeli tunggal listrik POWR bernegosiasi ulang tarif pembelian listrik. Penurunan tarif langsung memangkas margin POWR secara permanen.',
+  'Ekspansi capex menekan FCF':'Rencana pembangunan PLTU/PLTG baru membutuhkan capex besar. Free Cash Flow menyusut dan dividend sustainability bisa terancam jika utang naik.',
+  'Ketergantungan satu pembeli (PLN)':'100% revenue POWR dari PLN. Jika PLN menunda pembayaran atau renegosiasi kontrak, POWR tidak punya alternatif dan cashflow langsung terganggu.',
+  'Fluktuasi harga batubara input':'POWR butuh batubara sebagai bahan bakar pembangkit. Harga batubara naik menekan margin karena tarif jual ke PLN sudah terkunci di kontrak.'
+};
 
 function renderRiskGrid() {
   const grid = document.getElementById('risk-grid');
@@ -1665,72 +1796,29 @@ function renderRiskGrid() {
     d.risks.forEach(r => {
       const prob = d.risk_pct[r.label]||35;
       const probColor = prob>=60?'var(--red)':prob>=40?'var(--amber)':'var(--green)';
+      const explain = RISK_EXPLAIN[r.label] || 'Risiko perlu dipantau secara berkala dan disesuaikan dengan kondisi pasar terkini.';
       risksHtml += `
-        <div class="risk-cell risk-${r.level} mb8" style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <strong>${r.label}</strong>
-            <div style="height:3px;background:rgba(128,128,128,0.15);border-radius:2px;margin-top:3px;overflow:hidden">
-              <div style="width:${prob}%;height:3px;background:${probColor};border-radius:2px"></div>
-            </div>
+        <div class="risk-cell risk-${r.level} mb8">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+            <strong style="font-size:10px">${r.label}</strong>
+            <div style="font-size:14px;font-weight:600;color:${probColor};margin-left:10px;flex-shrink:0">${prob}%</div>
           </div>
-          <div style="font-size:13px;font-weight:500;color:${probColor};margin-left:10px;flex-shrink:0">${prob}%</div>
+          <div style="font-size:9px;color:inherit;opacity:0.75;line-height:1.6;margin-bottom:5px">${explain}</div>
+          <div style="height:3px;background:rgba(128,128,128,0.15);border-radius:2px;overflow:hidden">
+            <div style="width:${prob}%;height:3px;background:${probColor};border-radius:2px"></div>
+          </div>
         </div>`;
     });
     grid.innerHTML += `
       <div class="bcard mb10" style="border-top:2px solid ${COLORS[t]}">
-        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px">${t} — Risk Register</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px">${t} — Risk Register <span style="font-size:9px;color:var(--dim);font-weight:400">· Data per ${ANALYSIS_DATE}</span></div>
         <div class="bento bento-2">${risksHtml}</div>
       </div>`;
   });
 }
 
 // ════════════════════════════════════
-// SYNC MARKET (live fetch for market data)
-// ════════════════════════════════════
-async function syncMarket() {
-  // Try fetching IHSG, USD/IDR
-  try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/%5EJKSE?interval=1d&range=5d`;
-    for (const proxy of [`https://corsproxy.io/?${encodeURIComponent(url)}`,`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`]) {
-      try {
-        const r = await fetch(proxy,{signal:AbortSignal.timeout(8000)});
-        if (!r.ok) continue;
-        const data = await r.json();
-        const meta = data?.chart?.result?.[0]?.meta;
-        if (meta) {
-          const p = meta.regularMarketPrice || 0;
-          const prev = meta.chartPreviousClose || p;
-          const chgPct = prev > 0 ? ((p-prev)/prev*100).toFixed(2) : 0;
-          document.getElementById('ihsg-val').textContent = p.toLocaleString('id');
-          const chgEl = document.getElementById('ihsg-chg');
-          chgEl.textContent = (chgPct>=0?'+':'')+chgPct+'% hari ini';
-          chgEl.className = 'mkt-tile-c ' + (chgPct>=0?'green':'red');
-        }
-        break;
-      } catch(e) { continue; }
-    }
-  } catch(e) {}
-
-  // USD/IDR
-  try {
-    const urlFx = `https://query1.finance.yahoo.com/v8/finance/chart/IDR%3DX?interval=1d&range=2d`;
-    for (const proxy of [`https://corsproxy.io/?${encodeURIComponent(urlFx)}`]) {
-      try {
-        const r = await fetch(proxy,{signal:AbortSignal.timeout(8000)});
-        if(!r.ok) continue;
-        const data = await r.json();
-        const meta = data?.chart?.result?.[0]?.meta;
-        if(meta && meta.regularMarketPrice){
-          document.getElementById('usd-idr').textContent = Math.round(meta.regularMarketPrice).toLocaleString('id');
-        }
-        break;
-      } catch(e){ continue; }
-    }
-  } catch(e) {}
-}
-
-// ════════════════════════════════════
-// LIVE PRICE FETCH
+// LIVE PRICE FETCH — CORE PARSERS
 // ════════════════════════════════════
 const YF_MAP = { ADMF:'ADMF.JK',ASII:'ASII.JK',BMRI:'BMRI.JK',ITMG:'ITMG.JK',POWR:'POWR.JK' };
 const STOOQ_MAP = { ADMF:'admf.jk',ASII:'asii.jk',BMRI:'bmri.jk',ITMG:'itmg.jk',POWR:'powr.jk' };
@@ -1744,68 +1832,224 @@ function parseYahooOHLCV(data) {
            .filter(x=>x.c!=null&&x.h!=null&&x.l!=null);
 }
 
-async function fetchYahooOHLCV(ticker) {
-  const sym = YF_MAP[ticker];
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
-  for (const proxy of [`https://corsproxy.io/?${encodeURIComponent(url)}`,`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`]) {
-    try {
-      const r = await fetch(proxy,{signal:AbortSignal.timeout(10000)});
-      if(!r.ok) continue;
-      const data = await r.json();
-      const bars = parseYahooOHLCV(data);
-      if(bars.length>=30) return {bars,price:data.chart.result[0].meta.regularMarketPrice||bars[bars.length-1].c};
-    } catch(e){continue;}
+// ════════════════════════════════════
+// CONFIRM FETCH POPUP
+// ════════════════════════════════════
+function confirmAndFetch() {
+  const lastTs = localStorage.getItem('ac_last_fetch');
+  let msg = 'Apakah mau memperbarui semua data? (harga saham, IHSG, USD/IDR, harga coal)';
+  if(lastTs) {
+    msg = `Data terakhir diupdate: <strong>${lastTs}</strong><br>Apakah mau perbarui harga saham, IHSG, USD/IDR, dan coal?`;
+  } else {
+    msg = 'Data belum pernah diupdate.<br>Perbarui harga saham, IHSG, USD/IDR, dan coal sekarang?';
   }
-  throw new Error('yahoo failed');
+  document.getElementById('fetch-modal-msg').innerHTML = msg;
+  document.getElementById('fetch-modal').style.display = 'flex';
+}
+function closeFetchModal() { document.getElementById('fetch-modal').style.display='none'; }
+function doFetch() {
+  closeFetchModal();
+  fetchAllPrices();
 }
 
-async function fetchStooqPrice(ticker) {
-  const sym = STOOQ_MAP[ticker];
-  const url = `https://stooq.com/q/l/?s=${sym}&f=sd2t2ohlcv&h&e=csv`;
-  const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`,{signal:AbortSignal.timeout(9000)});
-  if(!r.ok) throw new Error('stooq http');
-  const txt = await r.text();
-  const lines = txt.trim().split('\n');
-  if(lines.length<2) throw new Error('empty');
-  const cols = lines[1].split(',');
-  const p = parseFloat(cols[6]);
-  if(!p||p<=0) throw new Error('no price');
-  return p;
+// ════════════════════════════════════
+// PIN SYSTEM
+// ════════════════════════════════════
+const PIN_HASH = '190820';
+let pinUnlocked = false;
+
+function requirePin(callback) {
+  if(pinUnlocked) { callback(); return; }
+  document.getElementById('pin-input').value='';
+  document.getElementById('pin-err').textContent='';
+  document.getElementById('pin-modal').style.display='flex';
+  document.getElementById('pin-input').focus();
+  window._pinCallback = callback;
+}
+function verifyPin() {
+  const val = document.getElementById('pin-input').value;
+  if(val === PIN_HASH) {
+    pinUnlocked = true;
+    document.getElementById('pin-modal').style.display='none';
+    document.getElementById('pin-err').textContent='';
+    if(window._pinCallback) { window._pinCallback(); window._pinCallback=null; }
+  } else {
+    document.getElementById('pin-err').textContent='PIN salah. Coba lagi.';
+    document.getElementById('pin-input').value='';
+    document.getElementById('pin-input').focus();
+    // Shake animation
+    const inp = document.getElementById('pin-input');
+    inp.style.borderColor='var(--red)';
+    setTimeout(()=>inp.style.borderColor='',1200);
+  }
+}
+function closePinModal() {
+  document.getElementById('pin-modal').style.display='none';
+  window._pinCallback=null;
 }
 
-async function fetchTickerFull(ticker) {
+// Intercept Edit Porto tab
+const _origSwitchTab = window.switchTab;
+
+// ════════════════════════════════════
+// MARKET DATA FETCH (IHSG, USD/IDR, Coal)
+// ════════════════════════════════════
+async function fetchMarketData() {
+  // IHSG — try multiple proxies + sources
+  const proxies = [
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
+  ];
+
+  // IHSG
   try {
-    const {bars,price} = await fetchYahooOHLCV(ticker);
-    return {price:Math.round(price),bars,source:'Yahoo'};
-  } catch(e) {}
+    const ihsgUrl = `https://query1.finance.yahoo.com/v8/finance/chart/%5EJKSE?interval=1d&range=5d`;
+    for(const pf of proxies){
+      try{
+        const r=await fetch(pf(ihsgUrl),{signal:AbortSignal.timeout(9000)});
+        if(!r.ok) continue;
+        const data=await r.json();
+        const meta=data?.chart?.result?.[0]?.meta;
+        if(meta&&meta.regularMarketPrice){
+          const p=meta.regularMarketPrice;
+          const prev=meta.chartPreviousClose||p;
+          const chgPct=prev>0?((p-prev)/prev*100).toFixed(2):0;
+          const el=document.getElementById('ihsg-val');
+          const chgEl=document.getElementById('ihsg-chg');
+          if(el) el.textContent=Math.round(p).toLocaleString('id');
+          if(chgEl){chgEl.textContent=(chgPct>=0?'+':'')+chgPct+'% hari ini';chgEl.className='mkt-tile-c '+(chgPct>=0?'green':'red');}
+          break;
+        }
+      }catch(e){continue;}
+    }
+  }catch(e){}
+
+  // USD/IDR
   try {
-    const price = await fetchStooqPrice(ticker);
-    return {price:Math.round(price),bars:null,source:'Stooq'};
-  } catch(e) {}
+    const fxUrl = `https://query1.finance.yahoo.com/v8/finance/chart/IDR%3DX?interval=1d&range=2d`;
+    for(const pf of proxies){
+      try{
+        const r=await fetch(pf(fxUrl),{signal:AbortSignal.timeout(9000)});
+        if(!r.ok) continue;
+        const data=await r.json();
+        const meta=data?.chart?.result?.[0]?.meta;
+        if(meta&&meta.regularMarketPrice){
+          const el=document.getElementById('usd-idr');
+          if(el) el.textContent=Math.round(meta.regularMarketPrice).toLocaleString('id');
+          break;
+        }
+      }catch(e){continue;}
+    }
+  }catch(e){}
+
+  // Coal Price — use ICE Newcastle futures proxy (YHoo: NEWC=F or coal ETF)
+  try {
+    const coalUrl = `https://query1.finance.yahoo.com/v8/finance/chart/MTF%3DF?interval=1d&range=5d`;
+    for(const pf of proxies){
+      try{
+        const r=await fetch(pf(coalUrl),{signal:AbortSignal.timeout(9000)});
+        if(!r.ok) continue;
+        const data=await r.json();
+        const meta=data?.chart?.result?.[0]?.meta;
+        if(meta&&meta.regularMarketPrice){
+          const p=meta.regularMarketPrice;
+          const prev=meta.chartPreviousClose||p;
+          const chgPct=prev>0?((p-prev)/prev*100).toFixed(1):0;
+          const el=document.getElementById('coal-price');
+          const chgEl=document.getElementById('coal-chg');
+          if(el) el.textContent='$'+p.toFixed(0);
+          if(chgEl){chgEl.textContent=(chgPct>=0?'+':'')+chgPct+'% vs prev';chgEl.className='mkt-tile-c '+(chgPct>=0?'green':'amber');}
+          break;
+        }
+      }catch(e){continue;}
+    }
+  }catch(e){}
+}
+
+// ════════════════════════════════════
+// PER-TICKER MULTI-SOURCE FETCH
+// ════════════════════════════════════
+async function fetchTickerWithFallback(ticker) {
+  const yfSym = YF_MAP[ticker];
+  const stooqSym = STOOQ_MAP[ticker];
+  const proxies = [
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
+  ];
+
+  // Yahoo Finance — 3mo daily OHLCV via each proxy
+  for(const pf of proxies){
+    try{
+      const url=`https://query1.finance.yahoo.com/v8/finance/chart/${yfSym}?interval=1d&range=3mo`;
+      const r=await fetch(pf(url),{signal:AbortSignal.timeout(10000)});
+      if(!r.ok) continue;
+      const data=await r.json();
+      const bars=parseYahooOHLCV(data);
+      if(bars.length>=30){
+        const price=data.chart.result[0].meta.regularMarketPrice||bars[bars.length-1].c;
+        return {price:Math.round(price),bars,source:'Yahoo'};
+      }
+    }catch(e){continue;}
+  }
+
+  // Stooq fallback — price only via each proxy
+  for(const pf of proxies){
+    try{
+      const url=`https://stooq.com/q/l/?s=${stooqSym}&f=sd2t2ohlcv&h&e=csv`;
+      const r=await fetch(pf(url),{signal:AbortSignal.timeout(9000)});
+      if(!r.ok) continue;
+      const txt=await r.text();
+      const lines=txt.trim().split('\n');
+      if(lines.length<2) continue;
+      const cols=lines[1].split(',');
+      const p=parseFloat(cols[6]);
+      if(p&&p>0) return {price:Math.round(p),bars:null,source:'Stooq'};
+    }catch(e){continue;}
+  }
+
+  // Yahoo Finance v10 last resort
+  for(const pf of proxies){
+    try{
+      const url=`https://query2.finance.yahoo.com/v10/finance/quoteSummary/${yfSym}?modules=price`;
+      const r=await fetch(pf(url),{signal:AbortSignal.timeout(8000)});
+      if(!r.ok) continue;
+      const data=await r.json();
+      const p=data?.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw;
+      if(p&&p>0) return {price:Math.round(p),bars:null,source:'YF-v10'};
+    }catch(e){continue;}
+  }
+
   return null;
 }
 
-let fetchInterval = null;
-
 async function fetchAllPrices() {
-  const btns = ['btn-main-fetch','btn-fetch','btn-fetch-porto'];
-  btns.forEach(id => { const b=document.getElementById(id); if(b){b.disabled=true;} });
+  const btn = document.getElementById('btn-main-fetch');
   const icon = document.getElementById('fetch-icon');
   const fetchSub = document.getElementById('fetch-sub-status');
   const fIndicator = document.getElementById('fetch-indicator');
   const hStatus = document.getElementById('h-price-status');
   const ichStatus = document.getElementById('ich-fetch-status');
-  if(icon) icon.className='spin'; if(icon) icon.textContent='⟳';
-  if(fIndicator) fIndicator.textContent='⟳'; if(fIndicator) fIndicator.classList.add('spin');
+
+  if(btn) btn.disabled=true;
+  if(icon){icon.className='spin';icon.textContent='⟳';}
+  if(fIndicator){fIndicator.textContent='⟳';fIndicator.classList.add('spin');}
   if(hStatus){hStatus.textContent='⟳ Fetching...';hStatus.style.color='var(--amber)';}
   if(ichStatus) ichStatus.textContent='fetching OHLCV...';
-  if(fetchSub) fetchSub.textContent='Fetching semua harga...';
+  if(fetchSub) fetchSub.textContent='Fetching semua data...';
+
+  // Fetch stock prices + market data in parallel
+  const [stockResults] = await Promise.all([
+    Promise.all(TICKERS.map(async t => ({t, res: await fetchTickerWithFallback(t)}))),
+    fetchMarketData()
+  ]);
 
   const results = {};
-  await Promise.all(TICKERS.map(async t => { results[t] = await fetchTickerFull(t); }));
+  stockResults.forEach(({t,res}) => { results[t]=res; });
 
   const savedIch = JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
-  let successCount = 0;
+  let successCount = 0, failList = [];
   TICKERS.forEach(t => {
     if(results[t]){
       porto[t].price = results[t].price;
@@ -1814,44 +2058,47 @@ async function fetchAllPrices() {
         if(ichData[t]) savedIch[t] = {...ichData[t],savedAt:new Date().toLocaleDateString('id-ID')};
       } else if(savedIch[t]) { ichData[t] = savedIch[t]; }
       successCount++;
-    } else if(savedIch[t]) { ichData[t] = savedIch[t]; }
+    } else {
+      failList.push(t);
+      if(savedIch[t]) ichData[t] = savedIch[t];
+    }
   });
   localStorage.setItem('ac_ichdata',JSON.stringify(savedIch));
 
   const now = new Date();
   const ts = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  const statusText = `✓ ${successCount}/${TICKERS.length} · ${ts}`;
+  localStorage.setItem('ac_last_fetch', new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})+' '+ts);
+
+  const statusMsg = failList.length>0
+    ? `⚠ ${successCount}/${TICKERS.length} OK · Gagal: ${failList.join(',')} · ${ts}`
+    : `✓ ${successCount}/${TICKERS.length} · ${ts}`;
 
   if(hStatus){hStatus.textContent=successCount>0?`✓ ${ts}`:'✕ Gagal';hStatus.style.color=successCount>0?'var(--green)':'var(--red)';}
   if(fIndicator){fIndicator.classList.remove('spin');fIndicator.textContent=successCount>0?'✓':'✕';}
   if(icon){icon.className='';icon.textContent='⟳';}
-  if(fetchSub) fetchSub.textContent = successCount>0?`✓ Updated ${ts}`:'✕ Gagal fetch';
-  if(ichStatus) ichStatus.textContent=successCount>0?`updated ${ts}`:'fetch gagal — pakai data cache';
+  if(fetchSub) fetchSub.textContent = successCount>0?`✓ Updated ${ts} · Market data OK`:'✕ Gagal semua';
+  if(ichStatus) ichStatus.textContent=successCount>0?`updated ${ts}`:'gagal — pakai cache';
   document.getElementById('last-updated').textContent=`Updated ${ts}`;
 
-  const fpEl = document.getElementById('fetch-status-porto');
-  if(fpEl){fpEl.textContent=statusText;fpEl.style.color='var(--green)';}
-
-  btns.forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=false;});
+  if(btn) btn.disabled=false;
 
   localStorage.setItem('ac_porto',JSON.stringify(porto));
   updateHeader();
 
-  // Refresh current active panel
+  // Refresh active panel
   const activePanel = document.querySelector('.panel.active');
   if(activePanel){
     const id = activePanel.id.replace('panel-','');
     if(id==='snapshot') renderSnapshotPanel();
     if(id==='analytics') renderAnalyticsPanel();
     if(id==='deepdive') renderDeepDive();
-    if(id==='lot') { renderLotGrid(); renderIchimokuGrid('ich-grid-lot'); }
+    if(id==='lot') renderLotGrid();
   }
 
-  // Update porto price inputs if open
-  document.querySelectorAll('[id^="pe-price-"]').forEach(inp => {
-    const t = inp.id.replace('pe-price-','');
-    if(results[t]){ inp.value=results[t].price; inp.style.borderColor='var(--green)'; setTimeout(()=>inp.style.borderColor='',2000); }
-  });
+  // Show partial fail warning
+  if(failList.length>0){
+    if(fetchSub) fetchSub.textContent = `⚠ Gagal: ${failList.join(', ')} · ${successCount} OK · ${ts}`;
+  }
 }
 
 // ════════════════════════════════════
@@ -1911,10 +2158,14 @@ function renderLotGrid() {
     const cost = lots*lotCost;
     const pctAdded = s.invested>0?((cost/s.invested)*100).toFixed(1):'0';
     const ich = ichData[ticker];
-    const sigBadge = ich?`<span class="badge ${ich.sigClass}">${ich.signal}</span>`:`<span class="badge bm">—</span>`;
     let rankLabel = isSource?'SUMBER — skip':(rank>=0?`#${rank+1} prioritas`:'—');
     let noteText = isSource?'Tidak boleh reinvest ke sumber':(lots>0?`+${pctAdded}% posisi`:'Modal kurang 1 lot');
     if(isPrimary&&lots>0) noteText+=` · Sisa ${rp(afterPrim)}`;
+    // MOS label for context
+    const d = ANALYSIS_DATA[ticker];
+    const consensus = d ? Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3) : null;
+    const mos = consensus ? ((consensus-s.price)/s.price*100).toFixed(0) : null;
+    const mosBadge = mos!==null ? `<span class="badge ${mos>20?'bg':mos>5?'bb':mos>0?'ba':'br'}" style="font-size:7px">MOS ${mos>0?'+':''}${mos}%</span>` : '';
     grid.innerHTML += `
       <div class="lot-card${isPrimary&&lots>0?' winner':''}${isSource?' blocked':''}">
         <div class="lc-rank">${rankLabel}</div>
@@ -1922,7 +2173,7 @@ function renderLotGrid() {
         <div class="lc-lots" style="color:${isSource?'var(--dim)':(lots>0?'var(--green)':'var(--red)')}">${isSource?'✕':lots+' lot'}</div>
         <div class="lc-price">${rp(s.price)}/lbr</div>
         <div class="lc-cost">1 lot = ${rp(lotCost)}</div>
-        <div style="margin-top:5px">${sigBadge}</div>
+        <div style="margin-top:5px">${mosBadge}</div>
         <div class="lc-note">${noteText}</div>
       </div>`;
   });
@@ -2061,32 +2312,61 @@ function renderProjection() {
   const divGrowth=parseFloat(document.getElementById('proj-divgrowth').value)||5;
   const el=document.getElementById('proj-result');
   if(!el) return;
-  let val=totalMktVal(), div=annualDiv()*0.85;
+
+  // Start from current portfolio state
+  let val=totalMktVal();
+  let totalInjected=totalInvested(); // track cost basis for YoC
+  // Start annual div BEFORE growth — grow starting next year
+  let div=annualDiv()*0.85; // net div this year
   const rows=[]; let hitYear=null;
+
   for(let y=1;y<=20;y++){
-    div*=(1+divGrowth/100);
-    val+=div+(monthlyTopup*12);
-    const yoc=(div/val*100).toFixed(1);
-    rows.push({y,val:Math.round(val),div:Math.round(div),yoc});
+    // 1) Grow dividend
+    div=div*(1+divGrowth/100);
+    // 2) Add top-up capital + reinvested dividends
+    const annualTopup=monthlyTopup*12;
+    val=val+div+annualTopup;
+    totalInjected=totalInjected+annualTopup;
+    // 3) Yield on Cost: accumulated div against total invested capital
+    const yoc=(totalInjected>0?(div/totalInjected*100):0).toFixed(1);
+    // 4) Yield on Market: div vs portfolio market value
+    const yop=(val>0?(div/val*100):0).toFixed(1);
+    // 5) Monthly income this year
+    const monthly=Math.round(div/12);
+    rows.push({y,val:Math.round(val),div:Math.round(div),monthly,yoc,yop});
     if(!hitYear&&val>=target) hitYear=y;
   }
+
   let html=`
     <div class="${hitYear?'success-box':'warn-box'} mb12">
       ${hitYear?`🎯 Target <strong>${rp(target)}</strong> tercapai dalam <strong>${hitYear} tahun</strong>`:
-      `Target ${rp(target)} tidak tercapai dalam 20 tahun`}
+      `Target ${rp(target)} belum tercapai dalam 20 tahun dengan asumsi ini`}
     </div>
     <div class="overflow-x"><table class="tbl">
-      <thead><tr><th>Tahun</th><th class="num">Nilai Porto</th><th class="num">Div/Thn</th><th class="num">Yield</th><th class="num">Progress</th></tr></thead>
+      <thead><tr><th>Tahun</th><th class="num">Nilai Porto</th><th class="num">Div/Thn (Net)</th><th class="num">Div/Bln</th><th class="num">YoC</th><th class="num">YoP</th><th class="num">Progress</th></tr></thead>
       <tbody>`;
   rows.forEach(r=>{
     const prog=Math.min(r.val/target*100,100).toFixed(0); const hit=r.val>=target;
     html+=`<tr style="${hit?'background:var(--green-bg)':''}">
       <td style="color:${hit?'var(--green)':'var(--muted)'}">Y${r.y} ${hit?'🎯':''}</td>
-      <td class="num">${rp(r.val)}</td><td class="num">${rp(r.div)}</td><td class="num">${r.yoc}%</td>
-      <td class="num" style="width:110px"><div style="background:var(--bg5);border-radius:2px;height:5px;overflow:hidden"><div style="width:${prog}%;height:5px;background:${hit?'var(--green)':'var(--accent)'};border-radius:2px"></div></div><div style="font-size:8px;color:var(--dim);margin-top:1px">${prog}%</div></td>
+      <td class="num">${rp(r.val)}</td>
+      <td class="num">${rp(r.div)}</td>
+      <td class="num green">${rp(r.monthly)}</td>
+      <td class="num">${r.yoc}%</td>
+      <td class="num dim">${r.yop}%</td>
+      <td class="num" style="width:110px">
+        <div style="background:var(--bg5);border-radius:2px;height:5px;overflow:hidden">
+          <div style="width:${prog}%;height:5px;background:${hit?'var(--green)':'var(--accent)'};border-radius:2px"></div>
+        </div>
+        <div style="font-size:8px;color:var(--dim);margin-top:1px">${prog}%</div>
+      </td>
     </tr>`;
   });
   html+='</tbody></table></div>';
+  html+=`<div style="font-size:9px;color:var(--dim);margin-top:8px;line-height:1.7">
+    YoC = Yield on Cost (div tahunan / total modal disetor) &nbsp;·&nbsp; YoP = Yield on Price (div / nilai porto saat itu)<br>
+    Asumsi: Top-up ${rp(monthlyTopup)}/bln · Div growth ${divGrowth}%/thn · Reinvest dividen ke porto
+  </div>`;
   el.innerHTML=html;
 }
 
@@ -2468,18 +2748,46 @@ window.addEventListener('load',()=>{
   // Load cached ichimoku
   const savedIch=JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
   Object.keys(savedIch).forEach(t=>{ if(savedIch[t]) ichData[t]=savedIch[t]; });
-  // Load saved API key
-  const savedKey=localStorage.getItem('ac_apikey');
-  const apiKeyEl=document.getElementById('ocr-api-key');
-  if(savedKey&&apiKeyEl) apiKeyEl.value=savedKey;
 
   updateHeader();
   renderSnapshotPanel();
   renderLotGrid();
 
-  // Auto-fetch every 15 minutes
-  setInterval(()=>{ fetchAllPrices(); }, 15 * 60 * 1000);
+  // If data has never been fetched or last fetch was not today, show popup after 1.5s
+  const lastFetch=localStorage.getItem('ac_last_fetch');
+  const today=new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+  if(!lastFetch||!lastFetch.includes(today.slice(0,6))){
+    setTimeout(()=>{ confirmAndFetch(); }, 1800);
+  }
 });
 </script>
+<!-- ═══════════════ PIN MODAL ═══════════════ -->
+<div id="pin-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div style="font-size:32px;margin-bottom:8px">🔐</div>
+    <div class="modal-title">PIN Diperlukan</div>
+    <div class="modal-sub">Masukkan PIN 6 angka untuk mengakses<br>Edit Portofolio</div>
+    <input class="modal-pin-input" id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" onkeydown="if(event.key==='Enter')verifyPin()">
+    <div class="modal-err" id="pin-err"></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closePinModal()">Batal</button>
+      <button class="btn btn-accent" onclick="verifyPin()">Masuk →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONFIRM FETCH MODAL ═══════════════ -->
+<div id="fetch-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div style="font-size:32px;margin-bottom:8px">📡</div>
+    <div class="modal-title">Perbarui Data</div>
+    <div class="modal-sub" id="fetch-modal-msg">Data belum diupdate. Apakah mau perbarui harga saham, IHSG, USD/IDR, dan harga coal?</div>
+    <div class="modal-btns" style="margin-top:14px">
+      <button class="btn btn-outline" onclick="closeFetchModal()">Nanti</button>
+      <button class="btn btn-accent" id="fetch-modal-yes" onclick="doFetch()">⟳ Perbarui Sekarang</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
