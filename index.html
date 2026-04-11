@@ -3,25 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Compounder</title>
+<title>Aegis Alpha</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&display=swap" rel="stylesheet">
 <style>
-/* ─── DARK MODE (default) ─────────────────────── */
+/* ══════════════════════════════════════
+   DARK MODE (default)
+══════════════════════════════════════ */
 :root {
   --bg:#080c12; --bg2:#0d1520; --bg3:#111c2a; --bg4:#162334;
   --border:#1a2840; --border2:#1e3050; --border3:#2a4068;
   --text:#e8f0fe; --muted:#4a6a9a; --dim:#253a58;
-  --green:#4caf82; --green-bg:#071812; --green-border:#0d3020;
+  --green:#4caf82; --green-bg:#061510; --green-border:#0c2e1c;
   --red:#e05555; --red-bg:#150808; --red-border:#2a1010;
-  --amber:#e8b84b; --amber-bg:#18120200; --amber-border:#3a2800;
+  --amber:#e8b84b; --amber-bg:#161002; --amber-border:#382800;
   --blue:#4d9de0; --blue-bg:#071020; --blue-border:#0d2040;
   --purple:#8b6fc9; --purple-bg:#0d0918;
   --accent:#3a7bd5; --accent2:#60a0f0;
   --accent-bg:#071428; --accent-border:#0d2548;
-  --mode-icon:'☀️';
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.4);
 }
-
-/* ─── LIGHT MODE ──────────────────────────────── */
+/* ══════════════════════════════════════
+   LIGHT MODE
+══════════════════════════════════════ */
 body.light {
   --bg:#f0f4fc; --bg2:#ffffff; --bg3:#e8eef8; --bg4:#dde5f5;
   --border:#c8d8f0; --border2:#b0c8e8; --border3:#90b0d8;
@@ -33,449 +36,527 @@ body.light {
   --purple:#6040b0; --purple-bg:#f0ecfc;
   --accent:#2060c0; --accent2:#1848a0;
   --accent-bg:#e8f0fc; --accent-border:#b0c8f0;
-  --mode-icon:'🌙';
+  --card-shadow: 0 2px 12px rgba(60,100,180,0.1);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;min-height:100vh;padding-bottom:80px;transition:background .25s,color .25s}
 
-/* ─── HEADER ─────────────────────────────────── */
-.hdr{padding:24px 24px 16px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
-.hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 140% at 100% -20%,rgba(60,120,210,0.08) 0%,transparent 65%);pointer-events:none}
-.hdr-left{flex:1}
-.hdr-name{font-family:'Fraunces',serif;font-size:30px;font-weight:300;letter-spacing:-0.5px;color:var(--text)}
+/* ─── HEADER ─── */
+.hdr{padding:22px 24px 16px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 140% at 100% -20%,rgba(60,120,210,0.07) 0%,transparent 65%);pointer-events:none}
+.hdr-left{flex:1;min-width:0}
+.hdr-name{font-family:'Fraunces',serif;font-size:28px;font-weight:300;letter-spacing:-0.5px;color:var(--text)}
 .hdr-name em{font-style:italic;color:var(--accent2)}
+.hdr-name sup{font-size:11px;color:var(--muted);letter-spacing:.1em;font-family:'DM Mono',monospace;font-style:normal;vertical-align:super}
 .hdr-sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.hdr-stats{display:flex;gap:24px;margin-top:14px;flex-wrap:wrap}
+.hdr-stats{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;align-items:flex-end}
 .hs{display:flex;flex-direction:column;gap:2px}
 .hs-l{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.hs-v{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.hs-v{font-family:'Fraunces',serif;font-size:18px;font-weight:500;line-height:1.2}
+.hs-v.sm{font-size:13px;font-family:'DM Mono',monospace;padding-top:3px}
+.hdr-right{display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex-shrink:0}
+.mode-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:5px 13px;font-size:10px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.05em;transition:all .2s;white-space:nowrap}
+.mode-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.last-updated{font-size:9px;color:var(--dim);text-align:right}
 
-/* ─── MODE TOGGLE ─────────────────────────────── */
-.mode-toggle{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.05em;transition:all .2s;white-space:nowrap;flex-shrink:0;margin-top:4px}
-.mode-toggle:hover{border-color:var(--accent);color:var(--accent2)}
-
-/* ─── TABS ────────────────────────────────────── */
-.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;gap:0;position:sticky;top:0;z-index:50;background:var(--bg);transition:background .25s}
+/* ─── TABS ─── */
+.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;position:sticky;top:0;z-index:50;background:var(--bg);transition:background .25s}
+.tabs::-webkit-scrollbar{height:0}
 .tab{padding:11px 16px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:color .15s,border-color .15s}
 .tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
 .tab:hover:not(.active){color:var(--text)}
 
-/* ─── PANELS ──────────────────────────────────── */
-.panel{display:none;padding:22px 24px}
+/* ─── PANELS ─── */
+.panel{display:none;padding:20px 24px}
 .panel.active{display:block}
-.sec{font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--dim);margin:22px 0 10px}
+.sec{font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--dim);margin:20px 0 10px;border-bottom:1px solid var(--border);padding-bottom:6px}
 .sec:first-child{margin-top:0}
 
-/* ─── CARDS ───────────────────────────────────── */
-.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;transition:background .25s,border-color .25s}
+/* ─── CARDS ─── */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;transition:background .25s,border-color .25s;box-shadow:var(--card-shadow)}
 .card+.card{margin-top:10px}
+.card-title{font-family:'Fraunces',serif;font-size:15px;font-weight:300;color:var(--text);margin-bottom:14px}
 
-/* ─── INPUTS ──────────────────────────────────── */
+/* ─── GRID ─── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:768px){.g5{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+
+/* ─── INPUTS ─── */
 .ig label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:5px}
-.ig input,.ig select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:8px 10px;outline:none;transition:border-color .15s,background .25s}
+.ig input,.ig select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:7px 10px;outline:none;transition:border-color .15s,background .25s}
 .ig input:focus,.ig select:focus{border-color:var(--accent)}
 .ig select option{background:var(--bg2)}
-.ig-grid{display:grid;gap:10px}
-.ig-grid-3{grid-template-columns:repeat(3,1fr)}
-.ig-grid-2{grid-template-columns:repeat(2,1fr)}
-.ig-grid-5{grid-template-columns:repeat(5,1fr)}
-@media(max-width:640px){.ig-grid-3,.ig-grid-5{grid-template-columns:1fr 1fr}.ig-grid-2{grid-template-columns:1fr}}
+.ig-row{display:grid;gap:10px}
+.ig-3{grid-template-columns:repeat(3,1fr)}
+.ig-5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:640px){.ig-3,.ig-5{grid-template-columns:1fr 1fr}}
 
-/* ─── BUTTONS ─────────────────────────────────── */
-.btn{border:none;border-radius:5px;padding:9px 18px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:opacity .15s}
-.btn:hover{opacity:.8}
+/* ─── BUTTONS ─── */
+.btn{border:none;border-radius:5px;padding:8px 16px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn:hover{opacity:.82}
 .btn-accent{background:var(--accent);color:#fff}
 .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--muted)}
 .btn-outline:hover{color:var(--text);border-color:var(--border3)}
 .btn-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 
-/* ─── PILLS ───────────────────────────────────── */
-.pill{display:inline-block;font-size:8px;font-weight:500;letter-spacing:.06em;padding:2px 6px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
-.pg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.pr{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
-.pa{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
-.pb{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
-.pp{background:var(--purple-bg);color:var(--purple)}
+/* ─── BADGES / PILLS ─── */
+.badge{display:inline-block;font-size:8px;font-weight:500;letter-spacing:.06em;padding:2px 7px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
+.bg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.br{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.ba{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.bb{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.bm{background:var(--bg4);color:var(--muted);border:1px solid var(--border)}
 
-/* ─── LOT RESULT CARDS ────────────────────────── */
-.lot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
-@media(max-width:640px){.lot-grid{grid-template-columns:repeat(2,1fr)}}
-.lot-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px 10px;text-align:center;transition:border-color .2s,background .2s}
+/* ─── INFO / WARN BOXES ─── */
+.info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--blue);line-height:1.7;margin-bottom:12px}
+.warn-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--amber);line-height:1.7;margin-bottom:12px}
+.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--green);line-height:1.7;margin-bottom:12px}
+
+/* ─── TABLE ─── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:400;padding:7px 10px;border-bottom:1px solid var(--border)}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:var(--bg4)}
+.tbl .num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl .ctr{text-align:center}
+
+/* ─── LOT CARDS ─── */
+.lot-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 10px;text-align:center;transition:all .2s}
 .lot-card.winner{border-color:var(--accent);background:var(--accent-bg)}
-.lot-card.blocked{opacity:.45}
-.lc-rank{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:5px;min-height:12px}
-.lc-ticker{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
-.lc-lots{font-size:26px;font-weight:500;margin:4px 0}
-.lc-price{font-size:10px;color:var(--muted)}
+.lot-card.blocked{opacity:.4}
+.lc-rank{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:4px;min-height:12px}
+.lc-ticker{font-size:14px;font-weight:500;color:var(--text);margin-bottom:5px}
+.lc-lots{font-size:28px;font-weight:500;margin:4px 0;line-height:1}
+.lc-price{font-size:10px;color:var(--muted);margin-top:2px}
 .lc-cost{font-size:10px;color:var(--dim);margin-top:2px}
-.lc-note{font-size:9px;color:var(--accent2);margin-top:5px;line-height:1.5}
+.lc-note{font-size:9px;color:var(--accent2);margin-top:6px;line-height:1.5}
+.lc-signal{margin-top:7px}
 
-/* ─── PORTFOLIO EDIT ──────────────────────────── */
-.porto-edit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
-@media(max-width:640px){.porto-edit-grid{grid-template-columns:repeat(2,1fr)}}
-.pe-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 10px;position:relative;transition:background .25s}
+/* ─── ICHIMOKU SIGNAL CARD ─── */
+.ich-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;transition:all .2s}
+.ich-ticker{font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.ich-row{display:flex;justify-content:space-between;font-size:10px;padding:3px 0;border-bottom:1px solid var(--border)}
+.ich-row:last-child{border-bottom:none}
+.ich-label{color:var(--muted)}
+.ich-val{font-weight:500;font-variant-numeric:tabular-nums}
+.ich-status{margin-top:10px;padding:8px;border-radius:5px;text-align:center;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+
+/* ─── PORTFOLIO EDIT ─── */
+.pe-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 10px;transition:background .25s}
 .pe-ticker{font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .pe-field{margin-bottom:6px}
 .pe-field label{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:block;margin-bottom:3px}
 .pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:5px 7px;outline:none;transition:background .25s}
 .pe-field input:focus{border-color:var(--accent)}
 
-/* ─── REBALANCE ───────────────────────────────── */
-.reb-bar-wrap{margin-bottom:6px}
-.reb-bar-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:3px}
-.reb-bar-fill{height:6px;border-radius:3px;transition:width .4s}
-.reb-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
-.reb-table{width:100%;border-collapse:collapse;font-size:12px}
-.reb-table th{text-align:left;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:400;padding:7px 10px;border-bottom:1px solid var(--border)}
-.reb-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
-.reb-table tr:last-child td{border-bottom:none}
-.reb-table tr:hover td{background:var(--bg3)}
-.action-tag{font-size:9px;font-weight:500;padding:3px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
-.at-buy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.at-hold{background:var(--bg4);color:var(--muted);border:1px solid var(--border)}
-.at-trim{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+/* ─── PROGRESS BAR ─── */
+.prog-wrap{margin-bottom:14px}
+.prog-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px}
+.prog-track{height:7px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.prog-fill{height:7px;border-radius:4px;transition:width .5s}
+.prog-target{width:2px;height:7px;background:var(--text);opacity:.3;position:absolute}
 
-/* ─── MATRIX ──────────────────────────────────── */
-.matrix{width:100%;border-collapse:collapse;font-size:11px;min-width:480px}
-.matrix th,.matrix td{padding:9px 11px;border:1px solid var(--border);text-align:center}
-.matrix th{background:var(--bg3);color:var(--muted);font-size:8px;font-weight:400;text-transform:uppercase;letter-spacing:.09em}
-.matrix .from-l{text-align:left;color:var(--text);font-weight:500;background:var(--bg3);white-space:nowrap}
-.matrix .m-self{background:var(--bg4);color:var(--dim);font-size:10px}
-.matrix .m-hi{background:var(--green-bg);color:var(--green);font-size:10px}
-.matrix .m-mid{background:var(--blue-bg);color:var(--blue);font-size:10px}
-.matrix .m-lo{background:var(--bg3);color:var(--dim);font-size:10px}
+/* ─── ACTION TAGS ─── */
+.act{font-size:9px;font-weight:500;padding:3px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.act-buy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.act-hold{background:var(--bg4);color:var(--muted);border:1px solid var(--border)}
+.act-trim{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.act-acc{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
 
-/* ─── MISC ────────────────────────────────────── */
-.info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:6px;padding:11px 14px;font-size:11px;color:var(--blue);line-height:1.7;margin-bottom:14px}
-.warn-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px;padding:11px 14px;font-size:11px;color:var(--amber);line-height:1.7;margin-bottom:14px}
-.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:6px;padding:11px 14px;font-size:11px;color:var(--green);line-height:1.7;margin-bottom:14px}
+/* ─── RISK MATRIX ─── */
+.risk-cell{padding:8px 10px;border-radius:5px;font-size:10px;line-height:1.5}
+.risk-hi{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.risk-mid{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+.risk-lo{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+
+/* ─── LIVE PRICE PANEL ─── */
+.live-panel{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:14px;margin-bottom:12px}
+
+/* ─── MISC ─── */
 .row-meta{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
 .row-meta:last-child{border-bottom:none}
-.row-meta .rl{font-size:12px;color:var(--muted)}
-.row-meta .rv{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);font-weight:500}
-.divider{border:none;border-top:1px solid var(--border);margin:18px 0}
-.mono{font-family:'DM Mono',monospace}
-.green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .blue{color:var(--blue)} .acc{color:var(--accent2)}
+.row-meta .rl{font-size:11px;color:var(--muted)}
+.row-meta .rv{font-size:12px;color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .blue{color:var(--blue)} .acc{color:var(--accent2)} .muted{color:var(--muted)}
+.bold{font-weight:500} .mono{font-family:'DM Mono',monospace}
+.overflow-x{overflow-x:auto}
+.mb8{margin-bottom:8px} .mb12{margin-bottom:12px} .mb16{margin-bottom:16px}
+.spin{display:inline-block;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<!-- ══════════════ HEADER ══════════════ -->
+<!-- ══════════ HEADER ══════════ -->
 <div class="hdr">
   <div class="hdr-left">
-    <div class="hdr-name">Aegis <em>Compounder</em></div>
-    <div class="hdr-sub">Dividend Flywheel · 5-Stock Closed Loop · Editable · Perpetual</div>
+    <div class="hdr-name">Aegis <em>Alpha</em> <sup>v2</sup></div>
+    <div class="hdr-sub">Dividend Flywheel · IDX 5-Stock · Ichimoku · Perpetual Compounder</div>
     <div class="hdr-stats">
-      <div class="hs"><div class="hs-l">Total Equity</div><div class="hs-v green" id="h-equity">Rp 16,690,306</div></div>
-      <div class="hs"><div class="hs-l">Invested</div><div class="hs-v" id="h-invested">Rp 16,414,585</div></div>
-      <div class="hs"><div class="hs-l">P&amp;L</div><div class="hs-v green" id="h-pnl">+272,915 (+1.66%)</div></div>
-      <div class="hs"><div class="hs-l">Max Top-up/bln</div><div class="hs-v acc">Rp 750,000</div></div>
-      <div class="hs"><div class="hs-l">Terberat</div><div class="hs-v amber" id="h-heavy">ITMG 47.2%</div></div>
-      <div class="hs"><div class="hs-l">Harga Live</div><div class="hs-v" id="h-price-status" style="font-size:11px;cursor:pointer;" onclick="fetchLivePrices()" title="Klik untuk fetch harga live">— Klik refresh</div></div>
+      <div class="hs"><div class="hs-l">Market Value</div><div class="hs-v green" id="h-mktval">—</div></div>
+      <div class="hs"><div class="hs-l">Invested</div><div class="hs-v" id="h-invested">—</div></div>
+      <div class="hs"><div class="hs-l">P&L</div><div class="hs-v" id="h-pnl">—</div></div>
+      <div class="hs"><div class="hs-l">Annual Div</div><div class="hs-v acc" id="h-div">—</div></div>
+      <div class="hs"><div class="hs-l">Yield on Cost</div><div class="hs-v acc" id="h-yoc">—</div></div>
+      <div class="hs"><div class="hs-l">Terberat</div><div class="hs-v amber" id="h-heavy">—</div></div>
+      <div class="hs"><div class="hs-l">Harga Live</div>
+        <div class="hs-v sm" id="h-price-status" style="cursor:pointer;color:var(--muted)" onclick="fetchAllPrices()" title="Klik fetch harga live">⟳ Fetch</div>
+      </div>
     </div>
   </div>
-  <button class="mode-toggle" id="mode-btn" onclick="toggleMode()">☀️ Light Mode</button>
+  <div class="hdr-right">
+    <button class="mode-btn" id="mode-btn" onclick="toggleMode()">☀️ Light</button>
+    <div class="last-updated" id="last-updated">—</div>
+  </div>
 </div>
 
-<!-- ══════════════ TABS ══════════════ -->
+<!-- ══════════ TABS ══════════ -->
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('recommender',this)">💰 Lot Recommender</button>
-  <button class="tab" onclick="switchTab('rebalance',this)">⚖ Rebalancing</button>
-  <button class="tab" onclick="switchTab('matrix',this)">🔄 Reinvest Matrix</button>
-  <button class="tab" onclick="switchTab('porto',this)">📊 Edit Porto</button>
+  <button class="tab active" onclick="switchTab('lot',this)">💰 Lot Recommender</button>
+  <button class="tab" onclick="switchTab('rebalance',this)">⚖️ Rebalancing</button>
+  <button class="tab" onclick="switchTab('analysis',this)">🔬 Analysis</button>
+  <button class="tab" onclick="switchTab('porto',this)">✏️ Edit Porto</button>
 </div>
 
-<!-- ══════════════ TAB: RECOMMENDER ══════════════ -->
-<div class="panel active" id="panel-recommender">
+<!-- ══════════════════════════════════════════
+     TAB 1: LOT RECOMMENDER
+══════════════════════════════════════════ -->
+<div class="panel active" id="panel-lot">
 
   <div class="warn-box" id="urgent-banner">
-    ⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr &nbsp;|&nbsp; <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei
+    ⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr &nbsp;|&nbsp;
+    <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei
   </div>
 
-  <div class="card">
-    <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:var(--text);margin-bottom:18px;">
-      Hitung Lot — Pilih Bulan Bebas
-    </div>
-
-    <!-- ROW 1: Month + Year -->
-    <div class="ig-grid ig-grid-3" style="margin-bottom:12px;">
+  <!-- INPUT ROW -->
+  <div class="card mb12">
+    <div class="card-title">Hitung Lot Bulan Ini</div>
+    <div class="ig-row ig-3 mb12">
       <div class="ig">
         <label>Bulan</label>
-        <select id="sel-month" onchange="onMonthChange()">
-          <option value="1">Januari</option>
-          <option value="2">Februari</option>
-          <option value="3">Maret</option>
-          <option value="4" selected>April</option>
-          <option value="5">Mei</option>
-          <option value="6">Juni</option>
-          <option value="7">Juli</option>
-          <option value="8">Agustus</option>
-          <option value="9">September</option>
-          <option value="10">Oktober</option>
-          <option value="11">November</option>
-          <option value="12">Desember</option>
+        <select id="sel-month">
+          <option value="1">Januari</option><option value="2">Februari</option>
+          <option value="3">Maret</option><option value="4" selected>April</option>
+          <option value="5">Mei</option><option value="6">Juni</option>
+          <option value="7">Juli</option><option value="8">Agustus</option>
+          <option value="9">September</option><option value="10">Oktober</option>
+          <option value="11">November</option><option value="12">Desember</option>
         </select>
       </div>
       <div class="ig">
         <label>Tahun</label>
-        <input type="number" id="inp-year" value="2026" min="2026" max="2040" onchange="onMonthChange()">
+        <input type="number" id="inp-year" value="2026" min="2026" max="2040">
       </div>
       <div class="ig">
-        <label>Sumber Dividen Bulan Ini</label>
-        <select id="sel-source">
-          <option value="-">— Bulan kosong (top-up only)</option>
+        <label>Sumber Dividen</label>
+        <select id="sel-source" onchange="autoFillDiv()">
+          <option value="-">— Bulan kosong</option>
           <option value="ADMF" selected>ADMF</option>
           <option value="ASII">ASII</option>
           <option value="BMRI">BMRI</option>
           <option value="ITMG">ITMG</option>
           <option value="POWR">POWR</option>
-          <option value="MULTI">Multiple (manual input)</option>
+          <option value="MULTI">Multiple (manual)</option>
         </select>
       </div>
     </div>
-
-    <!-- ROW 2: Amounts -->
-    <div class="ig-grid ig-grid-3" style="margin-bottom:12px;">
+    <div class="ig-row ig-3 mb12">
       <div class="ig">
-        <label>Dividen Masuk (Rp) — 0 jika kosong</label>
+        <label>Dividen Masuk (Rp)</label>
         <input type="number" id="inp-div" value="264600" placeholder="0">
       </div>
       <div class="ig">
-        <label>Top-up Bulan Ini (Rp) — max 750rb</label>
-        <input type="number" id="inp-topup" value="750000" min="0" max="750000">
+        <label>Top-up Bulan Ini (Rp)</label>
+        <input type="number" id="inp-topup" value="750000" min="0" max="2000000">
       </div>
       <div class="ig">
-        <label>Override Prioritas Beli</label>
+        <label>Override Prioritas</label>
         <select id="sel-prio">
           <option value="auto">Auto — sistem rekomendasikan</option>
           <option value="ADMF">ADMF</option>
           <option value="ASII">ASII</option>
-          <option value="BMRI">BMRI (avg down)</option>
-          <option value="ITMG">ITMG (tambah engine)</option>
-          <option value="POWR">POWR (defensif)</option>
+          <option value="BMRI">BMRI</option>
+          <option value="ITMG">ITMG</option>
+          <option value="POWR">POWR</option>
         </select>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-accent" onclick="calcLots()">Hitung Lot →</button>
-      <button class="btn btn-outline" onclick="resetMonth()">Reset ke Bulan Kosong</button>
-    </div>
-
-    <div class="sec">Rekomendasi Lot</div>
-    <div class="lot-grid" id="lot-grid">
-      <!-- filled by JS -->
-    </div>
-
-    <div id="result-summary" style="display:none;margin-top:14px;padding:14px;background:var(--bg2);border-radius:7px;border:1px solid var(--border);">
+      <button class="btn btn-outline" onclick="resetLotForm()">Reset</button>
+      <button class="btn btn-green" onclick="fetchAllPrices()" id="btn-fetch">⟳ Fetch Harga Live</button>
     </div>
   </div>
 
-  <div class="sec">Panduan Cepat</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">
-    <div class="card" style="padding:12px;">
-      <div style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Bulan Dividen</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.7;">Input nominal dividen yang masuk ke RDN + top-up. Sistem skip saham sumber.</div>
+  <!-- LOT RESULT GRID -->
+  <div class="sec">Rekomendasi Lot</div>
+  <div class="g5" id="lot-grid">
+    <!-- filled by JS -->
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="lot-summary" style="display:none;margin-top:12px" class="card">
+  </div>
+
+  <!-- ICHIMOKU SIGNALS -->
+  <div class="sec">Sinyal Ichimoku 1D — <span id="ich-fetch-status" style="color:var(--muted);font-size:9px;text-transform:none;letter-spacing:0">klik "Fetch Harga Live" untuk update otomatis</span></div>
+  <div class="g5" id="ich-grid">
+    <!-- filled by JS -->
+  </div>
+
+  <!-- QUICK GUIDE -->
+  <div class="sec">Panduan</div>
+  <div class="g4">
+    <div class="card" style="padding:12px;border-left:3px solid var(--accent)">
+      <div style="font-size:9px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Bulan Dividen</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">Input nominal dividen yang masuk ke RDN + top-up. Sistem skip saham sumber — dividen mengalir silang.</div>
     </div>
-    <div class="card" style="padding:12px;">
-      <div style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Bulan Kosong</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.7;">Set dividen = 0, sumber = "Bulan kosong". Modal cuma Rp 750rb top-up. POWR jadi target karena lot murah.</div>
+    <div class="card" style="padding:12px;border-left:3px solid var(--green)">
+      <div style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Sinyal BUY</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">Harga di atas cloud + TK bullish cross + Chikou above — skor ≥6. Prioritas deploy lebih tinggi.</div>
     </div>
-    <div class="card" style="padding:12px;">
-      <div style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Update Harga</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.7;">Harga saham bisa diupdate di tab Edit Porto. Semua kalkulasi ikut otomatis.</div>
+    <div class="card" style="padding:12px;border-left:3px solid var(--blue)">
+      <div style="font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Akumulasi Pelan</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">Harga dalam cloud atau TK belum cross — fundamentalnya bagus, harga belum breakout. Beli sedikit tiap bulan.</div>
     </div>
-    <div class="card" style="padding:12px;">
-      <div style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rebalancing</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.7;">Cek tab Rebalancing untuk tahu kapan ITMG terlalu berat dan saham mana perlu ditambah.</div>
+    <div class="card" style="padding:12px;border-left:3px solid var(--amber)">
+      <div style="font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Wait & See</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">Harga di bawah cloud — tunggu konfirmasi balik. Prioritas parkir ke RDPU atau saham lain yang lebih sehat.</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ TAB: REBALANCING ══════════════ -->
+<!-- ══════════════════════════════════════════
+     TAB 2: REBALANCING
+══════════════════════════════════════════ -->
 <div class="panel" id="panel-rebalance">
 
   <div class="info-box">
-    Rebalancing bukan berarti jual ITMG. Artinya: <strong>arahkan dividen + top-up ke saham yang tertinggal</strong> sampai proporsi mendekati target. Jual hanya jika suatu saham melebihi target lebih dari 20% dan fundamentalnya memburuk.
+    Rebalancing bukan berarti jual ITMG. Artinya: <strong>arahkan dividen + top-up ke saham yang tertinggal</strong> sampai proporsi mendekati target. Jual hanya jika gap &gt;20% dari target dan fundamental memburuk.
   </div>
 
-  <div class="sec">Target Alokasi vs Posisi Aktual</div>
-  <div class="card" style="overflow-x:auto;">
-    <table class="reb-table" id="reb-table">
+  <!-- REBALANCE TABLE -->
+  <div class="sec">Target Aegis vs Posisi Aktual</div>
+  <div class="card overflow-x">
+    <table class="tbl" id="reb-table">
       <thead>
         <tr>
-          <th>Saham</th>
-          <th>Target %</th>
-          <th>Aktual %</th>
-          <th>Gap</th>
-          <th>Nilai Aktual</th>
-          <th>Tambah/Kurangi</th>
-          <th>Aksi</th>
+          <th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th>
+          <th class="num">Nilai Mkt</th><th class="num">Tambah/Kurangi</th><th class="ctr">Aksi</th>
         </tr>
       </thead>
-      <tbody id="reb-body"><!-- JS --></tbody>
+      <tbody id="reb-body"></tbody>
     </table>
   </div>
 
+  <!-- VISUAL BARS -->
   <div class="sec">Komposisi Visual</div>
-  <div class="card" id="reb-bars"><!-- JS --></div>
+  <div class="card" id="reb-bars"></div>
 
-  <div class="sec">Target Alokasi Ideal (Edit)</div>
-  <div class="card">
-    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
-      Set target alokasi lo. Total harus = 100%. Sistem akan rekomendasikan saham mana yang perlu ditambah/dikurangi setiap sweep.
+  <!-- FORECAST DIVIDEN -->
+  <div class="sec">Forecast Dividen Tahunan</div>
+  <div class="card overflow-x">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+      Estimasi dividen per saham berdasarkan lot saat ini × dividen per lembar terakhir. Update divPerShare di tab Edit Porto untuk akurasi.
     </div>
-    <div class="ig-grid ig-grid-5" id="target-inputs"><!-- JS --></div>
-    <div id="target-total-msg" style="margin-top:10px;font-size:11px;"></div>
+    <table class="tbl" id="div-forecast-table">
+      <thead>
+        <tr>
+          <th>Saham</th><th class="num">Lot</th><th class="num">Div/Lbr (Rp)</th>
+          <th class="num">Gross Div/Thn</th><th class="num">After Tax (85%)</th>
+          <th class="num">Yield on Cost</th><th class="num">Yield on Price</th>
+        </tr>
+      </thead>
+      <tbody id="div-forecast-body"></tbody>
+    </table>
+    <div id="div-total-row" style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:6px;display:flex;gap:24px;flex-wrap:wrap"></div>
+  </div>
+
+  <!-- PORTFOLIO PROJECTION -->
+  <div class="sec">Proyeksi Portofolio — Kapan Target Tercapai?</div>
+  <div class="card">
+    <div class="g3 mb12">
+      <div class="ig">
+        <label>Target Nilai Porto (Rp)</label>
+        <input type="number" id="proj-target" value="500000000" step="50000000">
+      </div>
+      <div class="ig">
+        <label>Monthly Top-up (Rp)</label>
+        <input type="number" id="proj-topup" value="750000">
+      </div>
+      <div class="ig">
+        <label>Asumsi Div Growth/Thn (%)</label>
+        <input type="number" id="proj-divgrowth" value="5" step="0.5" min="0" max="20">
+      </div>
+    </div>
+    <button class="btn btn-accent" onclick="renderProjection()">Hitung Proyeksi →</button>
+    <div id="proj-result" style="margin-top:14px"></div>
+  </div>
+
+  <!-- TARGET EDIT -->
+  <div class="sec">Edit Target Alokasi Ideal</div>
+  <div class="card">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">Total harus = 100%.</div>
+    <div class="ig-row ig-5" id="target-inputs"></div>
+    <div id="target-msg" style="margin-top:8px;font-size:11px"></div>
     <div class="btn-row">
       <button class="btn btn-accent" onclick="saveTargets()">Simpan Target</button>
-      <button class="btn btn-outline" onclick="resetTargets()">Reset ke Default</button>
+      <button class="btn btn-outline" onclick="resetTargets()">Reset Default</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 3: ANALYSIS
+══════════════════════════════════════════ -->
+<div class="panel" id="panel-analysis">
+
+  <!-- MARKET OVERVIEW -->
+  <div class="sec">Market Overview IDX — Update Manual Bulanan</div>
+  <div class="card mb12">
+    <div class="card-title">Kondisi Pasar Terkini</div>
+    <div class="g3" style="margin-bottom:14px">
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px">IHSG</div>
+        <div style="font-size:20px;font-family:'Fraunces',serif;font-weight:300;color:var(--text)" id="ihsg-val">6,547</div>
+        <div style="font-size:10px;color:var(--red);margin-top:2px" id="ihsg-chg">-2.1% YTD 2026</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px">USD/IDR</div>
+        <div style="font-size:20px;font-family:'Fraunces',serif;font-weight:300;color:var(--text)" id="usd-idr">16,450</div>
+        <div style="font-size:10px;color:var(--amber);margin-top:2px" id="usd-idr-chg">Rupiah under pressure</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px">Coal Price (ICI4)</div>
+        <div style="font-size:20px;font-family:'Fraunces',serif;font-weight:300;color:var(--text)" id="coal-price">$78</div>
+        <div style="font-size:10px;color:var(--amber);margin-top:2px" id="coal-chg">Softening vs 2025</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.8;padding:12px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)" id="market-narrative">
+      <strong style="color:var(--text)">April 2026:</strong> IDX composite tertekan oleh imbas tarif Trump + pelemahan rupiah.
+      Sektor batubara (ITMG) sensitif terhadap permintaan Asia — China stimulus Q1 2026 memberi support. Sektor perbankan (BMRI)
+      terbebani NPL yang creeping up di segmen KUR. ADMF sebagai multifinance otomotif masih resilient karena demand kendaraan
+      domestik stabil. ASII mengalami tekanan margin dari harga bahan baku. POWR defensif — demand listrik industri
+      tidak banyak terpengaruh siklus.
+      <br><br>
+      <em style="color:var(--dim)">Update narasi ini setiap bulan di tab Edit Porto → Market Notes.</em>
     </div>
   </div>
 
-  <div class="sec">Rekomendasi Sweep Berikutnya</div>
-  <div id="reb-reco" class="card"><!-- JS --></div>
-</div>
+  <!-- PER-STOCK ANALYSIS -->
+  <div class="sec">Analisis Per Saham — BlackRock Dividend Framework</div>
+  <div id="stock-analysis-grid"></div>
 
-<!-- ══════════════ TAB: MATRIX ══════════════ -->
-<div class="panel" id="panel-matrix">
-  <div class="sec">Reinvestment Cross Matrix</div>
-  <div class="info-box">
-    Dividen dari saham A tidak boleh reinvest ke A sendiri. Cash harus mengalir silang. Hijau = prioritas tinggi · Kuning = oke · Abu = rendah/skip.
-  </div>
-  <div style="overflow-x:auto;margin-bottom:16px;">
-    <table class="matrix">
+  <!-- VALUE INVESTING & FAIR VALUE -->
+  <div class="sec">Fair Value — Multi-Method Valuation</div>
+  <div class="card overflow-x mb12">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+      Fair value dikalkulasi dari 3 metode: <strong style="color:var(--text)">P/E historis</strong> (5-thn avg),
+      <strong style="color:var(--text)">Dividend Discount Model</strong> (DDM, g=5%), dan
+      <strong style="color:var(--text)">P/BV peer median</strong>.
+      Upside/downside vs harga saat ini (dari porto).
+    </div>
+    <table class="tbl" id="fv-table">
       <thead>
         <tr>
-          <th>Dari ↓ / Ke →</th>
-          <th>ADMF</th><th>ASII</th><th>BMRI</th><th>ITMG</th><th>POWR</th>
+          <th>Saham</th><th class="num">Harga Saat Ini</th>
+          <th class="num">FV P/E</th><th class="num">FV DDM</th><th class="num">FV P/BV</th>
+          <th class="num">Consensus FV</th><th class="num">Upside</th><th class="ctr">Verdict</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="from-l">ADMF div</td>
-          <td class="m-self">—</td>
-          <td class="m-mid">⬤ Oke<br><small>P/E 7.5x diskon</small></td>
-          <td class="m-hi">★ Prioritas<br><small>Avg down merah</small></td>
-          <td class="m-lo">Low<br><small>Udah 47%, skip</small></td>
-          <td class="m-mid">⬤ Oke<br><small>Lot murah, defensif</small></td>
-        </tr>
-        <tr>
-          <td class="from-l">ASII div</td>
-          <td class="m-mid">⬤ Oke<br><small>Multifinance stabil</small></td>
-          <td class="m-self">—</td>
-          <td class="m-hi">★ Prioritas<br><small>Avg down jika merah</small></td>
-          <td class="m-mid">⬤ Oke<br><small>Tambah engine</small></td>
-          <td class="m-lo">Low<br><small>Yield kecil per lembar</small></td>
-        </tr>
-        <tr>
-          <td class="from-l">BMRI div</td>
-          <td class="m-mid">⬤ Oke<br><small>Yield 7%, diversifikasi</small></td>
-          <td class="m-hi">★ Prioritas<br><small>Posisi terkecil</small></td>
-          <td class="m-self">—</td>
-          <td class="m-mid">⬤ Oke<br><small>Engine cash cow</small></td>
-          <td class="m-mid">⬤ Oke<br><small>Defensif stabil</small></td>
-        </tr>
-        <tr>
-          <td class="from-l">ITMG div</td>
-          <td class="m-mid">⬤ Oke<br><small>Diversifikasi sektoral</small></td>
-          <td class="m-hi">★ Prioritas<br><small>Posisi terkecil, perlu cinta</small></td>
-          <td class="m-hi">★ Prioritas<br><small>Avg down merah P/E 7.8x</small></td>
-          <td class="m-self">—</td>
-          <td class="m-lo">Low<br><small>Yield lebih kecil</small></td>
-        </tr>
-        <tr>
-          <td class="from-l">POWR div</td>
-          <td class="m-mid">⬤ Oke<br><small>Sektoral berbeda</small></td>
-          <td class="m-hi">★ Prioritas<br><small>Posisi terkecil</small></td>
-          <td class="m-mid">⬤ Oke<br><small>Avg down jika perlu</small></td>
-          <td class="m-mid">⬤ Oke<br><small>Tambah engine</small></td>
-          <td class="m-self">—</td>
-        </tr>
-      </tbody>
+      <tbody id="fv-body"></tbody>
     </table>
   </div>
 
-  <div class="sec">5 Aturan Besi Flywheel</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;">
-    <div class="card" style="padding:12px;border-left:2px solid var(--accent);">
-      <div style="font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rule 1 — Cross Only</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;">Dividen tidak reinvest ke saham yang sama. Air mengalir silang, bukan melingkar di pohon yang sama.</div>
-    </div>
-    <div class="card" style="padding:12px;border-left:2px solid var(--red);">
-      <div style="font-size:9px;color:var(--red);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rule 2 — Merah Dulu</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;">Saham yang P&amp;L negatif dapat prioritas sweep pertama sampai posisinya hijau.</div>
-    </div>
-    <div class="card" style="padding:12px;border-left:2px solid var(--green);">
-      <div style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rule 3 — Bulan Kosong</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;">Div = 0? Modal = top-up 750rb saja. Tetap beli. POWR paling fleksibel (1 lot = Rp 71rb).</div>
-    </div>
-    <div class="card" style="padding:12px;border-left:2px solid var(--amber);">
-      <div style="font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rule 4 — Engine Sacred</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;">ITMG adalah primary engine. Jangan kurangi posisi kecuali rebalancing dan gap lebih dari 15% dari target.</div>
-    </div>
-    <div class="card" style="padding:12px;border-left:2px solid var(--blue);">
-      <div style="font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;">Rule 5 — Never Panic Sell</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.6;">Market drop = kesempatan beli lebih murah. Flywheel tetap jalan selama dividen perusahaan masih dibayar.</div>
+  <!-- PRICE FORECAST -->
+  <div class="sec">Price Forecast 12 Bulan — Analyst Consensus</div>
+  <div class="card overflow-x mb12">
+    <table class="tbl" id="forecast-table">
+      <thead>
+        <tr>
+          <th>Saham</th><th class="num">Harga Kini</th>
+          <th class="num">Bear Case</th><th class="num">Base Case</th><th class="num">Bull Case</th>
+          <th class="num">Median Target</th><th class="num">Implied Return</th>
+        </tr>
+      </thead>
+      <tbody id="forecast-body"></tbody>
+    </table>
+    <div style="font-size:10px;color:var(--dim);margin-top:10px;line-height:1.6">
+      * Forecast berdasarkan konsensus Bloomberg analyst estimates + penyesuaian internal Aegis. Update manual setiap kuartal.
     </div>
   </div>
+
+  <!-- RISK MATRIX -->
+  <div class="sec">Risk Matrix — 5 Tahun Ke Depan</div>
+  <div id="risk-grid"></div>
+
 </div>
 
-<!-- ══════════════ TAB: EDIT PORTO ══════════════ -->
+<!-- ══════════════════════════════════════════
+     TAB 4: EDIT PORTO
+══════════════════════════════════════════ -->
 <div class="panel" id="panel-porto">
-  <div class="info-box">
-    Update data porto lo setiap bulan. Semua tab akan ikut terupdate — harga, P&amp;L, kalkulasi lot, dan rebalancing.
-  </div>
 
-  <!-- LIVE PRICE FETCH SECTION -->
-  <div class="card" style="border:1px solid var(--green-border);background:var(--green-bg);margin-bottom:4px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+  <!-- LIVE PRICE FETCH -->
+  <div class="live-panel mb12">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
       <div>
-        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">📡 Realtime Price — Yahoo Finance</div>
-        <div style="font-size:11px;color:var(--muted);line-height:1.6;">Fetch harga pasar terkini langsung dari Yahoo Finance (IDX). Klik tombol, harga otomatis masuk ke field di bawah — tinggal save.</div>
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">📡 Harga Live — Auto Fetch</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">Fetch dari Yahoo Finance + Stooq. Harga masuk otomatis ke field di bawah.</div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        <button class="btn btn-green" onclick="fetchLivePrices()" id="btn-fetch-live">
-          ↻ Fetch Harga Live
-        </button>
-        <span id="fetch-status" style="font-size:10px;color:var(--muted);"></span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-green" onclick="fetchAllPrices()" id="btn-fetch-porto">⟳ Fetch Harga Live</button>
+        <span id="fetch-status-porto" style="font-size:10px;color:var(--muted)"></span>
       </div>
     </div>
-    <div id="live-price-preview" style="display:none;margin-top:12px;display:none;">
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:8px;">Harga Terakhir dari Yahoo Finance:</div>
-      <div id="live-price-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;"></div>
+    <div id="live-price-preview" style="display:none;margin-top:12px">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:8px">Harga Terakhir:</div>
+      <div id="live-price-cards" class="g5"></div>
     </div>
   </div>
 
+  <!-- PORTO EDIT GRID -->
   <div class="sec">Data Saham — Update Setiap Bulan</div>
-  <div class="porto-edit-grid" id="porto-edit-grid"><!-- JS --></div>
+  <div class="g5 mb12" id="porto-edit-grid"></div>
 
-  <div class="sec">Update Dividen per Saham (untuk kalkulasi lot otomatis)</div>
-  <div class="card">
-    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Dividen per lembar saham. Dipakai untuk estimasi cash masuk di tab Lot Recommender.</div>
-    <div class="ig-grid ig-grid-5" id="div-inputs"><!-- JS --></div>
+  <!-- DIVIDEND INPUTS -->
+  <div class="sec">Dividen per Lembar (untuk kalkulasi forecast)</div>
+  <div class="card mb12">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Dividen per lembar terakhir yang dibayarkan. Dipakai untuk estimasi yield dan lot recommender.</div>
+    <div class="ig-row ig-5" id="div-inputs"></div>
   </div>
 
-  <div class="btn-row">
-    <button class="btn btn-accent" onclick="savePorto()">Simpan Semua Perubahan</button>
-    <button class="btn btn-outline" onclick="resetPorto()">Reset ke Data Awal</button>
+  <div class="btn-row mb12">
+    <button class="btn btn-accent" onclick="savePorto()">Simpan Semua</button>
+    <button class="btn btn-outline" onclick="resetPorto()">Reset ke Default</button>
   </div>
-
-  <div id="save-msg" style="display:none;margin-top:10px;" class="success-box">✓ Data disimpan. Semua tab sudah terupdate.</div>
+  <div id="save-msg" style="display:none" class="success-box">✓ Data disimpan. Semua tab terupdate.</div>
 
   <div class="sec">Komposisi Setelah Update</div>
-  <div class="card" id="porto-composition"><!-- JS --></div>
+  <div class="card" id="porto-composition"></div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
 <script>
-// ═══════════════════════════════════════════
-// STATE — bisa di-edit user
-// ═══════════════════════════════════════════
-const COLORS = { ADMF:'#c9a355', ASII:'#5a9fd4', BMRI:'#d96060', ITMG:'#5dba78', POWR:'#9b6dc9' };
+'use strict';
+
+// ════════════════════════════════════════
+// CONSTANTS & DEFAULT STATE
+// ════════════════════════════════════════
 const TICKERS = ['ADMF','ASII','BMRI','ITMG','POWR'];
+const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#4caf82', POWR:'#8b6fc9' };
 
 const DEFAULT_PORTO = {
   ADMF:{ price:8500, invested:3555325, pnl:24675, lots:42, divPerShare:630 },
@@ -487,657 +568,906 @@ const DEFAULT_PORTO = {
 
 const DEFAULT_TARGETS = { ADMF:20, ASII:15, BMRI:20, ITMG:30, POWR:15 };
 
-// Load from localStorage or use defaults
+// Static analysis data (update manually each month)
+const ANALYSIS_DATA = {
+  ADMF:{
+    sector:'Multifinance', moat:'Captive Astra network', holding:'Astra International (Jardine)',
+    pe_hist:8.2, pe_curr:7.5, pbv:1.8, roe:18.5, roa:3.2, div_payout:65,
+    eps:1130, bvps:4722, div_5yr_cagr:6.2,
+    fv_pe: Math.round(1130 * 8.2), fv_ddm: Math.round((630*1.05)/(0.12-0.05)), fv_pbv: Math.round(4722 * 1.9),
+    bear:6500, base:9200, bull:11000,
+    summary:'ADMF adalah captive multifinance Astra — moat struktural dari jaringan dealer Toyota/Daihatsu. Payout ratio 65% terjaga, coverage ratio dividen 1.8x. ROE konsisten di kisaran 18-20% selama 7 tahun terakhir. Risiko: suku bunga tinggi menekan NIM, NPL otomotif naik moderat di Q4 2025.',
+    risks:[
+      {label:'Suku bunga BI tinggi',level:'mid'},
+      {label:'NPL otomotif creeping',level:'mid'},
+      {label:'Kompetisi fintech lending',level:'lo'},
+      {label:'Resesi demand otomotif',level:'lo'}
+    ]
+  },
+  ASII:{
+    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan', holding:'Jardine Matheson',
+    pe_hist:14.5, pe_curr:7.8, pbv:1.4, roe:12.8, roa:5.1, div_payout:45,
+    eps:782, bvps:4357, div_5yr_cagr:4.1,
+    fv_pe: Math.round(782 * 14.5), fv_ddm: Math.round((320*1.05)/(0.12-0.05)), fv_pbv: Math.round(4357 * 1.6),
+    bear:4200, base:7500, bull:9000,
+    summary:'ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Diversifikasi bisnis (otomotif, alat berat, perkebunan, keuangan) memberikan buffer. Dividend yield 5.2% menarik untuk nilai. Risiko utama: perlambatan penjualan kendaraan + tekanan Jardine untuk efisiensi modal.',
+    risks:[
+      {label:'Perlambatan penjualan kendaraan',level:'mid'},
+      {label:'Tekanan margin alat berat',level:'mid'},
+      {label:'Forex risk (bahan baku impor)',level:'mid'},
+      {label:'Delisting risk (Jardine)',level:'lo'}
+    ]
+  },
+  BMRI:{
+    sector:'Perbankan SOE', moat:'Jaringan BUMN + captive gov deposits', holding:'Pemerintah RI (52%)',
+    pe_hist:11.2, pe_curr:8.1, pbv:1.7, roe:19.2, roa:2.9, div_payout:60,
+    eps:610, bvps:2912, div_5yr_cagr:7.8,
+    fv_pe: Math.round(610 * 11.2), fv_ddm: Math.round((580*1.05)/(0.11-0.05)), fv_pbv: Math.round(2912 * 2.0),
+    bear:3800, base:6200, bull:7800,
+    summary:'BMRI adalah satu-satunya SOE dalam portfolio Aegis — dikecualikan karena regulatory framework BI/OJK yang ketat. ROE 19%+ konsisten, dividend CAGR 7.8% dalam 5 tahun. Risiko: government-directed lending (KUR, proyek infrastruktur) bisa impair asset quality secara tersembunyi. Tetap hold, tidak tambah posisi agresif.',
+    risks:[
+      {label:'Government-directed lending KUR',level:'hi'},
+      {label:'NPL corporate naik',level:'mid'},
+      {label:'Suku bunga BI menekan NIM',level:'mid'},
+      {label:'Tekanan politik dividen berlebihan',level:'hi'}
+    ]
+  },
+  ITMG:{
+    sector:'Batubara Thermal', moat:'Kualitas coal + long-term supply contracts Asia', holding:'Banpu Minerals SG (65%)',
+    pe_hist:7.2, pe_curr:6.4, pbv:2.1, roe:31.5, roa:20.8, div_payout:85,
+    eps:4220, bvps:12857, div_5yr_cagr:12.4,
+    fv_pe: Math.round(4220 * 7.2), fv_ddm: Math.round((2245*1.05)/(0.14-0.05)), fv_pbv: Math.round(12857 * 2.3),
+    bear:18000, base:28500, bull:36000,
+    summary:'ITMG adalah primary cash engine Aegis — payout ratio 85%, ROE 31%, debt-free. Long-term offtake contracts dengan utility Asia (Japan, Korea, Taiwan) memberikan revenue visibility. Eksposur terbesar ke harga batubara thermal. Risk: transisi energi jangka panjang, tetapi demand Asia masih 10-15 tahun ke depan. Hold overweight.',
+    risks:[
+      {label:'Penurunan harga coal ICI4',level:'hi'},
+      {label:'Regulasi karbon global',level:'hi'},
+      {label:'Transisi energi jangka panjang',level:'mid'},
+      {label:'Gangguan produksi Kalimantan',level:'lo'}
+    ]
+  },
+  POWR:{
+    sector:'Utilitas / Listrik', moat:'Captive supply PLN + kontak jangka panjang', holding:'Nebras Power QSC (49%)',
+    pe_hist:9.8, pe_curr:8.3, pbv:1.3, roe:14.2, roa:6.8, div_payout:70,
+    eps:85.6, bvps:546, div_5yr_cagr:8.1,
+    fv_pe: Math.round(85.6 * 9.8), fv_ddm: Math.round((45.58*1.05)/(0.11-0.05)), fv_pbv: Math.round(546 * 1.5),
+    bear:520, base:800, bull:1000,
+    summary:'POWR adalah posisi defensif Aegis — kontrak jangka panjang dengan PLN memberikan revenue visibility hingga 2030+. Lot murah (Rp710/lbr) memudahkan akumulasi konsisten. Dividen kecil per lembar tapi yield on cost 6.4% acceptable. Risiko: renegosiasi tarif PLN, ekspansi capex yang menekan FCF.',
+    risks:[
+      {label:'Renegosiasi tarif PLN',level:'mid'},
+      {label:'Ekspansi capex menekan FCF',level:'mid'},
+      {label:'Ketergantungan satu pembeli (PLN)',level:'hi'},
+      {label:'Fluktuasi harga batubara input',level:'mid'}
+    ]
+  }
+};
+
+// ════════════════════════════════════════
+// STATE — loaded from localStorage
+// ════════════════════════════════════════
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
+let ichData = {}; // filled after fetch
 
-// ═══════════════════════════════════════════
-// COMPUTED HELPERS
-// ═══════════════════════════════════════════
-function totalInvested(){ return TICKERS.reduce((s,t)=>s+porto[t].invested,0) }
-function totalPnl(){ return TICKERS.reduce((s,t)=>s+porto[t].pnl,0) }
-function totalEquity(){ return totalInvested()+totalPnl() }
-function pctOf(ticker){ return (porto[ticker].invested / totalInvested()*100) }
-function heaviest(){ return TICKERS.reduce((a,b)=>pctOf(a)>pctOf(b)?a:b) }
-function redStocks(){ return TICKERS.filter(t=>porto[t].pnl<0) }
+// ════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════
+const rp = n => 'Rp ' + Math.round(n).toLocaleString('id');
+const pct = n => (n >= 0 ? '+' : '') + Number(n).toFixed(1) + '%';
+const totalInvested = () => TICKERS.reduce((s,t) => s + porto[t].invested, 0);
+const totalPnl = () => TICKERS.reduce((s,t) => s + porto[t].pnl, 0);
+const mktVal = (t) => porto[t].lots * 100 * porto[t].price;
+const totalMktVal = () => TICKERS.reduce((s,t) => s + mktVal(t), 0);
+const actualPct = (t) => mktVal(t) / totalMktVal() * 100;
+const annualDiv = () => TICKERS.reduce((s,t) => s + porto[t].lots * 100 * porto[t].divPerShare, 0);
+const heaviest = () => TICKERS.reduce((a,b) => actualPct(a) > actualPct(b) ? a : b);
 
-// ═══════════════════════════════════════════
-// HEADER UPDATE
-// ═══════════════════════════════════════════
-function updateHeader(){
-  const eq = totalEquity(), inv = totalInvested(), pnl = totalPnl();
-  document.getElementById('h-equity').textContent = 'Rp '+Math.round(eq).toLocaleString('id');
-  document.getElementById('h-invested').textContent = 'Rp '+Math.round(inv).toLocaleString('id');
-  const pnlSign = pnl>=0?'+':'';
-  const pnlPct = (pnl/inv*100).toFixed(2);
-  document.getElementById('h-pnl').textContent = pnlSign+Math.round(pnl).toLocaleString('id')+' ('+pnlSign+pnlPct+'%)';
-  document.getElementById('h-pnl').className = pnl>=0?'hs-v green':'hs-v red';
+// ════════════════════════════════════════
+// LIGHT/DARK MODE
+// ════════════════════════════════════════
+function toggleMode() {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('ac_mode', isLight ? 'light' : 'dark');
+  document.getElementById('mode-btn').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+}
+
+// ════════════════════════════════════════
+// HEADER
+// ════════════════════════════════════════
+function updateHeader() {
+  const inv = totalInvested(), pnl = totalPnl(), mv = totalMktVal();
+  const div = annualDiv(), yoc = (div / inv * 100);
+  const pnlSign = pnl >= 0 ? '+' : '';
+  const pnlPct = (pnl / inv * 100).toFixed(2);
+  document.getElementById('h-mktval').textContent = rp(mv);
+  document.getElementById('h-mktval').className = 'hs-v ' + (mv >= inv ? 'green' : 'red');
+  document.getElementById('h-invested').textContent = rp(inv);
+  document.getElementById('h-pnl').textContent = pnlSign + Math.round(pnl).toLocaleString('id') + ' (' + pnlSign + pnlPct + '%)';
+  document.getElementById('h-pnl').className = 'hs-v ' + (pnl >= 0 ? 'green' : 'red');
+  document.getElementById('h-div').textContent = rp(div) + '/thn';
+  document.getElementById('h-yoc').textContent = yoc.toFixed(1) + '%';
   const hvy = heaviest();
-  document.getElementById('h-heavy').textContent = hvy+' '+pctOf(hvy).toFixed(1)+'%';
+  document.getElementById('h-heavy').textContent = hvy + ' ' + actualPct(hvy).toFixed(1) + '%';
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════
 // TAB SWITCH
-// ═══════════════════════════════════════════
-function switchTab(id, el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+// ════════════════════════════════════════
+function switchTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('panel-'+id).classList.add('active');
-  if(id==='rebalance') renderRebalance();
-  if(id==='porto') renderPortoEdit();
+  document.getElementById('panel-' + id).classList.add('active');
+  if (id === 'rebalance') { renderRebalance(); renderDivForecast(); }
+  if (id === 'porto') renderPortoEdit();
+  if (id === 'analysis') renderAnalysis();
 }
 
-// ═══════════════════════════════════════════
-// MONTH CHANGE — hint for dividend amount
-// ═══════════════════════════════════════════
-function onMonthChange(){
-  // No hardcoded presets anymore — just a smart hint
-  const m = parseInt(document.getElementById('sel-month').value);
+// ════════════════════════════════════════
+// ICHIMOKU CALCULATION
+// ════════════════════════════════════════
+function calcIchimoku(ohlcv) {
+  const n = ohlcv.length;
+  if (n < 52) return null;
+  const highs = ohlcv.map(b => b.h);
+  const lows = ohlcv.map(b => b.l);
+  const closes = ohlcv.map(b => b.c);
+  const last = n - 1;
+
+  const hh = (arr, start, len) => { let m = -Infinity; for (let i = start; i < start+len && i < arr.length; i++) m = Math.max(m, arr[i]); return m; };
+  const ll = (arr, start, len) => { let m = Infinity; for (let i = start; i < start+len && i < arr.length; i++) m = Math.min(m, arr[i]); return m; };
+
+  const tenkan = (hh(highs, last-8, 9) + ll(lows, last-8, 9)) / 2;
+  const kijun  = (hh(highs, last-25, 26) + ll(lows, last-25, 26)) / 2;
+  const senkouA = (tenkan + kijun) / 2;
+  const senkouB = (hh(highs, last-51, 52) + ll(lows, last-51, 52)) / 2;
+  const price = closes[last];
+  const prevPrice = closes[last - 26] || closes[0];
+
+  const aboveCloud = price > Math.max(senkouA, senkouB);
+  const belowCloud = price < Math.min(senkouA, senkouB);
+  const inCloud = !aboveCloud && !belowCloud;
+  const tkBull = tenkan >= kijun;
+  const cloudBull = senkouA >= senkouB;
+  const chikouBull = price > prevPrice;
+
+  let score = 0;
+  if (aboveCloud) score += 3; else if (inCloud) score += 1; else score -= 2;
+  if (tkBull) score += 2; else score -= 1;
+  if (cloudBull) score += 1;
+  if (chikouBull) score += 1;
+
+  let signal, sigClass;
+  if (score >= 6)      { signal = 'BUY';        sigClass = 'bg'; }
+  else if (score >= 4) { signal = 'AKUMULASI';  sigClass = 'bb'; }
+  else if (score >= 1) { signal = 'HOLD';        sigClass = 'ba'; }
+  else if (score >= -1){ signal = 'WAIT & SEE'; sigClass = 'bm'; }
+  else                  { signal = 'HINDARI';    sigClass = 'br'; }
+
+  return { tenkan, kijun, senkouA, senkouB, price, score, signal, sigClass,
+           aboveCloud, inCloud, belowCloud, tkBull, cloudBull, chikouBull };
+}
+
+// ════════════════════════════════════════
+// LIVE PRICE & OHLCV FETCH
+// ════════════════════════════════════════
+const YF_MAP = { ADMF:'ADMF.JK', ASII:'ASII.JK', BMRI:'BMRI.JK', ITMG:'ITMG.JK', POWR:'POWR.JK' };
+const STOOQ_MAP = { ADMF:'admf.jk', ASII:'asii.jk', BMRI:'bmri.jk', ITMG:'itmg.jk', POWR:'powr.jk' };
+
+function parseYahooOHLCV(data) {
+  const result = data?.chart?.result?.[0];
+  if (!result) throw new Error('no result');
+  const q = result.indicators.quote[0];
+  const ts = result.timestamp;
+  return ts.map((t, i) => ({ t, h: q.high[i], l: q.low[i], c: q.close[i], o: q.open[i] }))
+           .filter(x => x.c != null && x.h != null && x.l != null);
+}
+
+async function fetchYahooOHLCV(ticker) {
+  const sym = YF_MAP[ticker];
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
+  for (const proxy of [
+    `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
+  ]) {
+    try {
+      const r = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
+      if (!r.ok) continue;
+      const data = await r.json();
+      const bars = parseYahooOHLCV(data);
+      if (bars.length >= 30) return { bars, price: data.chart.result[0].meta.regularMarketPrice || bars[bars.length-1].c };
+    } catch(e) { continue; }
+  }
+  throw new Error('yahoo failed');
+}
+
+async function fetchStooqPrice(ticker) {
+  const sym = STOOQ_MAP[ticker];
+  const url = `https://stooq.com/q/l/?s=${sym}&f=sd2t2ohlcv&h&e=csv`;
+  const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(9000) });
+  if (!r.ok) throw new Error('stooq http');
+  const txt = await r.text();
+  const lines = txt.trim().split('\n');
+  if (lines.length < 2) throw new Error('stooq empty');
+  const cols = lines[1].split(',');
+  const p = parseFloat(cols[6]);
+  if (!p || p <= 0) throw new Error('stooq no price');
+  return p;
+}
+
+async function fetchTickerFull(ticker) {
+  // Try Yahoo first (full OHLCV for Ichimoku)
+  try {
+    const { bars, price } = await fetchYahooOHLCV(ticker);
+    return { price: Math.round(price), bars, source: 'Yahoo' };
+  } catch(e) {}
+  // Fallback: Stooq price only (no Ichimoku)
+  try {
+    const price = await fetchStooqPrice(ticker);
+    return { price: Math.round(price), bars: null, source: 'Stooq' };
+  } catch(e) {}
+  return null;
+}
+
+async function fetchAllPrices() {
+  const btn1 = document.getElementById('btn-fetch');
+  const btn2 = document.getElementById('btn-fetch-porto');
+  const hStatus = document.getElementById('h-price-status');
+  const fetchStatus = document.getElementById('fetch-status-porto');
+  const ichStatus = document.getElementById('ich-fetch-status');
+
+  [btn1, btn2].forEach(b => { if(b){ b.disabled = true; b.innerHTML = '<span class="spin">⟳</span> Fetching...'; }});
+  hStatus.textContent = '⟳ Fetching...';
+  hStatus.style.color = 'var(--amber)';
+  if (ichStatus) ichStatus.textContent = 'fetching OHLCV...';
+
+  const results = {};
+  await Promise.all(TICKERS.map(async t => {
+    results[t] = await fetchTickerFull(t);
+  }));
+
+  let successCount = 0;
+  TICKERS.forEach(t => {
+    if (results[t]) {
+      porto[t].price = results[t].price;
+      if (results[t].bars && results[t].bars.length >= 52) {
+        ichData[t] = calcIchimoku(results[t].bars);
+      }
+      successCount++;
+    }
+  });
+
+  // Update live price preview
+  const previewEl = document.getElementById('live-price-preview');
+  const cardsEl = document.getElementById('live-price-cards');
+  if (previewEl && cardsEl) {
+    cardsEl.innerHTML = '';
+    TICKERS.forEach(t => {
+      const res = results[t];
+      cardsEl.innerHTML += `
+        <div style="background:var(--bg3);border:1px solid ${res?'var(--green-border)':'var(--border)'};border-radius:6px;padding:10px;text-align:center;">
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">${t}</div>
+          <div style="font-size:15px;font-weight:500;color:${res?'var(--text)':'var(--dim)'}">${res ? rp(res.price) : '✕ Gagal'}</div>
+          ${res ? `<div style="font-size:8px;color:var(--dim);margin-top:2px">via ${res.source}</div>` : ''}
+          ${res && ichData[t] ? `<div style="margin-top:5px"><span class="badge ${ichData[t].sigClass}">${ichData[t].signal}</span></div>` : ''}
+        </div>`;
+    });
+    previewEl.style.display = 'block';
+  }
+
+  const now = new Date();
+  const ts = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+  const statusText = `✓ ${successCount}/${TICKERS.length} · ${ts}`;
+
+  hStatus.textContent = successCount > 0 ? `✓ ${ts}` : '✕ Gagal';
+  hStatus.style.color = successCount > 0 ? 'var(--green)' : 'var(--red)';
+  if (fetchStatus) { fetchStatus.textContent = statusText; fetchStatus.style.color = 'var(--green)'; }
+  if (ichStatus) ichStatus.textContent = successCount > 0 ? `updated ${ts}` : 'fetch gagal — data lama';
+  document.getElementById('last-updated').textContent = `Updated ${ts}`;
+
+  [btn1, btn2].forEach(b => { if(b){ b.disabled = false; b.textContent = '⟳ Fetch Harga Live'; }});
+
+  updateHeader();
+  renderIchimokuGrid();
+  renderLotGrid();
+
+  // Update porto edit inputs if open
+  const priceInputs = document.querySelectorAll('[id^="pe-price-"]');
+  priceInputs.forEach(inp => {
+    const t = inp.id.replace('pe-price-', '');
+    if (results[t]) { inp.value = results[t].price; inp.style.borderColor = 'var(--green)'; setTimeout(()=>inp.style.borderColor='', 2000); }
+  });
+}
+
+// ════════════════════════════════════════
+// ICHIMOKU GRID RENDER
+// ════════════════════════════════════════
+function renderIchimokuGrid() {
+  const grid = document.getElementById('ich-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  TICKERS.forEach(t => {
+    const ich = ichData[t];
+    const price = porto[t].price;
+    if (!ich) {
+      grid.innerHTML += `
+        <div class="ich-card">
+          <div class="ich-ticker">${t} <span class="badge bm">No Data</span></div>
+          <div style="font-size:10px;color:var(--dim);padding:8px 0">Fetch harga untuk kalkulasi Ichimoku</div>
+        </div>`;
+      return;
+    }
+    const cloudTop = Math.max(ich.senkouA, ich.senkouB);
+    const cloudBot = Math.min(ich.senkouA, ich.senkouB);
+    const posLabel = ich.aboveCloud ? '↑ Atas Cloud' : ich.belowCloud ? '↓ Bawah Cloud' : '↔ Dalam Cloud';
+    const posColor = ich.aboveCloud ? 'var(--green)' : ich.belowCloud ? 'var(--red)' : 'var(--amber)';
+    grid.innerHTML += `
+      <div class="ich-card" style="border-top:2px solid ${COLORS[t]}">
+        <div class="ich-ticker">${t} <span class="badge ${ich.sigClass}">${ich.signal}</span></div>
+        <div class="ich-row"><span class="ich-label">Price</span><span class="ich-val" style="color:var(--text)">${rp(price)}</span></div>
+        <div class="ich-row"><span class="ich-label">Tenkan (9)</span><span class="ich-val">${Math.round(ich.tenkan).toLocaleString('id')}</span></div>
+        <div class="ich-row"><span class="ich-label">Kijun (26)</span><span class="ich-val">${Math.round(ich.kijun).toLocaleString('id')}</span></div>
+        <div class="ich-row"><span class="ich-label">Cloud Top</span><span class="ich-val">${Math.round(cloudTop).toLocaleString('id')}</span></div>
+        <div class="ich-row"><span class="ich-label">Cloud Bot</span><span class="ich-val">${Math.round(cloudBot).toLocaleString('id')}</span></div>
+        <div class="ich-row"><span class="ich-label">TK Cross</span><span class="ich-val" style="color:${ich.tkBull?'var(--green)':'var(--red)'}">${ich.tkBull?'↑ Bullish':'↓ Bearish'}</span></div>
+        <div class="ich-row"><span class="ich-label">Chikou</span><span class="ich-val" style="color:${ich.chikouBull?'var(--green)':'var(--red)'}">${ich.chikouBull?'↑ Above':'↓ Below'}</span></div>
+        <div class="ich-row"><span class="ich-label">Posisi</span><span class="ich-val" style="color:${posColor}">${posLabel}</span></div>
+        <div class="ich-row"><span class="ich-label">Score</span><span class="ich-val">${ich.score}/7</span></div>
+      </div>`;
+  });
+}
+
+// ════════════════════════════════════════
+// LOT CALCULATOR
+// ════════════════════════════════════════
+function autoFillDiv() {
   const src = document.getElementById('sel-source').value;
-  // If source is set, suggest div amount based on portfolio
-  if(src !== '-' && src !== 'MULTI' && TICKERS.includes(src)){
-    const s = porto[src];
-    const est = Math.round(s.lots * 100 * s.divPerShare);
+  if (src !== '-' && src !== 'MULTI' && porto[src]) {
+    const est = Math.round(porto[src].lots * 100 * porto[src].divPerShare);
     document.getElementById('inp-div').value = est;
+  } else if (src === '-') {
+    document.getElementById('inp-div').value = 0;
   }
 }
 
-function resetMonth(){
+function resetLotForm() {
   document.getElementById('inp-div').value = 0;
   document.getElementById('inp-topup').value = 750000;
   document.getElementById('sel-source').value = '-';
   document.getElementById('sel-prio').value = 'auto';
 }
 
-// When source changes, auto-estimate dividend
-document.getElementById('sel-source').addEventListener('change', function(){
-  const src = this.value;
-  if(src !== '-' && src !== 'MULTI'){
-    const s = porto[src];
-    const est = Math.round(s.lots * 100 * s.divPerShare);
-    document.getElementById('inp-div').value = est;
-  } else if(src === '-'){
-    document.getElementById('inp-div').value = 0;
-  }
-});
-
-// ═══════════════════════════════════════════
-// LOT CALCULATOR
-// ═══════════════════════════════════════════
-function calcLots(){
-  const divAmt = Math.max(0, parseInt(document.getElementById('inp-div').value)||0);
-  const topup = Math.min(750000, Math.max(0, parseInt(document.getElementById('inp-topup').value)||0));
+function renderLotGrid() {
+  const divAmt = Math.max(0, parseInt(document.getElementById('inp-div').value) || 0);
+  const topup = Math.max(0, parseInt(document.getElementById('inp-topup').value) || 0);
   const source = document.getElementById('sel-source').value;
   const prioSel = document.getElementById('sel-prio').value;
   const total = divAmt + topup;
 
-  if(total === 0){
-    document.getElementById('result-summary').style.display = 'block';
-    document.getElementById('result-summary').innerHTML = '<span class="red">Total modal = 0. Input dividen atau top-up dulu.</span>';
-    return;
-  }
-
-  // Build priority order
-  // Base: merah first, then by gap from target (most underweight first)
-  const inv = totalInvested();
-  const reds = redStocks();
-
-  let order = [...TICKERS].filter(t => t !== source && t !== 'MULTI');
-  // Sort: reds first, then by (actual% - target%) ascending (most underweight = prioritas)
-  order.sort((a,b)=>{
+  // Build sorted order: red P&L first, then most underweight
+  let order = TICKERS.filter(t => t !== source && t !== 'MULTI');
+  order.sort((a, b) => {
     const aRed = porto[a].pnl < 0 ? -1 : 0;
     const bRed = porto[b].pnl < 0 ? -1 : 0;
-    if(aRed !== bRed) return aRed - bRed;
-    const aGap = pctOf(a) - targets[a];
-    const bGap = pctOf(b) - targets[b];
-    return aGap - bGap;
+    if (aRed !== bRed) return aRed - bRed;
+    return (actualPct(a) - targets[a]) - (actualPct(b) - targets[b]);
   });
 
-  // Manual override
-  if(prioSel !== 'auto' && prioSel !== source){
-    order = [prioSel, ...order.filter(t=>t!==prioSel)];
+  // Boost signal: if Ichimoku says BUY/AKUMULASI, move it up
+  if (Object.keys(ichData).length > 0) {
+    order.sort((a, b) => {
+      const sigScore = (t) => {
+        const ich = ichData[t];
+        if (!ich) return 0;
+        if (ich.signal === 'BUY') return -2;
+        if (ich.signal === 'AKUMULASI') return -1;
+        if (ich.signal === 'HINDARI') return 2;
+        return 0;
+      };
+      return sigScore(a) - sigScore(b);
+    });
   }
 
-  // Calculate: greedy allocation — buy as many lots as possible of #1 priority, leftover to #2, etc
+  if (prioSel !== 'auto' && prioSel !== source) {
+    order = [prioSel, ...order.filter(t => t !== prioSel)];
+  }
+
+  // Greedy allocation
   const alloc = {};
   let rem = total;
-  order.forEach(ticker=>{
-    const lotCost = porto[ticker].price * 100;
+  order.forEach((t, i) => {
+    const lotCost = porto[t].price * 100;
     const lots = Math.floor(rem / lotCost);
-    alloc[ticker] = lots;
-    if(ticker === order[0]) rem = rem - (lots * lotCost); // only subtract primary for leftover calc
+    alloc[t] = lots;
+    if (i === 0) rem = rem - (lots * lotCost);
   });
 
-  // For non-source: also show "if you put all here" lots
-  const afterPrim = total - (alloc[order[0]] * porto[order[0]].price * 100);
+  const afterPrim = total - ((order[0] ? alloc[order[0]] : 0) * (order[0] ? porto[order[0]].price * 100 : 0));
 
-  // Render lot cards
   const grid = document.getElementById('lot-grid');
+  if (!grid) return;
   grid.innerHTML = '';
-  TICKERS.forEach((ticker,i)=>{
+
+  TICKERS.forEach(ticker => {
     const s = porto[ticker];
     const lotCost = s.price * 100;
     const isSource = ticker === source;
-    const isPrimary = ticker === order[0] && !isSource;
     const rank = order.indexOf(ticker);
-    const lots = isSource ? 0 : (isPrimary ? alloc[ticker] : Math.floor(afterPrim/lotCost));
+    const isPrimary = rank === 0 && !isSource;
+    const lots = isSource ? 0 : (isPrimary ? alloc[ticker] : Math.floor(afterPrim / lotCost));
     const cost = lots * lotCost;
+    const pctAdded = s.invested > 0 ? ((cost / s.invested) * 100).toFixed(1) : '0';
 
-    const card = document.createElement('div');
-    card.className = 'lot-card' + (isPrimary && lots>0 ? ' winner' : '') + (isSource ? ' blocked' : '');
+    const ich = ichData[ticker];
+    const sigBadge = ich ? `<span class="badge ${ich.sigClass}">${ich.signal}</span>` : `<span class="badge bm">—</span>`;
 
-    let rankLabel = isSource ? 'SUMBER DIV — skip' : (rank>=0 ? '#'+(rank+1)+' prioritas' : '—');
+    let rankLabel = isSource ? 'SUMBER — skip' : (rank >= 0 ? `#${rank+1} prioritas` : '—');
     let noteText = isSource ? 'Tidak boleh reinvest ke sumber' :
-                  (lots > 0 ? `= Rp ${cost.toLocaleString('id')}` : 'Modal kurang 1 lot');
-    if(isPrimary && lots>0) noteText += ` · Sisa Rp ${afterPrim.toLocaleString('id')}`;
+                  (lots > 0 ? `+${pctAdded}% posisi` : 'Modal kurang 1 lot');
+    if (isPrimary && lots > 0) noteText += ` · Sisa ${rp(afterPrim)}`;
 
-    card.innerHTML = `
-      <div class="lc-rank">${rankLabel}</div>
-      <div class="lc-ticker">${ticker}</div>
-      <div class="lc-lots" style="color:${isSource?'var(--dim)':(lots>0?'var(--green)':'var(--red)')}">${isSource?'✕':lots+' lot'}</div>
-      <div class="lc-price">Rp ${s.price.toLocaleString('id')}/lbr</div>
-      <div class="lc-cost">1 lot = Rp ${lotCost.toLocaleString('id')}</div>
-      <div class="lc-note">${noteText}</div>
-    `;
-    grid.appendChild(card);
+    grid.innerHTML += `
+      <div class="lot-card${isPrimary && lots > 0 ? ' winner' : ''}${isSource ? ' blocked' : ''}">
+        <div class="lc-rank">${rankLabel}</div>
+        <div class="lc-ticker">${ticker}</div>
+        <div class="lc-lots" style="color:${isSource?'var(--dim)':(lots>0?'var(--green)':'var(--red)')}">${isSource ? '✕' : lots + ' lot'}</div>
+        <div class="lc-price">${rp(s.price)}/lbr</div>
+        <div class="lc-cost">1 lot = ${rp(lotCost)}</div>
+        <div class="lc-signal">${sigBadge}</div>
+        <div class="lc-note">${noteText}</div>
+      </div>`;
   });
 
   // Summary
-  const primT = order[0];
-  const primLots = alloc[primT];
-  const summary = document.getElementById('result-summary');
-  summary.style.display = 'block';
-
-  const rebalGap = TICKERS.map(t=>{
-    const gap = pctOf(t) - targets[t];
-    return `${t}: ${gap>0?'+':''}${gap.toFixed(1)}%`;
-  }).join(' · ');
-
-  summary.innerHTML = `
-    <div style="color:var(--accent2);font-size:10px;text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px;">Ringkasan Deployment</div>
-    <div class="row-meta"><span class="rl">Total modal bulan ini</span><span class="rv">Rp ${total.toLocaleString('id')}</span></div>
-    <div class="row-meta"><span class="rl">Dari dividen</span><span class="rv">Rp ${divAmt.toLocaleString('id')}</span></div>
-    <div class="row-meta"><span class="rl">Dari top-up</span><span class="rv">Rp ${topup.toLocaleString('id')}</span></div>
-    <div class="row-meta"><span class="rl">Rekomendasi utama</span><span class="rv green">${primT} — ${primLots} lot = Rp ${(primLots*porto[primT].price*100).toLocaleString('id')}</span></div>
-    <div class="row-meta"><span class="rl">Sisa setelah beli primer</span><span class="rv">Rp ${afterPrim.toLocaleString('id')}${afterPrim>0?' → parkir RDPU atau beli POWR lot kecil':''}</span></div>
-    <div style="margin-top:10px;padding:8px;background:var(--bg);border-radius:5px;font-size:10px;color:var(--dim);">Gap dari target: ${rebalGap}</div>
-  `;
+  if (total > 0 && order.length > 0) {
+    const primT = order[0];
+    const primLots = alloc[primT] || 0;
+    const summary = document.getElementById('lot-summary');
+    if (summary) {
+      summary.style.display = 'block';
+      const gaps = TICKERS.map(t => `${t}: ${pct(actualPct(t) - targets[t])}`).join(' · ');
+      summary.innerHTML = `
+        <div style="color:var(--accent2);font-size:10px;text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px">Ringkasan Deployment</div>
+        <div class="row-meta"><span class="rl">Total modal</span><span class="rv">${rp(total)}</span></div>
+        <div class="row-meta"><span class="rl">Dari dividen</span><span class="rv">${rp(divAmt)}</span></div>
+        <div class="row-meta"><span class="rl">Dari top-up</span><span class="rv">${rp(topup)}</span></div>
+        <div class="row-meta"><span class="rl">Rekomendasi utama</span><span class="rv green">${primT} — ${primLots} lot = ${rp(primLots*porto[primT].price*100)}</span></div>
+        <div class="row-meta"><span class="rl">Sisa setelah primer</span><span class="rv">${rp(afterPrim)}${afterPrim >= porto['POWR'].price*100?' → bisa beli POWR':''}</span></div>
+        <div style="margin-top:10px;padding:8px;background:var(--bg2);border-radius:5px;font-size:10px;color:var(--dim)">Gap dari target: ${gaps}</div>`;
+    }
+  }
 }
 
-// ═══════════════════════════════════════════
+function calcLots() { renderLotGrid(); }
+
+// ════════════════════════════════════════
 // REBALANCING
-// ═══════════════════════════════════════════
-function renderRebalance(){
+// ════════════════════════════════════════
+function renderRebalance() {
   const inv = totalInvested();
+  const mv = totalMktVal();
   const body = document.getElementById('reb-body');
+  if (!body) return;
   body.innerHTML = '';
 
-  TICKERS.forEach(ticker=>{
-    const s = porto[ticker];
-    const actual = pctOf(ticker);
-    const target = targets[ticker];
+  TICKERS.forEach(t => {
+    const s = porto[t];
+    const actual = actualPct(t);
+    const target = targets[t];
     const gap = actual - target;
-    const gapRp = Math.round((gap/100) * inv);
-    const lotCost = s.price * 100;
-    const lotsNeeded = Math.abs(Math.round(gapRp / lotCost));
+    const gapRp = Math.round((gap / 100) * mv);
+    const lotsNeeded = Math.abs(Math.round(gapRp / (s.price * 100)));
 
-    let action, actionClass;
-    if(gap > 5){ action = `TRIM ${lotsNeeded} lot`; actionClass = 'at-trim'; }
-    else if(gap < -5){ action = `BELI ${lotsNeeded} lot`; actionClass = 'at-buy'; }
-    else { action = 'HOLD'; actionClass = 'at-hold'; }
+    let act, actClass;
+    if (gap > 5)       { act = `TRIM ${lotsNeeded} lot`; actClass = 'act-trim'; }
+    else if (gap < -5) { act = `BELI ${lotsNeeded} lot`; actClass = 'act-buy'; }
+    else               { act = 'HOLD'; actClass = 'act-hold'; }
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="font-weight:500;color:var(--text);">${ticker}</td>
-      <td class="mono" style="color:var(--muted);">${target.toFixed(0)}%</td>
-      <td class="mono" style="color:${Math.abs(gap)>5?(gap>0?'var(--red)':'var(--green)'):'var(--muted)'};">${actual.toFixed(1)}%</td>
-      <td class="mono" style="color:${gap>5?'var(--red)':(gap<-5?'var(--green)':'var(--muted)')}">${gap>0?'+':''}${gap.toFixed(1)}%</td>
-      <td class="mono" style="color:var(--muted);">Rp ${s.invested.toLocaleString('id')}</td>
-      <td class="mono" style="color:${gapRp>0?'var(--red)':'var(--green)'};">${gapRp>0?'Kurangi':'Tambah'} Rp ${Math.abs(gapRp).toLocaleString('id')}</td>
-      <td><span class="action-tag ${actionClass}">${action}</span></td>
-    `;
-    body.appendChild(tr);
+    const gColor = Math.abs(gap) > 5 ? (gap > 0 ? 'var(--red)' : 'var(--green)') : 'var(--muted)';
+    body.innerHTML += `
+      <tr>
+        <td style="font-weight:500;color:${COLORS[t]}">${t}</td>
+        <td class="num">${target.toFixed(0)}%</td>
+        <td class="num" style="color:${gColor}">${actual.toFixed(1)}%</td>
+        <td class="num" style="color:${gColor}">${gap > 0 ? '+' : ''}${gap.toFixed(1)}%</td>
+        <td class="num">${rp(mktVal(t))}</td>
+        <td class="num" style="color:${gapRp > 0 ? 'var(--red)' : 'var(--green)'}">${gapRp > 0 ? 'Kurangi ' : 'Tambah '}${rp(Math.abs(gapRp))}</td>
+        <td class="ctr"><span class="act ${actClass}">${act}</span></td>
+      </tr>`;
   });
 
   // Bars
   const barsEl = document.getElementById('reb-bars');
-  barsEl.innerHTML = '';
-  TICKERS.forEach(ticker=>{
-    const actual = pctOf(ticker);
-    const target = targets[ticker];
-    const gap = actual - target;
-    barsEl.innerHTML += `
-      <div class="reb-bar-wrap" style="margin-bottom:12px;">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;">
-          <span style="color:var(--text);font-weight:500;">${ticker}</span>
-          <span>Aktual <span style="color:${COLORS[ticker]}">${actual.toFixed(1)}%</span> · Target ${target}% · Gap <span style="color:${Math.abs(gap)>5?(gap>0?'var(--red)':'var(--green)'):'var(--muted)'}">${gap>0?'+':''}${gap.toFixed(1)}%</span></span>
-        </div>
-        <div style="position:relative;height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;height:8px;width:${Math.min(actual,100)}%;background:${COLORS[ticker]};border-radius:4px;transition:width .5s;"></div>
-          <div style="position:absolute;top:0;left:${target}%;width:2px;height:8px;background:var(--text);opacity:.4;"></div>
-        </div>
-        <div style="font-size:8px;color:var(--dim);margin-top:3px;">Garis putih = target ${target}%</div>
-      </div>
-    `;
-  });
+  if (barsEl) {
+    barsEl.innerHTML = '';
+    // Stacked bar
+    let stackBar = '<div style="display:flex;gap:2px;height:14px;border-radius:6px;overflow:hidden;margin-bottom:14px">';
+    TICKERS.forEach(t => {
+      const p = actualPct(t).toFixed(1);
+      stackBar += `<div style="width:${p}%;background:${COLORS[t]};display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;overflow:hidden;white-space:nowrap" title="${t} ${p}%">${p > 5 ? t : ''}</div>`;
+    });
+    stackBar += '</div>';
+    barsEl.innerHTML = stackBar;
+
+    TICKERS.forEach(t => {
+      const actual = actualPct(t);
+      const target = targets[t];
+      const gap = actual - target;
+      const gColor = Math.abs(gap) > 5 ? (gap > 0 ? 'var(--red)' : 'var(--green)') : 'var(--muted)';
+      barsEl.innerHTML += `
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+            <span style="color:${COLORS[t]};font-weight:500">${t}</span>
+            <span>Aktual <span style="color:${COLORS[t]}">${actual.toFixed(1)}%</span> · Target ${target}% · Gap <span style="color:${gColor}">${gap>0?'+':''}${gap.toFixed(1)}%</span></span>
+          </div>
+          <div style="position:relative;height:7px;background:var(--bg4);border-radius:4px;overflow:visible">
+            <div style="height:7px;width:${Math.min(actual,100)}%;background:${COLORS[t]};border-radius:4px;transition:width .5s"></div>
+            <div style="position:absolute;top:-1px;left:${Math.min(target,100)}%;width:2px;height:9px;background:var(--text);opacity:.3;border-radius:1px"></div>
+          </div>
+        </div>`;
+    });
+  }
 
   renderRebalanceReco();
   renderTargetInputs();
 }
 
-function renderRebalanceReco(){
-  const inv = totalInvested();
-  const reco = document.getElementById('reb-reco');
-
-  // Find most underweight
-  const sorted = [...TICKERS].sort((a,b)=>(pctOf(a)-targets[a])-(pctOf(b)-targets[b]));
+function renderRebalanceReco() {
+  const sorted = [...TICKERS].sort((a,b) => (actualPct(a)-targets[a])-(actualPct(b)-targets[b]));
   const most = sorted[0];
   const least = sorted[sorted.length-1];
-  const mostGap = pctOf(most) - targets[most];
-  const leastGap = pctOf(least) - targets[least];
-
+  const mostGap = actualPct(most) - targets[most];
+  const leastGap = actualPct(least) - targets[least];
+  const reco = document.getElementById('reb-reco');
+  if (!reco) return;
   reco.innerHTML = `
-    <div style="font-size:11px;color:var(--muted);line-height:1.9;">
-      <div class="row-meta"><span class="rl">Paling underweight</span><span class="rv green">${most} (${mostGap.toFixed(1)}% di bawah target)</span></div>
-      <div class="row-meta"><span class="rl">Paling overweight</span><span class="rv red">${least} (${leastGap>0?'+':''}${leastGap.toFixed(1)}% di atas target)</span></div>
-      <div class="row-meta"><span class="rl">Rekomendasi sweep berikutnya</span><span class="rv acc">Arahkan ke ${most} sampai gap &lt; 5%</span></div>
-      ${leastGap > 15 ? `<div class="row-meta"><span class="rl">Peringatan</span><span class="rv red">${least} over target >15% — pertimbangkan trim saat harga bagus</span></div>` : ''}
-    </div>
-    <div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px;font-size:11px;color:var(--muted);line-height:1.7;">
-      Strategi: <span style="color:var(--text);">Dividen dari ${least} → sweep ke ${most}.</span> Ulangi sampai gap menyempit di bawah 5%. Jangan jual paksa — biarkan dividen dan top-up bekerja pelan-pelan.
-    </div>
-  `;
+    <div class="row-meta"><span class="rl">Paling underweight</span><span class="rv green">${most} (${mostGap.toFixed(1)}% di bawah target)</span></div>
+    <div class="row-meta"><span class="rl">Paling overweight</span><span class="rv red">${least} (+${leastGap.toFixed(1)}% di atas target)</span></div>
+    <div class="row-meta"><span class="rl">Sweep berikutnya</span><span class="rv acc">Arahkan ke ${most} sampai gap &lt; 5%</span></div>
+    ${leastGap > 15 ? `<div class="row-meta"><span class="rl">⚠ Peringatan</span><span class="rv red">${least} over target >15% — pertimbangkan trim saat harga bagus</span></div>` : ''}`;
 }
 
-function renderTargetInputs(){
+function renderTargetInputs() {
   const el = document.getElementById('target-inputs');
+  if (!el) return;
   el.innerHTML = '';
-  TICKERS.forEach(t=>{
-    el.innerHTML += `
-      <div class="ig">
-        <label>${t} Target %</label>
-        <input type="number" id="tgt-${t}" value="${targets[t]}" min="0" max="100" onchange="checkTargetTotal()">
-      </div>
-    `;
+  TICKERS.forEach(t => {
+    el.innerHTML += `<div class="ig"><label>${t} Target %</label><input type="number" id="tgt-${t}" value="${targets[t]}" min="0" max="100" oninput="checkTargetTotal()"></div>`;
   });
+  checkTargetTotal();
 }
 
-function checkTargetTotal(){
-  const total = TICKERS.reduce((s,t)=>s+(parseFloat(document.getElementById('tgt-'+t).value)||0),0);
-  const msg = document.getElementById('target-total-msg');
-  if(Math.abs(total-100)<0.1){
-    msg.innerHTML = '<span class="green">✓ Total = 100%</span>';
-  } else {
-    msg.innerHTML = `<span class="red">Total saat ini: ${total.toFixed(1)}% — harus = 100%</span>`;
-  }
+function checkTargetTotal() {
+  const total = TICKERS.reduce((s,t) => s + (parseFloat(document.getElementById('tgt-'+t)?.value)||0), 0);
+  const msg = document.getElementById('target-msg');
+  if (!msg) return;
+  msg.innerHTML = Math.abs(total-100) < 0.1
+    ? '<span class="green">✓ Total = 100%</span>'
+    : `<span class="red">Total: ${total.toFixed(1)}% — harus = 100%</span>`;
 }
 
-function saveTargets(){
-  const total = TICKERS.reduce((s,t)=>s+(parseFloat(document.getElementById('tgt-'+t).value)||0),0);
-  if(Math.abs(total-100)>0.5){ alert('Total target harus = 100%!'); return; }
-  TICKERS.forEach(t=>{ targets[t] = parseFloat(document.getElementById('tgt-'+t).value)||0; });
+function saveTargets() {
+  const total = TICKERS.reduce((s,t) => s + (parseFloat(document.getElementById('tgt-'+t)?.value)||0), 0);
+  if (Math.abs(total-100) > 0.5) { alert('Total target harus = 100%!'); return; }
+  TICKERS.forEach(t => { targets[t] = parseFloat(document.getElementById('tgt-'+t).value) || 0; });
   localStorage.setItem('ac_targets', JSON.stringify(targets));
   renderRebalance();
 }
 
-function resetTargets(){
+function resetTargets() {
   targets = JSON.parse(JSON.stringify(DEFAULT_TARGETS));
   localStorage.setItem('ac_targets', JSON.stringify(targets));
   renderRebalance();
 }
 
-// ═══════════════════════════════════════════
-// PORTO EDIT
-// ═══════════════════════════════════════════
-function renderPortoEdit(){
-  const grid = document.getElementById('porto-edit-grid');
+// ════════════════════════════════════════
+// DIVIDEND FORECAST
+// ════════════════════════════════════════
+function renderDivForecast() {
+  const body = document.getElementById('div-forecast-body');
+  const totalRow = document.getElementById('div-total-row');
+  if (!body) return;
+  body.innerHTML = '';
+
+  let totalGross = 0, totalNet = 0;
+  TICKERS.forEach(t => {
+    const s = porto[t];
+    const gross = s.lots * 100 * s.divPerShare;
+    const net = gross * 0.85; // 15% PPh final
+    const yieldOnCost = (s.divPerShare / (s.invested / (s.lots * 100))) * 100;
+    const yieldOnPrice = (s.divPerShare / s.price) * 100;
+    totalGross += gross;
+    totalNet += net;
+    body.innerHTML += `
+      <tr>
+        <td style="color:${COLORS[t]};font-weight:500">${t}</td>
+        <td class="num">${s.lots}</td>
+        <td class="num">${s.divPerShare.toLocaleString('id')}</td>
+        <td class="num">${rp(gross)}</td>
+        <td class="num">${rp(net)}</td>
+        <td class="num">${yieldOnCost.toFixed(1)}%</td>
+        <td class="num">${yieldOnPrice.toFixed(1)}%</td>
+      </tr>`;
+  });
+
+  if (totalRow) {
+    totalRow.innerHTML = `
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Total Gross/Thn</div><div style="font-family:'Fraunces',serif;font-size:18px;color:var(--accent2)">${rp(totalGross)}</div></div>
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">After Tax (85%)</div><div style="font-family:'Fraunces',serif;font-size:18px;color:var(--green)">${rp(totalNet)}</div></div>
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Per Bulan</div><div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text)">${rp(totalNet/12)}</div></div>
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Yield on Cost</div><div style="font-family:'Fraunces',serif;font-size:18px;color:var(--acc)">${(totalGross/totalInvested()*100).toFixed(1)}%</div></div>`;
+  }
+}
+
+// ════════════════════════════════════════
+// PORTFOLIO PROJECTION
+// ════════════════════════════════════════
+function renderProjection() {
+  const target = parseFloat(document.getElementById('proj-target').value) || 500_000_000;
+  const monthlyTopup = parseFloat(document.getElementById('proj-topup').value) || 750000;
+  const divGrowth = parseFloat(document.getElementById('proj-divgrowth').value) || 5;
+  const el = document.getElementById('proj-result');
+  if (!el) return;
+
+  let val = totalMktVal();
+  let div = annualDiv() * 0.85; // after tax
+  const rows = [];
+  let hitYear = null;
+
+  for (let y = 1; y <= 20; y++) {
+    div *= (1 + divGrowth / 100);
+    val += div + (monthlyTopup * 12);
+    const yoc = (div / val * 100).toFixed(1);
+    rows.push({ y, val: Math.round(val), div: Math.round(div), yoc });
+    if (!hitYear && val >= target) hitYear = y;
+  }
+
+  let html = `
+    <div class="success-box mb12">
+      ${hitYear ? `🎯 Target <strong>${rp(target)}</strong> tercapai dalam <strong>${hitYear} tahun</strong> (asumsi div growth ${divGrowth}%/thn + top-up ${rp(monthlyTopup*12)}/thn)` : `Target ${rp(target)} tidak tercapai dalam 20 tahun dengan asumsi ini.`}
+    </div>
+    <div class="overflow-x">
+    <table class="tbl">
+      <thead><tr><th>Tahun</th><th class="num">Nilai Porto</th><th class="num">Dividen/Thn</th><th class="num">Yield on Val</th><th class="num">Progress</th></tr></thead>
+      <tbody>`;
+  rows.forEach(r => {
+    const prog = Math.min(r.val / target * 100, 100).toFixed(0);
+    const hit = r.val >= target;
+    html += `
+      <tr style="${hit ? 'background:var(--green-bg)' : ''}">
+        <td style="color:${hit?'var(--green)':'var(--muted)'}">Y${r.y} ${hit?'🎯':''}</td>
+        <td class="num" style="font-weight:${hit?'500':'400'}">${rp(r.val)}</td>
+        <td class="num">${rp(r.div)}</td>
+        <td class="num">${r.yoc}%</td>
+        <td class="num" style="width:120px">
+          <div style="background:var(--bg4);border-radius:3px;height:6px;overflow:hidden">
+            <div style="width:${prog}%;height:6px;background:${hit?'var(--green)':'var(--accent)'};border-radius:3px"></div>
+          </div>
+          <div style="font-size:9px;color:var(--dim);margin-top:2px">${prog}%</div>
+        </td>
+      </tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+// ════════════════════════════════════════
+// ANALYSIS TAB
+// ════════════════════════════════════════
+function renderAnalysis() {
+  renderStockAnalysis();
+  renderFairValue();
+  renderForecastTable();
+  renderRiskGrid();
+}
+
+function renderStockAnalysis() {
+  const grid = document.getElementById('stock-analysis-grid');
+  if (!grid) return;
   grid.innerHTML = '';
-  TICKERS.forEach(ticker=>{
-    const s = porto[ticker];
-    const pct = pctOf(ticker).toFixed(1);
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    const price = porto[t].price;
+    const upside = ((d.fv_pe - price) / price * 100).toFixed(0);
+    const upsideColor = upside > 0 ? 'var(--green)' : 'var(--red)';
     grid.innerHTML += `
-      <div class="pe-card" style="border-top:2px solid ${COLORS[ticker]};">
-        <div class="pe-ticker">
-          ${ticker}
-          <span style="font-size:10px;color:var(--muted);">${pct}%</span>
+      <div class="card mb12" style="border-left:3px solid ${COLORS[t]}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:var(--text)">${t} <span style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace">— ${d.sector}</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-top:2px">Controlling: ${d.holding}</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span class="badge bm">P/E ${d.pe_curr}x</span>
+            <span class="badge bm">P/BV ${d.pbv}x</span>
+            <span class="badge bg">ROE ${d.roe}%</span>
+            <span class="badge bb">Div CAGR ${d.div_5yr_cagr}%</span>
+          </div>
         </div>
-        <div class="pe-field">
-          <label>Harga Pasar (Rp/lbr)</label>
-          <input type="number" id="pe-price-${ticker}" value="${s.price}" oninput="previewPorto()">
+        <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:12px;padding:10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)">${d.summary}</div>
+        <div class="g4">
+          <div style="padding:10px;background:var(--bg2);border-radius:5px;border:1px solid var(--border);text-align:center">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">P/E Hist Avg</div>
+            <div style="font-size:16px;font-family:'Fraunces',serif">${d.pe_hist}x</div>
+            <div style="font-size:9px;color:${d.pe_curr < d.pe_hist ? 'var(--green)' : 'var(--red)'};">${d.pe_curr < d.pe_hist ? '↓ Diskon' : '↑ Premium'}</div>
+          </div>
+          <div style="padding:10px;background:var(--bg2);border-radius:5px;border:1px solid var(--border);text-align:center">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Div Payout</div>
+            <div style="font-size:16px;font-family:'Fraunces',serif">${d.div_payout}%</div>
+            <div style="font-size:9px;color:${d.div_payout < 80 ? 'var(--green)' : 'var(--amber)'};">${d.div_payout < 80 ? '✓ Sustainable' : '⚠ Tinggi'}</div>
+          </div>
+          <div style="padding:10px;background:var(--bg2);border-radius:5px;border:1px solid var(--border);text-align:center">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">ROA</div>
+            <div style="font-size:16px;font-family:'Fraunces',serif">${d.roa}%</div>
+            <div style="font-size:9px;color:${d.roa > 5 ? 'var(--green)' : 'var(--amber)'};">${d.roa > 5 ? '✓ Efisien' : 'Moderate'}</div>
+          </div>
+          <div style="padding:10px;background:var(--bg2);border-radius:5px;border:1px solid var(--border);text-align:center">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">FV P/E Upside</div>
+            <div style="font-size:16px;font-family:'Fraunces',serif;color:${upsideColor}">${upside > 0 ? '+' : ''}${upside}%</div>
+            <div style="font-size:9px;color:var(--dim);">FV: ${rp(d.fv_pe)}</div>
+          </div>
         </div>
-        <div class="pe-field">
-          <label>Total Invested (Rp)</label>
-          <input type="number" id="pe-inv-${ticker}" value="${s.invested}" oninput="previewPorto()">
-        </div>
-        <div class="pe-field">
-          <label>P&amp;L Saat Ini (Rp)</label>
-          <input type="number" id="pe-pnl-${ticker}" value="${s.pnl}" oninput="previewPorto()">
-        </div>
-        <div class="pe-field">
-          <label>Jumlah Lot</label>
-          <input type="number" id="pe-lots-${ticker}" value="${s.lots}" oninput="previewPorto()">
-        </div>
-      </div>
-    `;
+      </div>`;
+  });
+}
+
+function renderFairValue() {
+  const body = document.getElementById('fv-body');
+  if (!body) return;
+  body.innerHTML = '';
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    const price = porto[t].price;
+    const consensus = Math.round((d.fv_pe + d.fv_ddm + d.fv_pbv) / 3);
+    const upside = ((consensus - price) / price * 100).toFixed(0);
+    const uColor = upside > 0 ? 'var(--green)' : 'var(--red)';
+    let verdict, vClass;
+    if (upside > 20)       { verdict = 'UNDERVALUED'; vClass = 'bg'; }
+    else if (upside > 5)   { verdict = 'FAIR';        vClass = 'bb'; }
+    else if (upside > -10) { verdict = 'FAIR/PRICEY'; vClass = 'ba'; }
+    else                   { verdict = 'OVERVALUED';  vClass = 'br'; }
+    body.innerHTML += `
+      <tr>
+        <td style="color:${COLORS[t]};font-weight:500">${t}</td>
+        <td class="num">${rp(price)}</td>
+        <td class="num">${rp(d.fv_pe)}</td>
+        <td class="num">${rp(d.fv_ddm)}</td>
+        <td class="num">${rp(d.fv_pbv)}</td>
+        <td class="num bold">${rp(consensus)}</td>
+        <td class="num" style="color:${uColor};font-weight:500">${upside > 0 ? '+' : ''}${upside}%</td>
+        <td class="ctr"><span class="badge ${vClass}">${verdict}</span></td>
+      </tr>`;
+  });
+}
+
+function renderForecastTable() {
+  const body = document.getElementById('forecast-body');
+  if (!body) return;
+  body.innerHTML = '';
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    const price = porto[t].price;
+    const impl = ((d.base - price) / price * 100).toFixed(0);
+    const iColor = impl > 0 ? 'var(--green)' : 'var(--red)';
+    body.innerHTML += `
+      <tr>
+        <td style="color:${COLORS[t]};font-weight:500">${t}</td>
+        <td class="num">${rp(price)}</td>
+        <td class="num red">${rp(d.bear)}</td>
+        <td class="num">${rp(d.base)}</td>
+        <td class="num green">${rp(d.bull)}</td>
+        <td class="num bold">${rp(d.base)}</td>
+        <td class="num" style="color:${iColor};font-weight:500">${impl > 0 ? '+' : ''}${impl}%</td>
+      </tr>`;
+  });
+}
+
+function renderRiskGrid() {
+  const grid = document.getElementById('risk-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    let risksHtml = '';
+    d.risks.forEach(r => {
+      risksHtml += `<div class="risk-cell risk-${r.level} mb8"><strong>${r.label}</strong></div>`;
+    });
+    grid.innerHTML += `
+      <div class="card mb12" style="border-top:2px solid ${COLORS[t]}">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">${t} — Risk Register</div>
+        <div class="g2">${risksHtml}</div>
+      </div>`;
+  });
+}
+
+// ════════════════════════════════════════
+// EDIT PORTO
+// ════════════════════════════════════════
+function renderPortoEdit() {
+  const grid = document.getElementById('porto-edit-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  TICKERS.forEach(t => {
+    const s = porto[t];
+    const pct_v = actualPct(t).toFixed(1);
+    grid.innerHTML += `
+      <div class="pe-card" style="border-top:3px solid ${COLORS[t]}">
+        <div class="pe-ticker">${t} <span style="font-size:10px;color:var(--muted)">${pct_v}%</span></div>
+        <div class="pe-field"><label>Harga (Rp/lbr)</label><input type="number" id="pe-price-${t}" value="${s.price}" oninput="previewPorto()"></div>
+        <div class="pe-field"><label>Invested (Rp)</label><input type="number" id="pe-inv-${t}" value="${s.invested}" oninput="previewPorto()"></div>
+        <div class="pe-field"><label>P&amp;L (Rp)</label><input type="number" id="pe-pnl-${t}" value="${s.pnl}" oninput="previewPorto()"></div>
+        <div class="pe-field"><label>Jumlah Lot</label><input type="number" id="pe-lots-${t}" value="${s.lots}" oninput="previewPorto()"></div>
+      </div>`;
   });
 
   const divEl = document.getElementById('div-inputs');
-  divEl.innerHTML = '';
-  TICKERS.forEach(ticker=>{
-    const s = porto[ticker];
-    divEl.innerHTML += `
-      <div class="ig">
-        <label>${ticker} Div/lbr (Rp)</label>
-        <input type="number" id="pe-div-${ticker}" value="${s.divPerShare}" step="0.01">
-      </div>
-    `;
-  });
-
+  if (divEl) {
+    divEl.innerHTML = '';
+    TICKERS.forEach(t => {
+      divEl.innerHTML += `<div class="ig"><label>${t} Div/lbr (Rp)</label><input type="number" id="pe-div-${t}" value="${porto[t].divPerShare}" step="0.01"></div>`;
+    });
+  }
   renderPortoComposition();
 }
 
-function previewPorto(){
-  // Live update composition bar while editing
-  renderPortoComposition();
-}
+function previewPorto() { renderPortoComposition(); }
 
-function renderPortoComposition(){
-  const tempPorto = {};
-  TICKERS.forEach(t=>{
-    const invEl = document.getElementById('pe-inv-'+t);
-    const inv = invEl ? (parseFloat(invEl.value)||porto[t].invested) : porto[t].invested;
-    tempPorto[t] = inv;
+function renderPortoComposition() {
+  const tempInv = {};
+  TICKERS.forEach(t => {
+    const el = document.getElementById('pe-inv-' + t);
+    tempInv[t] = el ? (parseFloat(el.value) || porto[t].invested) : porto[t].invested;
   });
-  const total = Object.values(tempPorto).reduce((a,b)=>a+b,0);
+  const total = Object.values(tempInv).reduce((a, b) => a + b, 0);
   const el = document.getElementById('porto-composition');
+  if (!el) return;
 
-  let bar = '<div style="display:flex;gap:2px;height:12px;border-radius:5px;overflow:hidden;margin-bottom:12px;">';
-  let legend = '<div style="display:flex;gap:14px;flex-wrap:wrap;">';
-  TICKERS.forEach(t=>{
-    const pct = (tempPorto[t]/total*100).toFixed(1);
-    bar += `<div style="width:${pct}%;background:${COLORS[t]};" title="${t} ${pct}%"></div>`;
-    legend += `<span style="font-size:10px;display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:${COLORS[t]};border-radius:1px;display:inline-block;"></span>${t} ${pct}%</span>`;
+  let bar = '<div style="display:flex;gap:2px;height:14px;border-radius:6px;overflow:hidden;margin-bottom:12px">';
+  let legend = '<div style="display:flex;gap:14px;flex-wrap:wrap">';
+  TICKERS.forEach(t => {
+    const p = (tempInv[t] / total * 100).toFixed(1);
+    bar += `<div style="width:${p}%;background:${COLORS[t]}" title="${t} ${p}%"></div>`;
+    legend += `<span style="font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:${COLORS[t]};border-radius:1px;display:inline-block"></span>${t} ${p}%</span>`;
   });
-  bar += '</div>';
-  legend += '</div>';
-  el.innerHTML = bar + legend;
+  el.innerHTML = bar + '</div>' + legend + '</div>';
 }
 
-function savePorto(){
-  TICKERS.forEach(t=>{
-    porto[t].price = parseFloat(document.getElementById('pe-price-'+t).value)||porto[t].price;
-    porto[t].invested = parseFloat(document.getElementById('pe-inv-'+t).value)||porto[t].invested;
-    porto[t].pnl = parseFloat(document.getElementById('pe-pnl-'+t).value)||0;
-    porto[t].lots = parseInt(document.getElementById('pe-lots-'+t).value)||porto[t].lots;
-    porto[t].divPerShare = parseFloat(document.getElementById('pe-div-'+t).value)||porto[t].divPerShare;
+function savePorto() {
+  TICKERS.forEach(t => {
+    porto[t].price    = parseFloat(document.getElementById('pe-price-' + t)?.value) || porto[t].price;
+    porto[t].invested = parseFloat(document.getElementById('pe-inv-' + t)?.value)   || porto[t].invested;
+    porto[t].pnl      = parseFloat(document.getElementById('pe-pnl-' + t)?.value)   || 0;
+    porto[t].lots     = parseInt(document.getElementById('pe-lots-' + t)?.value)     || porto[t].lots;
+    porto[t].divPerShare = parseFloat(document.getElementById('pe-div-' + t)?.value) || porto[t].divPerShare;
   });
   localStorage.setItem('ac_porto', JSON.stringify(porto));
   updateHeader();
   renderPortoEdit();
   const msg = document.getElementById('save-msg');
-  msg.style.display = 'block';
-  setTimeout(()=>msg.style.display='none', 3000);
+  if (msg) { msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 3000); }
 }
 
-function resetPorto(){
-  if(!confirm('Reset ke data awal April 2026?')) return;
+function resetPorto() {
+  if (!confirm('Reset ke data default April 2026?')) return;
   porto = JSON.parse(JSON.stringify(DEFAULT_PORTO));
   localStorage.setItem('ac_porto', JSON.stringify(porto));
   updateHeader();
   renderPortoEdit();
 }
 
-// ═══════════════════════════════════════════
-// LIVE PRICE — Twelve Data (primary) + fallback
-// Twelve Data: proper CORS support, IDX coverage
-// Fallback: Stooq CSV, Yahoo v8 via proxy
-// ═══════════════════════════════════════════
-
-// ═══════════════════════════════════════════
-// LIVE PRICE — Yahoo Finance (primary)
-// Yahoo Finance v8 via allorigins proxy
-// with proper cookie bypass headers
-// Fallback: Stooq CSV
-// ═══════════════════════════════════════════
-
-const YF_MAP = {
-  ADMF: 'ADMF.JK', ASII: 'ASII.JK', BMRI: 'BMRI.JK',
-  ITMG: 'ITMG.JK', POWR: 'POWR.JK'
-};
-const STOOQ_MAP = {
-  ADMF: 'admf.jk', ASII: 'asii.jk', BMRI: 'bmri.jk',
-  ITMG: 'itmg.jk', POWR: 'powr.jk'
-};
-
-// Tier 1a: Yahoo Finance via corsproxy.io dengan cookie header
-async function fetchYahooCorsProxy(ticker) {
-  const sym = YF_MAP[ticker];
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=5d`;
-  const resp = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0',
-      'Accept': 'application/json',
-      'Cookie': 'GUC=; tbla_id=; A1=;'
-    },
-    signal: AbortSignal.timeout(10000)
-  });
-  if (!resp.ok) throw new Error('yf-cors HTTP ' + resp.status);
-  const data = await resp.json();
-  const meta = data?.chart?.result?.[0]?.meta;
-  const price = meta?.regularMarketPrice || meta?.previousClose;
-  if (!price || price <= 0) throw new Error('yf-cors no price');
-  return Math.round(price);
-}
-
-// Tier 1b: Yahoo Finance via allorigins
-async function fetchYahooAllOrigins(ticker) {
-  const sym = YF_MAP[ticker];
-  const url = `https://query2.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=5d`;
-  const resp = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, {
-    signal: AbortSignal.timeout(10000)
-  });
-  if (!resp.ok) throw new Error('yf-ao HTTP ' + resp.status);
-  const data = await resp.json();
-  const meta = data?.chart?.result?.[0]?.meta;
-  const price = meta?.regularMarketPrice || meta?.previousClose;
-  if (!price || price <= 0) throw new Error('yf-ao no price');
-  return Math.round(price);
-}
-
-// Tier 2: Stooq CSV via corsproxy — EOD data, reliable
-async function fetchStooq(ticker) {
-  const sym = STOOQ_MAP[ticker];
-  const url = `https://stooq.com/q/l/?s=${sym}&f=sd2t2ohlcv&h&e=csv`;
-  const resp = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, {
-    signal: AbortSignal.timeout(10000)
-  });
-  if (!resp.ok) throw new Error('stooq HTTP ' + resp.status);
-  const text = await resp.text();
-  const lines = text.trim().split('\n');
-  if (lines.length < 2) throw new Error('stooq empty');
-  const cols = lines[1].split(',');
-  const close = parseFloat(cols[6]);
-  if (!close || close <= 0) throw new Error('stooq bad price');
-  return Math.round(close);
-}
-
-// Tier 3: Yahoo Finance via thingproxy (another public CORS proxy)
-async function fetchYahooThingProxy(ticker) {
-  const sym = YF_MAP[ticker];
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=5d`;
-  const resp = await fetch(`https://thingproxy.freeboard.io/fetch/${url}`, {
-    signal: AbortSignal.timeout(10000)
-  });
-  if (!resp.ok) throw new Error('yf-tp HTTP ' + resp.status);
-  const data = await resp.json();
-  const meta = data?.chart?.result?.[0]?.meta;
-  const price = meta?.regularMarketPrice || meta?.previousClose;
-  if (!price || price <= 0) throw new Error('yf-tp no price');
-  return Math.round(price);
-}
-
-// Master fetch — coba semua tier sampai ada yang works
-async function fetchTickerPrice(ticker) {
-  const methods = [
-    { name: 'Yahoo (proxy 1)', fn: () => fetchYahooCorsProxy(ticker) },
-    { name: 'Yahoo (proxy 2)', fn: () => fetchYahooAllOrigins(ticker) },
-    { name: 'Stooq EOD', fn: () => fetchStooq(ticker) },
-    { name: 'Yahoo (proxy 3)', fn: () => fetchYahooThingProxy(ticker) },
-  ];
-  for (const m of methods) {
-    try {
-      const price = await m.fn();
-      if (price && price > 0) return { price, source: m.name };
-    } catch (e) {
-      // try next
-    }
-  }
-  return null;
-}
-
-function getTDApiKey() {
-  return localStorage.getItem('td_api_key') || '';
-}
-
-async function fetchLivePrices() {
-  const btn = document.getElementById('btn-fetch-live');
-  const statusEl = document.getElementById('fetch-status');
-  const headerStatus = document.getElementById('h-price-status');
-  const previewEl = document.getElementById('live-price-preview');
-  const gridEl = document.getElementById('live-price-grid');
-
-  btn.textContent = '⏳ Fetching...';
-  btn.disabled = true;
-  statusEl.innerHTML = '<span style="color:var(--amber);">Mencoba Yahoo → Stooq → fallback...</span>';
-  headerStatus.textContent = '⏳ Fetching...';
-  headerStatus.style.color = 'var(--amber)';
-
-  const results = {};
-  let successCount = 0;
-
-  // Fetch all tickers in parallel with per-ticker status
-  const promises = TICKERS.map(async (ticker) => {
-    const res = await fetchTickerPrice(ticker);
-    if (res) {
-      results[ticker] = res; // { price, source }
-      successCount++;
-    } else {
-      results[ticker] = null;
-    }
-  });
-
-  await Promise.all(promises);
-
-  // Render preview grid
-  gridEl.innerHTML = '';
-  TICKERS.forEach(ticker => {
-    const res = results[ticker];
-    const currentPrice = porto[ticker].price;
-    const hasPrice = res !== null;
-    const livePrice = hasPrice ? res.price : null;
-    const source = hasPrice ? res.source : null;
-    const diff = hasPrice ? livePrice - currentPrice : 0;
-    const diffPct = hasPrice ? ((diff / currentPrice) * 100).toFixed(1) : '—';
-    const diffColor = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
-
-    gridEl.innerHTML += `
-      <div style="background:var(--bg3);border:1px solid ${hasPrice?'var(--green-border)':'var(--border)'};border-radius:6px;padding:10px;text-align:center;">
-        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">${ticker}</div>
-        <div style="font-size:16px;font-weight:500;color:${hasPrice?'var(--text)':'var(--dim)'};">
-          ${hasPrice ? 'Rp ' + livePrice.toLocaleString('id') : '✕ Gagal'}
-        </div>
-        <div style="font-size:9px;color:var(--dim);margin-top:2px;">Porto: Rp ${currentPrice.toLocaleString('id')}</div>
-        ${hasPrice ? `<div style="font-size:10px;color:${diffColor};margin-top:3px;">${diff>=0?'+':''}${diff.toLocaleString('id')} (${diff>=0?'+':''}${diffPct}%)</div>` : ''}
-        ${source ? `<div style="font-size:8px;color:var(--dim);margin-top:2px;">via ${source}</div>` : ''}
-        ${hasPrice ? `<button onclick="applyLivePrice('${ticker}', ${livePrice})" style="margin-top:6px;font-size:9px;padding:3px 8px;background:var(--accent);color:var(--bg);border:none;border-radius:3px;cursor:pointer;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;">Apply</button>` : '<div style="font-size:8px;color:var(--red);margin-top:4px;">Semua sumber gagal</div>'}
-      </div>
-    `;
-  });
-
-  previewEl.style.display = 'block';
-
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
-
-  if (successCount > 0) {
-    statusEl.innerHTML = `<span style="color:var(--green);">✓ ${successCount}/${TICKERS.length} berhasil · ${timeStr}</span>`;
-    headerStatus.textContent = `✓ Live ${timeStr}`;
-    headerStatus.style.color = 'var(--green)';
-
-    // Collect successful prices for Apply All
-    const priceMap = {};
-    TICKERS.forEach(t => { if(results[t]) priceMap[t] = results[t].price; });
-
-    if (successCount === TICKERS.length) {
-      gridEl.innerHTML += `
-        <div style="grid-column:1/-1;margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <button class="btn btn-accent" onclick='applyAllLivePrices(${JSON.stringify(priceMap)})'>
-            ✓ Apply Semua ke Porto
-          </button>
-          <span style="font-size:10px;color:var(--muted);">Lalu klik "Simpan Semua Perubahan" di bawah.</span>
-        </div>
-      `;
-    } else {
-      gridEl.innerHTML += `
-        <div style="grid-column:1/-1;margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <button class="btn btn-accent" onclick='applyAllLivePrices(${JSON.stringify(priceMap)})'>
-            Apply ${successCount} Harga yang Berhasil
-          </button>
-          <span style="font-size:10px;color:var(--amber);">${TICKERS.length - successCount} saham gagal — input manual.</span>
-        </div>
-      `;
-    }
-  } else {
-    statusEl.innerHTML = `<span style="color:var(--red);">✕ Semua sumber gagal (Stooq + Yahoo). Network timeout atau semua proxy down. Input manual.</span>`;
-    headerStatus.textContent = '✕ Gagal';
-    headerStatus.style.color = 'var(--red)';
-  }
-
-  btn.textContent = '↻ Fetch Harga Live';
-  btn.disabled = false;
-}
-
-function applyLivePrice(ticker, price) {
-  const input = document.getElementById('pe-price-' + ticker);
-  if (input) {
-    input.value = price;
-    input.style.borderColor = 'var(--green)';
-    setTimeout(() => { input.style.borderColor = ''; }, 2000);
-    previewPorto();
-  }
-}
-
-function applyAllLivePrices(results) {
-  TICKERS.forEach(ticker => {
-    if (results[ticker]) {
-      applyLivePrice(ticker, results[ticker]);
-    }
-  });
-  // Flash success
-  const statusEl = document.getElementById('fetch-status');
-  statusEl.textContent = '✓ Semua harga diterapkan — klik Simpan untuk menyimpan';
-  statusEl.style.color = 'var(--green)';
-}
-
-// ═══════════════════════════════════════════
-// LIGHT / DARK MODE TOGGLE
-// ═══════════════════════════════════════════
-function toggleMode() {
-  const isLight = document.body.classList.toggle('light');
-  localStorage.setItem('ac_mode', isLight ? 'light' : 'dark');
-  document.getElementById('mode-btn').textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
-}
-
-window.addEventListener('load', ()=>{
-  // Restore saved mode
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+window.addEventListener('load', () => {
+  // Restore mode
   if (localStorage.getItem('ac_mode') === 'light') {
     document.body.classList.add('light');
-    document.getElementById('mode-btn').textContent = '🌙 Dark Mode';
+    document.getElementById('mode-btn').textContent = '🌙 Dark';
   }
   updateHeader();
-  calcLots();
-  renderPortoEdit();
+  renderLotGrid();
+  renderIchimokuGrid();
 });
 </script>
 </body>
