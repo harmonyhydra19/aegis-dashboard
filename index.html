@@ -39,7 +39,7 @@ body.light {
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;min-height:100vh;padding-bottom:60px;transition:background .3s,color .3s}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;min-height:100vh;transition:background .3s,color .3s;overflow:hidden}
 
 /* ──────── HEADER ──────── */
 .hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative;overflow:hidden;background:var(--bg2)}
@@ -268,74 +268,185 @@ canvas{max-width:100%}
 .modal-pin-input:focus{border-color:var(--accent)}
 .modal-err{font-size:10px;color:var(--red);min-height:16px;margin-bottom:10px}
 .modal-btns{display:flex;gap:8px;justify-content:center}
+
+/* ══════════════════════════════════════════════════════
+   SIDEBAR LAYOUT — v5 Design
+══════════════════════════════════════════════════════ */
+.app-shell{display:flex;min-height:100vh;height:100vh;overflow:hidden}
+
+/* ── LEFT SIDEBAR ── */
+.sidebar{width:220px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:width .25s,background .3s}
+.sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:200;line-height:1.1}
+.sb-logo em{font-style:italic;color:var(--accent2);font-weight:300}
+.sb-logo sup{font-size:8px;color:var(--muted);letter-spacing:.12em;font-family:'DM Mono',monospace;font-style:normal;vertical-align:super;margin-left:2px}
+.sb-tagline{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+
+/* Sidebar KPI mini-cards */
+.sb-kpi-block{padding:12px 14px;border-bottom:1px solid var(--border)}
+.sb-kpi-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.sb-kpi-l{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.sb-kpi-v{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums}
+
+/* Sidebar NAV */
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:0}
+.sb-section-label{font-size:7px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);padding:8px 8px 4px}
+.sb-nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:10px;color:var(--muted);letter-spacing:.04em;transition:all .15s;border:1px solid transparent;margin-bottom:2px;user-select:none}
+.sb-nav-item:hover{background:var(--bg4);color:var(--text)}
+.sb-nav-item.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sb-nav-item.active .sb-icon{color:#fff}
+.sb-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:7px;padding:1px 5px;border-radius:3px;font-weight:500}
+
+/* Sidebar bottom actions */
+.sb-bottom{padding:12px 14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.sb-fetch-btn{background:var(--accent);border:none;border-radius:7px;padding:7px 12px;font-size:9px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:6px;transition:opacity .15s;width:100%;justify-content:center}
+.sb-fetch-btn:hover{opacity:.85}
+.sb-fetch-btn:disabled{opacity:.5;cursor:not-allowed}
+.sb-mode-row{display:flex;justify-content:space-between;align-items:center}
+.sb-last-ts{font-size:8px;color:var(--dim)}
+.sb-mode-btn{background:var(--bg4);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:8px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;transition:all .2s}
+.sb-mode-btn:hover{border-color:var(--accent);color:var(--accent2)}
+
+/* ── MAIN CONTENT AREA ── */
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* Top bar — shows page title + urgent banner + status */
+.topbar{padding:12px 20px 10px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.topbar-title{font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--text);flex-shrink:0}
+.topbar-banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:7px;padding:5px 12px;font-size:9px;color:var(--amber);line-height:1.6;flex:1;min-width:0}
+.topbar-status{font-size:8px;color:var(--muted);flex-shrink:0;display:flex;align-items:center;gap:6px}
+
+/* Content scroll area */
+.content-scroll{flex:1;overflow-y:auto;padding:16px 20px}
+.content-scroll::-webkit-scrollbar{width:4px}
+.content-scroll::-webkit-scrollbar-track{background:var(--bg)}
+.content-scroll::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
+
+/* ── PANELS — all panels inside .content-scroll ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── Mobile sidebar toggle ── */
+.sb-toggle{display:none;position:fixed;bottom:16px;left:16px;z-index:200;background:var(--accent);border:none;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;color:#fff;box-shadow:0 4px 16px rgba(58,123,213,0.4)}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+
+@media(max-width:768px){
+  .sidebar{position:fixed;left:-230px;top:0;bottom:0;z-index:100;transition:left .25s,background .3s}
+  .sidebar.open{left:0}
+  .sb-toggle{display:flex;align-items:center;justify-content:center}
+  .sb-overlay.open{display:block}
+  .main-area{width:100%}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ HEADER ═══════════════ -->
-<div class="hdr">
-  <div class="hdr-brand">
-    <div class="hdr-name">Aegis <em>Alpha</em> <sup>v4</sup></div>
-    <div class="hdr-tagline">Dividend Flywheel · IDX 5-Stock · BlackRock Framework</div>
+<!-- ════════════════════════════════════════════
+     APP SHELL — Sidebar + Main
+════════════════════════════════════════════ -->
+<div class="app-shell">
+
+<!-- ─── LEFT SIDEBAR ─── -->
+<div class="sidebar" id="sidebar">
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v5</sup></div>
+    <div class="sb-tagline">Dividend Flywheel · IDX 5-Stock</div>
   </div>
 
-  <div class="hdr-kpi">
-    <div class="kpi">
-      <div class="kpi-l">Ekuitas Total</div>
-      <div class="kpi-v green" id="h-mktval">—</div>
+  <!-- KPI Mini block -->
+  <div class="sb-kpi-block">
+    <div class="sb-kpi-item">
+      <span class="sb-kpi-l">Ekuitas</span>
+      <span class="sb-kpi-v green" id="h-mktval">—</span>
     </div>
-    <div class="kpi">
-      <div class="kpi-l">Day P&L</div>
-      <div class="kpi-v" id="h-pnl">—</div>
+    <div class="sb-kpi-item">
+      <span class="sb-kpi-l">P&L</span>
+      <span class="sb-kpi-v" id="h-pnl">—</span>
     </div>
-    <div class="kpi">
-      <div class="kpi-l">Avg Yield/Thn</div>
-      <div class="kpi-v acc" id="h-yoc">—</div>
+    <div class="sb-kpi-item">
+      <span class="sb-kpi-l">Yield/Thn</span>
+      <span class="sb-kpi-v acc" id="h-yoc">—</span>
     </div>
-    <div class="kpi">
-      <div class="kpi-l">Cash Reserved</div>
-      <div class="kpi-v" id="h-cash">Rp0</div>
+    <div class="sb-kpi-item">
+      <span class="sb-kpi-l">Cash RDN</span>
+      <span class="sb-kpi-v" id="h-cash">Rp0</span>
     </div>
-    <div class="kpi">
-      <div class="kpi-l">Div / Bulan</div>
-      <div class="kpi-v acc" id="h-div">—</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-l">Harga Live</div>
-      <div class="kpi-v sm" id="h-price-status" style="color:var(--muted)">⟳ Belum Fetch</div>
+    <div class="sb-kpi-item">
+      <span class="sb-kpi-l">Div/Bulan</span>
+      <span class="sb-kpi-v acc" id="h-div">—</span>
     </div>
   </div>
 
-  <div class="hdr-actions">
-    <button class="mode-btn" id="mode-btn" onclick="toggleMode()">☀️ Light</button>
-    <button class="auto-fetch-btn" id="btn-main-fetch" onclick="confirmAndFetch()">
-      <span id="fetch-icon">⟳</span> Auto Fetch
+  <!-- Navigation -->
+  <div class="sb-nav">
+    <div class="sb-section-label">Dashboard</div>
+    <div class="sb-nav-item active" onclick="switchTab('snapshot',this)" data-tab="snapshot">
+      <span class="sb-icon">📊</span> Financial Snapshot
+    </div>
+    <div class="sb-nav-item" onclick="switchTab('analytics',this)" data-tab="analytics">
+      <span class="sb-icon">📈</span> Portfolio Analytics
+    </div>
+
+    <div class="sb-section-label">Analisa</div>
+    <div class="sb-nav-item" onclick="switchTab('deepdive',this)" data-tab="deepdive">
+      <span class="sb-icon">🔬</span> Deep Dive
+    </div>
+    <div class="sb-nav-item" onclick="switchTab('lot',this)" data-tab="lot">
+      <span class="sb-icon">💰</span> Lot Recommender
+      <span class="sb-badge">NEW</span>
+    </div>
+    <div class="sb-nav-item" onclick="switchTab('rebalance',this)" data-tab="rebalance">
+      <span class="sb-icon">⚖️</span> Rebalancing
+    </div>
+
+    <div class="sb-section-label">Tools</div>
+    <div class="sb-nav-item" onclick="switchTab('porto',this)" data-tab="porto">
+      <span class="sb-icon">✏️</span> Edit Porto
+    </div>
+    <div class="sb-nav-item" onclick="switchTab('ocr',this)" data-tab="ocr">
+      <span class="sb-icon">📷</span> Scan Stockbit
+    </div>
+    <div class="sb-nav-item" onclick="switchTab('rules',this)" data-tab="rules">
+      <span class="sb-icon">📜</span> Rules
+    </div>
+  </div>
+
+  <!-- Bottom actions -->
+  <div class="sb-bottom">
+    <button class="sb-fetch-btn" id="btn-main-fetch" onclick="confirmAndFetch()" disabled>
+      <span id="fetch-icon">⟳</span> <span id="h-price-status">Auto Fetch</span>
     </button>
-    <div class="last-ts" id="last-updated">—</div>
+    <div class="sb-mode-row">
+      <div class="sb-last-ts" id="last-updated">—</div>
+      <button class="sb-mode-btn" id="mode-btn" onclick="toggleMode()">☀️ Light</button>
+    </div>
   </div>
-</div>
+</div><!-- end sidebar -->
 
-<!-- ═══════════════ TABS ═══════════════ -->
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('snapshot',this)">📊 Financial Snapshot</button>
-  <button class="tab" onclick="switchTab('analytics',this)">📈 Portfolio Analytics</button>
-  <button class="tab" onclick="switchTab('deepdive',this)">🔬 Deep Dive</button>
-  <button class="tab" onclick="switchTab('lot',this)">💰 Lot Recommender</button>
-  <button class="tab" onclick="switchTab('rebalance',this)">⚖️ Rebalancing</button>
-  <button class="tab" onclick="switchTab('porto',this)">✏️ Edit Porto</button>
-  <button class="tab" onclick="switchTab('rules',this)">📜 Rules</button>
-</div>
+<!-- ─── MAIN CONTENT ─── -->
+<div class="main-area">
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Financial Snapshot</div>
+    <div class="topbar-banner" id="urgent-banner-topbar">
+      ⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr &nbsp;|&nbsp;
+      <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei
+    </div>
+    <div class="topbar-status">
+      <span id="fetch-sub-status" style="color:var(--dim)">—</span>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="content-scroll" id="content-scroll">
 
 <!-- ═══════════════════════════════════════════════════════════
      TAB 1: FINANCIAL SNAPSHOT — Bento Grid Layout
 ═══════════════════════════════════════════════════════════ -->
 <div class="panel active" id="panel-snapshot">
-
-  <!-- URGENT BANNER -->
-  <div class="banner" id="urgent-banner">
-    ⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr &nbsp;|&nbsp;
-    <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei
-  </div>
 
   <!-- TOP ROW: KPI BENTO -->
   <div class="bento bento-5 mb12">
@@ -448,10 +559,12 @@ canvas{max-width:100%}
 
   <!-- ROW 1: Charts overview -->
   <div class="bento bento-60-40 mb12">
-    <!-- Portfolio Performance (interactive line chart) -->
+    <!-- Dividend Income Tracker — real data dari porto -->
     <div class="bcard">
-      <div class="bcard-title">Pergerakan Portofolio vs Benchmark<span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;Simulasi 12bln · Hover untuk detail</span></div>
-      <div id="portfolio-chart-container"></div>
+      <div class="bcard-title">Dividend Income Tracker — Real Porto
+        <span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;Berdasarkan posisi & dividen aktual</span>
+      </div>
+      <div id="div-income-tracker"></div>
     </div>
 
     <!-- Sector allocation donut -->
@@ -660,7 +773,10 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <div class="sec-title">Rekomendasi Lot</div>
+  <div class="sec-title">⭐ Top Recommendation — Fokus Utama Bulan Ini</div>
+  <div id="lot-top-pick" class="mb12"></div>
+
+  <div class="sec-title">Rekomendasi Lot — Semua Saham</div>
   <div class="bento bento-5 mb12" id="lot-grid"></div>
   <div id="lot-summary" style="display:none" class="bcard mb12"></div>
 
@@ -679,7 +795,7 @@ canvas{max-width:100%}
       <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
       <table class="tbl" id="reb-table">
         <thead>
-          <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
+          <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
         </thead>
         <tbody id="reb-body"></tbody>
       </table>
@@ -1006,11 +1122,20 @@ function toggleMode() {
   renderPortoComposition();
   drawPortoChartSnap();
   drawSectorChart();
+  if(document.getElementById('panel-analytics').classList.contains('active')) drawDivIncomeTracker();
 }
 
-// ════════════════════════════════════
-// TAB SWITCH
-// ════════════════════════════════════
+const TAB_TITLES = {
+  snapshot: '📊 Financial Snapshot',
+  analytics: '📈 Portfolio Analytics',
+  deepdive: '🔬 Deep Dive',
+  lot: '💰 Lot Recommender',
+  rebalance: '⚖️ Rebalancing',
+  porto: '✏️ Edit Porto',
+  ocr: '📷 Scan Stockbit',
+  rules: '📜 Investment Rules'
+};
+
 function switchTab(id, el) {
   // Porto tab requires PIN
   if(id === 'porto') {
@@ -1021,19 +1146,42 @@ function switchTab(id, el) {
 }
 
 function _doSwitchTab(id, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  // Update sidebar active state
+  document.querySelectorAll('.sb-nav-item').forEach(t => t.classList.remove('active'));
+  if(el) el.classList.add('active');
+
+  // Update panels
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  if (el) el.classList.add('active');
   const panel = document.getElementById('panel-' + id);
-  if (panel) panel.classList.add('active');
+  if(panel) panel.classList.add('active');
+
+  // Update topbar title
+  const titleEl = document.getElementById('topbar-title');
+  if(titleEl) titleEl.textContent = TAB_TITLES[id] || id;
+
+  // Scroll to top
+  const scroll = document.getElementById('content-scroll');
+  if(scroll) scroll.scrollTop = 0;
 
   // Lazy render
-  if (id === 'snapshot') { updateHeader(); renderSnapshotPanel(); }
-  if (id === 'analytics') { renderAnalyticsPanel(); }
-  if (id === 'deepdive') { renderDeepDive(); }
-  if (id === 'lot') { renderLotGrid(); }
-  if (id === 'rebalance') { renderRebalance(); renderDivForecast(); }
-  if (id === 'porto') { renderPortoEdit(); renderSavepointList(); }
+  if(id==='snapshot') { updateHeader(); renderSnapshotPanel(); }
+  if(id==='analytics') { renderAnalyticsPanel(); }
+  if(id==='deepdive') { renderDeepDive(); }
+  if(id==='lot') { renderLotGrid(); }
+  if(id==='rebalance') { renderRebalance(); renderDivForecast(); }
+  if(id==='porto') { renderPortoEdit(); renderSavepointList(); }
+
+  // Close mobile sidebar
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
 }
 
 // ════════════════════════════════════
@@ -1187,7 +1335,7 @@ function renderAnalyticsPanel() {
   renderHeatmap();
   renderDivForecast();
   updatePortfolioMetrics();
-  drawPortfolioChart();
+  drawDivIncomeTracker();
   drawSectorChart();
 }
 
@@ -1237,129 +1385,82 @@ function renderHeatmap() {
   });
 }
 
-function drawPortfolioChart() {
-  const container = document.getElementById('portfolio-chart-container');
-  if (!container) return;
+function drawDivIncomeTracker() {
+  const el = document.getElementById('div-income-tracker');
+  if (!el) return;
+  const inv = totalInvested(), mkt = totalMktVal();
+  const grossDiv = annualDiv(), netDiv = grossDiv * 0.85;
+  const yoc = inv > 0 ? (grossDiv/inv*100) : 0;
+  const yop = mkt > 0 ? (grossDiv/mkt*100) : 0;
+  const monthly = netDiv/12;
+  const TARGET_MONTHLY = 10_000_000;
+  const progPct = Math.min(monthly/TARGET_MONTHLY*100,100);
+  const retPct = inv > 0 ? (totalPnl()/inv*100) : 0;
 
-  const months = ['Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des','Jan','Feb','Mar','Apr'];
-  const aegis  = [100,102,99,103,105,107,104,109,112,110,114,117];
-  const ihsg   = [100,101,99,100,102,103,100,104,106,104,107,105];
-  const sp500  = [100,103,105,107,109,111,108,113,116,118,121,119];
+  // Per-stock breakdown
+  const rows = TICKERS.map(t => {
+    const s = porto[t];
+    const gross = s.lots*100*s.divPerShare;
+    const net = gross*0.85;
+    const yieldOnCost = s.invested>0 ? (s.divPerShare/(s.invested/(s.lots*100)))*100 : 0;
+    const yieldOnPrice = s.price>0 ? (s.divPerShare/s.price)*100 : 0;
+    const share = grossDiv > 0 ? (gross/grossDiv*100) : 0;
+    return {t, gross, net, yieldOnCost, yieldOnPrice, share};
+  }).sort((a,b)=>b.gross-a.gross);
 
-  const isLight = document.body.classList.contains('light');
+  let rowsHtml = rows.map(r=>`
+    <tr>
+      <td style="color:${COLORS[r.t]};font-weight:500">${r.t}</td>
+      <td class="num">${rp(r.gross)}</td>
+      <td class="num green">${rp(r.net)}</td>
+      <td class="num acc">${r.yieldOnCost.toFixed(1)}%</td>
+      <td class="num">${r.yieldOnPrice.toFixed(1)}%</td>
+      <td class="num" style="width:90px">
+        <div style="background:var(--bg5);border-radius:2px;height:5px;overflow:hidden;margin-bottom:2px">
+          <div style="width:${r.share}%;height:5px;background:${COLORS[r.t]};border-radius:2px"></div>
+        </div>
+        <div style="font-size:8px;color:var(--dim)">${r.share.toFixed(0)}% dari total</div>
+      </td>
+    </tr>`).join('');
 
-  // Calculate YTD (Jan=index 8 to Apr=index 11)
-  const ytdAegis = ((aegis[11]-aegis[8])/aegis[8]*100).toFixed(1);
-  const ytdIHSG  = ((ihsg[11]-ihsg[8])/ihsg[8]*100).toFixed(1);
-  const ytdSP500 = ((sp500[11]-sp500[8])/sp500[8]*100).toFixed(1);
-
-  container.innerHTML = `
-    <div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
-      <span style="font-size:9px;color:var(--green)">● Porto Aegis</span>
-      <span style="font-size:9px;color:var(--amber)">● IHSG</span>
-      <span style="font-size:9px;color:var(--blue)">● S&P 500</span>
-      <span style="font-size:8px;color:var(--dim);margin-left:auto">YTD 2026 (simulasi):</span>
-      <span style="font-size:9px;color:${ytdAegis>=0?'var(--green)':'var(--red)'}">Aegis ${ytdAegis>=0?'+':''}${ytdAegis}%</span>
-      <span style="font-size:9px;color:${ytdIHSG>=0?'var(--green)':'var(--red)'}">IHSG ${ytdIHSG>=0?'+':''}${ytdIHSG}%</span>
-      <span style="font-size:9px;color:${ytdSP500>=0?'var(--green)':'var(--red)'}">S&P ${ytdSP500>=0?'+':''}${ytdSP500}%</span>
+  el.innerHTML = `
+    <div class="bento bento-4" style="margin-bottom:12px">
+      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Div Gross/Thn</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)">${rp(grossDiv)}</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Div Net/Bln</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)">${rp(monthly)}</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">YoC (Gross)</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)">${yoc.toFixed(2)}%</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Return P&L</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:${retPct>=0?'var(--green)':'var(--red)'}">${retPct>=0?'+':''}${retPct.toFixed(1)}%</div>
+      </div>
     </div>
-    <div style="position:relative;user-select:none">
-      <canvas id="portfolio-chart" height="180" style="cursor:crosshair"></canvas>
-      <div id="chart-tooltip" style="display:none;position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:9px;pointer-events:none;min-width:130px;box-shadow:var(--card-shadow);z-index:10"></div>
+    <div class="prog-wrap" style="margin-bottom:10px">
+      <div class="prog-label">
+        <span>Progress ke Rp10jt/bln &nbsp;<span style="font-size:8px;color:var(--dim)">(target pendapatan pasif)</span></span>
+        <span style="color:${progPct>=80?'var(--green)':progPct>=40?'var(--amber)':'var(--red)'}">${progPct.toFixed(1)}%</span>
+      </div>
+      <div class="prog-track" style="height:8px">
+        <div class="prog-fill" style="width:${progPct}%;background:var(--green)"></div>
+      </div>
+      <div style="font-size:8px;color:var(--dim);margin-top:3px">Saat ini: ${rp(monthly)}/bln → Butuh tambahan: ${rp(Math.max(0,TARGET_MONTHLY-monthly))}/bln</div>
+    </div>
+    <div class="overflow-x">
+      <table class="tbl">
+        <thead><tr>
+          <th>Saham</th><th class="num">Div Gross/Thn</th><th class="num">Net (85%)</th>
+          <th class="num">YoC</th><th class="num">YoP</th><th class="num">Kontribusi</th>
+        </tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
     </div>`;
-
-  const canvas = document.getElementById('portfolio-chart');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const w = container.clientWidth - 4 || 400;
-  canvas.width = w; canvas.height = 180;
-  ctx.clearRect(0,0,w,180);
-
-  const minY=95, maxY=125;
-  const pad={top:10,right:10,bot:30,left:42};
-  const plotW=w-pad.left-pad.right;
-  const plotH=180-pad.top-pad.bot;
-  const gridColor=isLight?'rgba(0,0,0,0.06)':'rgba(255,255,255,0.05)';
-  const textColor='#4a6898';
-
-  [100,105,110,115,120].forEach(v=>{
-    const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
-    ctx.strokeStyle=gridColor;ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+plotW,y);ctx.stroke();
-    ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='right';
-    ctx.fillText(v+'%',pad.left-4,y+3);
-  });
-
-  ctx.textAlign='center';ctx.fillStyle=textColor;
-  months.forEach((m,i)=>{
-    const x=pad.left+(i/(months.length-1))*plotW;
-    ctx.fillText(m,x,180-8);
-  });
-
-  const drawLine=(data,color,dash=[])=>{
-    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
-    if(dash.length)ctx.setLineDash(dash);else ctx.setLineDash([]);
-    data.forEach((v,i)=>{
-      const x=pad.left+(i/(data.length-1))*plotW;
-      const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    });
-    ctx.stroke();
-  };
-
-  drawLine(sp500,'#4d9de0',[4,3]);
-  drawLine(ihsg,'#e8b84b',[4,3]);
-  drawLine(aegis,'#3dc88a');
-
-  const drawDot=(data,color)=>{
-    const x=pad.left+plotW;
-    const y=pad.top+plotH-((data[data.length-1]-minY)/(maxY-minY))*plotH;
-    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
-  };
-  drawDot(aegis,'#3dc88a');drawDot(ihsg,'#e8b84b');drawDot(sp500,'#4d9de0');
-
-  // Hover interaction
-  const tooltip = document.getElementById('chart-tooltip');
-  canvas.addEventListener('mousemove', e => {
-    const rect=canvas.getBoundingClientRect();
-    const mx=e.clientX-rect.left;
-    const idx=Math.round((mx-pad.left)/plotW*(months.length-1));
-    if(idx<0||idx>=months.length){tooltip.style.display='none';return;}
-    const xPos=pad.left+(idx/(months.length-1))*plotW;
-    // vertical line
-    ctx.clearRect(0,0,w,180);
-    drawLine(sp500,'#4d9de0',[4,3]);drawLine(ihsg,'#e8b84b',[4,3]);drawLine(aegis,'#3dc88a');
-    drawDot(aegis,'#3dc88a');drawDot(ihsg,'#e8b84b');drawDot(sp500,'#4d9de0');
-    [100,105,110,115,120].forEach(v=>{
-      const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;
-      ctx.strokeStyle=gridColor;ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+plotW,y);ctx.stroke();
-    });
-    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
-    ctx.beginPath();ctx.moveTo(xPos,pad.top);ctx.lineTo(xPos,pad.top+plotH);ctx.stroke();
-    ctx.setLineDash([]);
-    months.forEach((m,i)=>{ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='center';ctx.fillText(m,pad.left+(i/(months.length-1))*plotW,180-8);});
-    ctx.fillStyle=textColor;ctx.font='9px DM Mono, monospace';ctx.textAlign='right';
-    [100,105,110,115,120].forEach(v=>{const y=pad.top+plotH-((v-minY)/(maxY-minY))*plotH;ctx.fillText(v+'%',pad.left-4,y+3);});
-    // dots at hover
-    [[aegis,'#3dc88a'],[ihsg,'#e8b84b'],[sp500,'#4d9de0']].forEach(([d,c])=>{
-      const y=pad.top+plotH-((d[idx]-minY)/(maxY-minY))*plotH;
-      ctx.beginPath();ctx.arc(xPos,y,5,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
-    });
-    const aegisChg=(aegis[idx]-100).toFixed(1);
-    const ihsgChg=(ihsg[idx]-100).toFixed(1);
-    const sp500Chg=(sp500[idx]-100).toFixed(1);
-    tooltip.innerHTML=`
-      <div style="font-weight:500;color:var(--text);margin-bottom:5px">${months[idx]}</div>
-      <div style="color:#3dc88a">Aegis: ${aegis[idx]}% (${aegisChg>=0?'+':''}${aegisChg}%)</div>
-      <div style="color:#e8b84b">IHSG: ${ihsg[idx]}% (${ihsgChg>=0?'+':''}${ihsgChg}%)</div>
-      <div style="color:#4d9de0">S&P: ${sp500[idx]}% (${sp500Chg>=0?'+':''}${sp500Chg}%)</div>`;
-    const tipLeft = Math.min(xPos+10, w-145);
-    tooltip.style.left=tipLeft+'px';
-    tooltip.style.top='10px';
-    tooltip.style.display='block';
-  });
-  canvas.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
 }
 
 function drawSectorChart() {
@@ -1575,24 +1676,81 @@ function renderKeystatsGrid() {
     // Quality stars
     const stars = '★'.repeat(d.quality_rating) + '☆'.repeat(5-d.quality_rating);
 
+    // Ichimoku mini-chart data
+    const ich = ichData[t];
+    const canvasId = `ks-ich-${t}`;
+    const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
+    const mos = ((consensus-price)/price*100);
+    const mosColor = mos>20?'var(--green)':mos>5?'var(--accent2)':mos>0?'var(--amber)':'var(--red)';
+
+    // Ichimoku analysis text
+    let ichAnalysis = '';
+    if (ich) {
+      const posStr = ich.aboveCloud?'di atas cloud (bullish)':ich.belowCloud?'di bawah cloud (bearish)':'dalam cloud (konsolidasi)';
+      const tkStr = ich.tkBull?'Tenkan > Kijun ✓':'Tenkan < Kijun ✗';
+      const chStr = ich.chikouBull?'Chikou bullish ✓':'Chikou bearish ✗';
+      ichAnalysis = `<div style="font-size:8px;color:var(--muted);line-height:1.7;margin-top:6px;padding:6px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)">
+        <span style="color:var(--text);font-weight:500">Ichimoku (${ich.score}/7):</span> Harga ${posStr}. ${tkStr}. ${chStr}.
+        ${mos>0?`MOS ${mos.toFixed(0)}% — ada ruang beli.`:`Premium ${Math.abs(mos).toFixed(0)}% vs FV — hati-hati entry.`}
+      </div>`;
+    } else {
+      ichAnalysis = `<div style="font-size:8px;color:var(--dim);margin-top:6px;padding:5px;background:var(--bg2);border-radius:6px">Ichimoku: Fetch data untuk analisa teknikal</div>`;
+    }
+
     el.innerHTML += `
       <div class="bcard" style="border-top:3px solid ${COLORS[t]}">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:${COLORS[t]}">${t}</div>
           <div style="color:var(--amber);font-size:11px">${stars}</div>
         </div>
-        <div class="mrow"><span class="mrow-l">P/E Curr</span><span class="mrow-v">${d.pe_curr}x</span></div>
+        <!-- Mini Ichimoku visual bar -->
+        <div style="margin-bottom:8px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px">
+          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:5px">Ichimoku Signal</div>
+          ${ich ? `
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+            <span class="badge ${ich.sigClass}" style="font-size:8px;padding:3px 8px">${ich.signal}</span>
+            <span style="font-size:8px;color:var(--muted)">${ich.score}/7 score</span>
+          </div>
+          <!-- Mini cloud bar visualizer -->
+          <div style="position:relative;height:26px;border-radius:4px;overflow:hidden;background:var(--bg5)">
+            ${(()=>{
+              const cloudTop = Math.max(ich.senkouA,ich.senkouB);
+              const cloudBot = Math.min(ich.senkouA,ich.senkouB);
+              const allVals = [price, cloudTop, cloudBot, ich.tenkan, ich.kijun];
+              const minV = Math.min(...allVals)*0.97, maxV = Math.max(...allVals)*1.03;
+              const toX = v => Math.round((v-minV)/(maxV-minV)*100);
+              const cloudL = toX(cloudBot), cloudW = toX(cloudTop)-toX(cloudBot);
+              const priceX = toX(price);
+              const tenkanX = toX(ich.tenkan);
+              const kijunX = toX(ich.kijun);
+              const cloudColor = ich.cloudBull?'rgba(61,200,138,0.25)':'rgba(224,85,85,0.25)';
+              const cloudBorder = ich.cloudBull?'var(--green-border)':'var(--red-border)';
+              return `<div style="position:absolute;left:${cloudL}%;width:${cloudW}%;top:0;bottom:0;background:${cloudColor};border-left:1px solid ${cloudBorder};border-right:1px solid ${cloudBorder}"></div>
+              <div style="position:absolute;left:${tenkanX}%;top:2px;bottom:2px;width:2px;background:var(--green);border-radius:1px" title="Tenkan ${Math.round(ich.tenkan)}"></div>
+              <div style="position:absolute;left:${kijunX}%;top:2px;bottom:2px;width:2px;background:var(--red);border-radius:1px" title="Kijun ${Math.round(ich.kijun)}"></div>
+              <div style="position:absolute;left:${priceX}%;top:0;bottom:0;width:3px;background:var(--text);border-radius:1px;box-shadow:0 0 4px rgba(228,238,255,0.5)" title="Price ${rp(price)}"></div>`;
+            })()}
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--dim);margin-top:3px">
+            <span>↑ Tenkan(G) Kijun(R)</span>
+            <span style="color:${ich.aboveCloud?'var(--green)':ich.belowCloud?'var(--red)':'var(--amber)'}">
+              ${ich.aboveCloud?'Above Cloud ✓':ich.belowCloud?'Below Cloud ✗':'In Cloud ~'}
+            </span>
+          </div>` : `<div style="font-size:9px;color:var(--dim);text-align:center;padding:6px 0">Belum ada data — klik Auto Fetch</div>`}
+        </div>
+        <div class="mrow"><span class="mrow-l">P/E Curr</span><span class="mrow-v">${d.pe_curr}x <span style="font-size:8px;color:${d.pe_curr<d.pe_hist?'var(--green)':'var(--red)'}">vs ${d.pe_hist}x hist</span></span></div>
         <div class="mrow"><span class="mrow-l">P/BV</span><span class="mrow-v">${d.pbv}x</span></div>
         <div class="mrow"><span class="mrow-l">ROE</span><span class="mrow-v green">${d.roe}%</span></div>
-        <div class="mrow"><span class="mrow-l">ROA</span><span class="mrow-v">${d.roa}%</span></div>
         <div class="mrow"><span class="mrow-l">Div CAGR 5yr</span><span class="mrow-v acc">${d.div_5yr_cagr}%</span></div>
-        <div class="mrow"><span class="mrow-l">Payout Ratio</span><span class="mrow-v">${d.div_payout}%</span></div>
+        <div class="mrow"><span class="mrow-l">Payout Ratio</span><span class="mrow-v ${d.div_payout<80?'green':'amber'}">${d.div_payout}%</span></div>
+        <div class="mrow"><span class="mrow-l">MOS vs FV</span><span class="mrow-v" style="color:${mosColor}">${mos>=0?'+':''}${mos.toFixed(1)}%</span></div>
         <div class="mrow"><span class="mrow-l">Risk Score</span>
           <span class="mrow-v" style="color:${riskColor}">${riskPct}% <span class="badge" style="background:${riskColor}11;color:${riskColor};border-color:${riskColor}44">${riskLabel}</span></span>
         </div>
-        <div style="margin-top:8px;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden">
+        <div style="margin-top:6px;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden">
           <div style="width:${riskPct}%;height:4px;background:${riskColor};border-radius:2px"></div>
         </div>
+        ${ichAnalysis}
       </div>`;
   });
 }
@@ -2153,6 +2311,9 @@ function renderLotGrid() {
   order.forEach((t,i)=>{ const lc=porto[t].price*100; const lots=Math.floor(rem/lc); alloc[t]=lots; if(i===0)rem=rem-(lots*lc); });
   const afterPrim = total - ((order[0]?alloc[order[0]]:0)*(order[0]?porto[order[0]].price*100:0));
 
+  // Render Top Pick hero
+  renderTopPick(order, alloc, total);
+
   const grid = document.getElementById('lot-grid');
   if(!grid) return;
   grid.innerHTML = '';
@@ -2205,37 +2366,147 @@ function renderLotGrid() {
 }
 
 // ════════════════════════════════════
-// REBALANCING
+// TOP PICK HERO CARD — Lot Recommender
 // ════════════════════════════════════
+function renderTopPick(order, alloc, total) {
+  const el = document.getElementById('lot-top-pick');
+  if (!el) return;
+  if (!order || !order.length || total <= 0) { el.innerHTML = ''; return; }
+
+  const primT = order[0];
+  const primLots = alloc[primT] || 0;
+  const d = ANALYSIS_DATA[primT];
+  const price = porto[primT].price;
+  const consensus = d ? Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3) : price;
+  const mos = ((consensus - price)/price*100);
+  const ich = ichData[primT];
+  const stars = d ? '★'.repeat(d.quality_rating)+'☆'.repeat(5-d.quality_rating) : '';
+
+  // Build reasoning bullets
+  const reasons = [];
+  if (mos > 20) reasons.push(`MOS ${mos.toFixed(0)}% — harga ${mos.toFixed(0)}% di bawah fair value (FV ${(consensus).toLocaleString('id')})`);
+  else if (mos > 5) reasons.push(`Diskon ringan ${mos.toFixed(0)}% vs fair value — entry window terbuka`);
+  const gap = actualPct(primT) - (targets[primT]||0);
+  if (gap < -5) reasons.push(`Underweight ${Math.abs(gap).toFixed(1)}% dari target ${targets[primT]}% — butuh top-up`);
+  if (porto[primT].pnl < 0) reasons.push(`Unrealized loss — averaging down memperbaiki avg price`);
+  if (d && d.div_payout < 80) reasons.push(`Payout ratio ${d.div_payout}% — dividen terjaga, tidak overleveraged`);
+  if (d && d.roe > 15) reasons.push(`ROE ${d.roe}% — return on equity di atas rata-rata sektor`);
+  if (ich) reasons.push(`Ichimoku signal: <strong>${ich.signal}</strong> (score ${ich.score}/7)`);
+
+  const mosColor = mos > 20 ? 'var(--green)' : mos > 5 ? 'var(--accent2)' : 'var(--amber)';
+  const lotCost = primLots * price * 100;
+
+  el.innerHTML = `
+    <div class="bcard" style="border:2px solid var(--accent);background:linear-gradient(135deg,var(--bg3) 0%,rgba(58,123,213,0.06) 100%);position:relative;overflow:hidden">
+      <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(58,123,213,0.12) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent2);margin-bottom:4px">⭐ Top Pick Bulan Ini — Akumulasi Prioritas</div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:200;color:${COLORS[primT]};line-height:1">${primT}</div>
+            <div>
+              <div style="color:var(--amber);font-size:14px;margin-bottom:2px">${stars}</div>
+              <div style="font-size:9px;color:var(--muted)">${d ? d.sector : ''}</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px">Rekomendasi Beli</div>
+          <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:200;color:var(--green);line-height:1">${primLots > 0 ? primLots+' Lot' : '< 1 Lot'}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${primLots > 0 ? '= '+rp(lotCost) : 'Modal kurang untuk 1 lot'}</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin:10px 0;flex-wrap:wrap">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Harga</div>
+          <div style="font-size:13px;font-weight:500">${rp(price)}</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Fair Value</div>
+          <div style="font-size:13px;font-weight:500">${rp(consensus)}</div>
+        </div>
+        <div style="background:${mos>0?'var(--green-bg)':'var(--red-bg)'};border:1px solid ${mos>0?'var(--green-border)':'var(--red-border)'};border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">MOS</div>
+          <div style="font-size:13px;font-weight:500;color:${mosColor}">${mos>=0?'+':''}${mos.toFixed(1)}%</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">1 Lot = </div>
+          <div style="font-size:13px;font-weight:500">${rp(price*100)}</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Lot Skrg</div>
+          <div style="font-size:13px;font-weight:500">${porto[primT].lots} lot</div>
+        </div>
+        ${ich ? `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:7px 12px;text-align:center;min-width:70px">
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Ichimoku</div>
+          <span class="badge ${ich.sigClass}" style="font-size:8px">${ich.signal}</span>
+        </div>` : ''}
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px">
+        <div style="font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);margin-bottom:8px">Alasan Pilihan</div>
+        ${reasons.map(r=>`<div style="font-size:10px;color:var(--muted);line-height:1.7;padding:3px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:6px"><span style="color:var(--green);flex-shrink:0">▸</span><span>${r}</span></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+
 function renderRebalance() {
   const body = document.getElementById('reb-body');
   const bars = document.getElementById('reb-bars');
   if(!body||!bars) return;
   body.innerHTML=''; bars.innerHTML='';
 
+  const totalMkt = totalMktVal();
+
   TICKERS.forEach(t=>{
     const actual=actualPct(t); const target=targets[t]; const gap=actual-target;
     const mktV=porto[t].price*porto[t].lots*100;
+    const currentLots = porto[t].lots;
+    const price = porto[t].price;
+
+    // Ideal lot = how many lots needed so this stock = target% of total portfolio
+    const idealMktV = totalMkt * (target/100);
+    const idealLots = price > 0 ? Math.round(idealMktV / (price*100)) : 0;
+    const lotGap = idealLots - currentLots;
+
     let action, aClass;
     if(gap<-10){action='BELI SEGERA';aClass='bg';}
     else if(gap<-5){action='CICIL';aClass='bb';}
     else if(gap>10){action='TAHAN';aClass='br';}
     else{action='ON TARGET';aClass='bm';}
+
+    const lotGapColor = lotGap > 0 ? 'var(--green)' : lotGap < 0 ? 'var(--red)' : 'var(--muted)';
+    const lotGapText = lotGap > 0 ? `+${lotGap} lot` : lotGap < 0 ? `${lotGap} lot` : '✓';
+
     body.innerHTML+=`
       <tr>
         <td style="color:${COLORS[t]};font-weight:500">${t}</td>
         <td>${target}%</td>
         <td>${actual.toFixed(1)}%</td>
         <td style="color:${Math.abs(gap)>5?gap<0?'var(--green)':'var(--red)':'var(--muted)'}">${gap>0?'+':''}${gap.toFixed(1)}%</td>
+        <td class="num">${currentLots} lot</td>
+        <td class="num">${idealLots} lot</td>
+        <td class="num" style="color:${lotGapColor};font-weight:500">${lotGapText}</td>
         <td class="num">${rp(mktV)}</td>
         <td class="ctr"><span class="badge ${aClass}">${action}</span></td>
       </tr>`;
     bars.innerHTML+=`
       <div class="prog-wrap">
-        <div class="prog-label"><span style="color:${COLORS[t]}">${t}</span><span>${actual.toFixed(1)}% / ${target}%</span></div>
+        <div class="prog-label">
+          <span style="color:${COLORS[t]};font-weight:500">${t}</span>
+          <span style="display:flex;gap:8px;align-items:center">
+            <span style="color:var(--muted)">${actual.toFixed(1)}% / ${target}%</span>
+            ${lotGap > 0
+              ? `<span style="font-size:7.5px;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:3px;padding:1px 6px">beli ${lotGap} lot lagi</span>`
+              : lotGap < 0
+              ? `<span style="font-size:7.5px;color:var(--red);background:var(--red-bg);border:1px solid var(--red-border);border-radius:3px;padding:1px 6px">kelebihan ${Math.abs(lotGap)} lot</span>`
+              : `<span style="font-size:7.5px;color:var(--green)">✓ ideal</span>`}
+          </span>
+        </div>
         <div class="prog-track" style="height:8px;position:relative">
           <div class="prog-fill" style="width:${Math.min(actual/target*100,100)}%;background:${COLORS[t]}"></div>
-          <div style="position:absolute;top:0;left:${Math.min(100,100)}%;width:2px;height:8px;background:var(--text);opacity:.3;border-radius:1px"></div>
         </div>
       </div>`;
   });
@@ -2735,10 +3006,13 @@ function applyOCRToPorto() {
   setOCRStatus('✓ Porto diupdate dari '+ocrParsed.stocks.length+' saham. Auto-savepoint dibuat.','ok');
   document.getElementById('ocr-result').style.display='none';
   setTimeout(()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.sb-nav-item').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.querySelector('[onclick*="porto"]').classList.add('active');
+    const portoNavItem = document.querySelector('[data-tab="porto"]');
+    if(portoNavItem) portoNavItem.classList.add('active');
     document.getElementById('panel-porto').classList.add('active');
+    const titleEl = document.getElementById('topbar-title');
+    if(titleEl) titleEl.textContent = TAB_TITLES['porto']||'Edit Porto';
     renderPortoEdit();
     renderSavepointList();
   },1500);
@@ -2757,6 +3031,10 @@ window.addEventListener('load',()=>{
   const savedIch=JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
   Object.keys(savedIch).forEach(t=>{ if(savedIch[t]) ichData[t]=savedIch[t]; });
 
+  // Enable fetch button
+  const fetchBtn = document.getElementById('btn-main-fetch');
+  if(fetchBtn) fetchBtn.disabled = false;
+
   updateHeader();
   renderSnapshotPanel();
   renderLotGrid();
@@ -2769,7 +3047,14 @@ window.addEventListener('load',()=>{
   }
 });
 </script>
-<!-- ═══════════════ PIN MODAL ═══════════════ -->
+  </div><!-- end content-scroll -->
+</div><!-- end main-area -->
+</div><!-- end app-shell -->
+
+<!-- Mobile sidebar toggle button -->
+<button class="sb-toggle" onclick="toggleSidebar()" id="sb-toggle-btn">☰</button>
+<div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
 <div id="pin-modal" class="modal-overlay" style="display:none">
   <div class="modal-box">
     <div style="font-size:32px;margin-bottom:8px">🔐</div>
