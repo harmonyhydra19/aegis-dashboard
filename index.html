@@ -3,97 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v6 by ZenkichiArc</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
+<title>Aegis Alpha v8 — Command Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;0,9..144,300;1,9..144,200;1,9..144,300&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════════
-   CSS VARIABLES — DARK MODE (default)
-══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   AEGIS ALPHA v8 — COMMAND TERMINAL DESIGN SYSTEM
+   Dark mode default · "Ichimoku-style glance"
+═══════════════════════════════════════════════════════════ */
 :root {
-  --bg:#060b12; --bg2:#0c1622; --bg3:#101d2e; --bg4:#162338; --bg5:#1c2d44;
-  --border:#182440; --border2:#1e2e50; --border3:#2a4070;
-  --text:#e4eeff; --muted:#4a6898; --dim:#253a56;
-  --green:#3dc88a; --green-bg:#041410; --green-border:#0a2d1c;
-  --red:#e05555; --red-bg:#140808; --red-border:#2a1010;
-  --amber:#e8b84b; --amber-bg:#150f02; --amber-border:#382800;
-  --blue:#4d9de0; --blue-bg:#061020; --blue-border:#0d2040;
-  --purple:#9b79e0; --purple-bg:#0c0918;
-  --accent:#3a7bd5; --accent2:#66aaff;
-  --card-shadow:0 2px 16px rgba(0,0,0,0.5);
-  --card-shadow-hover:0 4px 24px rgba(58,123,213,0.15);
-  --radius:14px; --radius-sm:8px;
-}
-body.light {
-  --bg:#eef2fa; --bg2:#ffffff; --bg3:#e4ecf8; --bg4:#d8e4f4; --bg5:#ccd8f0;
-  --border:#c0d0ec; --border2:#a8c0e4; --border3:#88a8d8;
-  --text:#0a1a38; --muted:#4a6898; --dim:#7090c0;
-  --green:#1a8a50; --green-bg:#e4f8f0; --green-border:#a0dfc0;
-  --red:#b83030; --red-bg:#fce8e8; --red-border:#f0a8a8;
-  --amber:#9a6800; --amber-bg:#fff4d8; --amber-border:#e8d080;
-  --blue:#1a58b8; --blue-bg:#e4eef8; --blue-border:#a0c0e8;
-  --purple:#5030a8; --purple-bg:#eceafc;
-  --accent:#1a58b8; --accent2:#1040a0;
-  --card-shadow:0 2px 12px rgba(20,60,140,0.08);
-  --card-shadow-hover:0 4px 20px rgba(20,60,140,0.14);
+  /* Core palette */
+  --bg:     #04080f;
+  --bg2:    #080f1c;
+  --bg3:    #0c1525;
+  --bg4:    #101d30;
+  --bg5:    #152438;
+
+  /* Borders */
+  --border:  #162035;
+  --border2: #1e2f4a;
+  --border3: #284060;
+
+  /* Text */
+  --text:    #d8e8ff;
+  --muted:   #3d5a80;
+  --dim:     #1e3050;
+
+  /* Signal colors */
+  --green:       #2de08a; --green-bg:  #021210; --green-border:#0a2a1a;
+  --red:         #e05555; --red-bg:    #130808; --red-border:  #281010;
+  --amber:       #f0c060; --amber-bg:  #130e02; --amber-border:#302400;
+  --blue:        #4d9de0; --blue-bg:   #060e1e; --blue-border: #0c1c38;
+  --purple:      #9b79e0; --purple-bg: #0a0818;
+
+  /* Brand accent */
+  --accent:  #2c6be0;
+  --accent2: #60aaff;
+
+  /* Stock colors */
+  --admf: #f0c060;
+  --asii: #4d9de0;
+  --bmri: #e05555;
+  --itmg: #2de08a;
+  --powr: #9b79e0;
+
+  /* Shadows */
+  --card-shadow:       0 2px 20px rgba(0,0,0,0.6);
+  --card-shadow-hover: 0 4px 28px rgba(44,107,224,0.12);
+
+  /* Geometry */
+  --radius:    12px;
+  --radius-sm:  7px;
+  --radius-xs:  5px;
 }
 
+body.light {
+  --bg:#edf1f9; --bg2:#ffffff; --bg3:#e4edf8; --bg4:#d4e2f4; --bg5:#c4d4ed;
+  --border:#b8cce8; --border2:#96b4d8; --border3:#74a0c8;
+  --text:#080e20; --muted:#3a5878; --dim:#8098b8;
+  --green:#0e7840; --green-bg:#e0f4ec; --green-border:#8cd4ac;
+  --red:#b02828; --red-bg:#f8e0e0; --red-border:#e88888;
+  --amber:#8a5800; --amber-bg:#fef4d4; --amber-border:#e4c870;
+  --blue:#1048a8; --blue-bg:#deeaf8; --blue-border:#88b4e4;
+  --accent:#1048a8; --accent2:#0838a0;
+  --card-shadow:0 2px 16px rgba(8,14,32,0.08);
+  --card-shadow-hover:0 4px 24px rgba(16,72,168,0.12);
+}
+
+/* ── RESET ── */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;min-height:100vh;transition:background .3s,color .3s;overflow:hidden}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  min-height:100vh;
+  overflow:hidden;
+  transition:background .3s,color .3s;
+}
 
-/* ──────── HEADER ──────── */
-.hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative;overflow:hidden;background:var(--bg2)}
-.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:300px;height:300px;background:radial-gradient(circle,rgba(58,123,213,0.06) 0%,transparent 70%);pointer-events:none}
-.hdr-brand{display:flex;flex-direction:column;gap:3px}
-.hdr-name{font-family:'Fraunces',serif;font-size:26px;font-weight:200;letter-spacing:-0.5px;line-height:1}
-.hdr-name em{font-style:italic;color:var(--accent2);font-weight:300}
-.hdr-name sup{font-size:10px;color:var(--muted);letter-spacing:.12em;font-family:'DM Mono',monospace;font-style:normal;vertical-align:super;margin-left:2px}
-.hdr-tagline{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.hdr-kpi{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;flex:1;justify-content:center}
-.kpi{display:flex;flex-direction:column;gap:2px;min-width:80px}
-.kpi-l{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.kpi-v{font-family:'Fraunces',serif;font-size:17px;font-weight:300;line-height:1.15}
-.kpi-v.sm{font-size:12px;font-family:'DM Mono',monospace;padding-top:2px}
-.hdr-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
-.mode-btn{background:var(--bg4);border:1px solid var(--border2);border-radius:20px;padding:5px 14px;font-size:9px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.06em;transition:all .2s;white-space:nowrap}
-.mode-btn:hover{border-color:var(--accent);color:var(--accent2)}
-.last-ts{font-size:8px;color:var(--dim);text-align:right}
-.auto-fetch-btn{background:var(--accent);border:none;border-radius:6px;padding:6px 14px;font-size:9px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:5px;transition:opacity .15s}
-.auto-fetch-btn:hover{opacity:.85}
-.auto-fetch-btn:disabled{opacity:.5;cursor:not-allowed}
+/* Dot-grid background texture */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(circle,rgba(44,107,224,0.06) 1px,transparent 1px);
+  background-size:24px 24px;
+  pointer-events:none;
+  z-index:0;
+}
+body.light::before{
+  background-image:radial-gradient(circle,rgba(16,72,168,0.05) 1px,transparent 1px);
+}
 
-/* ──────── TABS ──────── */
-.tabs{display:flex;border-bottom:1px solid var(--border);padding:0 20px;overflow-x:auto;position:sticky;top:0;z-index:50;background:var(--bg);transition:background .3s}
-.tabs::-webkit-scrollbar{height:0}
-.tab{padding:10px 14px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:'DM Mono',monospace;white-space:nowrap;transition:color .15s,border-color .15s}
-.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
-.tab:hover:not(.active){color:var(--text)}
+/* ═══════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════ */
+.app-shell{display:flex;height:100vh;overflow:hidden;position:relative;z-index:1}
 
-/* ──────── PANELS ──────── */
-.panel{display:none;padding:16px 20px}
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar{
+  width:200px;flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;overflow:hidden;
+  transition:width .25s,background .3s;
+  position:relative;
+}
+.sidebar::after{
+  content:'';
+  position:absolute;top:0;right:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,var(--accent) 30%,var(--accent2) 70%,transparent);
+  opacity:0.15;
+}
+.sidebar.collapsed{width:0;border-right:none}
+.sidebar.collapsed .sidebar-brand,
+.sidebar.collapsed .sb-kpi-block,
+.sidebar.collapsed .sb-nav,
+.sidebar.collapsed .sb-bottom,
+.sidebar.collapsed .sb-quote-block{display:none}
+
+/* Collapse btn */
+.sb-collapse-btn{
+  position:fixed;top:14px;left:208px;z-index:300;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:50%;width:22px;height:22px;font-size:10px;
+  cursor:pointer;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  transition:left .25s,background .2s,color .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.sb-collapse-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sb-collapse-btn.is-collapsed{left:6px}
+
+/* Brand */
+.sidebar-brand{
+  padding:18px 16px 14px;
+  border-bottom:1px solid var(--border);
+}
+.sb-logo{
+  font-family:'Fraunces',serif;
+  font-size:20px;font-weight:100;line-height:1.1;
+  letter-spacing:-0.3px;
+}
+.sb-logo em{font-style:italic;color:var(--accent2);font-weight:200}
+.sb-logo sup{font-size:7px;color:var(--muted);letter-spacing:.15em;font-family:'DM Mono',monospace;font-style:normal;vertical-align:super;margin-left:2px}
+.sb-tagline{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+
+/* KPI mini */
+.sb-kpi-block{padding:10px 14px;border-bottom:1px solid var(--border)}
+.sb-kpi-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.sb-kpi-l{font-size:7.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.sb-kpi-v{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;font-family:'Fraunces',serif;font-weight:200;font-size:13px}
+
+/* Quote */
+.sb-quote-block{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-quote-text{font-size:8px;color:var(--muted);font-style:italic;line-height:1.55;font-family:'Fraunces',serif;font-weight:300}
+.sb-quote-author{font-size:7px;color:var(--dim);margin-top:3px;letter-spacing:.04em}
+
+/* Nav */
+.sb-nav{flex:1;padding:10px 8px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:0}
+.sb-section-label{font-size:6.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--dim);padding:8px 8px 4px}
+.sb-nav-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:8px;cursor:pointer;
+  font-size:9.5px;color:var(--muted);letter-spacing:.02em;
+  transition:all .15s;border:1px solid transparent;
+  margin-bottom:1px;user-select:none;
+}
+.sb-nav-item:hover{background:var(--bg4);color:var(--text)}
+.sb-nav-item.active{
+  background:linear-gradient(135deg,var(--accent),#1a50b0);
+  color:#fff;border-color:var(--accent);
+  box-shadow:0 2px 12px rgba(44,107,224,0.3);
+}
+.sb-nav-item.active .sb-icon{color:#fff}
+.sb-icon{font-size:12px;width:16px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:6.5px;padding:1px 5px;border-radius:3px;font-weight:500}
+
+/* Bottom */
+.sb-bottom{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.sb-fetch-btn{
+  background:linear-gradient(135deg,var(--accent),#1a50b0);
+  border:none;border-radius:7px;
+  padding:7px 10px;font-size:8.5px;cursor:pointer;
+  color:#fff;font-family:'DM Mono',monospace;
+  letter-spacing:.06em;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:opacity .15s;width:100%;
+  box-shadow:0 2px 10px rgba(44,107,224,0.35);
+}
+.sb-fetch-btn:hover{opacity:.85}
+.sb-fetch-btn:disabled{opacity:.4;cursor:not-allowed}
+.sb-mode-row{display:flex;justify-content:space-between;align-items:center}
+.sb-last-ts{font-size:7px;color:var(--dim)}
+.sb-mode-btn{
+  background:var(--bg4);border:1px solid var(--border2);
+  border-radius:5px;padding:3px 8px;font-size:7.5px;
+  cursor:pointer;color:var(--muted);
+  font-family:'DM Mono',monospace;transition:all .2s;
+}
+.sb-mode-btn:hover{border-color:var(--accent);color:var(--accent2)}
+
+/* ══════════════════════════════════════
+   MAIN AREA
+══════════════════════════════════════ */
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative}
+
+/* Ticker bar */
+.ticker-bar{
+  overflow:hidden;
+  background:var(--amber-bg);
+  border-bottom:1px solid var(--amber-border);
+  height:20px;flex-shrink:0;display:flex;align-items:center;
+}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker-scroll 36s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{font-size:8px;color:var(--amber);padding:0 24px;display:inline-block}
+.ticker-item strong{color:var(--text)}
+@keyframes ticker-scroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
+
+/* Command bar — replaces old topbar */
+.command-bar{
+  padding:8px 20px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+  flex-shrink:0;display:flex;align-items:center;gap:16px;
+  flex-wrap:wrap;
+  position:relative;overflow:hidden;
+}
+.command-bar::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,var(--accent),transparent);
+  opacity:0.3;
+}
+.cb-title{
+  font-family:'Fraunces',serif;
+  font-size:15px;font-weight:200;
+  color:var(--text);flex-shrink:0;
+  letter-spacing:-0.2px;
+}
+.cb-status{font-size:7.5px;color:var(--muted);flex-shrink:0;display:flex;align-items:center;gap:5px}
+
+/* Content scroll */
+.content-scroll{flex:1;overflow-y:auto;padding:14px 18px}
+.content-scroll::-webkit-scrollbar{width:3px}
+.content-scroll::-webkit-scrollbar-track{background:var(--bg)}
+.content-scroll::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
+
+/* Panels */
+.panel{display:none}
 .panel.active{display:block}
-.sec-title{font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--dim);margin:18px 0 10px;border-bottom:1px solid var(--border);padding-bottom:5px}
-.sec-title:first-child{margin-top:0}
 
-/* ══════════════════════════════════════════════════════
-   BENTO GRID SYSTEM — Core Architecture
-══════════════════════════════════════════════════════ */
-.bento{display:grid;gap:10px}
+/* ══════════════════════════════════════
+   BENTO GRID
+══════════════════════════════════════ */
+.bento{display:grid;gap:8px}
 .bento-2{grid-template-columns:1fr 1fr}
 .bento-3{grid-template-columns:1fr 1fr 1fr}
 .bento-4{grid-template-columns:repeat(4,1fr)}
 .bento-5{grid-template-columns:repeat(5,1fr)}
 .bento-auto{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-/* Special layouts */
 .bento-60-40{grid-template-columns:3fr 2fr}
 .bento-40-60{grid-template-columns:2fr 3fr}
 .bento-70-30{grid-template-columns:7fr 3fr}
 .bento-sidebar{grid-template-columns:280px 1fr}
-/* Span helpers */
 .span-2{grid-column:span 2}
 .span-3{grid-column:span 3}
 .span-full{grid-column:1/-1}
-/* Row span */
 .row-2{grid-row:span 2}
 
 @media(max-width:900px){
@@ -105,28 +287,133 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
   .bento-2,.bento-3,.bento-4,.bento-5,.bento-auto{grid-template-columns:1fr}
 }
 
-/* ══════════════════════════════════════════════════════
-   BENTO CARD — The core unit
-══════════════════════════════════════════════════════ */
-.bcard{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--card-shadow);transition:background .3s,border-color .25s,box-shadow .2s;overflow:hidden;position:relative}
+/* ══════════════════════════════════════
+   BENTO CARD
+══════════════════════════════════════ */
+.bcard{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:var(--card-shadow);
+  transition:background .3s,border-color .25s,box-shadow .2s;
+  overflow:hidden;position:relative;
+}
 .bcard:hover{box-shadow:var(--card-shadow-hover)}
-.bcard.accent-top{border-top-width:2px}
-.bcard.glass{background:rgba(16,29,46,0.7);backdrop-filter:blur(8px)}
-body.light .bcard.glass{background:rgba(255,255,255,0.75)}
-.bcard-title{font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.bcard-big{font-family:'Fraunces',serif;font-size:28px;font-weight:200;line-height:1.1;margin:4px 0}
-.bcard-big.md{font-size:22px}
-.bcard-big.sm{font-size:16px;font-family:'DM Mono',monospace;font-weight:500}
-.bcard-sub{font-size:9px;color:var(--muted);margin-top:3px}
+.bcard-title{
+  font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--muted);margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.bcard-big{font-family:'Fraunces',serif;font-size:26px;font-weight:200;line-height:1.1;margin:3px 0}
+.bcard-big.md{font-size:20px}
+.bcard-big.sm{font-size:14px;font-family:'DM Mono',monospace;font-weight:500}
+.bcard-sub{font-size:8.5px;color:var(--muted);margin-top:2px}
 
-/* ──────── METRIC ROW ──────── */
-.mrow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+/* ══════════════════════════════════════
+   STOCK COMMAND MATRIX — THE ICHIMOKU GLANCE
+══════════════════════════════════════ */
+.stock-matrix{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:10px;
+}
+.stock-col{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:box-shadow .2s,border-color .2s;
+  position:relative;
+}
+.stock-col:hover{
+  box-shadow:0 4px 24px rgba(44,107,224,0.15);
+  z-index:2;
+}
+/* Accent top border per stock */
+.stock-col::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--stock-color,var(--muted));
+}
+/* Header section */
+.sc-header{
+  padding:12px 12px 8px;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.sc-ticker{
+  font-family:'Fraunces',serif;font-size:18px;font-weight:200;
+  color:var(--stock-color,var(--text));line-height:1;
+}
+/* Signal badge — large and clear */
+.sc-signal{
+  font-size:7px;font-weight:500;letter-spacing:.08em;
+  padding:3px 7px;border-radius:var(--radius-xs);
+  text-transform:uppercase;white-space:nowrap;
+  margin-top:2px;display:inline-block;
+}
+/* Data rows */
+.sc-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.sc-row{display:flex;justify-content:space-between;align-items:center}
+.sc-label{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sc-value{font-size:10px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--text)}
+.sc-value.big{font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--text)}
+/* Alloc mini bar inside matrix */
+.sc-alloc-track{height:3px;background:var(--bg5);border-radius:2px;overflow:hidden;position:relative;margin-top:3px}
+.sc-alloc-fill{height:3px;border-radius:2px;transition:width .5s ease}
+.sc-alloc-marker{position:absolute;top:0;height:3px;width:2px;background:rgba(255,255,255,0.5);border-radius:1px}
+/* Divider inside col */
+.sc-divider{height:1px;background:var(--border);margin:4px -12px}
+
+/* ══════════════════════════════════════
+   KPI STRIP — top command bar metrics
+══════════════════════════════════════ */
+.kpi-strip{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:10px;
+}
+.kpi-tile{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:3px;
+  position:relative;overflow:hidden;
+}
+.kpi-tile::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--tile-accent,var(--accent));
+  opacity:0.6;
+}
+.kpi-label{font-size:7px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.kpi-val{font-family:'Fraunces',serif;font-size:20px;font-weight:200;line-height:1.1;color:var(--text)}
+.kpi-val.sm{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;padding-top:2px}
+.kpi-sub{font-size:8px;color:var(--muted)}
+
+/* ══════════════════════════════════════
+   PROGRESS RING / BAR
+══════════════════════════════════════ */
+.prog-wrap{margin-bottom:8px}
+.prog-label{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);margin-bottom:3px}
+.prog-track{height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;position:relative}
+.prog-fill{height:4px;border-radius:2px;transition:width .5s ease}
+
+/* ══════════════════════════════════════
+   METRIC ROW
+══════════════════════════════════════ */
+.mrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
 .mrow:last-child{border-bottom:none}
-.mrow-l{font-size:10px;color:var(--muted)}
-.mrow-v{font-size:11px;color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
+.mrow-l{font-size:9.5px;color:var(--muted)}
+.mrow-v{font-size:10px;color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
 
-/* ──────── BADGES ──────── */
-.badge{display:inline-block;font-size:7.5px;font-weight:500;letter-spacing:.06em;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap}
+/* ══════════════════════════════════════
+   BADGES
+══════════════════════════════════════ */
+.badge{display:inline-block;font-size:7px;font-weight:500;letter-spacing:.06em;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap}
 .bg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
 .br{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
 .ba{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
@@ -135,272 +422,201 @@ body.light .bcard.glass{background:rgba(255,255,255,0.75)}
 .bp{background:var(--purple-bg);color:var(--purple);border:1px solid var(--border2)}
 
 /* Signal badges */
-.sig-buy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.sig-hold{background:var(--bg5);color:var(--muted);border:1px solid var(--border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.sig-wait{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.sig-buytrs{background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,0.6));color:var(--green);border:1px solid var(--green-border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.sig-acc{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.sig-avoid{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);font-size:8px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-buy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-hold{background:var(--bg5);color:var(--muted);border:1px solid var(--border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-wait{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-buytrs{background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,0.6));color:var(--green);border:1px solid var(--green-border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-acc{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sig-avoid{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);font-size:7.5px;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 
-/* ──────── INPUTS ──────── */
-.field label{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
-.field input,.field select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:7px 10px;outline:none;transition:border-color .15s}
+/* ══════════════════════════════════════
+   INPUTS, TABLES, MISC
+══════════════════════════════════════ */
+.field label{display:block;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px}
+.field input,.field select{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:10px;padding:6px 9px;outline:none;transition:border-color .15s}
 .field input:focus,.field select:focus{border-color:var(--accent)}
 .field select option{background:var(--bg2)}
-.fields-row{display:grid;gap:10px}
+.fields-row{display:grid;gap:8px}
 .fr-3{grid-template-columns:repeat(3,1fr)}
 .fr-5{grid-template-columns:repeat(5,1fr)}
 .fr-4{grid-template-columns:repeat(4,1fr)}
 @media(max-width:640px){.fr-3,.fr-5,.fr-4{grid-template-columns:1fr 1fr}}
 
-/* ──────── BUTTONS ──────── */
-.btn{border:none;border-radius:var(--radius-sm);padding:8px 16px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s,transform .1s,box-shadow .15s}
+.btn{border:none;border-radius:var(--radius-sm);padding:7px 14px;font-family:'DM Mono',monospace;font-size:8.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s,transform .1s}
 .btn:active{transform:scale(.97)}
 .btn:hover{opacity:.85}
-.btn-accent{background:var(--accent);color:#fff}
+.btn-accent{background:linear-gradient(135deg,var(--accent),#1a50b0);color:#fff;box-shadow:0 2px 10px rgba(44,107,224,0.3)}
 .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--muted)}
 .btn-outline:hover{color:var(--text);border-color:var(--border3)}
 .btn-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 
-/* ──────── INFO BOXES ──────── */
-.info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--radius-sm);padding:10px 14px;font-size:10px;color:var(--blue);line-height:1.7;margin-bottom:10px}
-.warn-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:10px 14px;font-size:10px;color:var(--amber);line-height:1.7;margin-bottom:10px}
-.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:10px 14px;font-size:10px;color:var(--green);line-height:1.7;margin-bottom:10px}
+.info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--blue);line-height:1.7;margin-bottom:10px}
+.warn-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--amber);line-height:1.7;margin-bottom:10px}
+.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--green);line-height:1.7;margin-bottom:10px}
+.banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:9px 13px;font-size:9.5px;color:var(--amber);line-height:1.7;margin-bottom:10px}
 
-/* ──────── TABLES ──────── */
-.tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl th{text-align:left;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400;padding:7px 8px;border-bottom:1px solid var(--border)}
-.tbl td{padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl{width:100%;border-collapse:collapse;font-size:10.5px}
+.tbl th{text-align:left;font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400;padding:7px 8px;border-bottom:1px solid var(--border)}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tbody tr:hover td{background:var(--bg4)}
 .tbl .num{text-align:right;font-variant-numeric:tabular-nums}
 .tbl .ctr{text-align:center}
 .overflow-x{overflow-x:auto}
 
-/* ──────── PROGRESS BAR ──────── */
-.prog-wrap{margin-bottom:10px}
-.prog-label{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
-.prog-track{height:5px;background:var(--bg5);border-radius:3px;overflow:hidden;position:relative}
-.prog-fill{height:5px;border-radius:3px;transition:width .5s ease}
-
-/* ──────── MISC ──────── */
+/* Misc */
 .green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .blue{color:var(--blue)} .acc{color:var(--accent2)} .muted{color:var(--muted)} .dim{color:var(--dim)} .bold{font-weight:500}
 .spin{display:inline-block;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.divider{border:none;border-top:1px solid var(--border);margin:12px 0}
-.mb8{margin-bottom:8px} .mb12{margin-bottom:12px} .mb16{margin-bottom:16px}
+.divider{border:none;border-top:1px solid var(--border);margin:10px 0}
+.mb8{margin-bottom:8px} .mb12{margin-bottom:12px} .mb16{margin-bottom:16px} .mb10{margin-bottom:10px}
+.sec-title{font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin:16px 0 9px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.sec-title:first-child{margin-top:0}
 
-/* ──────── LOT CARDS ──────── */
-.lot-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center;transition:all .2s}
+/* ── LOT CARDS ── */
+.lot-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px;text-align:center;transition:all .2s}
 .lot-card.winner{border-color:var(--accent);background:var(--accent-bg,#061428);box-shadow:0 0 0 1px var(--accent)}
-.lot-card.blocked{opacity:.35}
-.lc-rank{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:3px;min-height:11px}
-.lc-ticker{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
-.lc-lots{font-size:26px;font-weight:500;margin:4px 0;line-height:1}
-.lc-price{font-size:9px;color:var(--muted)}
-.lc-cost{font-size:9px;color:var(--dim);margin-top:1px}
-.lc-note{font-size:8px;color:var(--accent2);margin-top:5px;line-height:1.5}
+.lot-card.blocked{opacity:.3}
+.lc-rank{font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:2px;min-height:10px}
+.lc-ticker{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px}
+.lc-lots{font-size:24px;font-weight:500;margin:3px 0;line-height:1}
+.lc-price{font-size:8.5px;color:var(--muted)}
+.lc-cost{font-size:8.5px;color:var(--dim);margin-top:1px}
+.lc-note{font-size:7.5px;color:var(--accent2);margin-top:4px;line-height:1.5}
 
-/* ──────── ICHIMOKU CARDS ──────── */
-.ich-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:13px;transition:all .2s}
-.ich-ticker{font-size:12px;font-weight:500;color:var(--text);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
-.ich-row{display:flex;justify-content:space-between;font-size:9px;padding:3px 0;border-bottom:1px solid var(--border)}
+/* ── ICHIMOKU CARDS ── */
+.ich-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:12px;transition:all .2s}
+.ich-ticker{font-size:11px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.ich-row{display:flex;justify-content:space-between;font-size:8.5px;padding:3px 0;border-bottom:1px solid var(--border)}
 .ich-row:last-child{border-bottom:none}
 .ich-label{color:var(--muted)}
 .ich-val{font-weight:500;font-variant-numeric:tabular-nums}
 
-/* ──────── PORTFOLIO EDIT ──────── */
-.pe-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:12px;transition:background .3s}
-.pe-ticker{font-size:11px;font-weight:500;color:var(--text);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
-.pe-field{margin-bottom:5px}
+/* ── PORTFOLIO EDIT ── */
+.pe-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:11px;transition:background .3s}
+.pe-ticker{font-size:10.5px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.pe-field{margin-bottom:4px}
 .pe-field label{font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:2px}
-.pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:10px;padding:5px 7px;outline:none}
+.pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:9.5px;padding:4px 6px;outline:none}
 .pe-field input:focus{border-color:var(--accent)}
 
-/* ──────── RISK CELLS ──────── */
-.risk-cell{padding:8px 10px;border-radius:6px;font-size:10px;line-height:1.5}
+/* ── RISK ── */
+.risk-cell{padding:8px 10px;border-radius:6px;font-size:9.5px;line-height:1.5}
 .risk-hi{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
 .risk-mid{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
 .risk-lo{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 
-/* ──────── HEATMAP ──────── */
-.heatmap-cell{border-radius:8px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:4px;cursor:default;transition:transform .15s}
-.heatmap-cell:hover{transform:scale(1.03)}
-
-/* ──────── MARKET TILES ──────── */
+/* ── MARKET TILES ── */
 .mkt-tile{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:3px}
-.mkt-tile-l{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.mkt-tile-v{font-family:'Fraunces',serif;font-size:22px;font-weight:200;line-height:1.1}
-.mkt-tile-c{font-size:9px;margin-top:1px}
+.mkt-tile-l{font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.mkt-tile-v{font-family:'Fraunces',serif;font-size:20px;font-weight:200;line-height:1.1}
+.mkt-tile-c{font-size:8.5px;margin-top:1px}
 
-/* ──────── SAVEPOINT ──────── */
-.sp-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.sp-info{display:flex;flex-direction:column;gap:3px}
-.sp-name{font-size:11px;font-weight:500;color:var(--text)}
-.sp-date{font-size:9px;color:var(--dim)}
+/* ── SAVEPOINTS ── */
+.sp-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:7px}
+.sp-info{display:flex;flex-direction:column;gap:2px}
+.sp-name{font-size:10.5px;font-weight:500;color:var(--text)}
+.sp-date{font-size:8.5px;color:var(--dim)}
 .sp-meta{display:flex;gap:10px;flex-wrap:wrap}
 .sp-stat{display:flex;flex-direction:column;gap:1px;text-align:right}
 .sp-sl{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
-.sp-sv{font-size:11px;font-weight:500;color:var(--text)}
+.sp-sv{font-size:10.5px;font-weight:500;color:var(--text)}
 
-/* ──────── OCR ──────── */
-.ocr-drop{border:2px dashed var(--border2);cursor:pointer;transition:border-color .2s;text-align:center;padding:28px 20px;border-radius:var(--radius)}
+/* ── OCR ── */
+.ocr-drop{border:2px dashed var(--border2);cursor:pointer;transition:border-color .2s;text-align:center;padding:26px 20px;border-radius:var(--radius)}
 .ocr-drop:hover,.ocr-drop.drag{border-color:var(--accent)}
 
-/* ──────── CANVAS ──────── */
-canvas{max-width:100%}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
-
-/* ANNOUNCEMENT BANNER */
-.banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:9px 14px;font-size:10px;color:var(--amber);line-height:1.7;margin-bottom:12px}
-
-/* ──────── MODALS ──────── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:28px 30px;min-width:300px;max-width:400px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.6)}
-.modal-title{font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--text);margin-bottom:6px}
-.modal-sub{font-size:10px;color:var(--muted);margin-bottom:18px;line-height:1.6}
-.modal-pin-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:22px;padding:12px;text-align:center;letter-spacing:8px;outline:none;margin-bottom:14px}
-.modal-pin-input:focus{border-color:var(--accent)}
-.modal-err{font-size:10px;color:var(--red);min-height:16px;margin-bottom:10px}
-.modal-btns{display:flex;gap:8px;justify-content:center}
-
-/* ══════════════════════════════════════════════════════
-   SIDEBAR LAYOUT — v5 Design
-══════════════════════════════════════════════════════ */
-.app-shell{display:flex;min-height:100vh;height:100vh;overflow:hidden}
-
-/* ── LEFT SIDEBAR ── */
-.sidebar{width:220px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:width .25s,background .3s}
-.sidebar.collapsed{width:0;border-right:none}
-.sidebar.collapsed .sidebar-brand,.sidebar.collapsed .sb-kpi-block,.sidebar.collapsed .sb-nav,.sidebar.collapsed .sb-bottom,.sidebar.collapsed .sb-quote-block{display:none}
-
-/* Sidebar collapse toggle button */
-.sb-collapse-btn{position:fixed;top:12px;left:228px;z-index:300;background:var(--bg2);border:1px solid var(--border2);border-radius:50%;width:26px;height:26px;font-size:11px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:left .25s,background .2s,color .2s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.sb-collapse-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.sb-collapse-btn.is-collapsed{left:6px}
-
-/* ── DAILY QUOTES ── */
-.sb-quote-block{padding:10px 14px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sb-quote-text{font-size:8.5px;color:var(--muted);font-style:italic;line-height:1.55;font-family:'Fraunces',serif;font-weight:300}
-.sb-quote-author{font-size:7px;color:var(--dim);margin-top:4px;letter-spacing:.05em}
-
-/* ── RUNNING TICKER / CORPORATE ACTIONS ── */
-.ticker-bar{overflow:hidden;background:var(--amber-bg);border-bottom:1px solid var(--amber-border);height:22px;flex-shrink:0;display:flex;align-items:center}
-.ticker-inner{display:flex;white-space:nowrap;animation:ticker-scroll 32s linear infinite}
-.ticker-inner:hover{animation-play-state:paused}
-.ticker-item{font-size:8.5px;color:var(--amber);padding:0 28px;display:inline-block}
-.ticker-item strong{color:var(--text)}
-@keyframes ticker-scroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
-
-/* ── FLOATING AUTO FETCH ── */
-.float-fetch-btn{position:fixed;bottom:70px;right:16px;z-index:200;background:var(--accent);border:none;border-radius:50px;padding:9px 16px;font-size:9px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:5px;box-shadow:0 4px 16px rgba(58,123,213,0.45);transition:opacity .15s}
-.float-fetch-btn:hover{opacity:.85}
-.float-fetch-btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* ── TREEMAP PORTFOLIO ── */
+/* ── TREEMAP ── */
 .treemap-wrap{position:relative;width:100%;border-radius:10px;overflow:hidden}
 .treemap-cell{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--bg3);cursor:default;overflow:hidden;transition:opacity .15s}
 .treemap-cell:hover{opacity:.85}
-.treemap-ticker{font-size:10px;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.treemap-pct{font-size:13px;font-weight:500;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5)}
-.treemap-val{font-size:8px;color:rgba(255,255,255,.7);margin-top:1px}
-.sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
-.sb-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:200;line-height:1.1}
-.sb-logo em{font-style:italic;color:var(--accent2);font-weight:300}
-.sb-logo sup{font-size:8px;color:var(--muted);letter-spacing:.12em;font-family:'DM Mono',monospace;font-style:normal;vertical-align:super;margin-left:2px}
-.sb-tagline{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.treemap-ticker{font-size:9.5px;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.treemap-pct{font-size:12px;font-weight:500;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.treemap-val{font-size:7.5px;color:rgba(255,255,255,.7);margin-top:1px}
 
-/* Sidebar KPI mini-cards */
-.sb-kpi-block{padding:12px 14px;border-bottom:1px solid var(--border)}
-.sb-kpi-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
-.sb-kpi-l{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
-.sb-kpi-v{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums}
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:26px 28px;min-width:300px;max-width:380px;text-align:center;box-shadow:0 8px 48px rgba(0,0,0,.7)}
+.modal-title{font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--text);margin-bottom:5px}
+.modal-sub{font-size:9.5px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.modal-pin-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:20px;padding:11px;text-align:center;letter-spacing:8px;outline:none;margin-bottom:12px}
+.modal-pin-input:focus{border-color:var(--accent)}
+.modal-err{font-size:9.5px;color:var(--red);min-height:15px;margin-bottom:9px}
+.modal-btns{display:flex;gap:7px;justify-content:center}
 
-/* Sidebar NAV */
-.sb-nav{flex:1;padding:12px 10px;overflow-y:auto}
-.sb-nav::-webkit-scrollbar{width:0}
-.sb-section-label{font-size:7px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);padding:8px 8px 4px}
-.sb-nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:10px;color:var(--muted);letter-spacing:.04em;transition:all .15s;border:1px solid transparent;margin-bottom:2px;user-select:none}
-.sb-nav-item:hover{background:var(--bg4);color:var(--text)}
-.sb-nav-item.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.sb-nav-item.active .sb-icon{color:#fff}
-.sb-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
-.sb-badge{margin-left:auto;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);font-size:7px;padding:1px 5px;border-radius:3px;font-weight:500}
+/* ── FLOAT FETCH ── */
+.float-fetch-btn{position:fixed;bottom:68px;right:14px;z-index:200;background:linear-gradient(135deg,var(--accent),#1a50b0);border:none;border-radius:50px;padding:8px 14px;font-size:8.5px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:5px;box-shadow:0 4px 18px rgba(44,107,224,0.5);transition:opacity .15s}
+.float-fetch-btn:hover{opacity:.85}
+.float-fetch-btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* Sidebar bottom actions */
-.sb-bottom{padding:12px 14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
-.sb-fetch-btn{background:var(--accent);border:none;border-radius:7px;padding:7px 12px;font-size:9px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:6px;transition:opacity .15s;width:100%;justify-content:center}
-.sb-fetch-btn:hover{opacity:.85}
-.sb-fetch-btn:disabled{opacity:.5;cursor:not-allowed}
-.sb-mode-row{display:flex;justify-content:space-between;align-items:center}
-.sb-last-ts{font-size:8px;color:var(--dim)}
-.sb-mode-btn{background:var(--bg4);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:8px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;transition:all .2s}
-.sb-mode-btn:hover{border-color:var(--accent);color:var(--accent2)}
+/* ── MOBILE ── */
+.sb-toggle{display:none;position:fixed;bottom:14px;left:14px;z-index:200;background:linear-gradient(135deg,var(--accent),#1a50b0);border:none;border-radius:50%;width:40px;height:40px;font-size:17px;cursor:pointer;color:#fff;box-shadow:0 4px 18px rgba(44,107,224,0.5)}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99}
+canvas{max-width:100%}
 
-/* ── MAIN CONTENT AREA ── */
-.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-
-/* Top bar — shows page title + urgent banner + status */
-.topbar{padding:10px 20px 8px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.topbar-title{font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--text);flex-shrink:0}
-.topbar-status{font-size:8px;color:var(--muted);flex-shrink:0;display:flex;align-items:center;gap:6px}
-
-@media(max-width:600px){
-  .topbar{padding:8px 12px;gap:8px}
-  .topbar-title{font-size:15px}
-  .content-scroll{padding:10px 10px}
-  .bento-2{grid-template-columns:1fr}
-}
-
-/* Content scroll area */
-.content-scroll{flex:1;overflow-y:auto;padding:16px 20px}
-.content-scroll::-webkit-scrollbar{width:4px}
-.content-scroll::-webkit-scrollbar-track{background:var(--bg)}
-.content-scroll::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
-
-/* ── PANELS — all panels inside .content-scroll ── */
-.panel{display:none}
-.panel.active{display:block}
-
-/* ── Mobile sidebar toggle ── */
-.sb-toggle{display:none;position:fixed;bottom:16px;left:16px;z-index:200;background:var(--accent);border:none;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;color:#fff;box-shadow:0 4px 16px rgba(58,123,213,0.4)}
-.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
 
 @media(max-width:768px){
-  .sidebar{position:fixed;left:-230px;top:0;bottom:0;z-index:100;transition:left .25s,background .3s}
+  .sidebar{position:fixed;left:-210px;top:0;bottom:0;z-index:100;transition:left .25s,background .3s}
   .sidebar.open{left:0}
   .sb-toggle{display:flex;align-items:center;justify-content:center}
   .sb-overlay.open{display:block}
   .main-area{width:100%}
   .sb-collapse-btn{display:none}
   .float-fetch-btn{display:flex}
+  .stock-matrix{grid-template-columns:1fr 1fr}
+  .kpi-strip{grid-template-columns:1fr 1fr}
+  .content-scroll{padding:10px 10px}
+  .command-bar{padding:7px 12px;gap:8px}
+  .cb-title{font-size:13px}
 }
-@media(min-width:769px){
-  .float-fetch-btn{display:none}
+@media(min-width:769px){.float-fetch-btn{display:none}}
+@media(max-width:600px){
+  .bento-2,.bento-3,.bento-4,.bento-5,.bento-auto{grid-template-columns:1fr}
+  .stock-matrix{grid-template-columns:1fr}
 }
+
+/* ── ENTRY ANIMATIONS ── */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel.active > *{animation:fadeSlideUp .25s ease both}
+.panel.active > *:nth-child(1){animation-delay:.02s}
+.panel.active > *:nth-child(2){animation-delay:.06s}
+.panel.active > *:nth-child(3){animation-delay:.1s}
+.panel.active > *:nth-child(4){animation-delay:.14s}
+.panel.active > *:nth-child(5){animation-delay:.18s}
+
+/* ── PULSE for live status ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite;margin-right:5px;vertical-align:middle}
+
+/* ── SIGNAL COLOR MAP for matrix ── */
+.sig-hajar{background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,0.6));color:var(--green);border:1px solid var(--green-border);font-size:7px;padding:2px 6px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:inline-block}
+.sig-cicil{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-size:7px;padding:2px 6px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:inline-block}
+
+/* ── ALLOC BAR INLINE ── */
+.alloc-inline{display:flex;align-items:center;gap:6px}
+.alloc-bar-wrap{flex:1;height:3px;background:var(--bg5);border-radius:2px;overflow:hidden;position:relative}
+.alloc-bar-fill{height:3px;border-radius:2px}
+.alloc-bar-target{position:absolute;top:0;height:3px;width:2px;background:rgba(255,255,255,.45);border-radius:1px}
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════
-     APP SHELL — Sidebar + Main
-════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════
+     APP SHELL
+═══════════════════════════════════════════════════════ -->
 <div class="app-shell">
 
-<!-- ─── LEFT SIDEBAR ─── -->
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-  <!-- Brand -->
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v6</sup></div>
-    <div class="sb-tagline">Dividend Flywheel · Milestone Rp120jt</div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v8</sup></div>
+    <div class="sb-tagline">Dividend Flywheel · Target Rp250jt</div>
   </div>
 
-  <!-- KPI Mini block -->
   <div class="sb-kpi-block">
     <div class="sb-kpi-item">
       <span class="sb-kpi-l">Ekuitas</span>
@@ -411,7 +627,7 @@ canvas{max-width:100%}
       <span class="sb-kpi-v" id="h-pnl">—</span>
     </div>
     <div class="sb-kpi-item">
-      <span class="sb-kpi-l">Yield/Thn</span>
+      <span class="sb-kpi-l">YoC/Thn</span>
       <span class="sb-kpi-v acc" id="h-yoc">—</span>
     </div>
     <div class="sb-kpi-item">
@@ -424,34 +640,30 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <!-- Daily Quote -->
   <div class="sb-quote-block" id="sb-quote-block">
-    <div class="sb-quote-text" id="sb-quote-text">Loading quote...</div>
+    <div class="sb-quote-text" id="sb-quote-text">Loading...</div>
     <div class="sb-quote-author" id="sb-quote-author"></div>
   </div>
 
-  <!-- Navigation -->
   <div class="sb-nav">
     <div class="sb-section-label">Dashboard</div>
     <div class="sb-nav-item active" onclick="switchTab('snapshot',this)" data-tab="snapshot">
-      <span class="sb-icon">📊</span> Financial Snapshot
+      <span class="sb-icon">📊</span> Snapshot
     </div>
     <div class="sb-nav-item" onclick="switchTab('analytics',this)" data-tab="analytics">
-      <span class="sb-icon">📈</span> Portofolio Analytics
+      <span class="sb-icon">📈</span> Analytics
     </div>
-
     <div class="sb-section-label">Analisa</div>
     <div class="sb-nav-item" onclick="switchTab('deepdive',this)" data-tab="deepdive">
       <span class="sb-icon">🔬</span> Deep Dive
     </div>
     <div class="sb-nav-item" onclick="switchTab('lot',this)" data-tab="lot">
-      <span class="sb-icon">💰</span> Lot Recommender
+      <span class="sb-icon">💰</span> Lot Calc
       <span class="sb-badge">NEW</span>
     </div>
     <div class="sb-nav-item" onclick="switchTab('rebalance',this)" data-tab="rebalance">
       <span class="sb-icon">⚖️</span> Rebalancing
     </div>
-
     <div class="sb-section-label">Tools</div>
     <div class="sb-nav-item" onclick="switchTab('porto',this)" data-tab="porto">
       <span class="sb-icon">✏️</span> Edit Porto
@@ -461,7 +673,6 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <!-- Bottom actions -->
   <div class="sb-bottom">
     <button class="sb-fetch-btn" id="btn-main-fetch" onclick="confirmAndFetch()" disabled>
       <span id="fetch-icon">⟳</span> <span id="h-price-status">Auto Fetch</span>
@@ -471,11 +682,11 @@ canvas{max-width:100%}
       <button class="sb-mode-btn" id="mode-btn" onclick="toggleMode()">☀️ Light</button>
     </div>
   </div>
-</div><!-- end sidebar -->
+</div><!-- /sidebar -->
 
-<!-- ─── MAIN CONTENT ─── -->
+<!-- MAIN AREA -->
 <div class="main-area">
-  <!-- Ticker bar corporate actions -->
+  <!-- Ticker bar -->
   <div class="ticker-bar">
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
@@ -484,7 +695,7 @@ canvas{max-width:100%}
       <span class="ticker-item">·</span>
       <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L = Rp16.77jt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Porto Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L · Fresh capital ~Rp234.8jt</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — 9.08% gross · Rp22.84jt/thn · Rp1.62jt/bln net</span>
       <span class="ticker-item">·</span>
@@ -492,18 +703,16 @@ canvas{max-width:100%}
       <span class="ticker-item">·</span>
       <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli +16 lot SETELAH ex-date → target 19 lot</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L = Rp16.77jt</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Porto Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L · Fresh capital ~Rp234.8jt</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — 9.08% gross · Rp22.84jt/thn · Rp1.62jt/bln net</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L</span>
     </div>
   </div>
-  <!-- Top bar -->
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Financial Snapshot</div>
+
+  <!-- Command Bar -->
+  <div class="command-bar">
+    <div class="cb-title" id="topbar-title">📊 Snapshot</div>
     <div style="flex:1"></div>
-    <div class="topbar-status">
+    <div class="cb-status">
+      <span class="live-dot" id="live-dot-indicator" style="background:var(--muted)"></span>
       <span id="fetch-sub-status" style="color:var(--dim)">—</span>
     </div>
   </div>
@@ -511,204 +720,170 @@ canvas{max-width:100%}
   <!-- Scrollable content -->
   <div class="content-scroll" id="content-scroll">
 
-<!-- ═══════════════════════════════════════════════════════════
-     TAB 1: FINANCIAL SNAPSHOT — Bento Grid Layout
-═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════
+     TAB 1: FINANCIAL SNAPSHOT — Command Matrix
+═══════════════════════════════════════════════════════ -->
 <div class="panel active" id="panel-snapshot">
 
-  <!-- TOP ROW: KPI BENTO -->
-  <div class="bento bento-5 mb12">
-    <div class="bcard" style="text-align:center">
-      <div class="bcard-title">Ekuitas Total</div>
-      <div class="bcard-big green" id="snap-mktval">—</div>
-      <div class="bcard-sub" id="snap-mktval-sub">Market Value</div>
+  <!-- KPI STRIP -->
+  <div class="kpi-strip mb12">
+    <div class="kpi-tile" style="--tile-accent:var(--green)">
+      <div class="kpi-label">Ekuitas Total</div>
+      <div class="kpi-val green" id="snap-mktval">—</div>
+      <div class="kpi-sub" id="snap-mktval-sub">Market Value</div>
     </div>
-    <div class="bcard" style="text-align:center">
-      <div class="bcard-title">Day P&L</div>
-      <div class="bcard-big" id="snap-pnl">—</div>
-      <div class="bcard-sub">vs Invested Cost</div>
+    <div class="kpi-tile" style="--tile-accent:var(--accent2)">
+      <div class="kpi-label">Unrealized P&L</div>
+      <div class="kpi-val" id="snap-pnl">—</div>
+      <div class="kpi-sub">vs Invested Cost</div>
     </div>
-    <div class="bcard" style="text-align:center">
-      <div class="bcard-title">Avg Yield Tahunan</div>
-      <div class="bcard-big acc" id="snap-yoc">—</div>
-      <div class="bcard-sub">Yield on Cost</div>
+    <div class="kpi-tile" style="--tile-accent:var(--accent2)">
+      <div class="kpi-label">Yield on Cost</div>
+      <div class="kpi-val acc" id="snap-yoc">—</div>
+      <div class="kpi-sub">Gross / Tahunan</div>
     </div>
-    <div class="bcard" style="text-align:center">
-      <div class="bcard-title">Buying Power</div>
-      <div class="bcard-big" id="snap-cash">Rp0</div>
-      <div class="bcard-sub">Cash Reserved (RDN)</div>
+    <div class="kpi-tile" style="--tile-accent:var(--amber)">
+      <div class="kpi-label">Buying Power</div>
+      <div class="kpi-val kpi-val sm" id="snap-cash">Rp0</div>
+      <div class="kpi-sub">Cash Reserved (RDN)</div>
     </div>
-    <div class="bcard" style="text-align:center">
-      <div class="bcard-title">Status Data</div>
-      <div style="font-size:22px;margin:4px 0" id="fetch-indicator">⟳</div>
-      <div style="font-size:9px;color:var(--text);font-weight:500;margin-top:2px" id="fetch-date-display">—</div>
-      <div class="bcard-sub" id="fetch-sub-status2">Tekan Auto Fetch</div>
+    <div class="kpi-tile" style="--tile-accent:var(--muted)">
+      <div class="kpi-label">Status Data</div>
+      <div style="font-size:18px;margin:2px 0;line-height:1" id="fetch-indicator">⟳</div>
+      <div style="font-size:8px;color:var(--text);font-weight:500" id="fetch-date-display">—</div>
+      <div class="kpi-sub" id="fetch-sub-status2">Tekan Fetch</div>
     </div>
   </div>
 
-  <!-- MAIN BENTO ROW: PIE + REKOMENDASI + LIVE PRICES -->
-  <div class="bento bento-3 mb12">
-    <!-- PIE CHART -->
-    <div class="bcard row-2">
-      <div class="bcard-title">Komposisi Portofolio</div>
-      <div style="display:flex;justify-content:center;margin:8px 0">
-        <canvas id="pie-snap" width="160" height="160"></canvas>
-      </div>
-      <div id="pie-legend" style="margin-top:8px"></div>
-    </div>
+  <!-- ════ STOCK COMMAND MATRIX ════ -->
+  <div class="bcard-title" style="font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between">
+    <span>⬡ Stock Command Matrix — Semua Sinyal Satu Pandang</span>
+    <span style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0">Signal · Price · Lots · Yield · FV Gap · Alokasi</span>
+  </div>
+  <div id="stock-matrix" class="stock-matrix mb12"></div>
 
-    <!-- REKOMENDASI % PORSI -->
+  <!-- SECOND ROW: Allocation + Progress -->
+  <div class="bento bento-60-40 mb12">
+    <!-- Allocation bars -->
     <div class="bcard">
-      <div class="bcard-title">Target Alokasi vs Aktual</div>
+      <div class="bcard-title">Target Alokasi vs Aktual
+        <span style="font-size:7px;color:var(--dim);text-transform:none;letter-spacing:0">— garis putih = target</span>
+      </div>
       <div id="alloc-bars-snap"></div>
     </div>
 
-    <!-- LIVE PRICE TILES -->
+    <!-- Dividend progress -->
     <div class="bcard">
-      <div class="bcard-title">Harga Live — 5 Saham</div>
-      <div id="live-price-snap" style="display:grid;grid-template-columns:1fr 1fr;gap:7px"></div>
+      <div class="bcard-title">Progress ke Rp10jt/Bulan</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
+          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Gross/Thn</div>
+          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)" id="ds-gross">—</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
+          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Net/Bulan</div>
+          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="ds-monthly">—</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
+          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">After Tax</div>
+          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="ds-net">—</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
+          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Progress</div>
+          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--amber)" id="ds-progress">—</div>
+        </div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-label">
+          <span>Target Rp10jt/bln</span>
+          <span id="ds-prog-pct">—</span>
+        </div>
+        <div class="prog-track" style="height:6px">
+          <div class="prog-fill" id="ds-prog-bar" style="background:var(--green);width:0%"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- SECOND BENTO ROW: Dividend + Targets + Keystats -->
-  <div class="bento bento-60-40 mb12">
-    <!-- DIVIDEND SNAPSHOT -->
-    <div class="bcard">
-      <div class="bcard-title">Dividend Snapshot</div>
-      <div class="bento bento-4">
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Gross/Thn</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--accent2)" id="ds-gross">—</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">After Tax</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--green)" id="ds-net">—</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Per Bulan</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--text)" id="ds-monthly">—</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Progress</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--amber)" id="ds-progress">—</div>
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <div class="prog-wrap">
-          <div class="prog-label"><span>Progress ke Rp10jt/bln</span><span id="ds-prog-pct">—</span></div>
-          <div class="prog-track"><div class="prog-fill" id="ds-prog-bar" style="background:var(--green);width:0%"></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TARGET CARD -->
-    <div class="bcard">
-      <div class="bcard-title">Target Utama</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="padding:12px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);text-align:center">
-          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Target Pendapatan Pasif</div>
-          <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:200;color:var(--green)">Rp10jt</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:2px">per bulan sebelum usia 40</div>
-        </div>
-        <div style="padding:12px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);text-align:center">
-          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Milestone Porto</div>
-          <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:200;color:var(--accent2)">Rp120jt</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:2px">target milestone pertama</div>
-        </div>
-      </div>
-    </div>
+  <!-- HIDDEN COMPAT ELEMENTS (used by existing JS, not visible) -->
+  <div style="display:none">
+    <canvas id="pie-snap" width="1" height="1"></canvas>
+    <div id="pie-legend"></div>
+    <div id="live-price-snap"></div>
   </div>
 
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     TAB 2: PORTOFOLIO ANALYTICS — Bento Grid
-═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════
+     TAB 2: PORTFOLIO ANALYTICS
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-analytics">
 
-  <!-- ROW 0: Portfolio Metrics at the very top -->
   <div class="bcard mb12">
     <div class="bcard-title">Portofolio Metrics — Ringkasan Posisi</div>
-    <div class="bento bento-4" style="gap:8px">
+    <div class="bento bento-4" style="gap:7px">
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Total Invested</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--text)" id="pm-invested">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Total Invested</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)" id="pm-invested">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Market Value</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="pm-mktval">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Market Value</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--green)" id="pm-mktval">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Unrealized P&L</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200" id="pm-pnl">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Unrealized P&L</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200" id="pm-pnl">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Return %</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200" id="pm-ret">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Return %</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200" id="pm-ret">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Annual Dividend</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)" id="pm-div">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Annual Dividend</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--accent2)" id="pm-div">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Yield on Cost</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)" id="pm-yoc">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Yield on Cost</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--accent2)" id="pm-yoc">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Yield on Price</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--text)" id="pm-yop">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Yield on Price</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)" id="pm-yop">—</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Div/Bulan (Net)</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="pm-monthly">—</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Div/Bulan (Net)</div>
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--green)" id="pm-monthly">—</div>
       </div>
     </div>
   </div>
 
-  <!-- ROW 1: Charts overview -->
   <div class="bento bento-60-40 mb12">
-    <!-- Dividend Income Tracker — real data dari porto -->
     <div class="bcard">
       <div class="bcard-title">Dividend Income Tracker — Real Porto
         <span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;Berdasarkan posisi & dividen aktual</span>
       </div>
       <div id="div-income-tracker"></div>
     </div>
-
-    <!-- Cashflow Health Panel -->
     <div class="bcard">
       <div class="bcard-title">Cashflow Health — FCF & Div Coverage</div>
       <div id="cashflow-health" style="margin-top:4px"></div>
     </div>
   </div>
 
-  <!-- ROW 2: Heatmap + Komposisi Treemap -->
-  <div class="bento bento-60-40 mb12">
-    <!-- Heatmap -->
-    <div class="bcard">
-      <div class="bcard-title">Heatmap Kinerja Individual</div>
-      <div class="bento bento-5" id="heatmap-grid" style="gap:8px"></div>
-    </div>
-
-    <!-- Treemap portofolio -->
-    <div class="bcard">
-      <div class="bcard-title">Komposisi Portofolio — Proporsi Visual</div>
-      <div id="analytics-treemap" style="margin-top:6px"></div>
-    </div>
+  <div class="bcard mb12">
+    <div class="bcard-title">Komposisi Portofolio — Proporsi Visual</div>
+    <div id="analytics-treemap" style="margin-top:6px"></div>
   </div>
-
-
 
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     TAB 3: DEEP DIVE — Market + Analysis + Technical + FV + Keystats + Suggestion
-═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════
+     TAB 3: DEEP DIVE
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-deepdive">
 
-  <!-- KONDISI MARKET -->
   <div class="sec-title">Kondisi Market Terkini
-    <span style="font-size:7px;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:8px">Update via tombol Auto Fetch di header</span>
+    <span style="font-size:7px;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:8px">Auto Fetch untuk update</span>
   </div>
   <div class="bento bento-3 mb12">
     <div class="mkt-tile bcard">
@@ -728,29 +903,25 @@ canvas{max-width:100%}
     </div>
   </div>
   <div class="bcard mb12">
-    <div style="font-size:10px;color:var(--muted);line-height:1.8" id="market-narrative">
-      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp16.77jt (BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L) — butuh fresh capital ~Rp234.8jt menuju target Rp250jt. ITMG ex-div 21 Apr (Rp2,245/saham) — prioritas beli +16 lot setelah ex-date → target 19 lot. ADMF cum-date 14 Apr, dividen cair 30 Apr → cross-feed ke BMRI sesuai Rule #9. Urutan inject: ITMG → BMRI (anchor 35%, 187L) → POWR (25%, 850L) → ASII → ADMF.
+    <div style="font-size:9.5px;color:var(--muted);line-height:1.8" id="market-narrative">
+      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp16.77jt — butuh fresh capital ~Rp234.8jt menuju target Rp250jt. ITMG ex-div 21 Apr (Rp2,245/saham) — prioritas beli +16 lot setelah ex-date. ADMF cum-date 14 Apr, dividen cair 30 Apr → cross-feed ke BMRI sesuai Rule #9.
     </div>
   </div>
 
-  <!-- SUGGESTION PANEL -->
   <div class="sec-title">Suggestion Board — Action Signals</div>
   <div class="bento bento-5 mb12" id="suggestion-grid"></div>
 
-  <!-- FUNDAMENTAL ANALYSIS -->
   <div class="sec-title">Analisa Fundamental — BlackRock / JPMorgan / Vanguard Framework</div>
   <div id="stock-analysis-grid" class="mb12"></div>
 
-  <!-- ICHIMOKU TECHNICAL -->
   <div class="sec-title">Analisa Teknikal — Ichimoku 1D + Support/Resistance
     <span id="ich-fetch-status" style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0;margin-left:8px">klik Auto Fetch untuk update</span>
   </div>
   <div class="bento bento-5 mb12" id="ich-grid"></div>
 
-  <!-- FAIR VALUE -->
   <div class="sec-title">Fair Value Kumulatif — Multi-Method + MOS per Saham</div>
   <div class="bcard overflow-x mb12">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+    <div style="font-size:9.5px;color:var(--muted);margin-bottom:10px;line-height:1.6">
       FV dari 3 metode: <strong style="color:var(--text)">P/E Historis</strong>, <strong style="color:var(--text)">DDM (g=5%)</strong>, <strong style="color:var(--text)">P/BV Peer</strong>. MOS = Margin of Safety vs Consensus FV.
     </div>
     <table class="tbl" id="fv-table">
@@ -765,34 +936,14 @@ canvas{max-width:100%}
     </table>
   </div>
 
-  <!-- KEYSTATS -->
   <div class="sec-title">Key Stats per Saham — Rating Overall + Risk Score</div>
   <div class="bento bento-5 mb12" id="keystats-grid"></div>
 
-  <!-- PRICE FORECAST -->
-  <div class="sec-title">Price Forecast 12 Bulan — Bear / Base / Bull</div>
-  <div class="bcard overflow-x mb12">
-    <table class="tbl" id="forecast-table">
-      <thead>
-        <tr>
-          <th>Saham</th><th class="num">Harga Kini</th>
-          <th class="num">Bear</th><th class="num">Base</th><th class="num">Bull</th>
-          <th class="num">Median</th><th class="num">Implied Return</th>
-        </tr>
-      </thead>
-      <tbody id="forecast-body"></tbody>
-    </table>
-  </div>
-
-  <!-- RISK MATRIX -->
-  <div class="sec-title">Risk Matrix Detail</div>
-  <div id="risk-grid" class="mb12"></div>
-
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      TAB 4: LOT RECOMMENDER
-═══════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-lot">
 
   <div class="bcard mb12">
@@ -853,66 +1004,50 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <div class="sec-title">⭐ Top Recommendation — Fokus Utama Bulan Ini</div>
-  <div id="lot-top-pick" class="mb12"></div>
-
-  <div class="sec-title">💡 Manual Buy — Best Allocation dari Budget Ini</div>
-  <div id="lot-manual-buy" class="mb12" style="display:none"></div>
-
   <div class="sec-title">Rekomendasi Lot — Semua Saham (sync Rebalancing)</div>
   <div class="bento bento-5 mb12" id="lot-grid"></div>
   <div id="lot-summary" style="display:none" class="bcard mb12"></div>
+  <div id="lot-top-pick" class="mb12"></div>
+  <div id="lot-manual-buy" class="mb12" style="display:none"></div>
 
-  <!-- DIVIDEND CALENDAR -->
   <div class="sec-title">📅 Kalender Dividen — Jadwal Pembagian Bulanan</div>
   <div class="bcard mb12" id="div-calendar"></div>
 
-  <!-- MONTHLY GROWTH PLAN -->
-  <div class="sec-title">📈 Rencana Gemuk Bulanan — Snowball Dividen</div>
-  <div class="bcard mb12" id="monthly-growth-plan"></div>
-
+  <div style="display:none" id="monthly-growth-plan"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      TAB 5: REBALANCING
-═══════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-rebalance">
   <div class="info-box">
-    <strong>🎯 Milestone Porto Rp120jt</strong> — ITMG 9 lot = 20% anchor. Target lot penuh: <strong>BMRI 89L · POWR 408L · ITMG 9L · ASII 22L · ADMF 10L</strong>. Fresh capital dibutuhkan ~Rp98.7jt dari posisi saat ini. Yield porto penuh ~9.3% gross = <strong>Rp11.18jt/thn</strong> atau <strong>Rp793rb/bln net</strong>. Rebalancing = arahkan semua dividen + top-up ke BMRI dulu, lalu POWR. Jangan jual posisi yang ada.
+    <strong>🎯 Milestone Porto Rp120jt</strong> — ITMG 9 lot = 20% anchor. Target lot penuh: <strong>BMRI 89L · POWR 408L · ITMG 9L · ASII 22L · ADMF 10L</strong>. Fresh capital dibutuhkan ~Rp98.7jt dari posisi saat ini. Yield porto penuh ~9.3% gross = <strong>Rp11.18jt/thn</strong> atau <strong>Rp793rb/bln net</strong>. Rebalancing = arahkan semua dividen + top-up ke BMRI dulu, lalu POWR.
   </div>
 
-  <div class="bento bento-60-40 mb12">
-    <div class="bcard overflow-x">
-      <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
-      <table class="tbl" id="reb-table">
-        <thead>
-          <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Kekurangan Modal</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
-        </thead>
-        <tbody id="reb-body"></tbody>
-      </table>
-    </div>
-    <div class="bcard">
-      <div class="bcard-title">Komposisi Visual</div>
-      <div id="reb-bars"></div>
-      <div id="reb-reco" style="margin-top:10px"></div>
-    </div>
+  <div class="bcard overflow-x mb12">
+    <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
+    <table class="tbl" id="reb-table">
+      <thead>
+        <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Kekurangan Modal</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
+      </thead>
+      <tbody id="reb-body"></tbody>
+    </table>
   </div>
 
-  <div class="bcard mb12">
-    <div class="bcard-title">Proyeksi Portofolio</div>
-    <div class="fields-row fr-3 mb12">
-      <div class="field"><label>Target Nilai Porto (Rp)</label><input type="number" id="proj-target" value="250000000" step="10000000"></div>
-      <div class="field"><label>Monthly Top-up (Rp)</label><input type="number" id="proj-topup" value="750000"></div>
-      <div class="field"><label>Asumsi Div Growth/Thn (%)</label><input type="number" id="proj-divgrowth" value="5" step="0.5" min="0" max="20"></div>
-    </div>
-    <button class="btn btn-accent" onclick="renderProjection()">Hitung Proyeksi →</button>
-    <div id="proj-result" style="margin-top:12px"></div>
+  <!-- Hidden reb-bars for compat -->
+  <div style="display:none">
+    <div id="reb-bars"></div>
+    <div id="reb-reco"></div>
+    <div id="proj-result"></div>
+    <input id="proj-target" value="250000000">
+    <input id="proj-topup" value="750000">
+    <input id="proj-divgrowth" value="5">
   </div>
 
   <div class="bcard mb12">
     <div class="bcard-title">Edit Target Alokasi</div>
     <div class="fields-row fr-5 mb8" id="target-inputs"></div>
-    <div id="target-msg" style="margin-top:6px;font-size:10px"></div>
+    <div id="target-msg" style="margin-top:6px;font-size:9.5px"></div>
     <div class="btn-row">
       <button class="btn btn-accent" onclick="saveTargets()">Simpan Target</button>
       <button class="btn btn-outline" onclick="resetTargets()">Reset Default</button>
@@ -920,22 +1055,17 @@ canvas{max-width:100%}
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      TAB 6: EDIT PORTO
-═══════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-porto">
 
-  <!-- PIE -->
   <div class="sec-title">Komposisi Porto Saat Ini</div>
   <div class="bcard mb12" id="porto-composition"></div>
 
-  <!-- PORTO EDIT -->
   <div class="sec-title">Data Saham — Update Manual</div>
   <div class="bento bento-5 mb12" id="porto-edit-grid"></div>
 
-
-
-  <!-- CASH RESERVED INPUT -->
   <div class="bcard mb12">
     <div class="bcard-title">Cash Reserved / Buying Power (RDN)</div>
     <div class="fields-row fr-3">
@@ -944,7 +1074,7 @@ canvas{max-width:100%}
         <input type="number" id="inp-cash" value="0" min="0" placeholder="0">
       </div>
     </div>
-    <div style="font-size:9px;color:var(--muted);margin-top:6px">Tampil di Financial Snapshot sebagai Buying Power.</div>
+    <div style="font-size:8.5px;color:var(--muted);margin-top:5px">Tampil di Financial Snapshot sebagai Buying Power.</div>
   </div>
 
   <div class="btn-row mb12">
@@ -959,20 +1089,19 @@ canvas{max-width:100%}
   </div>
   <div id="save-msg" style="display:none" class="success-box">✓ Data disimpan. Semua tab terupdate.</div>
 
-  <!-- SAVEPOINTS — 5 Slots -->
   <div class="sec-title">Savepoints — 5 Slot Compare</div>
   <div class="bcard mb12">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.6">
-      Simpan snapshot porto untuk dibandingkan. 5 slot maksimum. Gunakan Compare untuk lihat perubahan antar savepoint.
+    <div style="font-size:9.5px;color:var(--muted);margin-bottom:9px;line-height:1.6">
+      Simpan snapshot porto untuk dibandingkan. 5 slot maksimum.
     </div>
     <div id="savepoint-list" class="mb12"></div>
     <div id="savepoint-compare" style="display:none"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      TAB 7: SCAN STOCKBIT (OCR)
-═══════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-ocr">
   <div class="info-box">
     📷 Upload screenshot dari Stockbit — bisa <strong>layar portfolio utama</strong> atau <strong>detail per saham</strong>. Claude akan baca angkanya dan update porto otomatis. Bisa upload beberapa sekaligus.
@@ -985,17 +1114,17 @@ canvas{max-width:100%}
         <label>Anthropic API Key</label>
         <input type="password" id="ocr-api-key" placeholder="sk-ant-..." oninput="localStorage.setItem('ac_apikey',this.value)">
       </div>
-      <div style="font-size:9px;color:var(--dim);line-height:1.6">
+      <div style="font-size:8.5px;color:var(--dim);line-height:1.6">
         Key disimpan di localStorage browser — tidak dikirim ke server manapun selain Anthropic API langsung.<br>
         Dapatkan key di <span style="color:var(--accent2)">console.anthropic.com</span>
       </div>
     </div>
     <div class="bcard">
       <div class="bcard-title">Tips Screenshot</div>
-      <div style="font-size:9px;color:var(--green);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em">✓ Bagus</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7;margin-bottom:8px">· Layar portfolio utama Stockbit<br>· Detail per saham<br>· Cahaya cukup, tidak blur<br>· Semua angka terbaca</div>
-      <div style="font-size:9px;color:var(--red);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em">✕ Hindari</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">· Screenshot terpotong<br>· Refleksi layar / glare<br>· Zoom terlalu jauh<br>· Saat animasi loading</div>
+      <div style="font-size:8.5px;color:var(--green);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✓ Bagus</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7;margin-bottom:7px">· Layar portfolio utama Stockbit<br>· Detail per saham<br>· Cahaya cukup, tidak blur<br>· Semua angka terbaca</div>
+      <div style="font-size:8.5px;color:var(--red);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✕ Hindari</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">· Screenshot terpotong<br>· Refleksi layar / glare<br>· Zoom terlalu jauh<br>· Saat animasi loading</div>
     </div>
   </div>
 
@@ -1004,9 +1133,9 @@ canvas{max-width:100%}
     ondragover="event.preventDefault();this.classList.add('drag')"
     ondragleave="this.classList.remove('drag')"
     ondrop="event.preventDefault();this.classList.remove('drag');handleOCRFiles(event.dataTransfer.files)">
-    <div style="font-size:32px;margin-bottom:8px">📷</div>
-    <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">Drop screenshot Stockbit di sini</div>
-    <div style="font-size:10px;color:var(--muted)">atau klik untuk pilih file · JPG / PNG · bisa multi-upload</div>
+    <div style="font-size:28px;margin-bottom:7px">📷</div>
+    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px">Drop screenshot Stockbit di sini</div>
+    <div style="font-size:9.5px;color:var(--muted)">atau klik untuk pilih file · JPG / PNG · bisa multi-upload</div>
     <input type="file" id="ocr-file-input" accept="image/*" multiple style="display:none" onchange="handleOCRFiles(this.files)">
   </div>
 
@@ -1032,68 +1161,68 @@ canvas{max-width:100%}
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      TAB 8: RULES
-═══════════════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-rules">
 
   <div class="sec-title">Top Up — Saat Ada Modal Baru</div>
   <div class="bento bento-4 mb12">
     <div class="bcard" style="border-left:3px solid var(--accent)">
-      <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #1 — 20% Vault Dulu</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Setiap ada injeksi modal baru, <strong style="color:var(--text)">potong 20% ke RDPU dulu</strong>. Sisa 80% baru boleh dibelikan saham pilar.</div>
+      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #1 — 20% Vault Dulu</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Setiap ada injeksi modal baru, <strong style="color:var(--text)">potong 20% ke RDPU dulu</strong>. Sisa 80% baru boleh dibelikan saham pilar.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
-      <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #2 — Arahkan ke Paling Diskon</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (anchor 33%) → ASII → POWR/ITMG</strong>. ADMF dikurangi ke 12% — tidak tambah lagi.</div>
+      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #2 — Arahkan ke Paling Diskon</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (anchor 33%) → ASII → POWR/ITMG</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
-      <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Setiap 6 bulan, naikkan injeksi minimal <strong style="color:var(--text)">Rp100–200rb dari level sebelumnya</strong>.</div>
+      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Setiap 6 bulan, naikkan injeksi minimal <strong style="color:var(--text)">Rp100–200rb dari level sebelumnya</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
-      <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #4 — ITMG Dikunci</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20% secara natural. ADMF juga <strong style="color:var(--amber)">STOP tambah</strong> — target diturunkan ke 12%, dividen-nya cross-feed ke BMRI.</div>
+      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #4 — ITMG Dikunci</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20%. ADMF juga <strong style="color:var(--amber)">STOP tambah</strong>.</div>
     </div>
   </div>
 
   <div class="sec-title">Saving — Mengelola RDPU</div>
   <div class="bento bento-4 mb12">
     <div class="bcard" style="border-left:3px solid var(--green)">
-      <div style="font-size:8px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #5 — RDPU Adalah Amunisi</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">RDPU <strong style="color:var(--text)">tidak boleh disentuh</strong> untuk kebutuhan harian. Hanya tarik saat koreksi brutal <strong style="color:var(--red)">&gt;5%</strong>.</div>
+      <div style="font-size:7.5px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #5 — RDPU Adalah Amunisi</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">RDPU <strong style="color:var(--text)">tidak boleh disentuh</strong> untuk kebutuhan harian. Hanya tarik saat koreksi brutal <strong style="color:var(--red)">&gt;5%</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--green)">
-      <div style="font-size:8px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #6 — Dividen di RDN</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Semua dividen yang cair <strong style="color:var(--text)">wajib tinggal di RDN</strong>. Biarkan akumulasi sampai cukup untuk beli lot.</div>
+      <div style="font-size:7.5px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #6 — Dividen di RDN</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Semua dividen yang cair <strong style="color:var(--text)">wajib tinggal di RDN</strong>. Biarkan akumulasi sampai cukup untuk beli lot.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--green)">
-      <div style="font-size:8px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #7 — Quarterly Check</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Evaluasi bisnis 4x setahun: <strong style="color:var(--text)">Apr / Jul / Okt / Mar</strong>. Fokus: NPL bank, kas perusahaan, utang.</div>
+      <div style="font-size:7.5px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #7 — Quarterly Check</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Evaluasi bisnis 4x setahun: <strong style="color:var(--text)">Apr / Jul / Okt / Mar</strong>. Fokus: NPL bank, kas, utang.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--green)">
-      <div style="font-size:8px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #8 — Cek RDPU Hanya Quarterly</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Jangan buka saldo RDPU setiap hari — itu godaan untuk dipakai.</div>
+      <div style="font-size:7.5px;color:var(--green);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #8 — Cek RDPU Hanya Quarterly</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Jangan buka saldo RDPU setiap hari — itu godaan untuk dipakai.</div>
     </div>
   </div>
 
   <div class="sec-title">Saat Dapat Dividen</div>
   <div class="bento bento-4 mb12">
     <div class="bcard" style="border-left:3px solid var(--amber)">
-      <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #9 — Cross-Feeding Wajib</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, POWR</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong>. ADMF bukan grup Astra — ia adalah MUFG/Danamon. Cross-feed tetap berlaku.</div>
+      <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #9 — Cross-Feeding Wajib</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, POWR</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--amber)">
-      <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #10 — Beli Lot Segera</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Begitu dividen cukup untuk 1 lot, <strong style="color:var(--text)">langsung eksekusi</strong>. Waktu di pasar lebih penting dari timing.</div>
+      <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #10 — Beli Lot Segera</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Begitu dividen cukup untuk 1 lot, <strong style="color:var(--text)">langsung eksekusi</strong>. Waktu di pasar > timing.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--amber)">
-      <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #11 — Catat Semua Dividen</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Tracking dividen masuk per saham per periode. Target <strong style="color:var(--text)">Rp10jt/bulan</strong> butuh data.</div>
+      <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #11 — Catat Semua Dividen</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Tracking dividen masuk per saham per periode. Target <strong style="color:var(--text)">Rp10jt/bulan</strong> butuh data.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--amber)">
-      <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #12 — Jangan Cairkan</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7"><strong style="color:var(--red)">Tidak cairkan satu rupiah pun</strong> sampai porto menghasilkan Rp10jt/bulan secara konsisten.</div>
+      <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #12 — Jangan Cairkan</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7"><strong style="color:var(--red)">Tidak cairkan satu rupiah pun</strong> sampai porto menghasilkan Rp10jt/bulan secara konsisten.</div>
     </div>
   </div>
 
@@ -1105,7 +1234,6 @@ canvas{max-width:100%}
 
 </div>
 
-<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
 'use strict';
 
@@ -1415,6 +1543,7 @@ function renderSnapshotPanel() {
   });
 
   drawPortoChartSnap();
+  renderStockMatrix();
 }
 
 // ════════════════════════════════════
@@ -3624,6 +3753,145 @@ function applyOCRToPorto() {
   },1500);
 }
 
+
+// ════════════════════════════════════
+// STOCK COMMAND MATRIX — The Ichimoku Glance (v8)
+// ════════════════════════════════════
+function renderStockMatrix() {
+  const el = document.getElementById('stock-matrix');
+  if (!el) return;
+
+  const totalMkt = totalMktVal();
+  const inv = totalInvested();
+
+  // Compute MOS for each ticker
+  const mosMap = {};
+  TICKERS.forEach(t => {
+    const d = ANALYSIS_DATA[t];
+    if (!d) { mosMap[t] = 0; return; }
+    const consensus = Math.round((d.fv_pe + d.fv_ddm + d.fv_pbv) / 3);
+    mosMap[t] = ((consensus - porto[t].price) / porto[t].price * 100);
+  });
+
+  // Sort by MOS desc for rank
+  const ranked = [...TICKERS].sort((a,b) => mosMap[b] - mosMap[a]);
+
+  el.innerHTML = '';
+  TICKERS.forEach(t => {
+    const s = porto[t];
+    const d = ANALYSIS_DATA[t];
+    const ich = ichData[t];
+    const color = COLORS[t];
+    const mos = mosMap[t];
+    const actual = totalMkt > 0 ? (s.price * s.lots * 100 / totalMkt * 100) : 0;
+    const target = targets[t];
+    const gap = actual - target;
+    const mktVal = s.price * s.lots * 100;
+    const yieldOnPrice = s.price > 0 ? (s.divPerShare / s.price * 100) : 0;
+    const yieldOnCost = s.invested > 0 && s.lots > 0 ? (s.divPerShare / (s.invested / (s.lots * 100)) * 100) : 0;
+    const pnlPct = s.invested > 0 ? (s.pnl / s.invested * 100) : 0;
+
+    // Signal
+    let sig, sigBg, sigColor, sigBorder;
+    if (mos > 35)      { sig='HAJAR';   sigBg=`linear-gradient(135deg,var(--green-bg),rgba(3,60,30,.6))`;  sigColor='var(--green)';  sigBorder='var(--green-border)'; }
+    else if (mos > 20) { sig='BUY';     sigBg='var(--green-bg)';  sigColor='var(--green)';  sigBorder='var(--green-border)'; }
+    else if (mos > 8)  { sig='CICIL';   sigBg='var(--blue-bg)';   sigColor='var(--blue)';   sigBorder='var(--blue-border)';  }
+    else if (mos > -5) { sig='HOLD';    sigBg='var(--bg5)';       sigColor='var(--muted)';  sigBorder='var(--border)';       }
+    else               { sig='TUNGGU';  sigBg='var(--amber-bg)';  sigColor='var(--amber)';  sigBorder='var(--amber-border)'; }
+
+    // Ichimoku signal supplement
+    let ichLine = '';
+    if (ich) {
+      const ichColor = ich.sigClass==='bg'?'var(--green)':ich.sigClass==='bb'?'var(--blue)':ich.sigClass==='ba'?'var(--amber)':'var(--muted)';
+      const posIcon = ich.aboveCloud ? '↑' : ich.belowCloud ? '↓' : '↔';
+      ichLine = `<div class="sc-row" style="margin-top:2px">
+        <span class="sc-label">Ichimoku</span>
+        <span style="font-size:8px;color:${ichColor};font-weight:500">${posIcon} ${ich.signal}</span>
+      </div>`;
+    }
+
+    // Allocation bar
+    const allocW = Math.min(actual, 100);
+    const targetW = Math.min(target, 100);
+    const overColor = gap > 5 ? 'var(--red)' : gap > 0 ? 'var(--amber)' : 'var(--green)';
+
+    // Medal for top ranked
+    const rank = ranked.indexOf(t);
+    const rankEl = rank === 0 ? '<span style="font-size:8px">🥇</span>' : rank === 1 ? '<span style="font-size:7px;opacity:.6">🥈</span>' : '';
+
+    el.innerHTML += `
+      <div class="stock-col" style="--stock-color:${color}">
+        <!-- Header -->
+        <div class="sc-header">
+          <div>
+            <div class="sc-ticker" style="--stock-color:${color}">${t} ${rankEl}</div>
+            <div style="font-size:7px;color:var(--muted);margin-top:1px;letter-spacing:.04em">${d ? d.sector.split('/')[0].trim() : ''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:7px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;background:${sigBg};color:${sigColor};border:1px solid ${sigBorder}">${sig}</div>
+            <div style="font-size:8px;color:${mos>=0?'var(--green)':'var(--red)'};margin-top:3px;font-weight:500">${mos>=0?'+':''}${mos.toFixed(0)}% MOS</div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="sc-body">
+          <!-- Price -->
+          <div class="sc-row">
+            <span class="sc-label">Harga</span>
+            <span class="sc-value big">${rp(s.price)}</span>
+          </div>
+          <!-- P&L -->
+          <div class="sc-row">
+            <span class="sc-label">P&L</span>
+            <span class="sc-value" style="color:${s.pnl>=0?'var(--green)':'var(--red)'}">${s.pnl>=0?'+':''}${rp(s.pnl)} <span style="font-size:7.5px;opacity:.7">(${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%)</span></span>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin:3px 0"></div>
+
+          <!-- Lots + value -->
+          <div class="sc-row">
+            <span class="sc-label">Posisi</span>
+            <span class="sc-value"><strong style="color:${color};font-size:11px">${s.lots}</strong> <span style="color:var(--muted)">lot</span></span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-label">Nilai Mkt</span>
+            <span class="sc-value">${rp(mktVal)}</span>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin:3px 0"></div>
+
+          <!-- Yield -->
+          <div class="sc-row">
+            <span class="sc-label">YoC / YoP</span>
+            <span class="sc-value" style="color:var(--accent2)">${yieldOnCost.toFixed(1)}% <span style="color:var(--muted);font-size:8px">/ ${yieldOnPrice.toFixed(1)}%</span></span>
+          </div>
+          <!-- Div per share -->
+          <div class="sc-row">
+            <span class="sc-label">Div/Lbr</span>
+            <span class="sc-value" style="color:var(--green)">${rp(s.divPerShare)}</span>
+          </div>
+
+          ${ichLine}
+
+          <div style="height:1px;background:var(--border);margin:3px 0"></div>
+
+          <!-- Allocation -->
+          <div class="sc-row">
+            <span class="sc-label">Alokasi</span>
+            <span class="sc-value" style="color:${overColor}">${actual.toFixed(1)}%<span style="color:var(--muted);font-size:8px"> / ${target}%</span></span>
+          </div>
+          <div style="height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;position:relative;margin-top:2px">
+            <div style="height:4px;border-radius:2px;background:${color};width:${allocW}%;opacity:.9"></div>
+            <div style="position:absolute;top:0;left:${targetW}%;width:2px;height:4px;background:rgba(255,255,255,.5);border-radius:1px"></div>
+          </div>
+          <div style="font-size:7px;color:${Math.abs(gap)>5?overColor:'var(--dim)'};margin-top:2px">
+            ${gap>0?'↑ Overweight ':'gap: '}${gap>=0?'+':''}${gap.toFixed(1)}% dari target
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
 // ════════════════════════════════════
 // INIT
 // ════════════════════════════════════
@@ -3675,6 +3943,7 @@ window.addEventListener('load',()=>{
   }
 });
 </script>
+
   </div><!-- end content-scroll -->
 </div><!-- end main-area -->
 </div><!-- end app-shell -->
