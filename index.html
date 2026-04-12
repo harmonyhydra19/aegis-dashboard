@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v8 — Command Terminal</title>
+<title>Aegis Alpha v9 — Command Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;0,9..144,300;1,9..144,200;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   AEGIS ALPHA v8 — COMMAND TERMINAL DESIGN SYSTEM
-   Dark mode default · "Ichimoku-style glance"
+   AEGIS ALPHA v9 — COMMAND TERMINAL DESIGN SYSTEM
+   Dark mode default · SR · FVG · OB · RSI glance
 ═══════════════════════════════════════════════════════════ */
 :root {
   /* Core palette */
@@ -311,7 +311,7 @@ body.light::before{
 .bcard-sub{font-size:8.5px;color:var(--muted);margin-top:2px}
 
 /* ══════════════════════════════════════
-   STOCK COMMAND MATRIX — THE ICHIMOKU GLANCE
+   STOCK COMMAND MATRIX — The Signal Glance
 ══════════════════════════════════════ */
 .stock-matrix{
   display:grid;
@@ -523,9 +523,8 @@ body.light::before{
 .sp-sl{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
 .sp-sv{font-size:10.5px;font-weight:500;color:var(--text)}
 
-/* ── OCR ── */
-.ocr-drop{border:2px dashed var(--border2);cursor:pointer;transition:border-color .2s;text-align:center;padding:26px 20px;border-radius:var(--radius)}
-.ocr-drop:hover,.ocr-drop.drag{border-color:var(--accent)}
+
+
 
 /* ── TREEMAP ── */
 .treemap-wrap{position:relative;width:100%;border-radius:10px;overflow:hidden}
@@ -613,7 +612,7 @@ canvas{max-width:100%}
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v8</sup></div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v9</sup></div>
     <div class="sb-tagline">Dividend Flywheel · Target Rp250jt</div>
   </div>
 
@@ -647,11 +646,8 @@ canvas{max-width:100%}
 
   <div class="sb-nav">
     <div class="sb-section-label">Dashboard</div>
-    <div class="sb-nav-item active" onclick="switchTab('snapshot',this)" data-tab="snapshot">
-      <span class="sb-icon">📊</span> Snapshot
-    </div>
-    <div class="sb-nav-item" onclick="switchTab('analytics',this)" data-tab="analytics">
-      <span class="sb-icon">📈</span> Analytics
+    <div class="sb-nav-item active" onclick="switchTab('nexus',this)" data-tab="nexus">
+      <span class="sb-icon">⬡</span> Nexus
     </div>
     <div class="sb-section-label">Analisa</div>
     <div class="sb-nav-item" onclick="switchTab('deepdive',this)" data-tab="deepdive">
@@ -661,8 +657,8 @@ canvas{max-width:100%}
       <span class="sb-icon">💰</span> Lot Calc
       <span class="sb-badge">NEW</span>
     </div>
-    <div class="sb-nav-item" onclick="switchTab('rebalance',this)" data-tab="rebalance">
-      <span class="sb-icon">⚖️</span> Rebalancing
+    <div class="sb-nav-item" onclick="switchTab('arsenal',this)" data-tab="arsenal">
+      <span class="sb-icon">⚔️</span> Arsenal
     </div>
     <div class="sb-section-label">Tools</div>
     <div class="sb-nav-item" onclick="switchTab('porto',this)" data-tab="porto">
@@ -709,7 +705,7 @@ canvas{max-width:100%}
 
   <!-- Command Bar -->
   <div class="command-bar">
-    <div class="cb-title" id="topbar-title">📊 Snapshot</div>
+    <div class="cb-title" id="topbar-title">⬡ Nexus — Command Intelligence</div>
     <div style="flex:1"></div>
     <div class="cb-status">
       <span class="live-dot" id="live-dot-indicator" style="background:var(--muted)"></span>
@@ -721,9 +717,9 @@ canvas{max-width:100%}
   <div class="content-scroll" id="content-scroll">
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 1: FINANCIAL SNAPSHOT — Command Matrix
+     TAB 1: NEXUS — Command Matrix + Portfolio Intelligence
 ═══════════════════════════════════════════════════════ -->
-<div class="panel active" id="panel-snapshot">
+<div class="panel active" id="panel-nexus">
 
   <!-- KPI STRIP -->
   <div class="kpi-strip mb12">
@@ -758,7 +754,7 @@ canvas{max-width:100%}
   <!-- ════ STOCK COMMAND MATRIX ════ -->
   <div class="bcard-title" style="font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between">
     <span>⬡ Stock Command Matrix — Semua Sinyal Satu Pandang</span>
-    <span style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0">Signal · Price · Lots · Yield · FV Gap · Alokasi</span>
+    <span style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0">Signal · Price · Lots · Ideal Lot · Yield · Alokasi</span>
   </div>
   <div id="stock-matrix" class="stock-matrix mb12"></div>
 
@@ -812,12 +808,7 @@ canvas{max-width:100%}
     <div id="live-price-snap"></div>
   </div>
 
-</div>
-
-<!-- ═══════════════════════════════════════════════════════
-     TAB 2: PORTFOLIO ANALYTICS
-═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-analytics">
+  <!-- ── Portfolio Intelligence (merged Analytics) ── -->
 
   <div class="bcard mb12">
     <div class="bcard-title">Portofolio Metrics — Ringkasan Posisi</div>
@@ -875,7 +866,7 @@ canvas{max-width:100%}
     <div id="analytics-treemap" style="margin-top:6px"></div>
   </div>
 
-</div>
+</div><!-- /panel-nexus -->
 
 <!-- ═══════════════════════════════════════════════════════
      TAB 3: DEEP DIVE
@@ -902,11 +893,6 @@ canvas{max-width:100%}
       <div class="mkt-tile-c amber" id="coal-chg">Softening vs 2025</div>
     </div>
   </div>
-  <div class="bcard mb12">
-    <div style="font-size:9.5px;color:var(--muted);line-height:1.8" id="market-narrative">
-      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp16.77jt — butuh fresh capital ~Rp234.8jt menuju target Rp250jt. ITMG ex-div 21 Apr (Rp2,245/saham) — prioritas beli +16 lot setelah ex-date. ADMF cum-date 14 Apr, dividen cair 30 Apr → cross-feed ke BMRI sesuai Rule #9.
-    </div>
-  </div>
 
   <div class="sec-title">Suggestion Board — Action Signals</div>
   <div class="bento bento-5 mb12" id="suggestion-grid"></div>
@@ -914,30 +900,18 @@ canvas{max-width:100%}
   <div class="sec-title">Analisa Fundamental — BlackRock / JPMorgan / Vanguard Framework</div>
   <div id="stock-analysis-grid" class="mb12"></div>
 
-  <div class="sec-title">Analisa Teknikal — Ichimoku 1D + Support/Resistance
-    <span id="ich-fetch-status" style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0;margin-left:8px">klik Auto Fetch untuk update</span>
+  <div class="sec-title">Analisa Teknikal — SR · FVG · OB · RSI (1D)
+    <span id="ich-fetch-status" style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0;margin-left:8px">Auto Fetch untuk update</span>
   </div>
-  <div class="bento bento-5 mb12" id="ich-grid"></div>
+  <div class="bento bento-5 mb12" id="tech-grid"></div>
 
-  <div class="sec-title">Fair Value Kumulatif — Multi-Method + MOS per Saham</div>
-  <div class="bcard overflow-x mb12">
-    <div style="font-size:9.5px;color:var(--muted);margin-bottom:10px;line-height:1.6">
-      FV dari 3 metode: <strong style="color:var(--text)">P/E Historis</strong>, <strong style="color:var(--text)">DDM (g=5%)</strong>, <strong style="color:var(--text)">P/BV Peer</strong>. MOS = Margin of Safety vs Consensus FV.
-    </div>
-    <table class="tbl" id="fv-table">
-      <thead>
-        <tr>
-          <th>Saham</th><th class="num">Harga</th>
-          <th class="num">FV P/E</th><th class="num">FV DDM</th><th class="num">FV P/BV</th>
-          <th class="num">Consensus FV</th><th class="num">Upside</th><th class="num">MOS%</th><th class="ctr">Verdict</th><th class="ctr">Data Per</th>
-        </tr>
-      </thead>
-      <tbody id="fv-body"></tbody>
-    </table>
+  <!-- Hidden compat elements for old JS references -->
+  <div style="display:none">
+    <div id="ich-grid"></div>
+    <div id="fv-body"></div>
+    <div id="keystats-grid"></div>
+    <table id="fv-table"></table>
   </div>
-
-  <div class="sec-title">Key Stats per Saham — Rating Overall + Risk Score</div>
-  <div class="bento bento-5 mb12" id="keystats-grid"></div>
 
 </div>
 
@@ -1017,13 +991,11 @@ canvas{max-width:100%}
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 5: REBALANCING
+     TAB 5: ARSENAL — Rebalancing + Porto Control
 ═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-rebalance">
-  <div class="info-box">
-    <strong>🎯 Milestone Porto Rp120jt</strong> — ITMG 9 lot = 20% anchor. Target lot penuh: <strong>BMRI 89L · POWR 408L · ITMG 9L · ASII 22L · ADMF 10L</strong>. Fresh capital dibutuhkan ~Rp98.7jt dari posisi saat ini. Yield porto penuh ~9.3% gross = <strong>Rp11.18jt/thn</strong> atau <strong>Rp793rb/bln net</strong>. Rebalancing = arahkan semua dividen + top-up ke BMRI dulu, lalu POWR.
-  </div>
+<div class="panel" id="panel-arsenal">
 
+  <!-- ── REBALANCING SECTION ── -->
   <div class="bcard overflow-x mb12">
     <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
     <table class="tbl" id="reb-table">
@@ -1096,68 +1068,6 @@ canvas{max-width:100%}
     </div>
     <div id="savepoint-list" class="mb12"></div>
     <div id="savepoint-compare" style="display:none"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════
-     TAB 7: SCAN STOCKBIT (OCR)
-═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-ocr">
-  <div class="info-box">
-    📷 Upload screenshot dari Stockbit — bisa <strong>layar portfolio utama</strong> atau <strong>detail per saham</strong>. Claude akan baca angkanya dan update porto otomatis. Bisa upload beberapa sekaligus.
-  </div>
-
-  <div class="bento bento-60-40 mb12">
-    <div class="bcard">
-      <div class="bcard-title">Konfigurasi API</div>
-      <div class="field mb12">
-        <label>Anthropic API Key</label>
-        <input type="password" id="ocr-api-key" placeholder="sk-ant-..." oninput="localStorage.setItem('ac_apikey',this.value)">
-      </div>
-      <div style="font-size:8.5px;color:var(--dim);line-height:1.6">
-        Key disimpan di localStorage browser — tidak dikirim ke server manapun selain Anthropic API langsung.<br>
-        Dapatkan key di <span style="color:var(--accent2)">console.anthropic.com</span>
-      </div>
-    </div>
-    <div class="bcard">
-      <div class="bcard-title">Tips Screenshot</div>
-      <div style="font-size:8.5px;color:var(--green);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✓ Bagus</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7;margin-bottom:7px">· Layar portfolio utama Stockbit<br>· Detail per saham<br>· Cahaya cukup, tidak blur<br>· Semua angka terbaca</div>
-      <div style="font-size:8.5px;color:var(--red);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✕ Hindari</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">· Screenshot terpotong<br>· Refleksi layar / glare<br>· Zoom terlalu jauh<br>· Saat animasi loading</div>
-    </div>
-  </div>
-
-  <div class="bcard ocr-drop mb12" id="ocr-upload-area"
-    onclick="document.getElementById('ocr-file-input').click()"
-    ondragover="event.preventDefault();this.classList.add('drag')"
-    ondragleave="this.classList.remove('drag')"
-    ondrop="event.preventDefault();this.classList.remove('drag');handleOCRFiles(event.dataTransfer.files)">
-    <div style="font-size:28px;margin-bottom:7px">📷</div>
-    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px">Drop screenshot Stockbit di sini</div>
-    <div style="font-size:9.5px;color:var(--muted)">atau klik untuk pilih file · JPG / PNG · bisa multi-upload</div>
-    <input type="file" id="ocr-file-input" accept="image/*" multiple style="display:none" onchange="handleOCRFiles(this.files)">
-  </div>
-
-  <div id="ocr-preview-row" style="display:none;margin-bottom:10px">
-    <div class="sec-title">Preview Screenshot</div>
-    <div id="ocr-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-  </div>
-
-  <div class="btn-row mb12">
-    <button class="btn btn-accent" id="btn-ocr-scan" onclick="runOCR()" disabled>🔍 Scan & Extract Data</button>
-    <button class="btn btn-outline" onclick="clearOCR()">Bersihkan</button>
-  </div>
-
-  <div id="ocr-status" style="display:none" class="info-box mb12"></div>
-
-  <div id="ocr-result" style="display:none">
-    <div class="sec-title">Hasil Ekstraksi Claude</div>
-    <div class="bcard mb12" id="ocr-parsed-preview"></div>
-    <div class="btn-row">
-      <button class="btn btn-accent" onclick="applyOCRToPorto()">✓ Terapkan ke Porto</button>
-      <button class="btn btn-outline" onclick="document.getElementById('ocr-result').style.display='none'">Batal</button>
-    </div>
   </div>
 </div>
 
@@ -1330,12 +1240,17 @@ const ANALYSIS_DATA = {
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
 let ichData = {};
-let ocrFiles = [], ocrParsed = null;
 
 // ════════════════════════════════════
 // HELPERS
 // ════════════════════════════════════
-const rp = (n) => 'Rp' + Math.round(n).toLocaleString('id');
+const rp = (n) => {
+  const v = Math.round(n);
+  if (Math.abs(v) >= 1000000000) return 'Rp' + (v/1000000000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (Math.abs(v) >= 1000000)    return 'Rp' + (v/1000000).toFixed(1).replace(/\.0$/,'') + 'jt';
+  if (Math.abs(v) >= 1000)       return 'Rp' + (v/1000).toFixed(1).replace(/\.0$/,'') + 'rb';
+  return 'Rp' + v.toLocaleString('id');
+};
 const pct = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
 const totalInvested = () => TICKERS.reduce((s,t) => s + porto[t].invested, 0);
 const totalMktVal  = () => TICKERS.reduce((s,t) => s + porto[t].price * porto[t].lots * 100, 0);
@@ -1355,17 +1270,19 @@ function toggleMode() {
   renderPortoComposition();
   drawPortoChartSnap();
   drawSectorChart();
-  if(document.getElementById('panel-analytics').classList.contains('active')) drawDivIncomeTracker();
+  if(document.getElementById('panel-nexus').classList.contains('active')) drawDivIncomeTracker();
 }
 
 const TAB_TITLES = {
-  snapshot: '📊 Financial Snapshot',
-  analytics: '📈 Portofolio Analytics',
+  nexus:    '⬡ Nexus — Command Intelligence',
+  analytics: '⬡ Nexus — Command Intelligence',
+  snapshot:  '⬡ Nexus — Command Intelligence',
   deepdive: '🔬 Deep Dive',
-  lot: '💰 Lot Recommender',
-  rebalance: '⚖️ Rebalancing',
-  porto: '✏️ Edit Porto',
-  rules: '📜 Investment Rules'
+  lot:      '💰 Lot Calc',
+  arsenal:  '⚔️ Arsenal — Rebalancing & Control',
+  rebalance:'⚔️ Arsenal — Rebalancing & Control',
+  porto:    '✏️ Edit Porto',
+  rules:    '📜 Investment Rules'
 };
 
 function switchTab(id, el) {
@@ -1378,13 +1295,17 @@ function switchTab(id, el) {
 }
 
 function _doSwitchTab(id, el) {
+  // Map logical IDs to panel IDs (for merged tabs)
+  const panelMap = { nexus:'nexus', snapshot:'nexus', analytics:'nexus', arsenal:'arsenal', rebalance:'arsenal' };
+  const panelId = panelMap[id] || id;
+
   // Update sidebar active state
   document.querySelectorAll('.sb-nav-item').forEach(t => t.classList.remove('active'));
   if(el) el.classList.add('active');
 
   // Update panels
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-' + id);
+  const panel = document.getElementById('panel-' + panelId);
   if(panel) panel.classList.add('active');
 
   // Update topbar title
@@ -1396,11 +1317,10 @@ function _doSwitchTab(id, el) {
   if(scroll) scroll.scrollTop = 0;
 
   // Lazy render
-  if(id==='snapshot') { updateHeader(); renderSnapshotPanel(); }
-  if(id==='analytics') { renderAnalyticsPanel(); }
+  if(panelId==='nexus') { updateHeader(); renderSnapshotPanel(); renderAnalyticsPanel(); }
   if(id==='deepdive') { renderDeepDive(); }
   if(id==='lot') { renderLotGrid(); }
-  if(id==='rebalance') { renderRebalance(); renderDivForecast(); }
+  if(panelId==='arsenal') { renderRebalance(); renderDivForecast(); }
   if(id==='porto') { renderPortoEdit(); renderSavepointList(); }
 
   // Close mobile sidebar
@@ -1867,9 +1787,7 @@ function renderTreemap(containerId) {
 function renderDeepDive() {
   renderSuggestionGrid();
   renderStockAnalysis();
-  renderIchimokuGrid('ich-grid');
-  renderFairValue();
-  renderKeystatsGrid();
+  renderTechGrid();
   renderForecastTable();
   renderRiskGrid();
 }
@@ -2124,8 +2042,148 @@ function renderKeystatsGrid() {
 }
 
 // ════════════════════════════════════
-// ICHIMOKU CALCULATION
+// TECH GRID — SR · FVG · OB · RSI (1D)  [replaces Ichimoku grid]
 // ════════════════════════════════════
+function renderTechGrid() {
+  const el = document.getElementById('tech-grid');
+  if (!el) return;
+  el.innerHTML = '';
+
+  // Static SR / FVG / OB levels per ticker (updated manually or via fetch)
+  // Format: { sr:[support, resistance], fvg:{low,high,filled}, ob:{low,high,bull}, rsi:value }
+  const TECH_LEVELS = {
+    ADMF: { sr:[8500, 9400], fvg:{low:8700,high:8950,filled:false,bull:true},  ob:{low:8400,high:8650,bull:true},  rsi:null },
+    ASII: { sr:[5800, 6800], fvg:{low:6000,high:6250,filled:false,bull:true},  ob:{low:5700,high:5950,bull:true},  rsi:null },
+    BMRI: { sr:[4400, 5000], fvg:{low:4500,high:4650,filled:false,bull:true},  ob:{low:4300,high:4480,bull:true},  rsi:null },
+    ITMG: { sr:[24500,28500],fvg:{low:25500,high:26500,filled:false,bull:false},ob:{low:24000,high:25200,bull:true},rsi:null },
+    POWR: { sr:[680, 800],   fvg:{low:700,high:735,filled:false,bull:true},    ob:{low:665,high:695,bull:true},    rsi:null },
+  };
+
+  // Pull RSI from ichimoku data if available (14-period approximation)
+  TICKERS.forEach(t => {
+    const ich = ichData[t];
+    if (ich && ich.bars) {
+      // Simple RSI-14 from bars
+      const bars = ich.bars || [];
+      if (bars.length >= 15) {
+        const closes = bars.slice(-15).map(b => b.c);
+        let gains = 0, losses = 0;
+        for (let i = 1; i < closes.length; i++) {
+          const d = closes[i] - closes[i-1];
+          if (d > 0) gains += d; else losses += Math.abs(d);
+        }
+        const avgGain = gains / 14, avgLoss = losses / 14;
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        TECH_LEVELS[t].rsi = Math.round(100 - (100 / (1 + rs)));
+      }
+    }
+  });
+
+  TICKERS.forEach(t => {
+    const tl = TECH_LEVELS[t];
+    const price = porto[t].price;
+    const color = COLORS[t];
+    const [sup, res] = tl.sr;
+
+    // Support / Resistance proximity
+    const distToSup = price > 0 ? ((price - sup) / price * 100) : 0;
+    const distToRes = price > 0 ? ((res - price) / price * 100) : 0;
+    const nearSupport = distToSup < 5 && distToSup >= 0;  // within 5% above support
+    const atSupport   = distToSup < 0;                     // below support (breakdown)
+    const nearRes     = distToRes < 5 && distToRes >= 0;   // within 5% below resistance
+
+    // FVG status
+    const fvgInRange  = tl.fvg && price >= tl.fvg.low && price <= tl.fvg.high;
+    const fvgBelow    = tl.fvg && price > tl.fvg.high;  // price above FVG (unfilled below)
+    const fvgAbove    = tl.fvg && price < tl.fvg.low;   // price in FVG zone (dip into gap)
+
+    // OB status
+    const inOB        = tl.ob && price >= tl.ob.low && price <= tl.ob.high;
+    const aboveOB     = tl.ob && price > tl.ob.high;
+
+    // RSI
+    const rsi = tl.rsi;
+    const rsiOversold  = rsi !== null && rsi < 35;
+    const rsiNeutral   = rsi !== null && rsi >= 35 && rsi < 60;
+    const rsiOverbought= rsi !== null && rsi >= 70;
+    const rsiColor     = rsi === null ? 'var(--muted)' : rsiOversold ? 'var(--green)' : rsiOverbought ? 'var(--red)' : 'var(--muted)';
+
+    // ── BUY THE DIP logic ──
+    // Trigger when: price near/at support OR in OB OR in/below FVG (unfilled bullish gap)
+    // AND RSI not overbought (< 60 if available)
+    const technicalBullish = (nearSupport || atSupport || inOB || fvgAbove);
+    const rsiOk = rsi === null || rsi < 60;
+    const showBuyDip = technicalBullish && rsiOk;
+
+    // Assemble badge for SR
+    const srBadge = nearSupport
+      ? `<span class="badge bg">Near Support ✓</span>`
+      : atSupport
+      ? `<span class="badge br">Below Support ⚠</span>`
+      : nearRes
+      ? `<span class="badge ba">Near Resistance</span>`
+      : `<span class="badge bm">Mid-Range</span>`;
+
+    const fvgBadge = tl.fvg
+      ? (fvgAbove ? `<span class="badge bg">In FVG Gap ↓</span>` : fvgInRange ? `<span class="badge bb">FVG Filling</span>` : `<span class="badge bm">FVG Above</span>`)
+      : `<span class="badge bm">—</span>`;
+
+    const obBadge = tl.ob
+      ? (inOB ? `<span class="badge bg">In OB Zone ✓</span>` : aboveOB ? `<span class="badge bm">Above OB</span>` : `<span class="badge ba">OB Below</span>`)
+      : `<span class="badge bm">—</span>`;
+
+    const rsiBadge = rsi !== null
+      ? `<span class="badge" style="background:${rsiOversold?'var(--green-bg)':rsiOverbought?'var(--red-bg)':'var(--bg5)'};color:${rsiColor};border-color:${rsiOversold?'var(--green-border)':rsiOverbought?'var(--red-border)':'var(--border)'}">RSI ${rsi}</span>`
+      : `<span class="badge bm">RSI —</span>`;
+
+    // Price position bar (between support and resistance)
+    const rangeTotal = res - sup;
+    const pricePosW = rangeTotal > 0 ? Math.min(100, Math.max(0, ((price - sup) / rangeTotal) * 100)) : 50;
+    const priceBarColor = pricePosW < 25 ? 'var(--green)' : pricePosW > 75 ? 'var(--red)' : 'var(--accent2)';
+
+    el.innerHTML += `
+      <div class="bcard" style="border-top:3px solid ${color};position:relative">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:${color};line-height:1">${t}</div>
+            <div style="font-size:8px;color:var(--muted);margin-top:2px">${rp(price)}</div>
+          </div>
+          ${showBuyDip ? `<div style="background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,.5));border:1px solid var(--green-border);border-radius:6px;padding:4px 9px;font-size:7.5px;font-weight:500;letter-spacing:.07em;color:var(--green);text-transform:uppercase;animation:pulse 2s ease infinite">📍 BUY THE DIP</div>` : ''}
+        </div>
+
+        <!-- SR Range bar -->
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--muted);margin-bottom:3px">
+            <span style="color:var(--green)">S ${rp(sup)}</span>
+            <span style="color:var(--accent2);font-size:7.5px;font-weight:500">${rp(price)}</span>
+            <span style="color:var(--red)">R ${rp(res)}</span>
+          </div>
+          <div style="height:5px;background:var(--bg5);border-radius:3px;position:relative;overflow:hidden">
+            <div style="position:absolute;left:0;top:0;height:5px;width:${pricePosW}%;background:${priceBarColor};border-radius:3px;transition:width .4s"></div>
+          </div>
+        </div>
+
+        <!-- Signal badges -->
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
+          ${srBadge}
+          ${fvgBadge}
+          ${obBadge}
+          ${rsiBadge}
+        </div>
+
+        <!-- Detail rows -->
+        <div class="ich-row"><span class="ich-label">Support</span><span class="ich-val" style="color:var(--green)">${rp(sup)}</span></div>
+        <div class="ich-row"><span class="ich-label">Resistance</span><span class="ich-val" style="color:var(--red)">${rp(res)}</span></div>
+        <div class="ich-row"><span class="ich-label">FVG Zone</span><span class="ich-val">${tl.fvg ? rp(tl.fvg.low)+' – '+rp(tl.fvg.high) : '—'}</span></div>
+        <div class="ich-row"><span class="ich-label">OB Zone</span><span class="ich-val">${tl.ob ? rp(tl.ob.low)+' – '+rp(tl.ob.high) : '—'}</span></div>
+        <div class="ich-row" style="border-bottom:none"><span class="ich-label">RSI 1D</span><span class="ich-val" style="color:${rsiColor}">${rsi !== null ? rsi : 'Fetch data'}</span></div>
+
+        ${showBuyDip ? `<div style="margin-top:8px;padding:6px 9px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:6px;font-size:8px;color:var(--green);line-height:1.5">
+          ▸ ${nearSupport||atSupport ? 'Harga dekat/di support — zona beli historis.' : ''}${inOB ? ' Harga dalam Order Block — institutional buy zone.' : ''}${fvgAbove ? ' Harga turun ke FVG — gap belum terisi, magnet ke bawah terisi.' : ''}${rsiOversold ? ' RSI oversold < 35 — momentum reversal potensial.' : ''}
+        </div>` : ''}
+      </div>`;
+  });
+}
 function calcIchimoku(bars) {
   if (!bars || bars.length < 52) return null;
   const highs = bars.map(b => b.h), lows = bars.map(b => b.l);
@@ -2661,10 +2719,11 @@ async function fetchAllPrices() {
   const activePanel = document.querySelector('.panel.active');
   if(activePanel) {
     const id = activePanel.id.replace('panel-','');
-    if(id==='snapshot') renderSnapshotPanel();
-    if(id==='analytics') renderAnalyticsPanel();
+    if(id==='nexus') { renderSnapshotPanel(); renderAnalyticsPanel(); }
+    if(id==='snapshot'||id==='analytics') { renderSnapshotPanel(); renderAnalyticsPanel(); }
     if(id==='deepdive') renderDeepDive();
     if(id==='lot') renderLotGrid();
+    if(id==='arsenal'||id==='rebalance') { renderRebalance(); }
   }
 }
 
@@ -3598,164 +3657,8 @@ function deleteSavepoint(idx) {
 }
 
 // ════════════════════════════════════
-// OCR — SCAN STOCKBIT
+// STOCK COMMAND MATRIX — Signal Glance (v9)
 // ════════════════════════════════════
-function handleOCRFiles(files) {
-  ocrFiles=Array.from(files).filter(f=>f.type.startsWith('image/'));
-  if(!ocrFiles.length) return;
-  const thumbs=document.getElementById('ocr-thumbs');
-  const preview=document.getElementById('ocr-preview-row');
-  thumbs.innerHTML='';
-  ocrFiles.forEach((f,i)=>{
-    const url=URL.createObjectURL(f);
-    thumbs.innerHTML+=`
-      <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--border2)">
-        <img src="${url}" style="height:120px;width:auto;display:block;object-fit:cover">
-        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);font-size:8px;color:#fff;padding:2px 5px;text-align:center">${f.name.slice(0,18)}</div>
-      </div>`;
-  });
-  preview.style.display='block';
-  document.getElementById('btn-ocr-scan').disabled=false;
-  document.getElementById('ocr-result').style.display='none';
-  document.getElementById('ocr-status').style.display='none';
-}
-
-function clearOCR() {
-  ocrFiles=[];ocrParsed=null;
-  document.getElementById('ocr-thumbs').innerHTML='';
-  document.getElementById('ocr-preview-row').style.display='none';
-  document.getElementById('ocr-result').style.display='none';
-  document.getElementById('ocr-status').style.display='none';
-  document.getElementById('btn-ocr-scan').disabled=true;
-  document.getElementById('ocr-file-input').value='';
-}
-
-function setOCRStatus(msg,type) {
-  const el=document.getElementById('ocr-status');
-  el.style.display='block';
-  el.className=type==='error'?'warn-box mb12':type==='ok'?'success-box mb12':'info-box mb12';
-  el.innerHTML=msg;
-}
-
-async function fileToBase64(file) {
-  return new Promise((res,rej)=>{
-    const reader=new FileReader();
-    reader.onload=()=>res(reader.result.split(',')[1]);
-    reader.onerror=rej;
-    reader.readAsDataURL(file);
-  });
-}
-
-async function runOCR() {
-  const apiKey=localStorage.getItem('ac_apikey')||document.getElementById('ocr-api-key').value;
-  if(!apiKey||!apiKey.startsWith('sk-ant-')){setOCRStatus('⚠ Masukkan Anthropic API Key dulu (format: sk-ant-...)','error');return;}
-  if(!ocrFiles.length){setOCRStatus('⚠ Upload screenshot dulu','error');return;}
-  const btn=document.getElementById('btn-ocr-scan');
-  btn.disabled=true;btn.innerHTML='<span class="spin">⟳</span> Scanning...';
-  setOCRStatus('⟳ Mengirim screenshot ke Claude AI untuk dibaca...','info');
-  try {
-    const imageBlocks=[];
-    for(const f of ocrFiles){
-      const b64=await fileToBase64(f);
-      imageBlocks.push({type:'image',source:{type:'base64',media_type:f.type||'image/jpeg',data:b64}});
-    }
-    const prompt=`Kamu adalah sistem OCR khusus untuk membaca screenshot aplikasi Stockbit Indonesia.
-Dari screenshot ini, ekstrak data portfolio saham berikut. Ticker valid: ADMF, ASII, BMRI, ITMG, POWR.
-Angka format Indonesia: titik = pemisah ribuan, koma = desimal. P&L bisa negatif.
-Kembalikan HANYA JSON berikut, tidak ada teks lain:
-{"source":"portfolio_list","stocks":[{"ticker":"BMRI","lots":5,"avgPrice":4636.94,"currentPrice":4590,"invested":2318472,"pnl":-23473,"pnlPct":-1.01}],"notes":"catatan singkat"}
-Jika tidak ada data: {"stocks":[],"notes":"alasan"}`;
-    imageBlocks.push({type:'text',text:prompt});
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:imageBlocks}]})
-    });
-    if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err?.error?.message||`HTTP ${resp.status}`);}
-    const data=await resp.json();
-    const rawText=data.content?.map(c=>c.text||'').join('')||'';
-    const jsonMatch=rawText.match(/\{[\s\S]*\}/);
-    if(!jsonMatch) throw new Error('Tidak dapat menemukan JSON dalam response');
-    const parsed=JSON.parse(jsonMatch[0]);
-    if(!parsed.stocks||!parsed.stocks.length){setOCRStatus('⚠ Tidak ada data. '+( parsed.notes||''),'error');btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';return;}
-    parsed.stocks=parsed.stocks.filter(s=>TICKERS.includes(s.ticker));
-    if(!parsed.stocks.length){setOCRStatus('⚠ Tidak ada ticker yang cocok dalam screenshot.','error');btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';return;}
-    ocrParsed=parsed;
-    renderOCRResult(parsed);
-    setOCRStatus('✓ Berhasil membaca '+parsed.stocks.length+' saham.','ok');
-  } catch(e) { setOCRStatus('✕ Error: '+e.message,'error'); }
-  btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';
-}
-
-function renderOCRResult(parsed) {
-  const el=document.getElementById('ocr-parsed-preview');
-  const res=document.getElementById('ocr-result');
-  const rows=parsed.stocks.map(s=>{
-    const cur=porto[s.ticker];
-    const pnlColor=(s.pnl||0)>=0?'var(--green)':'var(--red)';
-    return `<tr>
-      <td style="font-weight:500;color:${COLORS[s.ticker]}">${s.ticker}</td>
-      <td class="num">${s.lots} lot</td>
-      <td class="num">${rp(s.avgPrice)}</td>
-      <td class="num">${s.currentPrice?rp(s.currentPrice):'—'}</td>
-      <td class="num">${rp(s.invested)}</td>
-      <td class="num" style="color:${pnlColor}">${(s.pnl||0)>=0?'+':''}${Math.round(s.pnl||0).toLocaleString('id')}</td>
-    </tr>`;
-  }).join('');
-  el.innerHTML=`
-    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">
-      <strong style="color:var(--text)">Ditemukan:</strong> ${parsed.stocks.length} saham &nbsp;·&nbsp; ${parsed.notes||''}
-    </div>
-    <div class="overflow-x"><table class="tbl">
-      <thead><tr><th>Ticker</th><th class="num">Lot</th><th class="num">Avg Price</th><th class="num">Harga Kini</th><th class="num">Invested</th><th class="num">P&L</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>`;
-  res.style.display='block';
-}
-
-function applyOCRToPorto() {
-  if(!ocrParsed||!ocrParsed.stocks.length) return;
-  // Auto savepoint
-  const savepoints=JSON.parse(localStorage.getItem('ac_savepoints')||'[]');
-  savepoints.unshift({
-    id:Date.now(),
-    name:`Auto-save sebelum OCR ${new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}`,
-    date:new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),
-    porto:JSON.parse(JSON.stringify(porto)),
-    totalInv:totalInvested(), totalMkt:totalMktVal(), totalDiv:annualDiv()
-  });
-  if(savepoints.length>5) savepoints.pop();
-  localStorage.setItem('ac_savepoints',JSON.stringify(savepoints));
-
-  ocrParsed.stocks.forEach(s=>{
-    if(!porto[s.ticker]) return;
-    if(s.lots!=null) porto[s.ticker].lots=s.lots;
-    if(s.avgPrice!=null) porto[s.ticker].avgPrice=s.avgPrice;
-    if(s.currentPrice!=null) porto[s.ticker].price=s.currentPrice;
-    else if(s.avgPrice!=null) porto[s.ticker].price=s.avgPrice;
-    if(s.invested!=null) porto[s.ticker].invested=s.invested;
-    if(s.pnl!=null) porto[s.ticker].pnl=s.pnl;
-  });
-  localStorage.setItem('ac_porto',JSON.stringify(porto));
-  updateHeader();
-  setOCRStatus('✓ Porto diupdate dari '+ocrParsed.stocks.length+' saham. Auto-savepoint dibuat.','ok');
-  document.getElementById('ocr-result').style.display='none';
-  setTimeout(()=>{
-    document.querySelectorAll('.sb-nav-item').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    const portoNavItem = document.querySelector('[data-tab="porto"]');
-    if(portoNavItem) portoNavItem.classList.add('active');
-    document.getElementById('panel-porto').classList.add('active');
-    const titleEl = document.getElementById('topbar-title');
-    if(titleEl) titleEl.textContent = TAB_TITLES['porto']||'Edit Porto';
-    renderPortoEdit();
-    renderSavepointList();
-  },1500);
-}
-
-
-// ════════════════════════════════════
-// STOCK COMMAND MATRIX — The Ichimoku Glance (v8)
 // ════════════════════════════════════
 function renderStockMatrix() {
   const el = document.getElementById('stock-matrix');
@@ -3799,16 +3702,12 @@ function renderStockMatrix() {
     else if (mos > -5) { sig='HOLD';    sigBg='var(--bg5)';       sigColor='var(--muted)';  sigBorder='var(--border)';       }
     else               { sig='TUNGGU';  sigBg='var(--amber-bg)';  sigColor='var(--amber)';  sigBorder='var(--amber-border)'; }
 
-    // Ichimoku signal supplement
-    let ichLine = '';
-    if (ich) {
-      const ichColor = ich.sigClass==='bg'?'var(--green)':ich.sigClass==='bb'?'var(--blue)':ich.sigClass==='ba'?'var(--amber)':'var(--muted)';
-      const posIcon = ich.aboveCloud ? '↑' : ich.belowCloud ? '↓' : '↔';
-      ichLine = `<div class="sc-row" style="margin-top:2px">
-        <span class="sc-label">Ichimoku</span>
-        <span style="font-size:8px;color:${ichColor};font-weight:500">${posIcon} ${ich.signal}</span>
-      </div>`;
-    }
+    // Ideal lot calculation (based on target % of total portfolio at target size Rp250jt)
+    const TARGET_PORTO = 250000000;
+    const idealMktV = TARGET_PORTO * (targets[t] / 100);
+    const idealLots = s.price > 0 ? Math.round(idealMktV / (s.price * 100)) : 0;
+    const lotGap = idealLots - s.lots;
+    const lotGapColor = lotGap > 0 ? 'var(--green)' : lotGap === 0 ? 'var(--muted)' : 'var(--red)';
 
     // Allocation bar
     const allocW = Math.min(actual, 100);
@@ -3854,6 +3753,10 @@ function renderStockMatrix() {
             <span class="sc-value"><strong style="color:${color};font-size:11px">${s.lots}</strong> <span style="color:var(--muted)">lot</span></span>
           </div>
           <div class="sc-row">
+            <span class="sc-label">Ideal Lot</span>
+            <span class="sc-value"><strong style="color:${lotGapColor};font-size:10px">${idealLots}</strong> <span style="color:var(--dim);font-size:8px">lot (${lotGap>0?'+'+lotGap:lotGap===0?'✓':lotGap})</span></span>
+          </div>
+          <div class="sc-row">
             <span class="sc-label">Nilai Mkt</span>
             <span class="sc-value">${rp(mktVal)}</span>
           </div>
@@ -3870,8 +3773,6 @@ function renderStockMatrix() {
             <span class="sc-label">Div/Lbr</span>
             <span class="sc-value" style="color:var(--green)">${rp(s.divPerShare)}</span>
           </div>
-
-          ${ichLine}
 
           <div style="height:1px;background:var(--border);margin:3px 0"></div>
 
@@ -3933,6 +3834,7 @@ window.addEventListener('load',()=>{
 
   updateHeader();
   renderSnapshotPanel();
+  renderAnalyticsPanel();
   renderLotGrid();
 
   // If data has never been fetched or last fetch was not today, show popup after 1.5s
