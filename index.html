@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha by ZenkichiArc</title>
+<title>Aegis Alpha v6 by ZenkichiArc</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
@@ -396,8 +396,8 @@ canvas{max-width:100%}
 <div class="sidebar" id="sidebar">
   <!-- Brand -->
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v5</sup></div>
-    <div class="sb-tagline">Dividend Flywheel · IDX 5-Stock</div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v6</sup></div>
+    <div class="sb-tagline">Dividend Flywheel · Milestone Rp120jt</div>
   </div>
 
   <!-- KPI Mini block -->
@@ -480,11 +480,23 @@ canvas{max-width:100%}
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei</span>
+      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli +16 lot SETELAH ex-date → target 19 lot</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L = Rp16.77jt</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">🎯 <strong>Target Porto Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L · Fresh capital ~Rp234.8jt</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — 9.08% gross · Rp22.84jt/thn · Rp1.62jt/bln net</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei</span>
+      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli +16 lot SETELAH ex-date → target 19 lot</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L = Rp16.77jt</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">🎯 <strong>Target Porto Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L · Fresh capital ~Rp234.8jt</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — 9.08% gross · Rp22.84jt/thn · Rp1.62jt/bln net</span>
     </div>
   </div>
   <!-- Top bar -->
@@ -599,9 +611,9 @@ canvas{max-width:100%}
           <div style="font-size:9px;color:var(--muted);margin-top:2px">per bulan sebelum usia 40</div>
         </div>
         <div style="padding:12px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);text-align:center">
-          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Target Nilai Porto</div>
-          <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:200;color:var(--accent2)">Rp1 M</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:2px">dalam 10 tahun</div>
+          <div style="font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Milestone Porto</div>
+          <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:200;color:var(--accent2)">Rp120jt</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">target milestone pertama</div>
         </div>
       </div>
     </div>
@@ -663,13 +675,10 @@ canvas{max-width:100%}
       <div id="div-income-tracker"></div>
     </div>
 
-    <!-- Sector allocation donut -->
+    <!-- Cashflow Health Panel -->
     <div class="bcard">
-      <div class="bcard-title">Alokasi Sektoral</div>
-      <div style="display:flex;justify-content:center;margin:10px 0">
-        <canvas id="sector-chart" width="150" height="150"></canvas>
-      </div>
-      <div style="font-size:9px;color:var(--muted);line-height:1.8" id="sector-legend"></div>
+      <div class="bcard-title">Cashflow Health — FCF & Div Coverage</div>
+      <div id="cashflow-health" style="margin-top:4px"></div>
     </div>
   </div>
 
@@ -688,23 +697,7 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <!-- ROW 3: Div table -->
-  <div class="bcard mb12">
-    <div class="bcard-title">Forecast Dividen per Saham</div>
-    <div class="overflow-x">
-      <table class="tbl" id="div-forecast-table">
-        <thead>
-          <tr>
-            <th>Saham</th><th class="num">Lot</th><th class="num">Div/Lbr</th>
-            <th class="num">Gross/Thn</th><th class="num">After Tax</th>
-            <th class="num">Div/Bln (Net)</th>
-            <th class="num">YoC</th><th class="num">YoP</th>
-          </tr>
-        </thead>
-        <tbody id="div-forecast-body"></tbody>
-      </table>
-    </div>
-  </div>
+
 
 </div>
 
@@ -736,10 +729,7 @@ canvas{max-width:100%}
   </div>
   <div class="bcard mb12">
     <div style="font-size:10px;color:var(--muted);line-height:1.8" id="market-narrative">
-      <strong style="color:var(--text)">April 2026:</strong> IDX composite tertekan oleh imbas tarif Trump + pelemahan rupiah.
-      Sektor batubara (ITMG) sensitif terhadap permintaan Asia — China stimulus Q1 2026 memberi support. Sektor perbankan (BMRI)
-      terbebani NPL yang creeping up di segmen KUR. ADMF sebagai multifinance otomotif masih resilient karena demand kendaraan
-      domestik stabil. ASII mengalami tekanan margin dari harga bahan baku. POWR defensif — demand listrik industri tidak banyak terpengaruh siklus.
+      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp16.77jt (BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L) — butuh fresh capital ~Rp234.8jt menuju target Rp250jt. ITMG ex-div 21 Apr (Rp2,245/saham) — prioritas beli +16 lot setelah ex-date → target 19 lot. ADMF cum-date 14 Apr, dividen cair 30 Apr → cross-feed ke BMRI sesuai Rule #9. Urutan inject: ITMG → BMRI (anchor 35%, 187L) → POWR (25%, 850L) → ASII → ADMF.
     </div>
   </div>
 
@@ -873,6 +863,14 @@ canvas{max-width:100%}
   <div class="bento bento-5 mb12" id="lot-grid"></div>
   <div id="lot-summary" style="display:none" class="bcard mb12"></div>
 
+  <!-- DIVIDEND CALENDAR -->
+  <div class="sec-title">📅 Kalender Dividen — Jadwal Pembagian Bulanan</div>
+  <div class="bcard mb12" id="div-calendar"></div>
+
+  <!-- MONTHLY GROWTH PLAN -->
+  <div class="sec-title">📈 Rencana Gemuk Bulanan — Snowball Dividen</div>
+  <div class="bcard mb12" id="monthly-growth-plan"></div>
+
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -880,7 +878,7 @@ canvas{max-width:100%}
 ═══════════════════════════════════════════════════════════ -->
 <div class="panel" id="panel-rebalance">
   <div class="info-box">
-    Rebalancing bukan berarti jual ITMG. Artinya: <strong>arahkan dividen + top-up ke saham yang tertinggal</strong> sampai proporsi mendekati target. Jual hanya jika gap &gt;20% dari target dan fundamental memburuk.
+    <strong>🎯 Milestone Porto Rp120jt</strong> — ITMG 9 lot = 20% anchor. Target lot penuh: <strong>BMRI 89L · POWR 408L · ITMG 9L · ASII 22L · ADMF 10L</strong>. Fresh capital dibutuhkan ~Rp98.7jt dari posisi saat ini. Yield porto penuh ~9.3% gross = <strong>Rp11.18jt/thn</strong> atau <strong>Rp793rb/bln net</strong>. Rebalancing = arahkan semua dividen + top-up ke BMRI dulu, lalu POWR. Jangan jual posisi yang ada.
   </div>
 
   <div class="bento bento-60-40 mb12">
@@ -888,7 +886,7 @@ canvas{max-width:100%}
       <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
       <table class="tbl" id="reb-table">
         <thead>
-          <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
+          <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Kekurangan Modal</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
         </thead>
         <tbody id="reb-body"></tbody>
       </table>
@@ -903,7 +901,7 @@ canvas{max-width:100%}
   <div class="bcard mb12">
     <div class="bcard-title">Proyeksi Portofolio</div>
     <div class="fields-row fr-3 mb12">
-      <div class="field"><label>Target Nilai Porto (Rp)</label><input type="number" id="proj-target" value="500000000" step="50000000"></div>
+      <div class="field"><label>Target Nilai Porto (Rp)</label><input type="number" id="proj-target" value="250000000" step="10000000"></div>
       <div class="field"><label>Monthly Top-up (Rp)</label><input type="number" id="proj-topup" value="750000"></div>
       <div class="field"><label>Asumsi Div Growth/Thn (%)</label><input type="number" id="proj-divgrowth" value="5" step="0.5" min="0" max="20"></div>
     </div>
@@ -935,11 +933,7 @@ canvas{max-width:100%}
   <div class="sec-title">Data Saham — Update Manual</div>
   <div class="bento bento-5 mb12" id="porto-edit-grid"></div>
 
-  <!-- DIVIDEND INPUTS -->
-  <div class="bcard mb12">
-    <div class="bcard-title">Dividen per Lembar</div>
-    <div class="fields-row fr-5" id="div-inputs"></div>
-  </div>
+
 
   <!-- CASH RESERVED INPUT -->
   <div class="bcard mb12">
@@ -957,6 +951,11 @@ canvas{max-width:100%}
     <button class="btn btn-accent" onclick="savePorto()">Simpan Semua</button>
     <button class="btn btn-outline" onclick="resetPorto()">Reset ke Default</button>
     <button class="btn btn-green" onclick="createSavepoint()">💾 Buat Savepoint</button>
+    <button class="btn btn-outline" onclick="exportPorto()" style="color:var(--blue);border-color:var(--blue-border)">⬇ Export JSON</button>
+    <label class="btn btn-outline" style="color:var(--amber);border-color:var(--amber-border);cursor:pointer">
+      ⬆ Import JSON
+      <input type="file" accept=".json" style="display:none" onchange="importPorto(this.files[0]);this.value=''">
+    </label>
   </div>
   <div id="save-msg" style="display:none" class="success-box">✓ Data disimpan. Semua tab terupdate.</div>
 
@@ -1046,7 +1045,7 @@ canvas{max-width:100%}
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #2 — Arahkan ke Paling Diskon</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI → ASII → sisanya</strong>.</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (anchor 33%) → ASII → POWR/ITMG</strong>. ADMF dikurangi ke 12% — tidak tambah lagi.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
@@ -1054,7 +1053,7 @@ canvas{max-width:100%}
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:8px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #4 — ITMG Dikunci</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20% secara natural.</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20% secara natural. ADMF juga <strong style="color:var(--amber)">STOP tambah</strong> — target diturunkan ke 12%, dividen-nya cross-feed ke BMRI.</div>
     </div>
   </div>
 
@@ -1082,7 +1081,7 @@ canvas{max-width:100%}
   <div class="bento bento-4 mb12">
     <div class="bcard" style="border-left:3px solid var(--amber)">
       <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #9 — Cross-Feeding Wajib</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, POWR</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong>.</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, POWR</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong>. ADMF bukan grup Astra — ia adalah MUFG/Danamon. Cross-feed tetap berlaku.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--amber)">
       <div style="font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Rule #10 — Beli Lot Segera</div>
@@ -1117,70 +1116,83 @@ const TICKERS = ['ADMF','ASII','BMRI','ITMG','POWR'];
 const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#3dc88a', POWR:'#9b79e0' };
 
 const DEFAULT_PORTO = {
-  ADMF:{ price:8950, invested:3555325, pnl:24675,  lots:4,  divPerShare:630,  avgPrice:8838 },
-  ASII:{ price:6100, invested:1216822, pnl:3178,   lots:2,  divPerShare:406,  avgPrice:6084 },
-  BMRI:{ price:4590, invested:2318472, pnl:-23473, lots:5,  divPerShare:580,  avgPrice:4637 },
-  ITMG:{ price:27100,invested:7871790, pnl:258210, lots:3,  divPerShare:2245, avgPrice:26239 },
-  POWR:{ price:725,  invested:1452175, pnl:-2175,  lots:20, divPerShare:45.58,avgPrice:726 }
+  ADMF:{ price:9000,  invested:3555325, pnl:44675,  lots:4,  divPerShare:630,   avgPrice:8888 },
+  ASII:{ price:6300,  invested:1216822, pnl:43177,  lots:2,  divPerShare:406,   avgPrice:6084 },
+  BMRI:{ price:4670,  invested:2318472, pnl:16527,  lots:5,  divPerShare:466,   avgPrice:4637 },
+  ITMG:{ price:27000, invested:7871790, pnl:228210, lots:3,  divPerShare:2245,  avgPrice:26239 },
+  POWR:{ price:735,   invested:1452175, pnl:17825,  lots:20, divPerShare:76.25, avgPrice:726 }
 };
 
-const DEFAULT_TARGETS = { ADMF:20, ASII:15, BMRI:25, ITMG:20, POWR:20 };
+// ── MILESTONE TARGET Rp250jt ──
+// Harga patokan: BMRI 4670 | POWR 735 | ITMG 27000 | ASII 6300 | ADMF 9000
+// POSISI AKTUAL (Apr 2026): BMRI 5L | POWR 20L | ITMG 3L | ASII 2L | ADMF 4L = Rp16.77jt
+// TARGET LOT PORTO PENUH (Rp250jt):
+//   BMRI 187 lot (35%) = Rp87.33jt → gap +182 lot = Rp85.0jt
+//   POWR 850 lot (25%) = Rp62.48jt → gap +830 lot = Rp61.0jt
+//   ITMG 19 lot (20%)  = Rp51.30jt → gap +16 lot  = Rp43.2jt
+//   ASII 48 lot (12%)  = Rp30.24jt → gap +46 lot  = Rp29.0jt
+//   ADMF 22 lot (8%)   = Rp19.80jt → gap +18 lot  = Rp16.2jt
+// Total target porto: Rp251,611,000 | Fresh capital needed: ~Rp234.8jt
+// Div gross/thn (porto penuh): Rp22,842,350 | Yield: 9.08% | Div net/bln: ~Rp1,618,000
+// Urutan inject: ITMG post-exdate 21 Apr → BMRI → POWR → ASII → ADMF
+
+const DEFAULT_TARGETS = { ADMF:8, ASII:12, BMRI:35, ITMG:20, POWR:25 }; // → 250jt: BMRI 187L | POWR 850L | ITMG 19L | ASII 48L | ADMF 22L
 
 const ANALYSIS_DATA = {
   ADMF:{
-    sector:'Multifinance', moat:'Captive Astra network', holding:'Astra International (Jardine)',
-    pe_hist:8.2, pe_curr:7.5, pbv:1.8, roe:18.5, roa:3.2, div_payout:65,
-    eps:1130, bvps:4722, div_5yr_cagr:6.2,
-    fv_pe:Math.round(1130*8.2), fv_ddm:Math.round((630*1.05)/(0.12-0.05)), fv_pbv:Math.round(4722*1.9),
+    sector:'Multifinance', moat:'Jaringan pembiayaan otomotif nasional', holding:'Bank Danamon → MUFG Jepang (92%)',
+    pe_hist:8.2, pe_curr:7.5, pbv:1.8, roe:18.5, roa:3.2, div_payout:50,
+    eps:1260, bvps:4722, div_5yr_cagr:-7.8,
+    fv_pe:Math.round(1260*8.2), fv_ddm:Math.round((630*1.05)/(0.12-0.05)), fv_pbv:Math.round(4722*1.9),
     bear:6500, base:9200, bull:11000,
-    quality_rating:4, // out of 5
-    summary:'ADMF adalah captive multifinance Astra — moat struktural dari jaringan dealer Toyota/Daihatsu. Payout ratio 65% terjaga, coverage ratio dividen 1.8x. ROE konsisten di kisaran 18-20% selama 7 tahun. Risiko: suku bunga tinggi menekan NIM, NPL otomotif naik moderat Q4 2025.',
-    risks:[{label:'Suku bunga BI tinggi',level:'mid'},{label:'NPL otomotif creeping',level:'mid'},{label:'Kompetisi fintech lending',level:'lo'},{label:'Resesi demand otomotif',level:'lo'}],
-    risk_pct:{ 'Suku bunga BI tinggi':55,'NPL otomotif creeping':40,'Kompetisi fintech lending':25,'Resesi demand otomotif':30 }
+    quality_rating:3,
+    summary:'ADMF bukan bagian dari grup Astra — ia adalah anak Bank Danamon yang dikuasai MUFG Jepang (92%). Bobot diturunkan ke 9% karena dividend growth negatif (-7.8% CAGR 5Y) dan integrasi merger MFIN masih dalam proses (efektif Oct 2025). Governance naik di bawah MUFG standard. Dividen Rp630/saham confirmed, cair 30 Apr 2026. Hold saja, cross-feed dividen ke BMRI sesuai Rule #9.',
+    risks:[{label:'Integrasi merger MFIN belum settle',level:'mid'},{label:'Dividend growth negatif 5 tahun',level:'hi'},{label:'NPL otomotif creeping',level:'mid'},{label:'Suku bunga BI tinggi',level:'mid'}],
+    risk_pct:{ 'Integrasi merger MFIN belum settle':45,'Dividend growth negatif 5 tahun':70,'NPL otomotif creeping':40,'Suku bunga BI tinggi':55 }
   },
   ASII:{
-    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan', holding:'Jardine Matheson',
+    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan + diversifikasi bisnis', holding:'Jardine Matheson (Hongkong)',
     pe_hist:14.5, pe_curr:7.8, pbv:1.4, roe:12.8, roa:5.1, div_payout:45,
-    eps:782, bvps:4357, div_5yr_cagr:4.1,
-    fv_pe:Math.round(782*14.5), fv_ddm:Math.round((320*1.05)/(0.12-0.05)), fv_pbv:Math.round(4357*1.6),
-    bear:4200, base:7500, bull:9000,
+    eps:782, bvps:4357, div_5yr_cagr:30.0,
+    fv_pe:Math.round(782*14.5), fv_ddm:Math.round((406*1.05)/(0.12-0.05)), fv_pbv:Math.round(4357*1.6),
+    bear:4200, base:7250, bull:9000,
     quality_rating:4,
-    summary:'ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Diversifikasi bisnis (otomotif, alat berat, perkebunan, keuangan) memberikan buffer. Dividend yield 5.2% menarik. Risiko: perlambatan penjualan kendaraan + tekanan Jardine untuk efisiensi modal.',
-    risks:[{label:'Perlambatan penjualan kendaraan',level:'mid'},{label:'Tekanan margin alat berat',level:'mid'},{label:'Forex risk',level:'mid'},{label:'Delisting risk Jardine',level:'lo'}],
-    risk_pct:{ 'Perlambatan penjualan kendaraan':45,'Tekanan margin alat berat':40,'Forex risk':50,'Delisting risk Jardine':5 }
+    summary:'ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Bukan bagian dari grup ADMF (ADMF = MUFG/Danamon). ASII sendiri punya ASF & FIF sebagai captive multifinance. Buyback aktif Rp2 triliun (Mar–Jun 2026) memberi floor harga. Market share otomotif turun ke 49% Q1 2026 karena tekanan BYD EV — pantau. RUPST 23 Apr 2026 ada kabar pergantian pimpinan.',
+    risks:[{label:'Market share tergerus BYD EV',level:'hi'},{label:'Perlambatan penjualan kendaraan',level:'mid'},{label:'Pergantian manajemen Apr 2026',level:'mid'},{label:'Forex risk (Jardine repatriasi)',level:'mid'}],
+    risk_pct:{ 'Market share tergerus BYD EV':55,'Perlambatan penjualan kendaraan':45,'Pergantian manajemen Apr 2026':35,'Forex risk (Jardine repatriasi)':40 }
   },
   BMRI:{
     sector:'Perbankan SOE', moat:'Jaringan BUMN + captive gov deposits', holding:'Pemerintah RI (52%)',
-    pe_hist:11.2, pe_curr:8.1, pbv:1.7, roe:19.2, roa:2.9, div_payout:60,
-    eps:610, bvps:2912, div_5yr_cagr:7.8,
-    fv_pe:Math.round(610*11.2), fv_ddm:Math.round((580*1.05)/(0.11-0.05)), fv_pbv:Math.round(2912*2.0),
+    pe_hist:11.2, pe_curr:8.6, pbv:1.7, roe:18.4, roa:2.9, div_payout:65,
+    eps:603, bvps:2912, div_5yr_cagr:25.8,
+    fv_pe:Math.round(603*11.2), fv_ddm:Math.round((466*1.05)/(0.11-0.05)), fv_pbv:Math.round(2912*2.0),
     bear:3800, base:6200, bull:7800,
     quality_rating:4,
-    summary:'BMRI adalah satu-satunya SOE dalam portfolio Aegis — dikecualikan karena regulatory framework BI/OJK yang ketat. ROE 19%+ konsisten, dividend CAGR 7.8% dalam 5 tahun. Risiko: government-directed lending bisa impair asset quality secara tersembunyi.',
+    summary:'BMRI adalah anchor utama Aegis (40%) — dikecualikan dari BUMN-rule karena BI/OJK prudential framework yang ketat. ROE 18%+ konsisten, dividend CAGR 25.8% dalam 3 tahun — tertinggi di porto. Sebagai penyokong terbesar, BMRI memberi exposure ke kredit ekonomi riil Indonesia yang genuinely berbeda dari siklus otomotif ASII/ADMF. Ini satu-satunya nama di porto yang dividennya structurally growing bukan commodity-driven. Risiko: government-directed lending KUR dan tekanan politik dividen tetap dipantau tiap kuartal.',
     risks:[{label:'Government-directed lending KUR',level:'hi'},{label:'NPL corporate naik',level:'mid'},{label:'Suku bunga BI menekan NIM',level:'mid'},{label:'Tekanan politik dividen',level:'hi'}],
     risk_pct:{ 'Government-directed lending KUR':65,'NPL corporate naik':45,'Suku bunga BI menekan NIM':55,'Tekanan politik dividen':60 }
   },
   ITMG:{
     sector:'Batubara Thermal', moat:'Kualitas coal + long-term supply contracts Asia', holding:'Banpu Minerals SG (65%)',
-    pe_hist:7.2, pe_curr:6.4, pbv:2.1, roe:31.5, roa:20.8, div_payout:85,
-    eps:4220, bvps:12857, div_5yr_cagr:12.4,
-    fv_pe:Math.round(4220*7.2), fv_ddm:Math.round((2245*1.05)/(0.14-0.05)), fv_pbv:Math.round(12857*2.3),
-    bear:18000, base:28500, bull:36000,
+    pe_hist:7.2, pe_curr:9.3, pbv:2.1, roe:31.5, roa:20.8, div_payout:106,
+    eps:2832, bvps:12857, div_5yr_cagr:26.0,
+    fv_pe:Math.round(2832*7.2), fv_ddm:Math.round((2245*1.05)/(0.14-0.05)), fv_pbv:Math.round(12857*2.3),
+    bear:18000, base:26900, bull:35000,
     quality_rating:3,
-    summary:'ITMG adalah primary cash engine Aegis — payout ratio 85%, ROE 31%, debt-free. Long-term offtake contracts dengan utility Asia (Japan, Korea, Taiwan). Risk: transisi energi jangka panjang, tetapi demand Asia masih 10-15 tahun ke depan.',
-    risks:[{label:'Penurunan harga coal ICI4',level:'hi'},{label:'Regulasi karbon global',level:'hi'},{label:'Transisi energi jangka panjang',level:'mid'},{label:'Gangguan produksi Kalimantan',level:'lo'}],
-    risk_pct:{ 'Penurunan harga coal ICI4':50,'Regulasi karbon global':70,'Transisi energi jangka panjang':75,'Gangguan produksi Kalimantan':20 }
+    summary:'ITMG adalah cash engine Aegis untuk dividen jangka pendek — dividen Rp2,245/saham ex-date 21 Apr 2026 sudah terkunci. ⚠ PERINGATAN: Payout ratio FY2025 mencapai 106% karena laba bersih turun 49% YoY jadi USD190.9jt. Dividen ini sebagian dari kas historis. Fixed di 20% — jangan tambah sebelum earnings FY2026 recover. Setelah ex-date, arahkan fresh capital ke BMRI/POWR.',
+    risks:[{label:'Payout ratio >100% dari earnings',level:'hi'},{label:'Penurunan harga coal ICI4',level:'hi'},{label:'Regulasi karbon global',level:'hi'},{label:'Transisi energi jangka panjang',level:'mid'}],
+    risk_pct:{ 'Payout ratio >100% dari earnings':80,'Penurunan harga coal ICI4':55,'Regulasi karbon global':70,'Transisi energi jangka panjang':75 }
   },
   POWR:{
-    sector:'Utilitas / Listrik', moat:'Captive supply PLN + kontrak jangka panjang', holding:'Nebras Power QSC (49%)',
-    pe_hist:9.8, pe_curr:8.3, pbv:1.3, roe:14.2, roa:6.8, div_payout:70,
-    eps:85.6, bvps:546, div_5yr_cagr:8.1,
-    fv_pe:Math.round(85.6*9.8), fv_ddm:Math.round((45.58*1.05)/(0.11-0.05)), fv_pbv:Math.round(546*1.5),
+    sector:'Utilitas / Listrik', moat:'Captive supply kawasan industri + kontrak jangka panjang', holding:'Nebras Power QSC (49%)',
+    pe_hist:9.8, pe_curr:8.3, pbv:1.3, roe:14.2, roa:6.8, div_payout:65,
+    eps:88, bvps:546, div_5yr_cagr:3.5,
+    fv_pe:Math.round(88*9.8), fv_ddm:Math.round((76.25*1.05)/(0.11-0.05)), fv_pbv:Math.round(546*1.5),
     bear:520, base:800, bull:1000,
     quality_rating:4,
-    summary:'POWR adalah posisi defensif Aegis — kontrak jangka panjang dengan PLN memberikan revenue visibility hingga 2030+. Lot murah (Rp710/lbr) memudahkan akumulasi konsisten. Risiko: renegosiasi tarif PLN, ekspansi capex.',
-    risks:[{label:'Renegosiasi tarif PLN',level:'mid'},{label:'Ekspansi capex menekan FCF',level:'mid'},{label:'Ketergantungan satu pembeli (PLN)',level:'hi'},{label:'Fluktuasi harga batubara input',level:'mid'}],
-    risk_pct:{ 'Renegosiasi tarif PLN':35,'Ekspansi capex menekan FCF':40,'Ketergantungan satu pembeli (PLN)':55,'Fluktuasi harga batubara input':45 }
+    summary:'POWR adalah posisi defensif Aegis (22%) — captive customer base kawasan industri Jababeka & Megalopolis Manunggal memberikan revenue visibility solid. Lot murah (Rp735/lbr) memudahkan akumulasi konsisten. Yield ~10.5% dengan payout ratio 65% dari earnings — lebih sustainable dari ITMG saat ini. Prioritas akumulasi setelah BMRI.',
+    risks:[{label:'Renegosiasi tarif PLN',level:'mid'},{label:'Ekspansi capex menekan FCF',level:'mid'},{label:'Ketergantungan kawasan industri',level:'hi'},{label:'Fluktuasi harga gas input',level:'mid'}],
+    risk_pct:{ 'Renegosiasi tarif PLN':35,'Ekspansi capex menekan FCF':40,'Ketergantungan kawasan industri':50,'Fluktuasi harga gas input':40 }
   }
 };
 
@@ -1466,10 +1478,9 @@ function drawPortoChartSnap() {
 // ════════════════════════════════════
 function renderAnalyticsPanel() {
   renderHeatmap();
-  renderDivForecast();
   updatePortfolioMetrics();
   drawDivIncomeTracker();
-  drawSectorChart();
+  renderCashflowHealth();
   setTimeout(() => renderTreemap('analytics-treemap'), 50);
 }
 
@@ -1521,6 +1532,56 @@ function renderHeatmap() {
       </div>`;
   });
 }
+
+// ════════════════════════════════════
+// CASHFLOW HEALTH — FCF & DIV COVERAGE
+// ════════════════════════════════════
+// FCF data (static, based on last reported annuals)
+const FCF_DATA = {
+  ADMF:{ fcf_per_share:1280, fcf_growth:3.8, debt_eq:4.8, coverage:2.0, interest_cover:2.9, note:'Multifinance: FCF post-MFIN merger masih in process. Merger efektif Oct 2025 — angka konsolidasi masih estimasi.' },
+  ASII: { fcf_per_share:820,  fcf_growth:3.1, debt_eq:0.6, coverage:2.0, interest_cover:8.4, note:'Konglomerat: FCF konsolidasi semua segmen' },
+  BMRI: { fcf_per_share:710,  fcf_growth:9.4, debt_eq:6.2, coverage:1.7, interest_cover:2.8, note:'Bank: FCF = net income - capex, adjusted for provisions' },
+  ITMG: { fcf_per_share:2800, fcf_growth:-48.9,debt_eq:0.0, coverage:1.2, interest_cover:99,  note:'Coal: debt-free tapi FCF turun drastis FY2025 — laba bersih -49% YoY. Payout >100% earnings dari kas historis. WARNING zone.' },
+  POWR: { fcf_per_share:92,   fcf_growth:5.8, debt_eq:1.2, coverage:2.0, interest_cover:4.6, note:'Utilitas: FCF stabil dari kontrak PLN jangka panjang' }
+};
+
+function renderCashflowHealth() {
+  const el=document.getElementById('cashflow-health');
+  if(!el) return;
+  let html='';
+  TICKERS.forEach(t=>{
+    const d=FCF_DATA[t];
+    const div=porto[t].divPerShare;
+    const fcf=d.fcf_per_share;
+    const coverPct=fcf>0?Math.min(fcf/div*100,999):0;
+    const coverColor=coverPct>=200?'var(--green)':coverPct>=130?'var(--amber)':'var(--red)';
+    const debtColor=d.debt_eq<1?'var(--green)':d.debt_eq<3?'var(--amber)':'var(--red)';
+    const growColor=d.fcf_growth>8?'var(--green)':d.fcf_growth>3?'var(--accent2)':'var(--muted)';
+    html+=`
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="width:38px;font-size:10px;font-weight:500;color:${COLORS[t]};flex-shrink:0">${t}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--muted);margin-bottom:2px">
+            <span>FCF Coverage (FCF/Div)</span>
+            <span style="color:${coverColor};font-weight:500">${coverPct>900?'Sangat kuat':(coverPct/100).toFixed(1)+'x'}</span>
+          </div>
+          <div style="height:4px;background:var(--bg5);border-radius:2px;overflow:hidden">
+            <div style="width:${Math.min(coverPct/3,100)}%;height:4px;background:${coverColor};border-radius:2px"></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
+            <span style="font-size:7.5px;color:var(--muted)">FCF/lbr: <strong style="color:var(--text)">${rp(fcf).replace('Rp','')}</strong></span>
+            <span style="font-size:7.5px;color:var(--muted)">FCF growth: <strong style="color:${growColor}">${d.fcf_growth>0?'+':''}${d.fcf_growth}%</strong></span>
+            <span style="font-size:7.5px;color:var(--muted)">D/E: <strong style="color:${debtColor}">${d.debt_eq===0?'0 (clean)':d.debt_eq+'x'}</strong></span>
+            <span style="font-size:7.5px;color:var(--muted)">Int cover: <strong style="color:${d.interest_cover>4?'var(--green)':'var(--amber)'}">${d.interest_cover>=99?'∞':d.interest_cover+'x'}</strong></span>
+          </div>
+        </div>
+      </div>`;
+  });
+  html+=`<div style="font-size:8px;color:var(--dim);margin-top:8px;line-height:1.6">FCF Coverage >1.5x = dividen aman dari arus kas. D/E rendah = buffer krisis. Data per laporan keuangan terakhir.</div>`;
+  el.innerHTML=html;
+}
+
+function drawSectorChart() {} // kept for compatibility — replaced by cashflow panel
 
 function drawDivIncomeTracker() {
   const el = document.getElementById('div-income-tracker');
@@ -1600,35 +1661,6 @@ function drawDivIncomeTracker() {
     </div>`;
 }
 
-function drawSectorChart() {
-  const canvas = document.getElementById('sector-chart');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const cx=75,cy=75,r=58,inner=32;
-  ctx.clearRect(0,0,150,150);
-  const sectorMap = { ADMF:'Multifinance', ASII:'Konglomerat', BMRI:'Perbankan', ITMG:'Batubara', POWR:'Utilitas' };
-  const total = totalMktVal();
-  let start = -Math.PI/2;
-  const isLight = document.body.classList.contains('light');
-  TICKERS.forEach(t => {
-    const v = porto[t].price*porto[t].lots*100;
-    const angle = total > 0 ? (v/total)*Math.PI*2 : 0;
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,start+angle); ctx.closePath();
-    ctx.fillStyle = COLORS[t]; ctx.fill();
-    ctx.strokeStyle = isLight ? '#eef2fa' : '#060b12'; ctx.lineWidth = 2; ctx.stroke();
-    start += angle;
-  });
-  ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2);
-  ctx.fillStyle = isLight ? '#ffffff' : '#101d2e'; ctx.fill();
-
-  const legEl = document.getElementById('sector-legend');
-  if (!legEl) return;
-  legEl.innerHTML = '';
-  TICKERS.forEach(t => {
-    const pctVal = total > 0 ? (porto[t].price*porto[t].lots*100/total*100).toFixed(1) : '0';
-    legEl.innerHTML += `<span style="color:${COLORS[t]}">● ${sectorMap[t]}</span> <span style="color:var(--muted)">${pctVal}%</span><br>`;
-  });
-}
 
 // ════════════════════════════════════
 // TREEMAP — Portfolio Composition
@@ -1773,7 +1805,7 @@ function renderSuggestionGrid() {
   });
 }
 
-const ANALYSIS_DATE = 'April 2026'; // analisa data per bulan ini
+const ANALYSIS_DATE = 'Apr 2026 (v6)'; // analisa data per bulan ini
 
 function renderStockAnalysis() {
   const el = document.getElementById('stock-analysis-grid');
@@ -2098,28 +2130,37 @@ function renderForecastTable() {
   });
 }
 
-// Risk explanations
+// Risk explanations — keys HARUS match persis label di ANALYSIS_DATA.risks
 const RISK_EXPLAIN = {
+  /* ── ADMF ── */
+  'Integrasi merger MFIN belum settle':'Merger ADMF + MFIN efektif Oktober 2025. Konsolidasi sistem, SDM, dan loan book masih berjalan. Potensi biaya integrasi tak terduga dan NPL tersembunyi dari portofolio MFIN.',
+  'Dividend growth negatif 5 tahun':'ADMF mencatat CAGR dividen -7.8% dalam 5 tahun terakhir — berlawanan dengan BMRI yang tumbuh 25%+. Ini signal bahwa earnings power ADMF struktural melemah pasca-peak siklus otomotif.',
+  'NPL otomotif creeping':'Non-Performing Loan di segmen otomotif naik perlahan. Konsumen cicilan motor/mobil mulai gagal bayar akibat daya beli tertekan inflasi dan stagnasi upah riil.',
   'Suku bunga BI tinggi':'BI Rate tinggi menekan NIM (Net Interest Margin) lembaga keuangan. Cost of fund naik, margin bersih per pinjaman menyempit dan menekan laba.',
-  'NPL otomotif creeping':'Non-Performing Loan di segmen otomotif naik perlahan. Konsumen cicilan motor/mobil mulai gagal bayar akibat daya beli tertekan.',
-  'Kompetisi fintech lending':'Platform pinjaman digital mengambil ceruk konsumen muda dari multifinance konvensional. Potensi erosi market share jangka menengah.',
-  'Resesi demand otomotif':'Perlambatan ekonomi domestik menekan penjualan kendaraan baru. Volume pembiayaan baru berkurang langsung memangkas revenue.',
-  'Perlambatan penjualan kendaraan':'Permintaan mobil dan motor baru melambat seiring kenaikan harga dan stagnasi upah riil. Langsung memukul segmen otomotif ASII.',
-  'Tekanan margin alat berat':'Harga komoditas input (baja, komponen) naik sementara harga jual alat berat stagnan. Margin ASII Equipment tertekan.',
-  'Forex risk':'ASII punya eksposur impor komponen dalam USD. Rupiah melemah otomatis menaikkan biaya produksi dan menekan margin.',
-  'Delisting risk Jardine':'Jardine Matheson berpotensi merestrukturisasi kepemilikan regional. Bila ASII di-delist dari IDX, likuiditas dan valuasi akan terdampak besar.',
-  'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi.',
-  'NPL corporate naik':'Debitur korporasi besar mulai kesulitan membayar cicilan pinjaman. Bila beberapa kasus besar macet, provisi BMRI melonjak dan laba terpangkas.',
-  'Suku bunga BI menekan NIM':'Saat BI Rate turun, NIM bank ikut tertekan karena yield aset turun lebih cepat dari biaya dana. Profitabilitas jangka pendek terdampak.',
-  'Tekanan politik dividen':'Pemegang saham pemerintah dapat mendorong BMRI untuk membayar dividen besar demi penerimaan negara, meski kas internal kurang optimal.',
-  'Penurunan harga coal ICI4':'ICI4 adalah patokan batubara kalori rendah — produk utama ITMG. Penurunan harga langsung memangkas revenue dan laba per ton yang dijual.',
-  'Regulasi karbon global':'Negara maju menerapkan carbon border adjustment. Pembeli batubara di Eropa/Jepang terbebani tarif karbon, mengurangi daya saing ITMG.',
-  'Transisi energi jangka panjang':'Energi terbarukan makin murah dan demand batubara untuk pembangkit listrik menurun struktural 10-15 tahun ke depan. Risiko eksistensial jangka panjang.',
-  'Gangguan produksi Kalimantan':'Banjir, kecelakaan tambang, atau konflik perizinan di Kalimantan Timur bisa menghentikan produksi sementara dan memangkas target volume tahunan.',
-  'Renegosiasi tarif PLN':'PLN sebagai pembeli tunggal listrik POWR bernegosiasi ulang tarif pembelian listrik. Penurunan tarif langsung memangkas margin POWR secara permanen.',
-  'Ekspansi capex menekan FCF':'Rencana pembangunan PLTU/PLTG baru membutuhkan capex besar. Free Cash Flow menyusut dan dividend sustainability bisa terancam jika utang naik.',
-  'Ketergantungan satu pembeli (PLN)':'100% revenue POWR dari PLN. Jika PLN menunda pembayaran atau renegosiasi kontrak, POWR tidak punya alternatif dan cashflow langsung terganggu.',
-  'Fluktuasi harga batubara input':'POWR butuh batubara sebagai bahan bakar pembangkit. Harga batubara naik menekan margin karena tarif jual ke PLN sudah terkunci di kontrak.'
+
+  /* ── ASII ── */
+  'Market share tergerus BYD EV':'Market share otomotif ASII turun ke 49% Q1 2026 dari 54% tahun lalu. BYD dan EV China agresif di segmen premium. Tren ini struktural dan sulit dibalik jangka pendek.',
+  'Perlambatan penjualan kendaraan':'Permintaan mobil dan motor baru melambat seiring kenaikan harga dan stagnasi upah riil. Langsung memukul segmen otomotif ASII yang masih ~50% dari revenue konsolidasi.',
+  'Pergantian manajemen Apr 2026':'RUPST ASII 23 April 2026 diperkirakan ada perubahan direksi/komisaris. Pergantian kepemimpinan membawa ketidakpastian arah strategi jangka menengah, terutama terkait respons terhadap ancaman EV.',
+  'Forex risk (Jardine repatriasi)':'ASII punya eksposur impor komponen dalam USD. Rupiah melemah otomatis menaikkan biaya produksi. Selain itu, Jardine Matheson sebagai pemegang 50% rutin merepatriasi dividen — tekanan IDR struktural.',
+
+  /* ── BMRI ── */
+  'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi — risiko kualitas aset tersembunyi.',
+  'NPL corporate naik':'Debitur korporasi besar mulai kesulitan membayar cicilan pinjaman. Bila beberapa kasus besar macet, provisi BMRI melonjak dan laba terpangkas lebih dalam dari yang diantisipasi pasar.',
+  'Suku bunga BI menekan NIM':'Saat BI Rate turun, NIM bank ikut tertekan karena yield aset turun lebih cepat dari biaya dana. Profitabilitas jangka pendek terdampak — BMRI punya gap repricing yang perlu dipantau.',
+  'Tekanan politik dividen':'Pemegang saham pemerintah (52%) dapat mendorong BMRI untuk membayar dividen besar demi penerimaan negara, meski internal capital adequacy lebih butuh retensi laba untuk ekspansi kredit.',
+
+  /* ── ITMG ── */
+  'Payout ratio >100% dari earnings':'FY2025 ITMG membayar dividen lebih besar dari laba bersih — payout ratio 106%. Ini diambil dari kas historis. Tidak sustainable jika earnings tidak recover di FY2026.',
+  'Penurunan harga coal ICI4':'ICI4 adalah patokan batubara kalori rendah — produk utama ITMG. Penurunan harga langsung memangkas revenue dan laba per ton yang dijual. Sensitivitas sangat tinggi terhadap harga spot.',
+  'Regulasi karbon global':'Negara maju menerapkan carbon border adjustment. Pembeli batubara di Eropa/Jepang terbebani tarif karbon, mengurangi daya saing ITMG di pasar ekspor premium jangka menengah.',
+  'Transisi energi jangka panjang':'Energi terbarukan makin murah dan demand batubara untuk pembangkit listrik menurun struktural 10-15 tahun ke depan. Risiko eksistensial jangka panjang yang tidak bisa diabaikan.',
+
+  /* ── POWR ── */
+  'Renegosiasi tarif PLN':'PLN sebagai pembeli utama listrik POWR bernegosiasi ulang tarif pembelian listrik. Penurunan tarif langsung memangkas margin POWR secara permanen karena struktur biaya tetap.',
+  'Ekspansi capex menekan FCF':'Rencana pembangunan kapasitas listrik baru membutuhkan capex besar. Free Cash Flow menyusut dan dividend sustainability bisa terancam jika utang naik signifikan dalam 2-3 tahun ke depan.',
+  'Ketergantungan kawasan industri':'Revenue POWR sangat terkonsentrasi pada kawasan industri Jababeka & Megalopolis Manunggal. Jika aktivitas industri di kawasan tersebut melambat atau tenant besar pindah, volume jual listrik langsung turun.',
+  'Fluktuasi harga gas input':'POWR menggunakan gas sebagai bahan bakar sebagian pembangkit. Harga gas naik menekan margin karena tarif jual ke industri sudah terkunci kontrak — squeeze margin dari dua arah.'
 };
 
 function renderRiskGrid() {
@@ -2483,6 +2524,9 @@ async function fetchAllPrices() {
   if(btnFloat) btnFloat.disabled = false;
 
   localStorage.setItem('ac_porto', JSON.stringify(porto));
+  // Auto-recalculate PnL for all tickers after price update
+  TICKERS.forEach(t => { porto[t].pnl = Math.round(porto[t].price*porto[t].lots*100 - porto[t].invested); });
+  localStorage.setItem('ac_porto', JSON.stringify(porto));
   updateHeader();
 
   const activePanel = document.querySelector('.panel.active');
@@ -2657,6 +2701,10 @@ function renderLotGrid() {
         <div style="margin-top:8px;padding:7px;background:var(--bg2);border-radius:6px;font-size:9px;color:var(--dim)">Gap dari target: ${gaps}</div>`;
     }
   }
+
+  // Render dividend calendar & monthly growth plan
+  renderDivCalendar();
+  renderMonthlyGrowthPlan();
 }
 
 // ── Manual Buy Suggestion: pick cheapest underweight with best MOS ──────────
@@ -2791,6 +2839,158 @@ function renderTopPick(order, alloc, total) {
 }
 
 
+// ════════════════════════════════════
+// DIVIDEND CALENDAR & MONTHLY GROWTH PLAN
+// ════════════════════════════════════
+
+// Dividend schedule per ticker (bulan cum-date biasanya)
+const DIV_CALENDAR = {
+  ADMF: { months:[4],    notes:'Apr only — cum 14 Apr, payment 30 Apr 2026', color:'#e8b84b' },
+  ASII: { months:[6],    notes:'Jun — final annual (RUPST Apr → payment Jun)', color:'#4d9de0' },
+  BMRI: { months:[1,4],  notes:'Jan & Apr — interim + final (gov payout schedule)', color:'#e05555' },
+  ITMG: { months:[4,11], notes:'Apr & Nov — interim tinggi (ex-div 21 Apr 2026)', color:'#3dc88a' },
+  POWR: { months:[5,11], notes:'Mei & Nov — stabil dari kontrak PLN jangka panjang', color:'#9b79e0' }
+};
+
+const MONTH_NAMES=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+
+function renderDivCalendar() {
+  const el=document.getElementById('div-calendar');
+  if(!el) return;
+
+  // Build 12-month grid
+  let html='<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-bottom:14px">';
+  const now=new Date(); const curMon=now.getMonth()+1;
+
+  for(let m=1;m<=12;m++){
+    const payers=TICKERS.filter(t=>DIV_CALENDAR[t].months.includes(m));
+    const isCurrent=m===curMon;
+    html+=`<div style="background:${isCurrent?'var(--accent)':'var(--bg4)'};border:1px solid ${isCurrent?'var(--accent)':'var(--border)'};border-radius:8px;padding:6px 4px;text-align:center;${isCurrent?'box-shadow:0 0 0 1px var(--accent)':''}">
+      <div style="font-size:8px;color:${isCurrent?'#fff':'var(--muted)'};text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">${MONTH_NAMES[m-1]}</div>
+      ${payers.length?payers.map(t=>`<div style="background:${DIV_CALENDAR[t].color}22;border:1px solid ${DIV_CALENDAR[t].color}44;border-radius:4px;padding:2px 3px;margin:1px 0;font-size:7px;font-weight:500;color:${DIV_CALENDAR[t].color}">${t}</div>`).join(''):`<div style="font-size:7px;color:var(--dim)">—</div>`}
+    </div>`;
+  }
+  html+='</div>';
+
+  // Per-ticker schedule detail
+  html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">';
+  TICKERS.forEach(t=>{
+    const cal=DIV_CALENDAR[t];
+    const gross=porto[t].lots*100*porto[t].divPerShare;
+    const net=Math.round(gross*0.85);
+    html+=`<div style="background:${cal.color}10;border:1px solid ${cal.color}33;border-radius:10px;padding:10px;text-align:center">
+      <div style="font-size:9px;font-weight:500;color:${cal.color};text-transform:uppercase;margin-bottom:4px">${t}</div>
+      <div style="font-size:8px;color:var(--muted);margin-bottom:5px">${cal.notes}</div>
+      <div style="font-size:12px;font-weight:500;color:var(--text)">${rp(net)}</div>
+      <div style="font-size:8px;color:var(--dim)">net/siklus</div>
+      ${cal.months.map(m=>`<div style="font-size:7px;background:${cal.color}22;border-radius:3px;padding:2px 5px;margin-top:3px;color:${cal.color}">${MONTH_NAMES[m-1]}</div>`).join('')}
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function renderMonthlyGrowthPlan() {
+  const el=document.getElementById('monthly-growth-plan');
+  if(!el) return;
+  const topup=parseFloat(document.getElementById('inp-topup')?.value)||750000;
+  const now=new Date(); const curMon=now.getMonth()+1;
+
+  // Simulate porto state across 12 months (clone to avoid mutation)
+  let simPorto={};
+  TICKERS.forEach(t=>{ simPorto[t]={...porto[t]}; });
+
+  let html=`<div class="info-box mb10" style="font-size:10px">
+    Cross-feed: dividen dari ITMG/ADMF/POWR → reinvest ke saham paling underweight yang <strong>terjangkau</strong> bulan itu. Porto makin gemuk setiap siklus. 📈
+  </div>`;
+  html+=`<div class="overflow-x"><table class="tbl"><thead><tr>
+    <th>Bulan</th><th>Dividen Cair (dari siapa)</th><th>Budget Total</th>
+    <th>Beli (terjangkau)</th><th>Lot Baru</th><th>Sisa</th><th>Div/Bln +Tambahan</th>
+  </tr></thead><tbody>`;
+
+  let cumNewDiv=0;
+  let cumInvested=0;
+
+  for(let i=0;i<12;i++){
+    const m=((curMon-1+i)%12)+1;
+    const yr=now.getFullYear()+(curMon-1+i>=12?1:0);
+
+    // Div yang cair bulan ini berdasarkan DIV_CALENDAR
+    const payers=TICKERS.filter(t=>DIV_CALENDAR[t].months.includes(m));
+    const divCair=payers.reduce((s,t)=>s+Math.round(simPorto[t].lots*100*simPorto[t].divPerShare*0.85),0);
+    const budget=divCair+topup;
+
+    // Determine best buy target: most underweight from targets, BUT must be affordable
+    // Compute actual % in simPorto
+    const simTotal=TICKERS.reduce((s,t)=>s+simPorto[t].price*simPorto[t].lots*100,0);
+    const simPct=t=>simTotal>0?simPorto[t].price*simPorto[t].lots*100/simTotal*100:0;
+
+    // Sort by underweight gap (target - actual), exclude overweight
+    const candidates=[...TICKERS]
+      .map(t=>({t, gap:targets[t]-simPct(t), lotCost:simPorto[t].price*100}))
+      .filter(x=>x.gap>0 && x.lotCost<=budget) // must be underweight AND affordable
+      .sort((a,b)=>{
+        // Primary: gap from target (most underweight first)
+        const gapDiff=b.gap-a.gap;
+        if(Math.abs(gapDiff)>1) return gapDiff;
+        // Secondary: cheapest (maximize lots bought)
+        return a.lotCost-b.lotCost;
+      });
+
+    let buyTicker=null, lotsCanBuy=0, lotCostTotal=0, sisa=budget;
+    if(candidates.length>0){
+      buyTicker=candidates[0].t;
+      const lc=simPorto[buyTicker].price*100;
+      lotsCanBuy=Math.floor(budget/lc);
+      if(lotsCanBuy>0){
+        lotCostTotal=lotsCanBuy*lc;
+        sisa=budget-lotCostTotal;
+        // Update simPorto for next month
+        simPorto[buyTicker].lots+=lotsCanBuy;
+        // Extra annual div from new lots
+        const extraDiv=Math.round(lotsCanBuy*100*simPorto[buyTicker].divPerShare*0.85);
+        cumNewDiv+=extraDiv;
+        cumInvested+=lotCostTotal;
+      }
+    }
+
+    const isCurrent=(i===0);
+    const hasDiv=payers.length>0;
+    const monthlyExtraDiv=cumNewDiv>0?Math.round(cumNewDiv/12):0;
+
+    html+=`<tr style="${isCurrent?'background:var(--blue-bg)':''}">
+      <td style="color:${isCurrent?'var(--accent2)':'var(--muted)'};font-weight:${isCurrent?'500':'400'}">${MONTH_NAMES[m-1]} '${String(yr).slice(-2)}</td>
+      <td>${hasDiv
+        ?`<span style="color:var(--green);font-weight:500">${rp(divCair)}</span><br><span style="font-size:7.5px;color:var(--muted)">${payers.map(t=>`<span style="color:${COLORS[t]}">${t}</span>`).join(', ')}</span>`
+        :'<span style="color:var(--dim);font-size:9px">— tidak ada</span>'}</td>
+      <td style="font-weight:500;color:var(--text)">${rp(budget)}</td>
+      <td>${buyTicker&&lotsCanBuy>0
+        ?`<span style="color:${COLORS[buyTicker]};font-weight:500">${buyTicker}</span><br><span style="font-size:7.5px;color:var(--muted)">${rp(simPorto[buyTicker].price*100-lotsCanBuy===0?0:0)}/lot · gap ${(targets[buyTicker]-simPct(buyTicker)+buyTicker===buyTicker?0:0).toFixed(0)}%</span>`
+        :'<span style="color:var(--amber);font-size:9px">Budget kurang / sudah on-target</span>'}</td>
+      <td style="color:${lotsCanBuy>0?'var(--green)':'var(--dim)'};font-weight:500">${lotsCanBuy>0?lotsCanBuy+' lot':'—'}</td>
+      <td style="color:var(--muted);font-size:10px">${rp(sisa)}</td>
+      <td style="color:var(--accent2)">${monthlyExtraDiv>0?'+'+rp(monthlyExtraDiv)+'/bln':'—'}</td>
+    </tr>`;
+  }
+
+  html+=`</tbody></table></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px 12px">
+        <div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:3px">Total Lot Baru</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text)">${TICKERS.reduce((s,t)=>s+(simPorto[t].lots-porto[t].lots),0)} lot ditambahkan</div>
+      </div>
+      <div style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;padding:10px 12px">
+        <div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:3px">Modal Direinvest</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text)">${rp(cumInvested)}</div>
+      </div>
+      <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;padding:10px 12px">
+        <div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:3px">Div Tambahan/Bln</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text)">+${rp(Math.round(cumNewDiv/12))}</div>
+      </div>
+    </div>`;
+  el.innerHTML=html;
+}
+
 function renderRebalance() {
   const body = document.getElementById('reb-body');
   const bars = document.getElementById('reb-bars');
@@ -2819,6 +3019,9 @@ function renderRebalance() {
     const lotGapColor = lotGap > 0 ? 'var(--green)' : lotGap < 0 ? 'var(--red)' : 'var(--muted)';
     const lotGapText = lotGap > 0 ? `+${lotGap} lot` : lotGap < 0 ? `${lotGap} lot` : '✓';
 
+    const modalKurang = lotGap > 0 ? lotGap * porto[t].price * 100 : 0;
+    const modalKurangText = modalKurang > 0 ? rp(modalKurang) : '<span style="color:var(--green)">✓ Cukup</span>';
+
     body.innerHTML+=`
       <tr>
         <td style="color:${COLORS[t]};font-weight:500">${t}</td>
@@ -2828,6 +3031,7 @@ function renderRebalance() {
         <td class="num">${currentLots} lot</td>
         <td class="num">${idealLots} lot</td>
         <td class="num" style="color:${lotGapColor};font-weight:500">${lotGapText}</td>
+        <td class="num" style="color:${modalKurang>0?'var(--amber)':'var(--green)'};font-weight:500">${modalKurangText}</td>
         <td class="num">${rp(mktV)}</td>
         <td class="ctr"><span class="badge ${aClass}">${action}</span></td>
       </tr>`;
@@ -2849,6 +3053,29 @@ function renderRebalance() {
         </div>
       </div>`;
   });
+  // Total row
+  const totalMktAll=totalMktVal();
+  const totalInvAll=totalInvested();
+  const totalPnlAll=totalPnl();
+  const totalModalKurang=TICKERS.reduce((s,t)=>{
+    const idealMktV=totalMktAll*(targets[t]/100);
+    const idealLots=porto[t].price>0?Math.round(idealMktV/(porto[t].price*100)):0;
+    const lotGap=idealLots-porto[t].lots;
+    return s+(lotGap>0?lotGap*porto[t].price*100:0);
+  },0);
+  body.innerHTML+=`
+    <tr style="border-top:2px solid var(--border3);background:var(--bg4)">
+      <td style="font-weight:500;color:var(--text)">TOTAL</td>
+      <td style="font-weight:500">100%</td>
+      <td style="font-weight:500">100%</td>
+      <td>—</td>
+      <td class="num" style="font-weight:500">${TICKERS.reduce((s,t)=>s+porto[t].lots,0)} lot</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+      <td class="num" style="font-weight:500;color:${totalModalKurang>0?'var(--amber)':'var(--green)'}">${totalModalKurang>0?rp(totalModalKurang):'✓ Seimbang'}</td>
+      <td class="num" style="font-weight:500">${rp(totalMktAll)}</td>
+      <td class="ctr"><span class="badge bm" style="font-size:7px">P&L: <span style="color:${totalPnlAll>=0?'var(--green)':'var(--red)'}">${totalPnlAll>=0?'+':''}${rp(totalPnlAll)}</span></span></td>
+    </tr>`;
   renderRebalanceReco();
   renderTargetInputs();
 }
@@ -2917,8 +3144,6 @@ function renderDivForecast() {
         <td class="num">${rp(gross)}</td>
         <td class="num green">${rp(net)}</td>
         <td class="num acc">${rp(monthly)}</td>
-        <td class="num">${yieldOnCost.toFixed(1)}%</td>
-        <td class="num">${yieldOnPrice.toFixed(1)}%</td>
       </tr>`;
   });
 }
@@ -2927,43 +3152,43 @@ function renderDivForecast() {
 // PROJECTION
 // ════════════════════════════════════
 function renderProjection() {
-  const target=parseFloat(document.getElementById('proj-target').value)||500_000_000;
+  const target=parseFloat(document.getElementById('proj-target').value)||120_000_000;
   const monthlyTopup=parseFloat(document.getElementById('proj-topup').value)||750000;
   const divGrowth=parseFloat(document.getElementById('proj-divgrowth').value)||5;
   const el=document.getElementById('proj-result');
   if(!el) return;
 
-  // Start from current portfolio state
-  let val=totalMktVal();
-  let totalInjected=totalInvested(); // track cost basis for YoC
-  // Start annual div BEFORE growth — grow starting next year
-  let div=annualDiv()*0.85; // net div this year
+  // Yield on current portfolio (gross)
+  const startMkt=totalMktVal();
+  const startDiv=annualDiv()*0.85; // net
+  const yieldRate=startMkt>0?(startDiv/startMkt):0.08; // annual net yield
+
+  let val=startMkt;
+  let annualDiv_=startDiv;
+  let totalInjected=totalInvested();
   const rows=[]; let hitYear=null;
 
   for(let y=1;y<=20;y++){
-    // 1) Grow dividend
-    div=div*(1+divGrowth/100);
-    // 2) Add top-up capital + reinvested dividends
     const annualTopup=monthlyTopup*12;
-    val=val+div+annualTopup;
-    totalInjected=totalInjected+annualTopup;
-    // 3) Yield on Cost: accumulated div against total invested capital
-    const yoc=(totalInjected>0?(div/totalInjected*100):0).toFixed(1);
-    // 4) Yield on Market: div vs portfolio market value
-    const yop=(val>0?(div/val*100):0).toFixed(1);
-    // 5) Monthly income this year
-    const monthly=Math.round(div/12);
-    rows.push({y,val:Math.round(val),div:Math.round(div),monthly,yoc,yop});
+    // Reinvested dividends + topup → buy more → yields more next year
+    const newCapital=annualDiv_+annualTopup;
+    val+=newCapital;
+    totalInjected+=annualTopup;
+    // Next year's dividend: existing div grows by divGrowth% + new capital earns yield
+    annualDiv_=annualDiv_*(1+divGrowth/100) + newCapital*yieldRate;
+    const monthly=Math.round(annualDiv_/12);
+    const retPct=totalInjected>0?((val-totalInjected)/totalInjected*100):0;
+    rows.push({y,val:Math.round(val),div:Math.round(annualDiv_),monthly,retPct:retPct.toFixed(1)});
     if(!hitYear&&val>=target) hitYear=y;
   }
 
   let html=`
     <div class="${hitYear?'success-box':'warn-box'} mb12">
-      ${hitYear?`🎯 Target <strong>${rp(target)}</strong> tercapai dalam <strong>${hitYear} tahun</strong>`:
-      `Target ${rp(target)} belum tercapai dalam 20 tahun dengan asumsi ini`}
+      ${hitYear?`🎯 Target <strong>${rp(target)}</strong> tercapai dalam <strong>${hitYear} tahun</strong> dengan recompounding`:
+      `Target ${rp(target)} belum tercapai dalam 20 tahun — naikkan top-up atau yield lebih tinggi`}
     </div>
     <div class="overflow-x"><table class="tbl">
-      <thead><tr><th>Tahun</th><th class="num">Nilai Porto</th><th class="num">Div/Thn (Net)</th><th class="num">Div/Bln</th><th class="num">YoC</th><th class="num">YoP</th><th class="num">Progress</th></tr></thead>
+      <thead><tr><th>Tahun</th><th class="num">Nilai Porto</th><th class="num">Div/Thn (Net)</th><th class="num">Div/Bln</th><th class="num">Total Return</th><th class="num">Progress</th></tr></thead>
       <tbody>`;
   rows.forEach(r=>{
     const prog=Math.min(r.val/target*100,100).toFixed(0); const hit=r.val>=target;
@@ -2972,8 +3197,7 @@ function renderProjection() {
       <td class="num">${rp(r.val)}</td>
       <td class="num">${rp(r.div)}</td>
       <td class="num green">${rp(r.monthly)}</td>
-      <td class="num">${r.yoc}%</td>
-      <td class="num dim">${r.yop}%</td>
+      <td class="num" style="color:${parseFloat(r.retPct)>=0?'var(--green)':'var(--red)'}">${parseFloat(r.retPct)>=0?'+':''}${r.retPct}%</td>
       <td class="num" style="width:110px">
         <div style="background:var(--bg5);border-radius:2px;height:5px;overflow:hidden">
           <div style="width:${prog}%;height:5px;background:${hit?'var(--green)':'var(--accent)'};border-radius:2px"></div>
@@ -2982,11 +3206,10 @@ function renderProjection() {
       </td>
     </tr>`;
   });
-  html+='</tbody></table></div>';
-  html+=`<div style="font-size:9px;color:var(--dim);margin-top:8px;line-height:1.7">
-    YoC = Yield on Cost (div tahunan / total modal disetor) &nbsp;·&nbsp; YoP = Yield on Price (div / nilai porto saat itu)<br>
-    Asumsi: Top-up ${rp(monthlyTopup)}/bln · Div growth ${divGrowth}%/thn · Reinvest dividen ke porto
-  </div>`;
+  html+=`</tbody></table></div>
+    <div style="font-size:9px;color:var(--dim);margin-top:8px;line-height:1.7">
+      Model: Dividen net ${(yieldRate*100).toFixed(1)}%/thn dari porto · Top-up ${rp(monthlyTopup)}/bln · Div CAGR ${divGrowth}%/thn · Dividen + top-up direinvest tiap tahun · Nilai porto tumbuh dari reinvestment kumulatif.
+    </div>`;
   el.innerHTML=html;
 }
 
@@ -2999,16 +3222,28 @@ function renderPortoEdit() {
   if(!grid) return;
   grid.innerHTML='';
   TICKERS.forEach(t=>{
-    const s=porto[t]; const pct_v=actualPct(t).toFixed(1);
+    const s=porto[t];
+    const pct_v=actualPct(t).toFixed(1);
+    const autoPnl=Math.round(s.price*s.lots*100 - s.invested);
+    const autoPnlColor=autoPnl>=0?'var(--green)':'var(--red)';
     grid.innerHTML+=`
       <div class="pe-card" style="border-top:2px solid ${COLORS[t]}">
         <div class="pe-ticker"><span style="color:${COLORS[t]}">${t}</span><span class="badge bm">${pct_v}%</span></div>
-        <div class="pe-field"><label>Harga (Rp)</label><input type="number" id="pe-price-${t}" value="${s.price}"></div>
-        <div class="pe-field"><label>Avg Price (Rp)</label><input type="number" id="pe-avgprice-${t}" value="${s.avgPrice||s.price}"></div>
-        <div class="pe-field"><label>Lot</label><input type="number" id="pe-lots-${t}" value="${s.lots}" min="0"></div>
-        <div class="pe-field"><label>Invested (Rp)</label><input type="number" id="pe-inv-${t}" value="${s.invested}"></div>
-        <div class="pe-field"><label>P&L (Rp)</label><input type="number" id="pe-pnl-${t}" value="${s.pnl||0}"></div>
-        <div class="pe-field"><label>Div/Lembar (Rp)</label><input type="number" id="pe-div-${t}" value="${s.divPerShare}" step="0.01"></div>
+        <div class="pe-field">
+          <label>Harga (Rp) <span style="color:var(--green);font-size:7px">● AUTO FETCH — terkunci</span></label>
+          <input type="number" id="pe-price-${t}" value="${s.price}" style="color:var(--accent2);opacity:0.7;cursor:not-allowed" readonly tabindex="-1">
+        </div>
+        <div class="pe-field"><label>Avg Price (Rp)</label><input type="number" id="pe-avgprice-${t}" value="${s.avgPrice||s.price}" oninput="autoCalcPnl('${t}')"></div>
+        <div class="pe-field"><label>Lot</label><input type="number" id="pe-lots-${t}" value="${s.lots}" min="0" oninput="autoCalcPnl('${t}')"></div>
+        <div class="pe-field"><label>Invested (Rp)</label><input type="number" id="pe-inv-${t}" value="${s.invested}" oninput="autoCalcPnl('${t}')"></div>
+        <div class="pe-field">
+          <label>P&L (Rp) <span style="color:var(--accent2);font-size:7px">● AUTO HITUNG — terkunci</span></label>
+          <input type="number" id="pe-pnl-${t}" value="${autoPnl}" style="color:${autoPnlColor};opacity:0.7;cursor:not-allowed" readonly tabindex="-1">
+        </div>
+        <div class="pe-field">
+          <label>Div/Lembar (Rp) <span style="color:var(--green);font-size:7px">● FETCH — terkunci</span></label>
+          <input type="number" id="pe-div-${t}" value="${s.divPerShare}" step="0.01" style="opacity:0.7;cursor:not-allowed" readonly tabindex="-1">
+        </div>
       </div>`;
   });
 
@@ -3016,77 +3251,107 @@ function renderPortoEdit() {
   const cashInp=document.getElementById('inp-cash');
   if(cashInp) cashInp.value=getCash();
 
-  // Div inputs
-  const divEl=document.getElementById('div-inputs');
-  if(divEl){
-    divEl.innerHTML='';
-    TICKERS.forEach(t=>{
-      divEl.innerHTML+=`<div class="field"><label>${t} Div/Lbr</label><input type="number" id="div-inp-${t}" value="${porto[t].divPerShare}" step="0.01"></div>`;
-    });
-  }
+
+}
+
+function autoCalcPnl(t) {
+  const price=parseFloat(document.getElementById('pe-price-'+t)?.value)||0;
+  const lots=parseInt(document.getElementById('pe-lots-'+t)?.value)||0;
+  const inv=parseFloat(document.getElementById('pe-inv-'+t)?.value)||0;
+  const pnl=Math.round(price*lots*100 - inv);
+  const inp=document.getElementById('pe-pnl-'+t);
+  if(inp){ inp.value=pnl; inp.style.color=pnl>=0?'var(--green)':'var(--red)'; }
+}
+
+function exportPorto() {
+  const data={
+    exported: new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    porto: porto,
+    targets: targets,
+    cash: getCash()
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='aegis-porto-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+
+function importPorto(file) {
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.porto) throw new Error('Format tidak valid');
+      if(!confirm('Import data dari "'+file.name+'"? Porto saat ini akan ditimpa.')) return;
+      // Auto savepoint before import
+      const sps=JSON.parse(localStorage.getItem('ac_savepoints')||'[]');
+      sps.unshift({id:Date.now(),name:'Auto-save sebelum import',date:new Date().toLocaleDateString('id-ID'),porto:JSON.parse(JSON.stringify(porto)),totalInv:totalInvested(),totalMkt:totalMktVal(),totalDiv:annualDiv()});
+      if(sps.length>5) sps.pop();
+      localStorage.setItem('ac_savepoints',JSON.stringify(sps));
+      porto=data.porto;
+      if(data.targets) targets=data.targets;
+      if(data.cash) localStorage.setItem('ac_cash',data.cash);
+      localStorage.setItem('ac_porto',JSON.stringify(porto));
+      localStorage.setItem('ac_targets',JSON.stringify(targets));
+      updateHeader();
+      renderPortoEdit();
+      renderSavepointList();
+      const msg=document.getElementById('save-msg');
+      if(msg){msg.innerHTML='✓ Import berhasil dari "'+file.name+'" · Auto-savepoint dibuat.';msg.style.display='block';setTimeout(()=>msg.style.display='none',4000);}
+    }catch(err){alert('Import gagal: '+err.message);}
+  };
+  reader.readAsText(file);
 }
 
 function renderPortoComposition() {
   const el=document.getElementById('porto-composition');
   if(!el) return;
   const total=totalMktVal();
-  let html='<div style="display:flex;justify-content:center;margin-bottom:12px"><canvas id="pie-porto" width="140" height="140"></canvas></div>';
-  html+='<div class="bento bento-5" style="gap:8px">';
+  // Mosaic treemap-style blocks
+  let html='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px">';
   TICKERS.forEach(t=>{
     const v=porto[t].price*porto[t].lots*100;
     const pct_v=total>0?(v/total*100).toFixed(1):'0';
+    const pnl=porto[t].pnl||0;
+    const pnlPct=porto[t].invested>0?(pnl/porto[t].invested*100):0;
     html+=`
-      <div style="background:var(--bg2);border:1px solid var(--border);border-top:2px solid ${COLORS[t]};border-radius:10px;padding:10px;text-align:center">
-        <div style="font-size:10px;font-weight:500;color:${COLORS[t]};margin-bottom:3px">${t}</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)">${pct_v}%</div>
-        <div style="font-size:9px;color:var(--muted)">${porto[t].lots} lot</div>
-        <div style="font-size:9px;color:var(--dim)">${rp(v)}</div>
+      <div style="background:linear-gradient(135deg,${COLORS[t]}18,${COLORS[t]}08);border:1px solid ${COLORS[t]}44;border-top:3px solid ${COLORS[t]};border-radius:10px;padding:14px 12px;text-align:center;position:relative;overflow:hidden">
+        <div style="position:absolute;bottom:-8px;right:-8px;width:50px;height:50px;background:${COLORS[t]}10;border-radius:50%"></div>
+        <div style="font-size:9px;font-weight:500;color:${COLORS[t]};text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">${t}</div>
+        <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:200;color:var(--text);line-height:1.1">${pct_v}%</div>
+        <div style="height:4px;background:var(--bg5);border-radius:2px;margin:6px 0;overflow:hidden">
+          <div style="width:${Math.min(parseFloat(pct_v)/30*100,100)}%;height:4px;background:${COLORS[t]};border-radius:2px"></div>
+        </div>
+        <div style="font-size:9px;color:var(--muted)">${porto[t].lots} lot · ${rp(v)}</div>
+        <div style="font-size:9px;margin-top:2px;color:${pnl>=0?'var(--green)':'var(--red)'}">${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}% P&L</div>
       </div>`;
   });
   html+='</div>';
+  // Total bar
+  html+=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+    <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em">Total Porto</div><div style="font-size:15px;font-weight:500;color:var(--text)">${rp(total)}</div></div>
+    <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em">P&L Total</div><div style="font-size:15px;font-weight:500;color:${totalPnl()>=0?'var(--green)':'var(--red)'}">${totalPnl()>=0?'+':''}${rp(totalPnl())}</div></div>
+    <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em">Div/Thn (Net)</div><div style="font-size:15px;font-weight:500;color:var(--accent2)">${rp(annualDiv()*0.85)}</div></div>
+  </div>`;
   el.innerHTML=html;
-
-  requestAnimationFrame(()=>{
-    const canvas=document.getElementById('pie-porto');
-    if(!canvas) return;
-    const ctx=canvas.getContext('2d');
-    const cx=70,cy=70,r=55,inner=32;
-    ctx.clearRect(0,0,140,140);
-    let start=-Math.PI/2;
-    const isLight=document.body.classList.contains('light');
-    TICKERS.forEach(t=>{
-      const v=porto[t].price*porto[t].lots*100;
-      const angle=total>0?(v/total)*Math.PI*2:0;
-      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+angle);ctx.closePath();
-      ctx.fillStyle=COLORS[t];ctx.fill();
-      ctx.strokeStyle=isLight?'#eef2fa':'#060b12';ctx.lineWidth=2;ctx.stroke();
-      start+=angle;
-    });
-    ctx.beginPath();ctx.arc(cx,cy,inner,0,Math.PI*2);
-    ctx.fillStyle=isLight?'#ffffff':'#101d2e';ctx.fill();
-    ctx.fillStyle=isLight?'#0a1a38':'#e4eeff';
-    ctx.font='500 10px DM Mono, monospace';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('Porto',cx,cy-6);
-    ctx.font='400 8px DM Mono, monospace';
-    ctx.fillStyle='#4a6898';
-    ctx.fillText(rp(total).replace('Rp',''),cx,cy+7);
-  });
 }
 
 function savePorto() {
   TICKERS.forEach(t=>{
     const priceInp=document.getElementById('pe-price-'+t);
     const invInp=document.getElementById('pe-inv-'+t);
-    const pnlInp=document.getElementById('pe-pnl-'+t);
     const lotsInp=document.getElementById('pe-lots-'+t);
     const divInp=document.getElementById('pe-div-'+t);
     const avgInp=document.getElementById('pe-avgprice-'+t);
     if(priceInp) porto[t].price=parseFloat(priceInp.value)||porto[t].price;
     if(invInp) porto[t].invested=parseFloat(invInp.value)||porto[t].invested;
-    if(pnlInp) porto[t].pnl=parseFloat(pnlInp.value)||0;
     if(lotsInp) porto[t].lots=parseInt(lotsInp.value)||porto[t].lots;
     if(divInp) porto[t].divPerShare=parseFloat(divInp.value)||porto[t].divPerShare;
     if(avgInp) porto[t].avgPrice=parseFloat(avgInp.value)||porto[t].avgPrice;
+    // Auto-calculate P&L
+    porto[t].pnl=Math.round(porto[t].price*porto[t].lots*100 - porto[t].invested);
   });
   // Save cash
   const cashInp=document.getElementById('inp-cash');
@@ -3100,7 +3365,7 @@ function savePorto() {
 }
 
 function resetPorto() {
-  if(!confirm('Reset ke data default April 2026?')) return;
+  if(!confirm('Reset ke data default April 2026?\n\nLot aktual: ADMF 4 | ASII 2 | BMRI 5 | ITMG 3 | POWR 20\nSemua perubahan manual akan hilang.')) return;
   porto=JSON.parse(JSON.stringify(DEFAULT_PORTO));
   localStorage.setItem('ac_porto',JSON.stringify(porto));
   updateHeader();
