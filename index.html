@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v9 — Command Terminal</title>
+<title>Aegis Alpha v11 — Arsenal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;0,9..144,300;1,9..144,200;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   AEGIS ALPHA v9 — COMMAND TERMINAL DESIGN SYSTEM
-   Dark mode default · SR · FVG · OB · RSI glance
+   AEGIS ALPHA v11 — COMMAND TERMINAL DESIGN SYSTEM
+   Dark mode default · "Ichimoku-style glance"
 ═══════════════════════════════════════════════════════════ */
 :root {
   /* Core palette */
@@ -69,14 +69,13 @@ body.light {
   --card-shadow-hover:0 4px 24px rgba(16,72,168,0.12);
 }
 
-/* ── RESET ── */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
   color:var(--text);
   font-family:'DM Mono',monospace;
-  font-size:11px;
+  font-size:13px;
   min-height:100vh;
   overflow:hidden;
   transition:background .3s,color .3s;
@@ -105,7 +104,7 @@ body.light::before{
    SIDEBAR
 ══════════════════════════════════════ */
 .sidebar{
-  width:200px;flex-shrink:0;
+  width:220px;flex-shrink:0;
   background:var(--bg2);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
@@ -128,7 +127,7 @@ body.light::before{
 
 /* Collapse btn */
 .sb-collapse-btn{
-  position:fixed;top:14px;left:208px;z-index:300;
+  position:fixed;top:14px;left:228px;z-index:300;
   background:var(--bg3);border:1px solid var(--border2);
   border-radius:50%;width:22px;height:22px;font-size:10px;
   cursor:pointer;color:var(--muted);
@@ -156,8 +155,8 @@ body.light::before{
 /* KPI mini */
 .sb-kpi-block{padding:10px 14px;border-bottom:1px solid var(--border)}
 .sb-kpi-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
-.sb-kpi-l{font-size:7.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
-.sb-kpi-v{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;font-family:'Fraunces',serif;font-weight:200;font-size:13px}
+.sb-kpi-l{font-size:8.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.sb-kpi-v{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;font-family:'Fraunces',serif;font-weight:200;font-size:14px}
 
 /* Quote */
 .sb-quote-block{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
@@ -311,7 +310,7 @@ body.light::before{
 .bcard-sub{font-size:8.5px;color:var(--muted);margin-top:2px}
 
 /* ══════════════════════════════════════
-   STOCK COMMAND MATRIX — The Signal Glance
+   STOCK COMMAND MATRIX — THE ICHIMOKU GLANCE
 ══════════════════════════════════════ */
 .stock-matrix{
   display:grid;
@@ -474,7 +473,6 @@ body.light::before{
 .sec-title{font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin:16px 0 9px;border-bottom:1px solid var(--border);padding-bottom:4px}
 .sec-title:first-child{margin-top:0}
 
-/* ── LOT CARDS ── */
 .lot-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px;text-align:center;transition:all .2s}
 .lot-card.winner{border-color:var(--accent);background:var(--accent-bg,#061428);box-shadow:0 0 0 1px var(--accent)}
 .lot-card.blocked{opacity:.3}
@@ -485,7 +483,6 @@ body.light::before{
 .lc-cost{font-size:8.5px;color:var(--dim);margin-top:1px}
 .lc-note{font-size:7.5px;color:var(--accent2);margin-top:4px;line-height:1.5}
 
-/* ── ICHIMOKU CARDS ── */
 .ich-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:12px;transition:all .2s}
 .ich-ticker{font-size:11px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .ich-row{display:flex;justify-content:space-between;font-size:8.5px;padding:3px 0;border-bottom:1px solid var(--border)}
@@ -493,7 +490,6 @@ body.light::before{
 .ich-label{color:var(--muted)}
 .ich-val{font-weight:500;font-variant-numeric:tabular-nums}
 
-/* ── PORTFOLIO EDIT ── */
 .pe-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:11px;transition:background .3s}
 .pe-ticker{font-size:10.5px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .pe-field{margin-bottom:4px}
@@ -501,19 +497,16 @@ body.light::before{
 .pe-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'DM Mono',monospace;font-size:9.5px;padding:4px 6px;outline:none}
 .pe-field input:focus{border-color:var(--accent)}
 
-/* ── RISK ── */
 .risk-cell{padding:8px 10px;border-radius:6px;font-size:9.5px;line-height:1.5}
 .risk-hi{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
 .risk-mid{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
 .risk-lo{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 
-/* ── MARKET TILES ── */
 .mkt-tile{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:3px}
 .mkt-tile-l{font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .mkt-tile-v{font-family:'Fraunces',serif;font-size:20px;font-weight:200;line-height:1.1}
 .mkt-tile-c{font-size:8.5px;margin-top:1px}
 
-/* ── SAVEPOINTS ── */
 .sp-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:7px}
 .sp-info{display:flex;flex-direction:column;gap:2px}
 .sp-name{font-size:10.5px;font-weight:500;color:var(--text)}
@@ -523,10 +516,9 @@ body.light::before{
 .sp-sl{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
 .sp-sv{font-size:10.5px;font-weight:500;color:var(--text)}
 
+.ocr-drop{border:2px dashed var(--border2);cursor:pointer;transition:border-color .2s;text-align:center;padding:26px 20px;border-radius:var(--radius)}
+.ocr-drop:hover,.ocr-drop.drag{border-color:var(--accent)}
 
-
-
-/* ── TREEMAP ── */
 .treemap-wrap{position:relative;width:100%;border-radius:10px;overflow:hidden}
 .treemap-cell{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--bg3);cursor:default;overflow:hidden;transition:opacity .15s}
 .treemap-cell:hover{opacity:.85}
@@ -534,7 +526,6 @@ body.light::before{
 .treemap-pct{font-size:12px;font-weight:500;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .treemap-val{font-size:7.5px;color:rgba(255,255,255,.7);margin-top:1px}
 
-/* ── MODALS ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
 .modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:26px 28px;min-width:300px;max-width:380px;text-align:center;box-shadow:0 8px 48px rgba(0,0,0,.7)}
 .modal-title{font-family:'Fraunces',serif;font-size:18px;font-weight:200;color:var(--text);margin-bottom:5px}
@@ -544,12 +535,10 @@ body.light::before{
 .modal-err{font-size:9.5px;color:var(--red);min-height:15px;margin-bottom:9px}
 .modal-btns{display:flex;gap:7px;justify-content:center}
 
-/* ── FLOAT FETCH ── */
 .float-fetch-btn{position:fixed;bottom:68px;right:14px;z-index:200;background:linear-gradient(135deg,var(--accent),#1a50b0);border:none;border-radius:50px;padding:8px 14px;font-size:8.5px;cursor:pointer;color:#fff;font-family:'DM Mono',monospace;letter-spacing:.06em;font-weight:500;display:flex;align-items:center;gap:5px;box-shadow:0 4px 18px rgba(44,107,224,0.5);transition:opacity .15s}
 .float-fetch-btn:hover{opacity:.85}
 .float-fetch-btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* ── MOBILE ── */
 .sb-toggle{display:none;position:fixed;bottom:14px;left:14px;z-index:200;background:linear-gradient(135deg,var(--accent),#1a50b0);border:none;border-radius:50%;width:40px;height:40px;font-size:17px;cursor:pointer;color:#fff;box-shadow:0 4px 18px rgba(44,107,224,0.5)}
 .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99}
 canvas{max-width:100%}
@@ -578,7 +567,6 @@ canvas{max-width:100%}
   .stock-matrix{grid-template-columns:1fr}
 }
 
-/* ── ENTRY ANIMATIONS ── */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .panel.active > *{animation:fadeSlideUp .25s ease both}
 .panel.active > *:nth-child(1){animation-delay:.02s}
@@ -587,19 +575,50 @@ canvas{max-width:100%}
 .panel.active > *:nth-child(4){animation-delay:.14s}
 .panel.active > *:nth-child(5){animation-delay:.18s}
 
-/* ── PULSE for live status ── */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite;margin-right:5px;vertical-align:middle}
 
-/* ── SIGNAL COLOR MAP for matrix ── */
 .sig-hajar{background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,0.6));color:var(--green);border:1px solid var(--green-border);font-size:7px;padding:2px 6px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:inline-block}
 .sig-cicil{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-size:7px;padding:2px 6px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:inline-block}
 
-/* ── ALLOC BAR INLINE ── */
 .alloc-inline{display:flex;align-items:center;gap:6px}
 .alloc-bar-wrap{flex:1;height:3px;background:var(--bg5);border-radius:2px;overflow:hidden;position:relative}
 .alloc-bar-fill{height:3px;border-radius:2px}
 .alloc-bar-target{position:absolute;top:0;height:3px;width:2px;background:rgba(255,255,255,.45);border-radius:1px}
+
+/* ══ ARSENAL PANEL ══ */
+.arsenal-section-header{margin-top:16px}
+.arsenal-section-header:first-of-type{margin-top:0}
+
+.rsi-gauge{
+  height:6px;border-radius:3px;overflow:hidden;position:relative;
+  background:linear-gradient(to right,var(--green) 0%,var(--green) 30%,var(--amber) 35%,var(--amber) 65%,var(--red) 70%,var(--red) 100%);
+  opacity:.4;margin-top:3px;
+}
+.rsi-marker{
+  position:absolute;top:-2px;width:3px;height:10px;
+  background:var(--text);border-radius:2px;
+  transform:translateX(-50%);
+  box-shadow:0 0 4px rgba(216,232,255,.6);
+}
+
+.sr-bar{height:32px;background:var(--bg5);border-radius:5px;overflow:hidden;position:relative;margin:5px 0}
+.sr-zone{position:absolute;top:0;bottom:0;opacity:.25;border-radius:3px}
+.sr-price-marker{position:absolute;top:0;bottom:0;width:3px;background:var(--text);border-radius:2px;z-index:2;box-shadow:0 0 4px rgba(216,232,255,.5)}
+.sr-label{position:absolute;font-size:6px;color:var(--text);white-space:nowrap;top:50%;transform:translateY(-50%)}
+
+.zone-badge{display:inline-flex;align-items:center;gap:4px;font-size:7.5px;padding:2px 6px;border-radius:4px;font-weight:500;white-space:nowrap}
+.zone-fvg-bull{background:rgba(45,224,138,.08);border:1px solid rgba(45,224,138,.2);color:var(--green)}
+.zone-fvg-bear{background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.2);color:var(--red)}
+.zone-ob-bull{background:rgba(96,170,255,.1);border:1px solid rgba(96,170,255,.25);color:var(--accent2)}
+.zone-ob-bear{background:rgba(155,121,224,.1);border:1px solid rgba(155,121,224,.25);color:var(--purple)}
+
+.ich-card-v2{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .2s}
+.ich-card-v2:hover{box-shadow:var(--card-shadow-hover)}
+.ich-card-v2-head{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ich-card-v2-body{padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.ich-card-v2-section{font-size:6.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);padding:4px 0 2px;border-top:1px solid var(--border);margin-top:2px}
+.ich-card-v2-section:first-of-type{border-top:none;padding-top:0;margin-top:0}
 </style>
 </head>
 <body>
@@ -612,30 +631,38 @@ canvas{max-width:100%}
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v9</sup></div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v11</sup></div>
     <div class="sb-tagline">Dividend Flywheel · Target Rp250jt</div>
   </div>
 
   <div class="sb-kpi-block">
-    <div class="sb-kpi-item">
-      <span class="sb-kpi-l">Ekuitas</span>
-      <span class="sb-kpi-v green" id="h-mktval">—</span>
+    <!-- Porto Target milestone -->
+    <div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)">Porto → Rp250jt</span>
+        <span style="font-size:8px;font-weight:500;color:var(--accent2)" id="sb-porto-pct">—</span>
+      </div>
+      <div style="height:5px;background:var(--bg5);border-radius:3px;overflow:hidden">
+        <div id="sb-porto-bar" style="height:5px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;width:0%;transition:width .5s ease"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span style="font-size:7px;color:var(--muted)" id="sb-porto-val">—</span>
+        <span style="font-size:7px;color:var(--dim)">Rp250jt</span>
+      </div>
     </div>
-    <div class="sb-kpi-item">
-      <span class="sb-kpi-l">P&L</span>
-      <span class="sb-kpi-v" id="h-pnl">—</span>
-    </div>
-    <div class="sb-kpi-item">
-      <span class="sb-kpi-l">YoC/Thn</span>
-      <span class="sb-kpi-v acc" id="h-yoc">—</span>
-    </div>
-    <div class="sb-kpi-item">
-      <span class="sb-kpi-l">Cash RDN</span>
-      <span class="sb-kpi-v" id="h-cash">Rp0</span>
-    </div>
-    <div class="sb-kpi-item">
-      <span class="sb-kpi-l">Div/Bulan</span>
-      <span class="sb-kpi-v acc" id="h-div">—</span>
+    <!-- Div/Bln milestone -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)">Div/Bln → Rp10jt</span>
+        <span style="font-size:8px;font-weight:500;color:var(--green)" id="sb-div-pct">—</span>
+      </div>
+      <div style="height:4px;background:var(--bg5);border-radius:3px;overflow:hidden">
+        <div id="sb-div-bar" style="height:4px;background:var(--green);border-radius:3px;width:0%;transition:width .5s ease"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span style="font-size:7px;color:var(--muted)" id="sb-div-val">—</span>
+        <span style="font-size:7px;color:var(--dim)">Rp10jt</span>
+      </div>
     </div>
   </div>
 
@@ -645,24 +672,14 @@ canvas{max-width:100%}
   </div>
 
   <div class="sb-nav">
-    <div class="sb-section-label">Dashboard</div>
-    <div class="sb-nav-item active" onclick="switchTab('nexus',this)" data-tab="nexus">
-      <span class="sb-icon">⬡</span> Nexus
-    </div>
-    <div class="sb-section-label">Analisa</div>
-    <div class="sb-nav-item" onclick="switchTab('deepdive',this)" data-tab="deepdive">
-      <span class="sb-icon">🔬</span> Deep Dive
-    </div>
-    <div class="sb-nav-item" onclick="switchTab('lot',this)" data-tab="lot">
-      <span class="sb-icon">💰</span> Lot Calc
-      <span class="sb-badge">NEW</span>
+    <div class="sb-nav-item active" onclick="switchTab('dashboard',this)" data-tab="dashboard">
+      <span class="sb-icon">📊</span> Dashboard
     </div>
     <div class="sb-nav-item" onclick="switchTab('arsenal',this)" data-tab="arsenal">
-      <span class="sb-icon">⚔️</span> Arsenal
+      <span class="sb-icon">⚡</span> Arsenal
     </div>
-    <div class="sb-section-label">Tools</div>
-    <div class="sb-nav-item" onclick="switchTab('porto',this)" data-tab="porto">
-      <span class="sb-icon">✏️</span> Edit Porto
+    <div class="sb-nav-item" onclick="switchTab('control',this)" data-tab="control">
+      <span class="sb-icon">🎛️</span> Control Room
     </div>
     <div class="sb-nav-item" onclick="switchTab('rules',this)" data-tab="rules">
       <span class="sb-icon">📜</span> Rules
@@ -687,25 +704,27 @@ canvas{max-width:100%}
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli +16 lot SETELAH ex-date → target 19 lot</span>
+      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli SETELAH ex-date → target 14 lot total</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 5L · POWR 20L · ITMG 3L · ASII 2L · ADMF 4L = Rp16.77jt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt (v11)</strong> — ADMF 83L · BMRI 161L · ASII 79L · ITMG 14L · POWR 170L</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — 9.08% gross · Rp22.84jt/thn · Rp1.62jt/bln net</span>
+      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — ~9.1% gross · Rp22.8jt/thn · Rp1.62jt/bln net</span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">🔄 <strong>Rebalance v11 Apr 2026</strong> — ADMF↑30% · BMRI↓30% · ASII↑20% · ITMG↓15% · POWR↓5%</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli +16 lot SETELAH ex-date → target 19 lot</span>
+      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli SETELAH ex-date → target 14 lot total</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt</strong> — BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt (v11)</strong> — ADMF 83L · BMRI 161L · ASII 79L · ITMG 14L · POWR 170L</span>
     </div>
   </div>
 
   <!-- Command Bar -->
   <div class="command-bar">
-    <div class="cb-title" id="topbar-title">⬡ Nexus — Command Intelligence</div>
+    <div class="cb-title" id="topbar-title">📊 Dashboard</div>
     <div style="flex:1"></div>
     <div class="cb-status">
       <span class="live-dot" id="live-dot-indicator" style="background:var(--muted)"></span>
@@ -717,12 +736,12 @@ canvas{max-width:100%}
   <div class="content-scroll" id="content-scroll">
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 1: NEXUS — Command Matrix + Portfolio Intelligence
+     TAB 1: DASHBOARD — Snapshot + Analytics Combined
 ═══════════════════════════════════════════════════════ -->
-<div class="panel active" id="panel-nexus">
+<div class="panel active" id="panel-dashboard">
 
-  <!-- KPI STRIP -->
-  <div class="kpi-strip mb12">
+  <!-- ── KPI STRIP ── -->
+  <div class="kpi-strip mb10">
     <div class="kpi-tile" style="--tile-accent:var(--green)">
       <div class="kpi-label">Ekuitas Total</div>
       <div class="kpi-val green" id="snap-mktval">—</div>
@@ -741,7 +760,7 @@ canvas{max-width:100%}
     <div class="kpi-tile" style="--tile-accent:var(--amber)">
       <div class="kpi-label">Buying Power</div>
       <div class="kpi-val kpi-val sm" id="snap-cash">Rp0</div>
-      <div class="kpi-sub">Cash Reserved (RDN)</div>
+      <div class="kpi-sub">Cash RDN</div>
     </div>
     <div class="kpi-tile" style="--tile-accent:var(--muted)">
       <div class="kpi-label">Status Data</div>
@@ -751,15 +770,55 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <!-- ════ STOCK COMMAND MATRIX ════ -->
-  <div class="bcard-title" style="font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between">
-    <span>⬡ Stock Command Matrix — Semua Sinyal Satu Pandang</span>
-    <span style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0">Signal · Price · Lots · Ideal Lot · Yield · Alokasi</span>
+  <!-- ── SECTION A: STOCK COMMAND MATRIX ── -->
+  <div style="font-size:7.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between">
+    <span>⬡ Stock Command Matrix</span>
+    <span style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0">Signal · Price · Lots · RSI · S/R · Yield · MOS · Alokasi</span>
   </div>
-  <div id="stock-matrix" class="stock-matrix mb12"></div>
+  <div id="stock-matrix" class="stock-matrix mb10"></div>
 
-  <!-- SECOND ROW: Allocation + Progress -->
-  <div class="bento bento-60-40 mb12">
+  <!-- ── SECTION B: PORTFOLIO METRICS + ALLOC + DIVIDEND ── -->
+  <div class="bento bento-3 mb10">
+
+    <!-- Portofolio Metrics 2x4 grid -->
+    <div class="bcard">
+      <div class="bcard-title">Portfolio Metrics — Ringkasan</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Total Invested</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--text)" id="pm-invested">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Market Value</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--green)" id="pm-mktval">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Unrealized P&L</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200" id="pm-pnl">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Return %</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200" id="pm-ret">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Total Lot</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--accent2)" id="pm-lots">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Avg YoC</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--accent2)" id="pm-yoc">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Progress Rp250jt</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--amber)" id="pm-progress">—</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Div Net/Bln</div>
+          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--green)" id="pm-monthly">—</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Allocation bars -->
     <div class="bcard">
       <div class="bcard-title">Target Alokasi vs Aktual
@@ -768,90 +827,40 @@ canvas{max-width:100%}
       <div id="alloc-bars-snap"></div>
     </div>
 
-    <!-- Dividend progress -->
-    <div class="bcard">
-      <div class="bcard-title">Progress ke Rp10jt/Bulan</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Gross/Thn</div>
-          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)" id="ds-gross">—</div>
+      <div class="bcard">
+      <div class="bcard-title">Progress Dividend Income</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+        <div style="text-align:center;padding:9px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px">Div Tahunan</div>
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:200;color:var(--accent2)" id="ds-gross">—</div>
         </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Net/Bulan</div>
-          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="ds-monthly">—</div>
+        <div style="text-align:center;padding:9px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px">Net/Bulan</div>
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:200;color:var(--green)" id="ds-monthly">—</div>
         </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">After Tax</div>
-          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--green)" id="ds-net">—</div>
+        <div style="text-align:center;padding:9px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px">After Tax (85%)</div>
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:200;color:var(--green)" id="ds-net">—</div>
         </div>
-        <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)">
-          <div style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px">Progress</div>
-          <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--amber)" id="ds-progress">—</div>
+        <div style="text-align:center;padding:9px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px">vs Rp10jt/bln</div>
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:200;color:var(--amber)" id="ds-progress">—</div>
         </div>
       </div>
       <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Target Rp10jt/bln</span>
-          <span id="ds-prog-pct">—</span>
-        </div>
-        <div class="prog-track" style="height:6px">
+        <div class="prog-label"><span>Target Rp10jt/bln</span><span id="ds-prog-pct">—</span></div>
+        <div class="prog-track" style="height:5px">
           <div class="prog-fill" id="ds-prog-bar" style="background:var(--green);width:0%"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- HIDDEN COMPAT ELEMENTS (used by existing JS, not visible) -->
-  <div style="display:none">
-    <canvas id="pie-snap" width="1" height="1"></canvas>
-    <div id="pie-legend"></div>
-    <div id="live-price-snap"></div>
-  </div>
-
-  <!-- ── Portfolio Intelligence (merged Analytics) ── -->
-
-  <div class="bcard mb12">
-    <div class="bcard-title">Portofolio Metrics — Ringkasan Posisi</div>
-    <div class="bento bento-4" style="gap:7px">
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Total Invested</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)" id="pm-invested">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Market Value</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--green)" id="pm-mktval">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Unrealized P&L</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200" id="pm-pnl">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Return %</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200" id="pm-ret">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Annual Dividend</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--accent2)" id="pm-div">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Yield on Cost</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--accent2)" id="pm-yoc">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Yield on Price</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--text)" id="pm-yop">—</div>
-      </div>
-      <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:2px">Div/Bulan (Net)</div>
-        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:200;color:var(--green)" id="pm-monthly">—</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bento bento-60-40 mb12">
+  <!-- ── SECTION C: ANALYTICS ROW ── -->
+  <div class="bento bento-60-40 mb10">
     <div class="bcard">
       <div class="bcard-title">Dividend Income Tracker — Real Porto
-        <span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;Berdasarkan posisi & dividen aktual</span>
+        <span style="color:var(--dim);font-size:7px">&nbsp;·&nbsp;posisi & dividen aktual</span>
       </div>
       <div id="div-income-tracker"></div>
     </div>
@@ -861,22 +870,27 @@ canvas{max-width:100%}
     </div>
   </div>
 
-  <div class="bcard mb12">
+  <div class="bcard mb10">
     <div class="bcard-title">Komposisi Portofolio — Proporsi Visual</div>
-    <div id="analytics-treemap" style="margin-top:6px"></div>
+    <div id="analytics-treemap" style="margin-top:5px"></div>
   </div>
 
-</div><!-- /panel-nexus -->
+  <!-- hidden compat -->
+  <div style="display:none">
+    <canvas id="pie-snap" width="1" height="1"></canvas>
+    <div id="pie-legend"></div>
+    <div id="live-price-snap"></div>
+  </div>
+
+</div>
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 3: DEEP DIVE
+     TAB 3: ARSENAL — Analisa + Buy Decision + Eksekusi
 ═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-deepdive">
+<div class="panel" id="panel-arsenal">
 
-  <div class="sec-title">Kondisi Market Terkini
-    <span style="font-size:7px;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:8px">Auto Fetch untuk update</span>
-  </div>
-  <div class="bento bento-3 mb12">
+  <!-- ══ MARKET CONTEXT ══ -->
+  <div class="bento bento-3 mb10">
     <div class="mkt-tile bcard">
       <div class="mkt-tile-l">IHSG</div>
       <div class="mkt-tile-v" id="ihsg-val">6,547</div>
@@ -888,41 +902,29 @@ canvas{max-width:100%}
       <div class="mkt-tile-c amber" id="usd-idr-chg">Rupiah under pressure</div>
     </div>
     <div class="mkt-tile bcard">
-      <div class="mkt-tile-l">Coal Price (ICI4)</div>
+      <div class="mkt-tile-l">Coal (ICI4)</div>
       <div class="mkt-tile-v" id="coal-price">$78</div>
       <div class="mkt-tile-c amber" id="coal-chg">Softening vs 2025</div>
     </div>
   </div>
-
-  <div class="sec-title">Suggestion Board — Action Signals</div>
-  <div class="bento bento-5 mb12" id="suggestion-grid"></div>
-
-  <div class="sec-title">Analisa Fundamental — BlackRock / JPMorgan / Vanguard Framework</div>
-  <div id="stock-analysis-grid" class="mb12"></div>
-
-  <div class="sec-title">Analisa Teknikal — SR · FVG · OB · RSI (1D)
-    <span id="ich-fetch-status" style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0;margin-left:8px">Auto Fetch untuk update</span>
-  </div>
-  <div class="bento bento-5 mb12" id="tech-grid"></div>
-
-  <!-- Hidden compat elements for old JS references -->
-  <div style="display:none">
-    <div id="ich-grid"></div>
-    <div id="fv-body"></div>
-    <div id="keystats-grid"></div>
-    <table id="fv-table"></table>
+  <div class="bcard mb10" style="padding:10px 14px">
+    <div style="font-size:9px;color:var(--muted);line-height:1.7" id="market-narrative">
+      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp16.77jt — butuh fresh capital ~Rp234.8jt menuju target Rp250jt. ITMG ex-div 21 Apr — prioritas beli +16 lot setelah ex-date. ADMF cum-date 14 Apr → cross-feed ke BMRI sesuai Rule #9.
+    </div>
   </div>
 
-</div>
+  <!-- ══ SECTION A: BUY DECISION ENGINE ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">A — Buy Decision Engine</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     TAB 4: LOT RECOMMENDER
-═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-lot">
-
-  <div class="bcard mb12">
-    <div class="bcard-title">Hitung Lot Bulan Ini</div>
-    <div class="fields-row fr-3 mb12">
+  <!-- Lot calculator inputs (compact) -->
+  <div class="bcard mb10">
+    <div class="bcard-title">💰 Hitung Lot Bulan Ini
+      <span style="font-size:7px;color:var(--dim);text-transform:none;letter-spacing:0">— dividen + top-up → rekomendasi lot optimal</span>
+    </div>
+    <div class="bento bento-3" style="gap:8px;margin-bottom:10px">
       <div class="field">
         <label>Bulan</label>
         <select id="sel-month">
@@ -933,10 +935,6 @@ canvas{max-width:100%}
           <option value="9">September</option><option value="10">Oktober</option>
           <option value="11">November</option><option value="12">Desember</option>
         </select>
-      </div>
-      <div class="field">
-        <label>Tahun</label>
-        <input type="number" id="inp-year" value="2026" min="2026" max="2040">
       </div>
       <div class="field">
         <label>Sumber Dividen</label>
@@ -950,16 +948,6 @@ canvas{max-width:100%}
           <option value="MULTI">Multiple (manual)</option>
         </select>
       </div>
-    </div>
-    <div class="fields-row fr-3 mb12">
-      <div class="field">
-        <label>Dividen Masuk (Rp)</label>
-        <input type="number" id="inp-div" value="264600" placeholder="0">
-      </div>
-      <div class="field">
-        <label>Top-up Bulan Ini (Rp)</label>
-        <input type="number" id="inp-topup" value="750000" min="0">
-      </div>
       <div class="field">
         <label>Override Prioritas</label>
         <select id="sel-prio">
@@ -972,102 +960,256 @@ canvas{max-width:100%}
         </select>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-accent" onclick="calcLots()">Hitung Lot →</button>
-      <button class="btn btn-outline" onclick="resetLotForm()">Reset</button>
+    <div class="bento bento-3" style="gap:8px;margin-bottom:10px">
+      <div class="field">
+        <label>Dividen Masuk (Rp)</label>
+        <input type="number" id="inp-div" value="264600" placeholder="0" oninput="renderLotGrid()">
+      </div>
+      <div class="field">
+        <label>Top-up (Rp)</label>
+        <input type="number" id="inp-topup" value="750000" min="0" oninput="renderLotGrid()">
+      </div>
+      <div class="field" style="display:flex;flex-direction:column;justify-content:flex-end">
+        <label>&nbsp;</label>
+        <button class="btn btn-accent" onclick="calcLots()">Hitung →</button>
+      </div>
+    </div>
+    <!-- Lot grid embedded -->
+    <div class="bento bento-5" id="lot-grid" style="gap:6px"></div>
+    <div id="lot-summary" style="display:none;margin-top:8px" class="bcard"></div>
+    <div id="lot-top-pick" style="margin-top:6px"></div>
+    <div id="lot-manual-buy" style="display:none;margin-top:6px"></div>
+  </div>
+
+  <!-- ══ SECTION B: SIGNAL BOARD ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">B — Signal Board</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+  <div class="bento bento-5 mb10" id="suggestion-grid"></div>
+
+  <!-- ══ SECTION C: TECHNICAL ARSENAL — Ichimoku + S/R + RSI + FVG + OB ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">C — Technical Analysis
+      <span id="ich-fetch-status" style="color:var(--muted);font-size:7px;text-transform:none;letter-spacing:0;margin-left:8px;font-weight:400">klik Auto Fetch untuk update</span>
+    </div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+  <div class="bento bento-5 mb10" id="ich-grid"></div>
+
+  <!-- ══ SECTION D: FUNDAMENTAL DEEP DIVE ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">D — Fundamental Analysis</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+  <div id="stock-analysis-grid" class="mb10"></div>
+
+  <!-- ══ SECTION E: FAIR VALUE + KEY STATS ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">E — Fair Value & Key Stats</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+  <div class="bento bento-60-40 mb10">
+    <div class="bcard" style="min-width:0;overflow:hidden">
+      <div class="bcard-title">Fair Value Kumulatif — P/E · DDM · P/BV · MOS</div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <table class="tbl" id="fv-table" style="min-width:560px">
+        <thead>
+          <tr>
+            <th>Saham</th><th class="num">Harga</th>
+            <th class="num">FV P/E</th><th class="num">FV DDM</th><th class="num">FV P/BV</th>
+            <th class="num">Consensus</th><th class="num">MOS%</th><th class="ctr">Verdict</th>
+          </tr>
+        </thead>
+        <tbody id="fv-body"></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-title">📅 Dividend Calendar</div>
+      <div id="div-calendar" style="font-size:9px"></div>
     </div>
   </div>
 
-  <div class="sec-title">Rekomendasi Lot — Semua Saham (sync Rebalancing)</div>
-  <div class="bento bento-5 mb12" id="lot-grid"></div>
-  <div id="lot-summary" style="display:none" class="bcard mb12"></div>
-  <div id="lot-top-pick" class="mb12"></div>
-  <div id="lot-manual-buy" class="mb12" style="display:none"></div>
+  <div class="bento bento-5 mb10" id="keystats-grid"></div>
 
-  <div class="sec-title">📅 Kalender Dividen — Jadwal Pembagian Bulanan</div>
-  <div class="bcard mb12" id="div-calendar"></div>
+  <!-- ══ SECTION F: RISK REGISTER ══ -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">F — Risk Register</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+  <div id="risk-grid" class="mb10"></div>
 
-  <div style="display:none" id="monthly-growth-plan"></div>
+  <!-- Hidden compat for lot -->
+  <div style="display:none">
+    <input id="inp-year" value="2026">
+    <div id="monthly-growth-plan"></div>
+  </div>
+
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 5: ARSENAL — Rebalancing + Porto Control
+     TAB CONTROL ROOM — Rebalancing + Edit Porto
 ═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-arsenal">
+<div class="panel" id="panel-control">
 
-  <!-- ── REBALANCING SECTION ── -->
-  <div class="bcard overflow-x mb12">
+  <!-- ── SECTION A: REBALANCING ── -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">A — Rebalancing</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+
+  <div class="info-box mb10">
+    <strong>🎯 Milestone Porto Rp250jt</strong> — Target lot penuh: <strong>BMRI 187L · POWR 850L · ITMG 19L · ASII 48L · ADMF 22L</strong>. Fresh capital ~Rp234.8jt. Yield ~9.08% gross = <strong>Rp22.84jt/thn</strong>. Rebalancing = arahkan semua dividen + top-up ke BMRI dulu, lalu POWR.
+  </div>
+
+  <div class="bcard overflow-x mb10">
     <div class="bcard-title">Target Aegis vs Posisi Aktual</div>
     <table class="tbl" id="reb-table">
       <thead>
-        <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg</th><th class="num">Lot Ideal</th><th class="num">Kurang</th><th class="num">Kekurangan Modal</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
+        <tr><th>Saham</th><th>Target %</th><th>Aktual %</th><th>Gap</th><th class="num">Lot Skrg / Lot Ideal</th><th class="num">Kurang</th><th class="num">Modal Kurang</th><th class="num">Nilai Mkt</th><th class="ctr">Aksi</th></tr>
       </thead>
       <tbody id="reb-body"></tbody>
     </table>
   </div>
 
-  <!-- Hidden reb-bars for compat -->
+  <div class="bcard mb10">
+    <div class="bcard-title">Edit Target Alokasi %
+      <span style="font-size:7px;color:var(--dim);text-transform:none;letter-spacing:0">— total harus = 100%</span>
+    </div>
+    <div class="fields-row fr-5 mb8" id="target-inputs"></div>
+    <div id="target-msg" style="margin-top:5px;font-size:9.5px"></div>
+    <div class="btn-row">
+      <button class="btn btn-accent" onclick="saveTargets()">Simpan Target</button>
+      <button class="btn btn-outline" onclick="resetTargets()">Reset Default</button>
+    </div>
+  </div>
+
+  <!-- Proyeksi Lot berdasarkan Nominal Porto -->
+  <div class="bcard mb10">
+    <div class="bcard-title">🎯 Proyeksi Lot — Berdasarkan Target Nominal Porto
+      <span style="font-size:7px;color:var(--dim);text-transform:none;letter-spacing:0">— harga realtime · lot otomatis terhitung</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <div class="field" style="min-width:180px">
+        <label>Target Nominal Porto (Rp)</label>
+        <input type="number" id="proj-nominal" value="250000000" min="1000000" step="1000000" oninput="renderLotProjection()">
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:14px">Alokasi % mengikuti target yang sudah disimpan di atas. Lot dihitung dari harga realtime saat ini.</div>
+    </div>
+    <div id="lot-projection-table"></div>
+  </div>
+
+  <!-- ── SECTION B: EDIT PORTO ── -->
+  <div class="arsenal-section-header" style="display:flex;align-items:center;gap:10px;margin:16px 0 8px">
+    <div style="font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent2);font-weight:500">B — Edit Porto</div>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
+  </div>
+
+  <div class="bcard mb10" id="porto-composition"></div>
+
+  <div class="bento bento-5 mb10" id="porto-edit-grid"></div>
+
+  <div class="bento bento-60-40 mb10">
+    <div class="bcard">
+      <div class="bcard-title">Cash Reserved / Buying Power (RDN)</div>
+      <div class="fields-row fr-3">
+        <div class="field">
+          <label>Cash di RDN (Rp)</label>
+          <input type="number" id="inp-cash" value="0" min="0" placeholder="0">
+        </div>
+      </div>
+      <div style="font-size:8.5px;color:var(--muted);margin-top:5px">Tampil di Dashboard sebagai Buying Power.</div>
+      <div class="btn-row">
+        <button class="btn btn-accent" onclick="savePorto()">Simpan Semua</button>
+        <button class="btn btn-outline" onclick="resetPorto()">Reset Default</button>
+        <button class="btn btn-green" onclick="createSavepoint()">💾 Savepoint</button>
+        <button class="btn btn-outline" onclick="exportPorto()" style="color:var(--blue);border-color:var(--blue-border)">⬇ Export</button>
+        <label class="btn btn-outline" style="color:var(--amber);border-color:var(--amber-border);cursor:pointer">
+          ⬆ Import
+          <input type="file" accept=".json" style="display:none" onchange="importPorto(this.files[0]);this.value=''">
+        </label>
+      </div>
+      <div id="save-msg" style="display:none;margin-top:8px" class="success-box">✓ Data disimpan.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-title">Savepoints — 5 Slot</div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:8px;line-height:1.6">Simpan snapshot untuk compare. 5 slot maks.</div>
+      <div id="savepoint-list" class="mb8"></div>
+      <div id="savepoint-compare" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- hidden compat -->
   <div style="display:none">
-    <div id="reb-bars"></div>
-    <div id="reb-reco"></div>
+    <div id="reb-bars"></div><div id="reb-reco"></div>
     <div id="proj-result"></div>
     <input id="proj-target" value="250000000">
     <input id="proj-topup" value="750000">
     <input id="proj-divgrowth" value="5">
   </div>
 
-  <div class="bcard mb12">
-    <div class="bcard-title">Edit Target Alokasi</div>
-    <div class="fields-row fr-5 mb8" id="target-inputs"></div>
-    <div id="target-msg" style="margin-top:6px;font-size:9.5px"></div>
-    <div class="btn-row">
-      <button class="btn btn-accent" onclick="saveTargets()">Simpan Target</button>
-      <button class="btn btn-outline" onclick="resetTargets()">Reset Default</button>
-    </div>
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-     TAB 6: EDIT PORTO
+     TAB 7: SCAN STOCKBIT (OCR)
 ═══════════════════════════════════════════════════════ -->
-<div class="panel" id="panel-porto">
+<div class="panel" id="panel-ocr">
+  <div class="info-box">
+    📷 Upload screenshot dari Stockbit — bisa <strong>layar portfolio utama</strong> atau <strong>detail per saham</strong>. Claude akan baca angkanya dan update porto otomatis. Bisa upload beberapa sekaligus.
+  </div>
 
-  <div class="sec-title">Komposisi Porto Saat Ini</div>
-  <div class="bcard mb12" id="porto-composition"></div>
-
-  <div class="sec-title">Data Saham — Update Manual</div>
-  <div class="bento bento-5 mb12" id="porto-edit-grid"></div>
-
-  <div class="bcard mb12">
-    <div class="bcard-title">Cash Reserved / Buying Power (RDN)</div>
-    <div class="fields-row fr-3">
-      <div class="field">
-        <label>Cash di RDN (Rp)</label>
-        <input type="number" id="inp-cash" value="0" min="0" placeholder="0">
+  <div class="bento bento-60-40 mb12">
+    <div class="bcard">
+      <div class="bcard-title">Konfigurasi API</div>
+      <div class="field mb12">
+        <label>Anthropic API Key</label>
+        <input type="password" id="ocr-api-key" placeholder="sk-ant-..." oninput="localStorage.setItem('ac_apikey',this.value)">
+      </div>
+      <div style="font-size:8.5px;color:var(--dim);line-height:1.6">
+        Key disimpan di localStorage browser — tidak dikirim ke server manapun selain Anthropic API langsung.<br>
+        Dapatkan key di <span style="color:var(--accent2)">console.anthropic.com</span>
       </div>
     </div>
-    <div style="font-size:8.5px;color:var(--muted);margin-top:5px">Tampil di Financial Snapshot sebagai Buying Power.</div>
+    <div class="bcard">
+      <div class="bcard-title">Tips Screenshot</div>
+      <div style="font-size:8.5px;color:var(--green);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✓ Bagus</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7;margin-bottom:7px">· Layar portfolio utama Stockbit<br>· Detail per saham<br>· Cahaya cukup, tidak blur<br>· Semua angka terbaca</div>
+      <div style="font-size:8.5px;color:var(--red);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em">✕ Hindari</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">· Screenshot terpotong<br>· Refleksi layar / glare<br>· Zoom terlalu jauh<br>· Saat animasi loading</div>
+    </div>
+  </div>
+
+  <div class="bcard ocr-drop mb12" id="ocr-upload-area"
+    onclick="document.getElementById('ocr-file-input').click()"
+    ondragover="event.preventDefault();this.classList.add('drag')"
+    ondragleave="this.classList.remove('drag')"
+    ondrop="event.preventDefault();this.classList.remove('drag');handleOCRFiles(event.dataTransfer.files)">
+    <div style="font-size:28px;margin-bottom:7px">📷</div>
+    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px">Drop screenshot Stockbit di sini</div>
+    <div style="font-size:9.5px;color:var(--muted)">atau klik untuk pilih file · JPG / PNG · bisa multi-upload</div>
+    <input type="file" id="ocr-file-input" accept="image/*" multiple style="display:none" onchange="handleOCRFiles(this.files)">
+  </div>
+
+  <div id="ocr-preview-row" style="display:none;margin-bottom:10px">
+    <div class="sec-title">Preview Screenshot</div>
+    <div id="ocr-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
   </div>
 
   <div class="btn-row mb12">
-    <button class="btn btn-accent" onclick="savePorto()">Simpan Semua</button>
-    <button class="btn btn-outline" onclick="resetPorto()">Reset ke Default</button>
-    <button class="btn btn-green" onclick="createSavepoint()">💾 Buat Savepoint</button>
-    <button class="btn btn-outline" onclick="exportPorto()" style="color:var(--blue);border-color:var(--blue-border)">⬇ Export JSON</button>
-    <label class="btn btn-outline" style="color:var(--amber);border-color:var(--amber-border);cursor:pointer">
-      ⬆ Import JSON
-      <input type="file" accept=".json" style="display:none" onchange="importPorto(this.files[0]);this.value=''">
-    </label>
+    <button class="btn btn-accent" id="btn-ocr-scan" onclick="runOCR()" disabled>🔍 Scan & Extract Data</button>
+    <button class="btn btn-outline" onclick="clearOCR()">Bersihkan</button>
   </div>
-  <div id="save-msg" style="display:none" class="success-box">✓ Data disimpan. Semua tab terupdate.</div>
 
-  <div class="sec-title">Savepoints — 5 Slot Compare</div>
-  <div class="bcard mb12">
-    <div style="font-size:9.5px;color:var(--muted);margin-bottom:9px;line-height:1.6">
-      Simpan snapshot porto untuk dibandingkan. 5 slot maksimum.
+  <div id="ocr-status" style="display:none" class="info-box mb12"></div>
+
+  <div id="ocr-result" style="display:none">
+    <div class="sec-title">Hasil Ekstraksi Claude</div>
+    <div class="bcard mb12" id="ocr-parsed-preview"></div>
+    <div class="btn-row">
+      <button class="btn btn-accent" onclick="applyOCRToPorto()">✓ Terapkan ke Porto</button>
+      <button class="btn btn-outline" onclick="document.getElementById('ocr-result').style.display='none'">Batal</button>
     </div>
-    <div id="savepoint-list" class="mb12"></div>
-    <div id="savepoint-compare" style="display:none"></div>
   </div>
 </div>
 
@@ -1084,7 +1226,7 @@ canvas{max-width:100%}
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #2 — Arahkan ke Paling Diskon</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (anchor 33%) → ASII → POWR/ITMG</strong>.</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">ADMF/BMRI (anchor 30%) → ASII → ITMG → POWR (spekulatif)</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
@@ -1092,7 +1234,7 @@ canvas{max-width:100%}
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #4 — ITMG Dikunci</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">tidak boleh ditambah</strong> sampai bobotnya turun ke 20%. ADMF juga <strong style="color:var(--amber)">STOP tambah</strong>.</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">dikunci di 15%</strong> — jangan tambah kecuali coal recovery terkonfirmasi. POWR <strong style="color:var(--amber)">maksimal 5%</strong> sampai earnings recover 2 kuartal berturut.</div>
     </div>
   </div>
 
@@ -1147,9 +1289,6 @@ canvas{max-width:100%}
 <script>
 'use strict';
 
-// ════════════════════════════════════
-// CONSTANTS & DEFAULT STATE
-// ════════════════════════════════════
 const TICKERS = ['ADMF','ASII','BMRI','ITMG','POWR'];
 const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#3dc88a', POWR:'#9b79e0' };
 
@@ -1161,96 +1300,101 @@ const DEFAULT_PORTO = {
   POWR:{ price:735,   invested:1452175, pnl:17825,  lots:20, divPerShare:76.25, avgPrice:726 }
 };
 
-// ── MILESTONE TARGET Rp250jt ──
-// Harga patokan: BMRI 4670 | POWR 735 | ITMG 27000 | ASII 6300 | ADMF 9000
+// ── MILESTONE TARGET Rp250jt (v11 — Rebalance Apr 2026) ──
+// Harga patokan: ADMF 9000 | BMRI 4670 | ASII 6300 | ITMG 27000 | POWR 735
 // POSISI AKTUAL (Apr 2026): BMRI 5L | POWR 20L | ITMG 3L | ASII 2L | ADMF 4L = Rp16.77jt
-// TARGET LOT PORTO PENUH (Rp250jt):
-//   BMRI 187 lot (35%) = Rp87.33jt → gap +182 lot = Rp85.0jt
-//   POWR 850 lot (25%) = Rp62.48jt → gap +830 lot = Rp61.0jt
-//   ITMG 19 lot (20%)  = Rp51.30jt → gap +16 lot  = Rp43.2jt
-//   ASII 48 lot (12%)  = Rp30.24jt → gap +46 lot  = Rp29.0jt
-//   ADMF 22 lot (8%)   = Rp19.80jt → gap +18 lot  = Rp16.2jt
-// Total target porto: Rp251,611,000 | Fresh capital needed: ~Rp234.8jt
-// Div gross/thn (porto penuh): Rp22,842,350 | Yield: 9.08% | Div net/bln: ~Rp1,618,000
-// Urutan inject: ITMG post-exdate 21 Apr → BMRI → POWR → ASII → ADMF
+// TARGET LOT PORTO PENUH (Rp250jt) — ALOKASI v11:
+//   ADMF 83 lot (30%)  = Rp74.70jt → gap +79 lot  = Rp71.1jt
+//   BMRI 161 lot (30%) = Rp75.19jt → gap +156 lot = Rp72.9jt
+//   ASII 79 lot (20%)  = Rp49.77jt → gap +77 lot  = Rp48.5jt
+//   ITMG 14 lot (15%)  = Rp37.80jt → gap +11 lot  = Rp29.7jt
+//   POWR 170 lot (5%)  = Rp12.50jt → gap +150 lot = Rp11.0jt
+// Total target porto: ~Rp249,960,000 | Fresh capital needed: ~Rp233.2jt
+// Blended yield (porto penuh): ~9.1% gross | Div gross/thn: ~Rp22,796,000 | Div net/bln: ~Rp1,615,000
+// Urutan inject: ADMF (anchor) → BMRI (anchor) → ASII (defensif) → ITMG (post-exdate) → POWR (last)
 
-const DEFAULT_TARGETS = { ADMF:8, ASII:12, BMRI:35, ITMG:20, POWR:25 }; // → 250jt: BMRI 187L | POWR 850L | ITMG 19L | ASII 48L | ADMF 22L
+const DEFAULT_TARGETS = { ADMF:30, ASII:20, BMRI:30, ITMG:15, POWR:5 }; // → 250jt: ADMF 83L | BMRI 161L | ASII 79L | ITMG 14L | POWR 170L
+// Shared helper — ideal lots for a given nominal portfolio size
+const getIdealLots = (t, nominal) => {
+  const p = porto[t].price;
+  return p > 0 ? Math.round(nominal * (targets[t] / 100) / (p * 100)) : 0;
+};
 
 const ANALYSIS_DATA = {
   ADMF:{
-    sector:'Multifinance', moat:'Jaringan pembiayaan otomotif nasional', holding:'Bank Danamon → MUFG Jepang (92%)',
+    sector:'Multifinance', moat:'Jaringan pembiayaan otomotif nasional', holding:'Bank Danamon → MUFG Jepang (92%) · Free float ~8% · Retail ~2% · Inst. domestik ~6%',
     pe_hist:8.2, pe_curr:7.5, pbv:1.8, roe:18.5, roa:3.2, div_payout:50,
     eps:1260, bvps:4722, div_5yr_cagr:-7.8,
     fv_pe:Math.round(1260*8.2), fv_ddm:Math.round((630*1.05)/(0.12-0.05)), fv_pbv:Math.round(4722*1.9),
     bear:6500, base:9200, bull:11000,
     quality_rating:3,
-    summary:'ADMF bukan bagian dari grup Astra — ia adalah anak Bank Danamon yang dikuasai MUFG Jepang (92%). Bobot diturunkan ke 9% karena dividend growth negatif (-7.8% CAGR 5Y) dan integrasi merger MFIN masih dalam proses (efektif Oct 2025). Governance naik di bawah MUFG standard. Dividen Rp630/saham confirmed, cair 30 Apr 2026. Hold saja, cross-feed dividen ke BMRI sesuai Rule #9.',
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ADMF dinaikkan ke ANCHOR 30% (v11) — payout ratio 57% adalah yang paling bersih di porto ini. Anak Bank Danamon dikuasai MUFG Jepang (92%), governance solid. Free float ~8% tipis, tapi yield structurally earned. Dividen Rp630/saham confirmed, cair 30 Apr 2026. <strong style="color:var(--amber)">[Vanguard]</strong> ⚠ Tetap awasi: dividend growth CAGR 5Y negatif (-7.8%) dan integrasi merger MFIN (efektif Oct 2025) belum settle. Kenaikan sizing ke 30% dibenarkan oleh FCF coverage, bukan yield growth. <strong style="color:var(--green)">[JP Morgan]</strong> Anchor bersama BMRI. Dividen ADMF + BMRI adalah core income stream porto. Likuiditas free float tipis — sizing 30% sudah mendekati batas aman. Jangan tambah melewati 30%.',
     risks:[{label:'Integrasi merger MFIN belum settle',level:'mid'},{label:'Dividend growth negatif 5 tahun',level:'hi'},{label:'NPL otomotif creeping',level:'mid'},{label:'Suku bunga BI tinggi',level:'mid'}],
     risk_pct:{ 'Integrasi merger MFIN belum settle':45,'Dividend growth negatif 5 tahun':70,'NPL otomotif creeping':40,'Suku bunga BI tinggi':55 }
   },
   ASII:{
-    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan + diversifikasi bisnis', holding:'Jardine Matheson (Hongkong)',
+    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan + diversifikasi bisnis', holding:'Jardine Matheson HK (50.1%) · Free float ~49.7% · Inst. asing ~14.6% · Retail ~15%',
     pe_hist:14.5, pe_curr:7.8, pbv:1.4, roe:12.8, roa:5.1, div_payout:45,
     eps:782, bvps:4357, div_5yr_cagr:30.0,
     fv_pe:Math.round(782*14.5), fv_ddm:Math.round((406*1.05)/(0.12-0.05)), fv_pbv:Math.round(4357*1.6),
     bear:4200, base:7250, bull:9000,
     quality_rating:4,
-    summary:'ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Bukan bagian dari grup ADMF (ADMF = MUFG/Danamon). ASII sendiri punya ASF & FIF sebagai captive multifinance. Buyback aktif Rp2 triliun (Mar–Jun 2026) memberi floor harga. Market share otomotif turun ke 49% Q1 2026 karena tekanan BYD EV — pantau. RUPST 23 Apr 2026 ada kabar pergantian pimpinan.',
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Buyback aktif Rp2 triliun (Mar–Jun 2026) memberi floor harga. Free float ~49.7%, dengan Jardine Matheson HK 50.1% controlling. Retail ~15%, institusi domestik ~20%, asing non-Jardine ~14.6%. <strong style="color:var(--amber)">[Vanguard]</strong> Market share otomotif turun ke 49% Q1 2026 karena tekanan BYD EV — risiko struktural, bukan siklus. Dividend CAGR 30% dalam 5 tahun tapi dari basis rendah pasca-COVID. Payout 45% — sustainable. <strong style="color:var(--green)">[JP Morgan]</strong> RUPST 23 Apr 2026 ada kabar pergantian pimpinan — pantau arah strategi EV response. Entry menarik di harga ini, MOS signifikan vs historical average.',
     risks:[{label:'Market share tergerus BYD EV',level:'hi'},{label:'Perlambatan penjualan kendaraan',level:'mid'},{label:'Pergantian manajemen Apr 2026',level:'mid'},{label:'Forex risk (Jardine repatriasi)',level:'mid'}],
     risk_pct:{ 'Market share tergerus BYD EV':55,'Perlambatan penjualan kendaraan':45,'Pergantian manajemen Apr 2026':35,'Forex risk (Jardine repatriasi)':40 }
   },
   BMRI:{
-    sector:'Perbankan SOE', moat:'Jaringan BUMN + captive gov deposits', holding:'Pemerintah RI (52%)',
+    sector:'Perbankan SOE', moat:'Jaringan BUMN + captive gov deposits', holding:'Pemerintah RI (52%) · Free float ~48% · Inst. asing ~18% · Inst. domestik ~20% · Retail ~10%',
     pe_hist:11.2, pe_curr:8.6, pbv:1.7, roe:18.4, roa:2.9, div_payout:65,
     eps:603, bvps:2912, div_5yr_cagr:25.8,
     fv_pe:Math.round(603*11.2), fv_ddm:Math.round((466*1.05)/(0.11-0.05)), fv_pbv:Math.round(2912*2.0),
     bear:3800, base:6200, bull:7800,
     quality_rating:4,
-    summary:'BMRI adalah anchor utama Aegis (40%) — dikecualikan dari BUMN-rule karena BI/OJK prudential framework yang ketat. ROE 18%+ konsisten, dividend CAGR 25.8% dalam 3 tahun — tertinggi di porto. Sebagai penyokong terbesar, BMRI memberi exposure ke kredit ekonomi riil Indonesia yang genuinely berbeda dari siklus otomotif ASII/ADMF. Ini satu-satunya nama di porto yang dividennya structurally growing bukan commodity-driven. Risiko: government-directed lending KUR dan tekanan politik dividen tetap dipantau tiap kuartal.',
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> BMRI adalah co-anchor Aegis (30%, v11) — berbagi posisi anchor dengan ADMF — dikecualikan dari BUMN-rule karena BI/OJK prudential framework yang ketat. ROE 18%+ konsisten, dividend CAGR 25.8% dalam 3 tahun — tertinggi di porto. Pemerintah RI 52%, publik ~48% (institusi asing ~18%, domestik ~20%, retail ~10%). Free float efektif ~48%. <strong style="color:var(--amber)">[Vanguard]</strong> Sebagai anchor terbesar, BMRI memberi exposure ke kredit ekonomi riil Indonesia. Ini satu-satunya nama di porto yang dividennya structurally growing — bukan commodity-driven. Payout 65% dari earnings yang tumbuh = highly sustainable. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko: government-directed lending KUR dan tekanan politik dividen tetap dipantau tiap kuartal. NIM sensitivity terhadap siklus BI Rate jadi perhatian jangka pendek. Tetap hold dan akumulasi.',
     risks:[{label:'Government-directed lending KUR',level:'hi'},{label:'NPL corporate naik',level:'mid'},{label:'Suku bunga BI menekan NIM',level:'mid'},{label:'Tekanan politik dividen',level:'hi'}],
     risk_pct:{ 'Government-directed lending KUR':65,'NPL corporate naik':45,'Suku bunga BI menekan NIM':55,'Tekanan politik dividen':60 }
   },
   ITMG:{
-    sector:'Batubara Thermal', moat:'Kualitas coal + long-term supply contracts Asia', holding:'Banpu Minerals SG (65%)',
+    sector:'Batubara Thermal', moat:'Kualitas coal + long-term supply contracts Asia', holding:'Banpu Minerals SG (65%) · Free float ~35% · Inst. asing ~18% · Retail domestik ~17%',
     pe_hist:7.2, pe_curr:9.3, pbv:2.1, roe:31.5, roa:20.8, div_payout:106,
     eps:2832, bvps:12857, div_5yr_cagr:26.0,
     fv_pe:Math.round(2832*7.2), fv_ddm:Math.round((2245*1.05)/(0.14-0.05)), fv_pbv:Math.round(12857*2.3),
     bear:18000, base:26900, bull:35000,
     quality_rating:3,
-    summary:'ITMG adalah cash engine Aegis untuk dividen jangka pendek — dividen Rp2,245/saham ex-date 21 Apr 2026 sudah terkunci. ⚠ PERINGATAN: Payout ratio FY2025 mencapai 106% karena laba bersih turun 49% YoY jadi USD190.9jt. Dividen ini sebagian dari kas historis. Fixed di 20% — jangan tambah sebelum earnings FY2026 recover. Setelah ex-date, arahkan fresh capital ke BMRI/POWR.',
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ITMG adalah cash engine Aegis untuk dividen jangka pendek — dividen Rp2,245/saham ex-date 21 Apr 2026 sudah terkunci. Banpu Minerals SG 65% controlling, free float ~35% (institusi asing ~18%, retail domestik ~17%). Likuiditas cukup baik untuk ukuran saham batubara. <strong style="color:var(--amber)">[Vanguard]</strong> ⚠ PERINGATAN: Payout ratio FY2025 mencapai 106% karena laba bersih turun 49% YoY jadi USD190.9jt. Dividen ini sebagian dari kas historis — tidak sustainable jika earnings FY2026 tidak recover. Fixed di 20% — jangan tambah. <strong style="color:var(--green)">[JP Morgan]</strong> Setelah ex-date 21 Apr, arahkan fresh capital ke BMRI/POWR. Monitor ICI4 coal price dan earnings Q1 2026 sebagai leading indicator apakah dividen FY2026 bisa dipertahankan.',
     risks:[{label:'Payout ratio >100% dari earnings',level:'hi'},{label:'Penurunan harga coal ICI4',level:'hi'},{label:'Regulasi karbon global',level:'hi'},{label:'Transisi energi jangka panjang',level:'mid'}],
     risk_pct:{ 'Payout ratio >100% dari earnings':80,'Penurunan harga coal ICI4':55,'Regulasi karbon global':70,'Transisi energi jangka panjang':75 }
   },
   POWR:{
-    sector:'Utilitas / Listrik', moat:'Captive supply kawasan industri + kontrak jangka panjang', holding:'Nebras Power QSC (49%)',
-    pe_hist:9.8, pe_curr:8.3, pbv:1.3, roe:14.2, roa:6.8, div_payout:65,
+    sector:'Utilitas / Listrik', moat:'Captive supply kawasan industri + kontrak jangka panjang', holding:'Nebras Power Qatar (49%) · Jababeka Group (26%) · Free float ~25% · Retail ~13%',
+    pe_hist:9.8, pe_curr:8.3, pbv:1.3, roe:14.2, roa:6.8, div_payout:114,
     eps:88, bvps:546, div_5yr_cagr:3.5,
     fv_pe:Math.round(88*9.8), fv_ddm:Math.round((76.25*1.05)/(0.11-0.05)), fv_pbv:Math.round(546*1.5),
     bear:520, base:800, bull:1000,
-    quality_rating:4,
-    summary:'POWR adalah posisi defensif Aegis (22%) — captive customer base kawasan industri Jababeka & Megalopolis Manunggal memberikan revenue visibility solid. Lot murah (Rp735/lbr) memudahkan akumulasi konsisten. Yield ~10.5% dengan payout ratio 65% dari earnings — lebih sustainable dari ITMG saat ini. Prioritas akumulasi setelah BMRI.',
-    risks:[{label:'Renegosiasi tarif PLN',level:'mid'},{label:'Ekspansi capex menekan FCF',level:'mid'},{label:'Ketergantungan kawasan industri',level:'hi'},{label:'Fluktuasi harga gas input',level:'mid'}],
-    risk_pct:{ 'Renegosiasi tarif PLN':35,'Ekspansi capex menekan FCF':40,'Ketergantungan kawasan industri':50,'Fluktuasi harga gas input':40 }
+    quality_rating:3,
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ⚠ POWR di-rebalance ke posisi spekulatif 5% (v11) dari sebelumnya 25%. Payout ratio aktual >100% — dividen dibayar melebihi earnings. Captive base kawasan industri solid, tapi sustainability dividen tidak terkonfirmasi sampai earnings recovery. Nebras Power Qatar 49%, Jababeka Group ~26%, free float ~25%. <strong style="color:var(--red)">[Vanguard]</strong> Flag merah: yield ~10% dari payout >100% adalah yield jebakan. Jangan tambah posisi sebelum ada konfirmasi earnings recovery 2 kuartal berturut. Scale up ke 12% hanya jika Q1/Q2 2026 menunjukkan perbaikan FCF. <strong style="color:var(--green)">[JP Morgan]</strong> Hold minimal 5% untuk exposure utilitas — bisnis underlyingnya solid. Risk utama: renegosiasi tarif PLN dan capex yang menekan FCF. Monitor ketat laporan Q1 2026.',
+    risks:[{label:'Payout ratio >100% — dividend trap',level:'hi'},{label:'Renegosiasi tarif PLN',level:'mid'},{label:'Ekspansi capex menekan FCF',level:'mid'},{label:'Fluktuasi harga gas input',level:'mid'}],
+    risk_pct:{ 'Payout ratio >100% — dividend trap':75,'Renegosiasi tarif PLN':35,'Ekspansi capex menekan FCF':40,'Fluktuasi harga gas input':40 }
   }
 };
 
-// ════════════════════════════════════
 // STATE
-// ════════════════════════════════════
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
 let ichData = {};
+let ocrFiles = [], ocrParsed = null;
 
-// ════════════════════════════════════
 // HELPERS
-// ════════════════════════════════════
+// Format angka kompak: 16,745,000 → Rp16,7jt | 87,000 → Rp87rb | 1,200,000,000 → Rp1,2M
 const rp = (n) => {
-  const v = Math.round(n);
-  if (Math.abs(v) >= 1000000000) return 'Rp' + (v/1000000000).toFixed(1).replace(/\.0$/,'') + 'M';
-  if (Math.abs(v) >= 1000000)    return 'Rp' + (v/1000000).toFixed(1).replace(/\.0$/,'') + 'jt';
-  if (Math.abs(v) >= 1000)       return 'Rp' + (v/1000).toFixed(1).replace(/\.0$/,'') + 'rb';
-  return 'Rp' + v.toLocaleString('id');
+  const abs = Math.abs(Math.round(n));
+  const sign = n < 0 ? '-' : '';
+  if (abs >= 1_000_000_000) return sign + 'Rp' + (abs/1_000_000_000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (abs >= 1_000_000)     return sign + 'Rp' + (abs/1_000_000).toFixed(1).replace(/\.0$/,'') + 'jt';
+  if (abs >= 1_000)         return sign + 'Rp' + (abs/1_000).toFixed(0) + 'rb';
+  return sign + 'Rp' + abs;
 };
+const rpFull = (n) => 'Rp' + Math.round(n).toLocaleString('id');
 const pct = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
 const totalInvested = () => TICKERS.reduce((s,t) => s + porto[t].invested, 0);
 const totalMktVal  = () => TICKERS.reduce((s,t) => s + porto[t].price * porto[t].lots * 100, 0);
@@ -1259,9 +1403,6 @@ const annualDiv    = () => TICKERS.reduce((s,t) => s + porto[t].lots * 100 * por
 const actualPct    = (t) => totalMktVal() > 0 ? (porto[t].price * porto[t].lots * 100 / totalMktVal()) * 100 : 0;
 const getCash      = () => parseFloat(localStorage.getItem('ac_cash') || '0');
 
-// ════════════════════════════════════
-// TOGGLE DARK/LIGHT
-// ════════════════════════════════════
 function toggleMode() {
   const isLight = document.body.classList.toggle('light');
   document.getElementById('mode-btn').textContent = isLight ? '🌙 Dark' : '☀️ Light';
@@ -1269,20 +1410,18 @@ function toggleMode() {
   // Redraw canvases
   renderPortoComposition();
   drawPortoChartSnap();
-  drawSectorChart();
-  if(document.getElementById('panel-nexus').classList.contains('active')) drawDivIncomeTracker();
+  if(document.getElementById('panel-analytics').classList.contains('active')) drawDivIncomeTracker();
 }
 
 const TAB_TITLES = {
-  nexus:    '⬡ Nexus — Command Intelligence',
-  analytics: '⬡ Nexus — Command Intelligence',
-  snapshot:  '⬡ Nexus — Command Intelligence',
-  deepdive: '🔬 Deep Dive',
-  lot:      '💰 Lot Calc',
-  arsenal:  '⚔️ Arsenal — Rebalancing & Control',
-  rebalance:'⚔️ Arsenal — Rebalancing & Control',
-  porto:    '✏️ Edit Porto',
-  rules:    '📜 Investment Rules'
+  snapshot: '📊 Financial Snapshot',
+  analytics: '📈 Portofolio Analytics',
+  arsenal: '⚡ Arsenal — Analisa & Eksekusi',
+  deepdive: '⚡ Arsenal — Analisa & Eksekusi',
+  lot: '⚡ Arsenal — Analisa & Eksekusi',
+  rebalance: '⚖️ Rebalancing',
+  porto: '✏️ Edit Porto',
+  rules: '📜 Investment Rules'
 };
 
 function switchTab(id, el) {
@@ -1295,33 +1434,30 @@ function switchTab(id, el) {
 }
 
 function _doSwitchTab(id, el) {
-  // Map logical IDs to panel IDs (for merged tabs)
-  const panelMap = { nexus:'nexus', snapshot:'nexus', analytics:'nexus', arsenal:'arsenal', rebalance:'arsenal' };
-  const panelId = panelMap[id] || id;
-
   // Update sidebar active state
   document.querySelectorAll('.sb-nav-item').forEach(t => t.classList.remove('active'));
   if(el) el.classList.add('active');
 
   // Update panels
+  // Redirect legacy tab IDs
+  if(id==='snapshot'||id==='analytics') id = 'dashboard';
+  if(id==='deepdive'||id==='lot')       id = 'arsenal';
+  if(id==='rebalance'||id==='porto')    id = 'control';
+
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-' + panelId);
+  const panel = document.getElementById('panel-' + id);
   if(panel) panel.classList.add('active');
 
-  // Update topbar title
   const titleEl = document.getElementById('topbar-title');
   if(titleEl) titleEl.textContent = TAB_TITLES[id] || id;
 
-  // Scroll to top
   const scroll = document.getElementById('content-scroll');
   if(scroll) scroll.scrollTop = 0;
 
   // Lazy render
-  if(panelId==='nexus') { updateHeader(); renderSnapshotPanel(); renderAnalyticsPanel(); }
-  if(id==='deepdive') { renderDeepDive(); }
-  if(id==='lot') { renderLotGrid(); }
-  if(panelId==='arsenal') { renderRebalance(); renderDivForecast(); }
-  if(id==='porto') { renderPortoEdit(); renderSavepointList(); }
+  if(id==='dashboard') { updateHeader(); renderSnapshotPanel(); renderAnalyticsPanel(); }
+  if(id==='arsenal')   { renderArsenal(); }
+  if(id==='control')   { renderRebalance(); renderPortoEdit(); renderSavepointList(); }
 
   // Close mobile sidebar
   closeSidebar();
@@ -1336,9 +1472,6 @@ function closeSidebar() {
   document.getElementById('sb-overlay').classList.remove('open');
 }
 
-// ════════════════════════════════════
-// SIDEBAR COLLAPSE (Desktop)
-// ════════════════════════════════════
 function toggleSidebarCollapse() {
   const sb = document.getElementById('sidebar');
   const btn = document.getElementById('sb-collapse-btn');
@@ -1348,9 +1481,6 @@ function toggleSidebarCollapse() {
   localStorage.setItem('ac_sb_collapsed', isCollapsed ? '1' : '0');
 }
 
-// ════════════════════════════════════
-// DAILY QUOTES
-// ════════════════════════════════════
 const QUOTES = [
   {text:'Pasar adalah alat transfer kekayaan dari yang tidak sabar ke yang sabar.', author:'— Warren Buffett'},
   {text:'Risiko terbesar adalah tidak mengambil risiko sama sekali.', author:'— Mark Zuckerberg'},
@@ -1377,29 +1507,22 @@ function renderDailyQuote() {
   if(auth) auth.textContent = q.author;
 }
 
-// ════════════════════════════════════
-// UPDATE HEADER
-// ════════════════════════════════════
 function updateHeader() {
-  const mkt = totalMktVal(), inv = totalInvested(), pnl = totalPnl();
-  const div = annualDiv() * 0.85;
-  const monthlyDiv = div / 12;
-  const yoc = inv > 0 ? (annualDiv() / inv * 100) : 0;
-  const cash = getCash();
-
-  document.getElementById('h-mktval').textContent = rp(mkt);
-  document.getElementById('h-div').textContent = rp(monthlyDiv);
-  document.getElementById('h-yoc').textContent = yoc.toFixed(1) + '%';
-  document.getElementById('h-cash').textContent = rp(cash);
-
-  const pnlEl = document.getElementById('h-pnl');
-  pnlEl.textContent = (pnl >= 0 ? '+' : '') + rp(pnl) + ' (' + pct(pnl/inv*100) + ')';
-  pnlEl.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+  const mkt = totalMktVal(), monthlyDiv = annualDiv() * 0.85 / 12;
+  const T_PORTO = 250_000_000, T_DIV = 10_000_000;
+  const portoPct = Math.min(mkt / T_PORTO * 100, 100);
+  const divPct   = Math.min(monthlyDiv / T_DIV * 100, 100);
+  const e = id => document.getElementById(id);
+  if(e('sb-porto-bar')) e('sb-porto-bar').style.width = portoPct + '%';
+  if(e('sb-porto-pct')) e('sb-porto-pct').textContent = portoPct.toFixed(1) + '%';
+  if(e('sb-porto-val')) e('sb-porto-val').textContent = rp(mkt);
+  if(e('sb-div-bar'))   e('sb-div-bar').style.width   = divPct + '%';
+  if(e('sb-div-pct'))   e('sb-div-pct').textContent   = divPct.toFixed(1) + '%';
+  if(e('sb-div-val'))   e('sb-div-val').textContent   = rp(monthlyDiv) + '/bln';
+  const dot = e('live-dot-indicator');
+  if(dot) dot.style.background = mkt > 0 ? 'var(--green)' : 'var(--muted)';
 }
 
-// ════════════════════════════════════
-// SNAPSHOT PANEL
-// ════════════════════════════════════
 function renderSnapshotPanel() {
   const mkt = totalMktVal(), inv = totalInvested(), pnl = totalPnl();
   const grossDiv = annualDiv();
@@ -1427,18 +1550,24 @@ function renderSnapshotPanel() {
   document.getElementById('ds-prog-pct').textContent = progPct.toFixed(1) + '%';
   document.getElementById('ds-prog-bar').style.width = progPct + '%';
 
-  // Alloc bars
   const allocEl = document.getElementById('alloc-bars-snap');
   allocEl.innerHTML = '';
+  const TARGET_PORTO = 250_000_000;
   TICKERS.forEach(t => {
     const actual = actualPct(t);
     const target = targets[t];
     const gap = actual - target;
+    const currentLots = porto[t].lots;
+    const idealMktV = TARGET_PORTO * (target / 100);
+    const idealLots = porto[t].price > 0 ? Math.round(idealMktV / (porto[t].price * 100)) : 0;
     allocEl.innerHTML += `
       <div class="prog-wrap">
         <div class="prog-label">
           <span style="color:${COLORS[t]};font-weight:500">${t}</span>
-          <span>${actual.toFixed(1)}% <span style="color:${Math.abs(gap)>5?'var(--red)':'var(--muted)'}">(Target ${target}%)</span></span>
+          <span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span>${actual.toFixed(1)}% <span style="color:${Math.abs(gap)>5?'var(--red)':'var(--muted)'}">(Target ${target}%)</span></span>
+            <span style="font-size:8px;color:var(--accent2);background:var(--bg4);border-radius:3px;padding:1px 5px">${currentLots}L / ${idealLots}L ideal</span>
+          </span>
         </div>
         <div class="prog-track" style="height:7px">
           <div class="prog-fill" style="width:${Math.min(actual,100)}%;background:${COLORS[t]}"></div>
@@ -1447,7 +1576,6 @@ function renderSnapshotPanel() {
       </div>`;
   });
 
-  // Live price tiles
   const lpEl = document.getElementById('live-price-snap');
   lpEl.innerHTML = '';
   TICKERS.forEach(t => {
@@ -1466,9 +1594,6 @@ function renderSnapshotPanel() {
   renderStockMatrix();
 }
 
-// ════════════════════════════════════
-// PIE CHART — SNAPSHOT
-// ════════════════════════════════════
 function drawPortoChartSnap() {
   const canvas = document.getElementById('pie-snap');
   if (!canvas) return;
@@ -1504,7 +1629,6 @@ function drawPortoChartSnap() {
   ctx.fillStyle = isLight ? '#4a6898' : '#4a6898';
   ctx.fillText(rp(total).replace('Rp',''), cx, cy+7);
 
-  // Legend
   const legEl = document.getElementById('pie-legend');
   if (!legEl) return;
   legEl.innerHTML = '';
@@ -1522,9 +1646,6 @@ function drawPortoChartSnap() {
   });
 }
 
-// ════════════════════════════════════
-// ANALYTICS PANEL
-// ════════════════════════════════════
 function renderAnalyticsPanel() {
   renderHeatmap();
   updatePortfolioMetrics();
@@ -1537,8 +1658,9 @@ function updatePortfolioMetrics() {
   const mkt = totalMktVal(), inv = totalInvested(), pnl = totalPnl();
   const grossDiv = annualDiv(), netDiv = grossDiv * 0.85;
   const yoc = inv > 0 ? (grossDiv/inv*100) : 0;
-  const yop = mkt > 0 ? (grossDiv/mkt*100) : 0;
   const retPct = inv > 0 ? (pnl/inv*100) : 0;
+  const totalLots = TICKERS.reduce((s,t) => s + porto[t].lots, 0);
+  const progressPct = mkt / 250_000_000 * 100;
 
   const set = (id, val, colorClass) => {
     const el = document.getElementById(id);
@@ -1549,12 +1671,14 @@ function updatePortfolioMetrics() {
 
   set('pm-invested', rp(inv));
   set('pm-mktval', rp(mkt));
-  set('pm-pnl', (pnl>=0?'+':'')+rp(pnl), pnl>=0?'var(--green)':'var(--red)');
-  set('pm-ret', pct(retPct), retPct>=0?'var(--green)':'var(--red)');
-  set('pm-div', rp(grossDiv));
-  set('pm-yoc', yoc.toFixed(2) + '%');
-  set('pm-yop', yop.toFixed(2) + '%');
-  set('pm-monthly', rp(netDiv/12) + '/bln');
+  const pnlEl = document.getElementById('pm-pnl');
+  if(pnlEl){ pnlEl.textContent = (pnl>=0?'+':'')+rp(pnl); pnlEl.style.color = pnl>=0?'var(--green)':'var(--red)'; }
+  const retEl = document.getElementById('pm-ret');
+  if(retEl){ retEl.textContent = (retPct>=0?'+':'')+retPct.toFixed(1)+'%'; retEl.style.color = retPct>=0?'var(--green)':'var(--red)'; }
+  set('pm-lots', totalLots + ' lot');
+  set('pm-yoc', yoc.toFixed(1)+'%', 'var(--accent2)');
+  set('pm-progress', progressPct.toFixed(1)+'%', progressPct>=80?'var(--green)':progressPct>=40?'var(--amber)':'var(--red)');
+  set('pm-monthly', rp(netDiv/12), 'var(--green)');
 }
 
 function renderHeatmap() {
@@ -1577,14 +1701,12 @@ function renderHeatmap() {
           ${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%
         </div>
         <div style="font-size:9px;color:var(--muted)">${rp(s.pnl)}</div>
-        <div style="font-size:8px;color:var(--dim)">${rp(s.price)}/lbr</div>
+        <div style="font-size:8px;color:var(--dim)">Rp${s.price.toLocaleString('id-ID')}/lbr</div>
       </div>`;
   });
 }
 
-// ════════════════════════════════════
 // CASHFLOW HEALTH — FCF & DIV COVERAGE
-// ════════════════════════════════════
 // FCF data (static, based on last reported annuals)
 const FCF_DATA = {
   ADMF:{ fcf_per_share:1280, fcf_growth:3.8, debt_eq:4.8, coverage:2.0, interest_cover:2.9, note:'Multifinance: FCF post-MFIN merger masih in process. Merger efektif Oct 2025 — angka konsolidasi masih estimasi.' },
@@ -1629,8 +1751,6 @@ function renderCashflowHealth() {
   html+=`<div style="font-size:8px;color:var(--dim);margin-top:8px;line-height:1.6">FCF Coverage >1.5x = dividen aman dari arus kas. D/E rendah = buffer krisis. Data per laporan keuangan terakhir.</div>`;
   el.innerHTML=html;
 }
-
-function drawSectorChart() {} // kept for compatibility — replaced by cashflow panel
 
 function drawDivIncomeTracker() {
   const el = document.getElementById('div-income-tracker');
@@ -1685,8 +1805,8 @@ function drawDivIncomeTracker() {
         <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)">${yoc.toFixed(2)}%</div>
       </div>
       <div style="text-align:center;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Return P&L</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:${retPct>=0?'var(--green)':'var(--red)'}">${retPct>=0?'+':''}${retPct.toFixed(1)}%</div>
+        <div style="font-size:7px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:3px">Yield on Price</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:var(--accent2)">${yop.toFixed(2)}%</div>
       </div>
     </div>
     <div class="prog-wrap" style="margin-bottom:10px">
@@ -1710,86 +1830,80 @@ function drawDivIncomeTracker() {
     </div>`;
 }
 
-
-// ════════════════════════════════════
-// TREEMAP — Portfolio Composition
-// ════════════════════════════════════
 function renderTreemap(containerId) {
   const el = document.getElementById(containerId);
   if (!el) return;
   const total = totalMktVal();
   if (total === 0) { el.innerHTML = '<div style="color:var(--muted);font-size:10px;padding:20px;text-align:center">No data</div>'; return; }
 
-  // Sort descending by value
   const sorted = [...TICKERS].sort((a,b) => porto[b].price*porto[b].lots*100 - porto[a].price*porto[a].lots*100);
   const vals = sorted.map(t => porto[t].price*porto[t].lots*100);
-  const H = 180; // fixed height
-  const W = el.clientWidth || 300;
+  const totalV = vals.reduce((s,v) => s+v, 0);
 
-  // Simple squarified layout (row-based)
-  const cells = [];
+  const H = 180;
   let remaining = [...sorted.map((t,i) => ({t, v: vals[i]}))];
-  let x = 0, y = 0, w = W, h = H;
-  let remTotal = total;
+  let cells = [];
+  let y = 0, h = H, remTotal = totalV;
 
   while(remaining.length > 0) {
-    // Greedy: fill row with items until aspect ratio worsens
     let rowItems = [];
     let rowSum = 0;
     for(let i = 0; i < remaining.length; i++) {
       const candidate = [...rowItems, remaining[i]];
       const cSum = rowSum + remaining[i].v;
-      const rowH = h * cSum / remTotal;
+      const rowHpct = h * cSum / remTotal;
       const worstBefore = rowItems.length === 0 ? Infinity : Math.max(...rowItems.map(it => {
-        const cellW = w * it.v / rowSum;
-        return Math.max(rowH/cellW, cellW/rowH);
+        const cellWpct = 100 * it.v / rowSum;
+        return Math.max(rowHpct/cellWpct, cellWpct/rowHpct);
       }));
       const rowH2 = h * cSum / remTotal;
       const worstAfter = Math.max(...candidate.map(it => {
-        const cellW = w * it.v / cSum;
-        return Math.max(rowH2/cellW, cellW/rowH2);
+        const cellWpct = 100 * it.v / cSum;
+        return Math.max(rowH2/cellWpct, cellWpct/rowH2);
       }));
       if(rowItems.length > 0 && worstAfter > worstBefore) break;
       rowItems.push(remaining[i]);
       rowSum += remaining[i].v;
     }
     remaining.splice(0, rowItems.length);
-    const rowH = Math.round(h * rowSum / remTotal);
-    let cx = x;
+    const rowHpct = Math.round(h * rowSum / remTotal);
+    let cx = 0;
     rowItems.forEach(item => {
-      const cellW = Math.round(w * item.v / rowSum);
-      cells.push({t: item.t, x: cx, y, w: cellW, h: rowH, v: item.v});
-      cx += cellW;
+      const cellWpct = Math.round(100 * item.v / rowSum);
+      cells.push({t: item.t, x: cx, y, w: cellWpct, h: rowHpct, v: item.v});
+      cx += cellWpct;
     });
-    y += rowH;
+    y += rowHpct;
+    h -= rowHpct;
     remTotal -= rowSum;
-    h -= rowH;
     if(h <= 0) break;
   }
 
-  el.innerHTML = `<div class="treemap-wrap" style="height:${H}px">` +
+  el.innerHTML = `<div style="position:relative;height:${H}px;width:100%">` +
     cells.map(c => {
       const pct = (c.v/total*100).toFixed(1);
       const pnlPct = porto[c.t].invested > 0 ? (porto[c.t].pnl/porto[c.t].invested*100) : 0;
       const pnlStr = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(1) + '%';
       const pnlColor = pnlPct >= 0 ? '#3dc88a' : '#e05555';
-      return `<div class="treemap-cell" style="left:${c.x}px;top:${c.y}px;width:${c.w}px;height:${c.h}px;background:${COLORS[c.t]}">
-        ${c.w > 50 && c.h > 40 ? `<div class="treemap-ticker">${c.t}</div>
-        <div class="treemap-pct">${pct}%</div>
-        ${c.h > 60 ? `<div class="treemap-val" style="color:${pnlColor}">${pnlStr}</div>` : ''}` : ''}
+      return `<div style="position:absolute;left:${c.x}%;top:${c.y}px;width:${c.w}%;height:${c.h}px;background:${COLORS[c.t]};box-sizing:border-box;border:1px solid rgba(0,0,0,.2);overflow:hidden">
+        ${c.w > 8 && c.h > 35 ? `<div style="padding:6px;height:100%;display:flex;flex-direction:column;justify-content:center">
+        <div style="font-size:min(2vw,13px);font-weight:600;color:#fff;line-height:1">${c.t}</div>
+        <div style="font-size:min(1.5vw,11px);color:rgba(255,255,255,.85)">${pct}%</div>
+        ${c.h > 55 ? `<div style="font-size:min(1.3vw,10px);color:${pnlColor}">${pnlStr}</div>` : ''}
+        </div>` : ''}
       </div>`;
     }).join('') + '</div>';
 }
 
-// ════════════════════════════════════
-// DEEP DIVE PANEL
-// ════════════════════════════════════
-function renderDeepDive() {
+function renderArsenal() {
   renderSuggestionGrid();
   renderStockAnalysis();
-  renderTechGrid();
-  renderForecastTable();
+  renderIchimokuGrid('ich-grid');
+  renderFairValue();
+  renderKeystatsGrid();
   renderRiskGrid();
+  renderLotGrid();
+  renderDivCalendar();
 }
 
 function renderSuggestionGrid() {
@@ -1852,7 +1966,7 @@ function renderSuggestionGrid() {
   });
 }
 
-const ANALYSIS_DATE = 'Apr 2026 (v6)'; // analisa data per bulan ini
+const ANALYSIS_DATE = 'Apr 2026 (v11)'; // analisa data per bulan ini
 
 function renderStockAnalysis() {
   const el = document.getElementById('stock-analysis-grid');
@@ -1865,7 +1979,6 @@ function renderStockAnalysis() {
     const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
     const mos = ((consensus-price)/price*100);
 
-    // Technical score 1-100 composite
     const ich = ichData[t];
     let techScore = 50; // neutral base
     // Component 1: MOS (max 40pts)
@@ -1959,10 +2072,8 @@ function renderKeystatsGrid() {
     const riskColor = riskPct>=55?'var(--red)':riskPct>=40?'var(--amber)':'var(--green)';
     const riskLabel = riskPct>=55?'HIGH':riskPct>=40?'MODERATE':'LOW';
 
-    // Quality stars
     const stars = '★'.repeat(d.quality_rating) + '☆'.repeat(5-d.quality_rating);
 
-    // Ichimoku mini-chart data
     const ich = ichData[t];
     const canvasId = `ks-ich-${t}`;
     const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
@@ -2041,175 +2152,27 @@ function renderKeystatsGrid() {
   });
 }
 
-// ════════════════════════════════════
-// TECH GRID — SR · FVG · OB · RSI (1D)  [replaces Ichimoku grid]
-// ════════════════════════════════════
-function renderTechGrid() {
-  const el = document.getElementById('tech-grid');
-  if (!el) return;
-  el.innerHTML = '';
-
-  // Static SR / FVG / OB levels per ticker (updated manually or via fetch)
-  // Format: { sr:[support, resistance], fvg:{low,high,filled}, ob:{low,high,bull}, rsi:value }
-  const TECH_LEVELS = {
-    ADMF: { sr:[8500, 9400], fvg:{low:8700,high:8950,filled:false,bull:true},  ob:{low:8400,high:8650,bull:true},  rsi:null },
-    ASII: { sr:[5800, 6800], fvg:{low:6000,high:6250,filled:false,bull:true},  ob:{low:5700,high:5950,bull:true},  rsi:null },
-    BMRI: { sr:[4400, 5000], fvg:{low:4500,high:4650,filled:false,bull:true},  ob:{low:4300,high:4480,bull:true},  rsi:null },
-    ITMG: { sr:[24500,28500],fvg:{low:25500,high:26500,filled:false,bull:false},ob:{low:24000,high:25200,bull:true},rsi:null },
-    POWR: { sr:[680, 800],   fvg:{low:700,high:735,filled:false,bull:true},    ob:{low:665,high:695,bull:true},    rsi:null },
-  };
-
-  // Pull RSI from ichimoku data if available (14-period approximation)
-  TICKERS.forEach(t => {
-    const ich = ichData[t];
-    if (ich && ich.bars) {
-      // Simple RSI-14 from bars
-      const bars = ich.bars || [];
-      if (bars.length >= 15) {
-        const closes = bars.slice(-15).map(b => b.c);
-        let gains = 0, losses = 0;
-        for (let i = 1; i < closes.length; i++) {
-          const d = closes[i] - closes[i-1];
-          if (d > 0) gains += d; else losses += Math.abs(d);
-        }
-        const avgGain = gains / 14, avgLoss = losses / 14;
-        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
-        TECH_LEVELS[t].rsi = Math.round(100 - (100 / (1 + rs)));
-      }
-    }
-  });
-
-  TICKERS.forEach(t => {
-    const tl = TECH_LEVELS[t];
-    const price = porto[t].price;
-    const color = COLORS[t];
-    const [sup, res] = tl.sr;
-
-    // Support / Resistance proximity
-    const distToSup = price > 0 ? ((price - sup) / price * 100) : 0;
-    const distToRes = price > 0 ? ((res - price) / price * 100) : 0;
-    const nearSupport = distToSup < 5 && distToSup >= 0;  // within 5% above support
-    const atSupport   = distToSup < 0;                     // below support (breakdown)
-    const nearRes     = distToRes < 5 && distToRes >= 0;   // within 5% below resistance
-
-    // FVG status
-    const fvgInRange  = tl.fvg && price >= tl.fvg.low && price <= tl.fvg.high;
-    const fvgBelow    = tl.fvg && price > tl.fvg.high;  // price above FVG (unfilled below)
-    const fvgAbove    = tl.fvg && price < tl.fvg.low;   // price in FVG zone (dip into gap)
-
-    // OB status
-    const inOB        = tl.ob && price >= tl.ob.low && price <= tl.ob.high;
-    const aboveOB     = tl.ob && price > tl.ob.high;
-
-    // RSI
-    const rsi = tl.rsi;
-    const rsiOversold  = rsi !== null && rsi < 35;
-    const rsiNeutral   = rsi !== null && rsi >= 35 && rsi < 60;
-    const rsiOverbought= rsi !== null && rsi >= 70;
-    const rsiColor     = rsi === null ? 'var(--muted)' : rsiOversold ? 'var(--green)' : rsiOverbought ? 'var(--red)' : 'var(--muted)';
-
-    // ── BUY THE DIP logic ──
-    // Trigger when: price near/at support OR in OB OR in/below FVG (unfilled bullish gap)
-    // AND RSI not overbought (< 60 if available)
-    const technicalBullish = (nearSupport || atSupport || inOB || fvgAbove);
-    const rsiOk = rsi === null || rsi < 60;
-    const showBuyDip = technicalBullish && rsiOk;
-
-    // Assemble badge for SR
-    const srBadge = nearSupport
-      ? `<span class="badge bg">Near Support ✓</span>`
-      : atSupport
-      ? `<span class="badge br">Below Support ⚠</span>`
-      : nearRes
-      ? `<span class="badge ba">Near Resistance</span>`
-      : `<span class="badge bm">Mid-Range</span>`;
-
-    const fvgBadge = tl.fvg
-      ? (fvgAbove ? `<span class="badge bg">In FVG Gap ↓</span>` : fvgInRange ? `<span class="badge bb">FVG Filling</span>` : `<span class="badge bm">FVG Above</span>`)
-      : `<span class="badge bm">—</span>`;
-
-    const obBadge = tl.ob
-      ? (inOB ? `<span class="badge bg">In OB Zone ✓</span>` : aboveOB ? `<span class="badge bm">Above OB</span>` : `<span class="badge ba">OB Below</span>`)
-      : `<span class="badge bm">—</span>`;
-
-    const rsiBadge = rsi !== null
-      ? `<span class="badge" style="background:${rsiOversold?'var(--green-bg)':rsiOverbought?'var(--red-bg)':'var(--bg5)'};color:${rsiColor};border-color:${rsiOversold?'var(--green-border)':rsiOverbought?'var(--red-border)':'var(--border)'}">RSI ${rsi}</span>`
-      : `<span class="badge bm">RSI —</span>`;
-
-    // Price position bar (between support and resistance)
-    const rangeTotal = res - sup;
-    const pricePosW = rangeTotal > 0 ? Math.min(100, Math.max(0, ((price - sup) / rangeTotal) * 100)) : 50;
-    const priceBarColor = pricePosW < 25 ? 'var(--green)' : pricePosW > 75 ? 'var(--red)' : 'var(--accent2)';
-
-    el.innerHTML += `
-      <div class="bcard" style="border-top:3px solid ${color};position:relative">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-          <div>
-            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:200;color:${color};line-height:1">${t}</div>
-            <div style="font-size:8px;color:var(--muted);margin-top:2px">${rp(price)}</div>
-          </div>
-          ${showBuyDip ? `<div style="background:linear-gradient(135deg,var(--green-bg),rgba(3,60,30,.5));border:1px solid var(--green-border);border-radius:6px;padding:4px 9px;font-size:7.5px;font-weight:500;letter-spacing:.07em;color:var(--green);text-transform:uppercase;animation:pulse 2s ease infinite">📍 BUY THE DIP</div>` : ''}
-        </div>
-
-        <!-- SR Range bar -->
-        <div style="margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--muted);margin-bottom:3px">
-            <span style="color:var(--green)">S ${rp(sup)}</span>
-            <span style="color:var(--accent2);font-size:7.5px;font-weight:500">${rp(price)}</span>
-            <span style="color:var(--red)">R ${rp(res)}</span>
-          </div>
-          <div style="height:5px;background:var(--bg5);border-radius:3px;position:relative;overflow:hidden">
-            <div style="position:absolute;left:0;top:0;height:5px;width:${pricePosW}%;background:${priceBarColor};border-radius:3px;transition:width .4s"></div>
-          </div>
-        </div>
-
-        <!-- Signal badges -->
-        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
-          ${srBadge}
-          ${fvgBadge}
-          ${obBadge}
-          ${rsiBadge}
-        </div>
-
-        <!-- Detail rows -->
-        <div class="ich-row"><span class="ich-label">Support</span><span class="ich-val" style="color:var(--green)">${rp(sup)}</span></div>
-        <div class="ich-row"><span class="ich-label">Resistance</span><span class="ich-val" style="color:var(--red)">${rp(res)}</span></div>
-        <div class="ich-row"><span class="ich-label">FVG Zone</span><span class="ich-val">${tl.fvg ? rp(tl.fvg.low)+' – '+rp(tl.fvg.high) : '—'}</span></div>
-        <div class="ich-row"><span class="ich-label">OB Zone</span><span class="ich-val">${tl.ob ? rp(tl.ob.low)+' – '+rp(tl.ob.high) : '—'}</span></div>
-        <div class="ich-row" style="border-bottom:none"><span class="ich-label">RSI 1D</span><span class="ich-val" style="color:${rsiColor}">${rsi !== null ? rsi : 'Fetch data'}</span></div>
-
-        ${showBuyDip ? `<div style="margin-top:8px;padding:6px 9px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:6px;font-size:8px;color:var(--green);line-height:1.5">
-          ▸ ${nearSupport||atSupport ? 'Harga dekat/di support — zona beli historis.' : ''}${inOB ? ' Harga dalam Order Block — institutional buy zone.' : ''}${fvgAbove ? ' Harga turun ke FVG — gap belum terisi, magnet ke bawah terisi.' : ''}${rsiOversold ? ' RSI oversold < 35 — momentum reversal potensial.' : ''}
-        </div>` : ''}
-      </div>`;
-  });
-}
 function calcIchimoku(bars) {
   if (!bars || bars.length < 52) return null;
-  const highs = bars.map(b => b.h), lows = bars.map(b => b.l);
+  const highs = bars.map(b => b.h), lows = bars.map(b => b.l), closes = bars.map(b => b.c);
   const n = bars.length;
-  const hl = (arr, i, per) => {
-    const sl = arr.slice(Math.max(0,i-per+1), i+1);
-    return [Math.max(...sl), Math.min(...sl)];
-  };
-  const [h9,l9] = hl(highs,n-1,9).map((v,i)=>[Math.max(...highs.slice(n-9)),Math.min(...lows.slice(n-9))][i]);
-  const tenkan = (Math.max(...highs.slice(n-9)) + Math.min(...lows.slice(n-9)))/2;
-  const kijun  = (Math.max(...highs.slice(n-26))+ Math.min(...lows.slice(n-26)))/2;
+
+  const tenkan  = (Math.max(...highs.slice(n-9))  + Math.min(...lows.slice(n-9)))/2;
+  const kijun   = (Math.max(...highs.slice(n-26)) + Math.min(...lows.slice(n-26)))/2;
   const senkouA = (tenkan + kijun)/2;
-  const senkouB = (Math.max(...highs.slice(n-52))+ Math.min(...lows.slice(n-52)))/2;
-  const price = bars[n-1].c;
-  const chikou = n >= 27 ? bars[n-27].c : null;
+  const senkouB = (Math.max(...highs.slice(n-52)) + Math.min(...lows.slice(n-52)))/2;
+  const price   = bars[n-1].c;
+  const chikou  = n >= 27 ? bars[n-27].c : null;
 
   const aboveCloud = price > Math.max(senkouA,senkouB);
   const belowCloud = price < Math.min(senkouA,senkouB);
-  const inCloud = !aboveCloud && !belowCloud;
-  const tkBull = tenkan > kijun;
-  const cloudBull = senkouA > senkouB;
+  const inCloud    = !aboveCloud && !belowCloud;
+  const tkBull     = tenkan > kijun;
+  const cloudBull  = senkouA > senkouB;
   const chikouBull = chikou != null ? price > chikou : false;
 
   let score = 0;
-  if (aboveCloud) score += 2;
-  else if (inCloud) score += 1;
+  if (aboveCloud) score += 2; else if (inCloud) score += 1;
   if (tkBull) score += 2;
   if (cloudBull) score += 1;
   if (chikouBull) score += 2;
@@ -2221,7 +2184,77 @@ function calcIchimoku(bars) {
   else if (score >= 0) { signal='WAIT & SEE'; sigClass='bm'; }
   else                  { signal='HINDARI';    sigClass='br'; }
 
-  return { tenkan,kijun,senkouA,senkouB,price,score,signal,sigClass,aboveCloud,inCloud,belowCloud,tkBull,cloudBull,chikouBull };
+  const rsiPeriod = 14;
+  let gains = 0, losses = 0;
+  for (let i = n - rsiPeriod; i < n; i++) {
+    const diff = closes[i] - closes[i-1];
+    if (diff > 0) gains += diff; else losses -= diff;
+  }
+  const avgGain = gains / rsiPeriod, avgLoss = losses / rsiPeriod;
+  const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+  const rsi = Math.round(avgLoss === 0 ? 100 : 100 - (100 / (1 + rs)));
+
+  const recent = bars.slice(n-20);
+  const recentH = recent.map(b => b.h), recentL = recent.map(b => b.l);
+  const pivot = (Math.max(...recentH) + Math.min(...recentL) + closes[n-1]) / 3;
+  const resistance1 = Math.round(2*pivot - Math.min(...recentL));
+  const resistance2 = Math.round(pivot + (Math.max(...recentH) - Math.min(...recentL)));
+  const support1    = Math.round(2*pivot - Math.max(...recentH));
+  const support2    = Math.round(pivot - (Math.max(...recentH) - Math.min(...recentL)));
+
+  // ── Fair Value Gap (FVG) — last 50 bars ──
+  // FVG up: bar[i-1].high < bar[i+1].low → price gap up (bullish FVG)
+  // FVG dn: bar[i-1].low  > bar[i+1].high → price gap down (bearish FVG)
+  const fvgZones = [];
+  const fvgLookback = Math.min(50, n-2);
+  for (let i = n - fvgLookback; i < n-1; i++) {
+    const prev = bars[i-1], curr = bars[i], next = bars[i+1];
+    if (!prev || !next) continue;
+    if (prev.h < next.l) { // bullish FVG
+      fvgZones.push({ type:'bull', low: prev.h, high: next.l, midpoint:(prev.h+next.l)/2, idx:i });
+    } else if (prev.l > next.h) { // bearish FVG
+      fvgZones.push({ type:'bear', low: next.h, high: prev.l, midpoint:(next.h+prev.l)/2, idx:i });
+    }
+  }
+  // Keep only the most recent 2 unmitigated FVGs (price hasn't re-entered zone)
+  const activeFVG = fvgZones.filter(z => {
+    if (z.type==='bull') return price >= z.low * 0.98; // not fully traded through
+    return price <= z.high * 1.02;
+  }).slice(-2);
+
+  // ── Order Block (OB) — last 60 bars ──
+  // Bullish OB: last bearish candle before a strong bullish impulse
+  // Bearish OB: last bullish candle before a strong bearish impulse
+  const obZones = [];
+  const obLookback = Math.min(60, n-3);
+  for (let i = n - obLookback; i < n-2; i++) {
+    const bar   = bars[i];
+    const next1 = bars[i+1];
+    const next2 = bars[i+2];
+    if (!bar || !next1 || !next2) continue;
+    const barBearish = bar.c < bar.o;
+    const barBullish = bar.c > bar.o;
+    const impulseUp   = next1.c > next1.o && next2.c > next2.o && (next2.c - bar.l) > (bar.h - bar.l)*1.5;
+    const impulseDown = next1.c < next1.o && next2.c < next2.o && (bar.h - next2.c) > (bar.h - bar.l)*1.5;
+    if (barBearish && impulseUp) {
+      obZones.push({ type:'bull', low:bar.l, high:bar.h, midpoint:(bar.l+bar.h)/2, idx:i });
+    } else if (barBullish && impulseDown) {
+      obZones.push({ type:'bear', low:bar.l, high:bar.h, midpoint:(bar.l+bar.h)/2, idx:i });
+    }
+  }
+  const activeOB = obZones.filter(z => {
+    if (z.type==='bull') return price >= z.low * 0.97;
+    return price <= z.high * 1.03;
+  }).slice(-1);
+
+  return {
+    tenkan, kijun, senkouA, senkouB, price, score, signal, sigClass,
+    aboveCloud, inCloud, belowCloud, tkBull, cloudBull, chikouBull,
+    rsi,
+    support1, support2, resistance1, resistance2, pivot: Math.round(pivot),
+    fvgZones: activeFVG,
+    obZones: activeOB
+  };
 }
 
 function renderIchimokuGrid(gridId) {
@@ -2231,11 +2264,17 @@ function renderIchimokuGrid(gridId) {
   TICKERS.forEach(t => {
     const ich = ichData[t];
     const price = porto[t].price;
+    const color = COLORS[t];
     if (!ich) {
       grid.innerHTML += `
-        <div class="ich-card">
-          <div class="ich-ticker">${t} <span class="badge bm">Belum Fetch</span></div>
-          <div style="font-size:9px;color:var(--dim);padding:6px 0">Klik "Auto Fetch" untuk update data</div>
+        <div class="ich-card-v2" style="border-top:2px solid ${color}">
+          <div class="ich-card-v2-head">
+            <span style="font-size:12px;font-weight:500;color:${color}">${t}</span>
+            <span class="badge bm">Belum Fetch</span>
+          </div>
+          <div class="ich-card-v2-body">
+            <div style="font-size:9px;color:var(--dim);padding:10px 0;text-align:center">Klik "Auto Fetch" untuk update</div>
+          </div>
         </div>`; return;
     }
     const isCache = ich.savedAt ? true : false;
@@ -2243,54 +2282,116 @@ function renderIchimokuGrid(gridId) {
     const cloudBot = Math.min(ich.senkouA,ich.senkouB);
     const posLabel = ich.aboveCloud?'↑ Atas Cloud':ich.belowCloud?'↓ Bawah Cloud':'↔ Dalam Cloud';
     const posColor = ich.aboveCloud?'var(--green)':ich.belowCloud?'var(--red)':'var(--amber)';
+
+    const rsiColor = ich.rsi>=70?'var(--red)':ich.rsi<=30?'var(--green)':'var(--amber)';
+    const rsiLabel = ich.rsi>=70?'OB':ich.rsi<=30?'OS':'Neutral';
+    const rsiMarkerPct = Math.max(0,Math.min(100,ich.rsi||50));
+
+    const srVals = [ich.support2,ich.support1,price,ich.resistance1,ich.resistance2].filter(Boolean);
+    const srMin = Math.min(...srVals)*0.995, srMax = Math.max(...srVals)*1.005;
+    const srToX = v => ((v-srMin)/(srMax-srMin)*100).toFixed(1);
+
+    const fvgHtml = (ich.fvgZones||[]).map(z=>`
+      <span class="zone-badge zone-fvg-${z.type}">FVG ${z.type==='bull'?'🟢':'🔴'} ${Math.round(z.low/1000)}k–${Math.round(z.high/1000)}k</span>
+    `).join('');
+    const obHtml = (ich.obZones||[]).map(z=>`
+      <span class="zone-badge zone-ob-${z.type}">OB ${z.type==='bull'?'🟢':'🔴'} ${Math.round(z.low/1000)}k–${Math.round(z.high/1000)}k</span>
+    `).join('');
+
     grid.innerHTML += `
-      <div class="ich-card" style="border-top:2px solid ${COLORS[t]}">
-        <div class="ich-ticker">${t} <span class="badge ${ich.sigClass}">${ich.signal}</span>${isCache?`<span class="badge bm" style="font-size:6px;margin-left:3px">cache</span>`:''}</div>
-        <div class="ich-row"><span class="ich-label">Price</span><span class="ich-val" style="color:var(--text)">${rp(price)}</span></div>
-        <div class="ich-row"><span class="ich-label">Tenkan (9)</span><span class="ich-val">${Math.round(ich.tenkan).toLocaleString('id')}</span></div>
-        <div class="ich-row"><span class="ich-label">Kijun (26)</span><span class="ich-val">${Math.round(ich.kijun).toLocaleString('id')}</span></div>
-        <div class="ich-row"><span class="ich-label">Cloud Top</span><span class="ich-val">${Math.round(cloudTop).toLocaleString('id')}</span></div>
-        <div class="ich-row"><span class="ich-label">Cloud Bot</span><span class="ich-val">${Math.round(cloudBot).toLocaleString('id')}</span></div>
-        <div class="ich-row"><span class="ich-label">TK Cross</span><span class="ich-val" style="color:${ich.tkBull?'var(--green)':'var(--red)'}">${ich.tkBull?'↑ Bullish':'↓ Bearish'}</span></div>
-        <div class="ich-row"><span class="ich-label">Chikou</span><span class="ich-val" style="color:${ich.chikouBull?'var(--green)':'var(--red)'}">${ich.chikouBull?'↑ Above':'↓ Below'}</span></div>
-        <div class="ich-row"><span class="ich-label">Posisi</span><span class="ich-val" style="color:${posColor}">${posLabel}</span></div>
-        <div class="ich-row"><span class="ich-label">Score</span><span class="ich-val">${ich.score}/7</span></div>
-      </div>`;
+      <div class="ich-card-v2" style="border-top:2px solid ${color}">
+        <!-- HEAD -->
+        <div class="ich-card-v2-head">
+          <div>
+            <div style="font-size:13px;font-weight:500;color:${color};line-height:1">${t}</div>
+            <div style="font-size:8px;color:var(--muted);margin-top:1px">${rp(price)}</div>
+          </div>
+          <div style="text-align:right">
+            <span class="badge ${ich.sigClass}">${ich.signal}</span>
+            <div style="font-size:7px;color:${posColor};margin-top:3px">${posLabel}</div>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="ich-card-v2-body">
+
+          <!-- RSI GAUGE -->
+          <div class="ich-card-v2-section">RSI 14</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:500;color:${rsiColor};font-family:'Fraunces',serif;font-weight:200">${ich.rsi||'—'}</span>
+            <span style="font-size:7.5px;color:${rsiColor}">${rsiLabel}</span>
+          </div>
+          <div class="rsi-gauge" style="opacity:.5">
+            <div class="rsi-marker" style="left:${rsiMarkerPct}%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:6.5px;color:var(--dim);margin-top:2px">
+            <span>OS 30</span><span>—</span><span>OB 70</span>
+          </div>
+
+          <!-- S/R VISUAL -->
+          <div class="ich-card-v2-section">Support / Resistance</div>
+          ${ich.support1!=null?`
+          <div class="sr-bar">
+            <!-- S2 zone -->
+            <div class="sr-zone" style="left:0%;width:${srToX(ich.support2)}%;background:var(--red)"></div>
+            <!-- S1 zone -->
+            <div class="sr-zone" style="left:${srToX(ich.support2)}%;width:${srToX(ich.support1)-srToX(ich.support2)}%;background:rgba(240,192,96,.4)"></div>
+            <!-- Price marker -->
+            <div class="sr-price-marker" style="left:calc(${srToX(price)}% - 1px)"></div>
+            <!-- R1 zone -->
+            <div class="sr-zone" style="left:${srToX(price)}%;width:${srToX(ich.resistance1)-srToX(price)}%;background:rgba(96,170,255,.3)"></div>
+            <!-- R2 zone -->
+            <div class="sr-zone" style="left:${srToX(ich.resistance1)}%;right:0%;background:var(--green);opacity:.15"></div>
+          </div>
+          <div class="ich-row"><span class="ich-label" style="color:var(--red)">S1/S2</span><span class="ich-val">${Math.round(ich.support1).toLocaleString('id')} / ${Math.round(ich.support2).toLocaleString('id')}</span></div>
+          <div class="ich-row"><span class="ich-label" style="color:var(--accent2)">Pivot</span><span class="ich-val">${Math.round(ich.pivot).toLocaleString('id')}</span></div>
+          <div class="ich-row"><span class="ich-label" style="color:var(--green)">R1/R2</span><span class="ich-val">${Math.round(ich.resistance1).toLocaleString('id')} / ${Math.round(ich.resistance2).toLocaleString('id')}</span></div>
+          `:''}
+
+          <!-- ICHIMOKU DETAIL -->
+          <div class="ich-card-v2-section">Ichimoku</div>
+          <div class="ich-row"><span class="ich-label">Tenkan</span><span class="ich-val">${Math.round(ich.tenkan).toLocaleString('id')}</span></div>
+          <div class="ich-row"><span class="ich-label">Kijun</span><span class="ich-val">${Math.round(ich.kijun).toLocaleString('id')}</span></div>
+          <div class="ich-row"><span class="ich-label">Cloud</span><span class="ich-val">${Math.round(cloudTop).toLocaleString('id')} / ${Math.round(cloudBot).toLocaleString('id')}</span></div>
+          <div class="ich-row"><span class="ich-label">TK Cross</span><span class="ich-val" style="color:${ich.tkBull?'var(--green)':'var(--red)'}">${ich.tkBull?'↑ Bull':'↓ Bear'}</span></div>
+          <div class="ich-row"><span class="ich-label">Score</span><span class="ich-val">${ich.score}/7</span></div>
+
+          <!-- FVG + OB ZONES -->
+          ${(fvgHtml||obHtml)?`
+          <div class="ich-card-v2-section">FVG / OB Zones</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px">${fvgHtml}${obHtml}</div>`:''}
+
+        </div>
+      </div>`; return;
+
   });
 }
 
-// ════════════════════════════════════
-// FAIR VALUE
-// ════════════════════════════════════
 function renderFairValue() {
   const body = document.getElementById('fv-body');
   if (!body) return;
   body.innerHTML = '';
-  const fvDate = ANALYSIS_DATE;
   TICKERS.forEach(t => {
     const d = ANALYSIS_DATA[t];
     const price = porto[t].price;
     const consensus = Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3);
-    const upside = ((consensus-price)/price*100).toFixed(0);
-    const mos = upside;
-    const uColor = upside>0?'var(--green)':'var(--red)';
+    const mos = ((consensus-price)/price*100).toFixed(1);
+    const mosNum = parseFloat(mos);
+    const uColor = mosNum>0?'var(--green)':'var(--red)';
     let verdict, vClass;
-    if (upside>20){verdict='UNDERVALUED';vClass='bg';}
-    else if(upside>5){verdict='FAIR';vClass='bb';}
-    else if(upside>-10){verdict='FAIR/PRICEY';vClass='ba';}
+    if(mosNum>20){verdict='UNDERVALUED';vClass='bg';}
+    else if(mosNum>5){verdict='FAIR';vClass='bb';}
+    else if(mosNum>-10){verdict='FAIR/PRICEY';vClass='ba';}
     else{verdict='OVERVALUED';vClass='br';}
     body.innerHTML += `
       <tr>
         <td style="color:${COLORS[t]};font-weight:500">${t}</td>
-        <td class="num">${rp(price)}</td>
+        <td class="num">${price.toLocaleString('id')}</td>
         <td class="num">${rp(d.fv_pe)}</td>
         <td class="num">${rp(d.fv_ddm)}</td>
         <td class="num">${rp(d.fv_pbv)}</td>
-        <td class="num bold">${rp(consensus)}</td>
-        <td class="num" style="color:${uColor};font-weight:500">${upside>0?'+':''}${upside}%</td>
-        <td class="num" style="color:${uColor}">${upside>0?'+':''}${mos}%</td>
+        <td class="num" style="font-weight:600">${rp(consensus)}</td>
+        <td class="num" style="color:${uColor};font-weight:500">${mosNum>0?'+':''}${mos}%</td>
         <td class="ctr"><span class="badge ${vClass}">${verdict}</span></td>
-        <td class="ctr" style="font-size:8px;color:var(--dim)">${fvDate}</td>
       </tr>`;
   });
 }
@@ -2319,32 +2420,27 @@ function renderForecastTable() {
 
 // Risk explanations — keys HARUS match persis label di ANALYSIS_DATA.risks
 const RISK_EXPLAIN = {
-  /* ── ADMF ── */
-  'Integrasi merger MFIN belum settle':'Merger ADMF + MFIN efektif Oktober 2025. Konsolidasi sistem, SDM, dan loan book masih berjalan. Potensi biaya integrasi tak terduga dan NPL tersembunyi dari portofolio MFIN.',
+    'Integrasi merger MFIN belum settle':'Merger ADMF + MFIN efektif Oktober 2025. Konsolidasi sistem, SDM, dan loan book masih berjalan. Potensi biaya integrasi tak terduga dan NPL tersembunyi dari portofolio MFIN.',
   'Dividend growth negatif 5 tahun':'ADMF mencatat CAGR dividen -7.8% dalam 5 tahun terakhir — berlawanan dengan BMRI yang tumbuh 25%+. Ini signal bahwa earnings power ADMF struktural melemah pasca-peak siklus otomotif.',
   'NPL otomotif creeping':'Non-Performing Loan di segmen otomotif naik perlahan. Konsumen cicilan motor/mobil mulai gagal bayar akibat daya beli tertekan inflasi dan stagnasi upah riil.',
   'Suku bunga BI tinggi':'BI Rate tinggi menekan NIM (Net Interest Margin) lembaga keuangan. Cost of fund naik, margin bersih per pinjaman menyempit dan menekan laba.',
 
-  /* ── ASII ── */
-  'Market share tergerus BYD EV':'Market share otomotif ASII turun ke 49% Q1 2026 dari 54% tahun lalu. BYD dan EV China agresif di segmen premium. Tren ini struktural dan sulit dibalik jangka pendek.',
+    'Market share tergerus BYD EV':'Market share otomotif ASII turun ke 49% Q1 2026 dari 54% tahun lalu. BYD dan EV China agresif di segmen premium. Tren ini struktural dan sulit dibalik jangka pendek.',
   'Perlambatan penjualan kendaraan':'Permintaan mobil dan motor baru melambat seiring kenaikan harga dan stagnasi upah riil. Langsung memukul segmen otomotif ASII yang masih ~50% dari revenue konsolidasi.',
   'Pergantian manajemen Apr 2026':'RUPST ASII 23 April 2026 diperkirakan ada perubahan direksi/komisaris. Pergantian kepemimpinan membawa ketidakpastian arah strategi jangka menengah, terutama terkait respons terhadap ancaman EV.',
   'Forex risk (Jardine repatriasi)':'ASII punya eksposur impor komponen dalam USD. Rupiah melemah otomatis menaikkan biaya produksi. Selain itu, Jardine Matheson sebagai pemegang 50% rutin merepatriasi dividen — tekanan IDR struktural.',
 
-  /* ── BMRI ── */
-  'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi — risiko kualitas aset tersembunyi.',
+    'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi — risiko kualitas aset tersembunyi.',
   'NPL corporate naik':'Debitur korporasi besar mulai kesulitan membayar cicilan pinjaman. Bila beberapa kasus besar macet, provisi BMRI melonjak dan laba terpangkas lebih dalam dari yang diantisipasi pasar.',
   'Suku bunga BI menekan NIM':'Saat BI Rate turun, NIM bank ikut tertekan karena yield aset turun lebih cepat dari biaya dana. Profitabilitas jangka pendek terdampak — BMRI punya gap repricing yang perlu dipantau.',
   'Tekanan politik dividen':'Pemegang saham pemerintah (52%) dapat mendorong BMRI untuk membayar dividen besar demi penerimaan negara, meski internal capital adequacy lebih butuh retensi laba untuk ekspansi kredit.',
 
-  /* ── ITMG ── */
-  'Payout ratio >100% dari earnings':'FY2025 ITMG membayar dividen lebih besar dari laba bersih — payout ratio 106%. Ini diambil dari kas historis. Tidak sustainable jika earnings tidak recover di FY2026.',
+    'Payout ratio >100% dari earnings':'FY2025 ITMG membayar dividen lebih besar dari laba bersih — payout ratio 106%. Ini diambil dari kas historis. Tidak sustainable jika earnings tidak recover di FY2026.',
   'Penurunan harga coal ICI4':'ICI4 adalah patokan batubara kalori rendah — produk utama ITMG. Penurunan harga langsung memangkas revenue dan laba per ton yang dijual. Sensitivitas sangat tinggi terhadap harga spot.',
   'Regulasi karbon global':'Negara maju menerapkan carbon border adjustment. Pembeli batubara di Eropa/Jepang terbebani tarif karbon, mengurangi daya saing ITMG di pasar ekspor premium jangka menengah.',
   'Transisi energi jangka panjang':'Energi terbarukan makin murah dan demand batubara untuk pembangkit listrik menurun struktural 10-15 tahun ke depan. Risiko eksistensial jangka panjang yang tidak bisa diabaikan.',
 
-  /* ── POWR ── */
-  'Renegosiasi tarif PLN':'PLN sebagai pembeli utama listrik POWR bernegosiasi ulang tarif pembelian listrik. Penurunan tarif langsung memangkas margin POWR secara permanen karena struktur biaya tetap.',
+    'Renegosiasi tarif PLN':'PLN sebagai pembeli utama listrik POWR bernegosiasi ulang tarif pembelian listrik. Penurunan tarif langsung memangkas margin POWR secara permanen karena struktur biaya tetap.',
   'Ekspansi capex menekan FCF':'Rencana pembangunan kapasitas listrik baru membutuhkan capex besar. Free Cash Flow menyusut dan dividend sustainability bisa terancam jika utang naik signifikan dalam 2-3 tahun ke depan.',
   'Ketergantungan kawasan industri':'Revenue POWR sangat terkonsentrasi pada kawasan industri Jababeka & Megalopolis Manunggal. Jika aktivitas industri di kawasan tersebut melambat atau tenant besar pindah, volume jual listrik langsung turun.',
   'Fluktuasi harga gas input':'POWR menggunakan gas sebagai bahan bakar sebagian pembangkit. Harga gas naik menekan margin karena tarif jual ke industri sudah terkunci kontrak — squeeze margin dari dua arah.'
@@ -2410,9 +2506,6 @@ function renderRiskGrid() {
   });
 }
 
-// ════════════════════════════════════
-// LIVE PRICE FETCH — CORE PARSERS
-// ════════════════════════════════════
 const YF_MAP = { ADMF:'ADMF.JK',ASII:'ASII.JK',BMRI:'BMRI.JK',ITMG:'ITMG.JK',POWR:'POWR.JK' };
 const STOOQ_MAP = { ADMF:'admf.jk',ASII:'asii.jk',BMRI:'bmri.jk',ITMG:'itmg.jk',POWR:'powr.jk' };
 
@@ -2425,9 +2518,6 @@ function parseYahooOHLCV(data) {
            .filter(x=>x.c!=null&&x.h!=null&&x.l!=null);
 }
 
-// ════════════════════════════════════
-// CONFIRM FETCH POPUP
-// ════════════════════════════════════
 function confirmAndFetch() {
   const lastTs = localStorage.getItem('ac_last_fetch');
   let msg = 'Apakah mau memperbarui semua data? (harga saham, IHSG, USD/IDR, harga coal)';
@@ -2445,9 +2535,6 @@ function doFetch() {
   fetchAllPrices();
 }
 
-// ════════════════════════════════════
-// PIN SYSTEM
-// ════════════════════════════════════
 const PIN_HASH = '190820';
 let pinUnlocked = false;
 
@@ -2470,7 +2557,6 @@ function verifyPin() {
     document.getElementById('pin-err').textContent='PIN salah. Coba lagi.';
     document.getElementById('pin-input').value='';
     document.getElementById('pin-input').focus();
-    // Shake animation
     const inp = document.getElementById('pin-input');
     inp.style.borderColor='var(--red)';
     setTimeout(()=>inp.style.borderColor='',1200);
@@ -2481,19 +2567,13 @@ function closePinModal() {
   window._pinCallback=null;
 }
 
-// Intercept Edit Porto tab
 const _origSwitchTab = window.switchTab;
 
-// ════════════════════════════════════
 // MARKET DATA FETCH (IHSG, USD/IDR, Coal)
-// ════════════════════════════════════
-// ════════════════════════════════════
 // FETCH STRATEGY
 // Primary  : prices.json di repo (ditulis GitHub Actions tiap 15 menit)
 // Fallback : proxy publik (corsproxy/allorigins) — jika prices.json gagal
-// ════════════════════════════════════
 
-// Sesuaikan jika repo kamu bukan di root GitHub Pages
 const PRICES_JSON_URL = './prices.json';
 
 const PROXY_LIST = [
@@ -2719,17 +2799,12 @@ async function fetchAllPrices() {
   const activePanel = document.querySelector('.panel.active');
   if(activePanel) {
     const id = activePanel.id.replace('panel-','');
-    if(id==='nexus') { renderSnapshotPanel(); renderAnalyticsPanel(); }
-    if(id==='snapshot'||id==='analytics') { renderSnapshotPanel(); renderAnalyticsPanel(); }
-    if(id==='deepdive') renderDeepDive();
+    if(id==='snapshot') renderSnapshotPanel();
+    if(id==='analytics') renderAnalyticsPanel();
     if(id==='lot') renderLotGrid();
-    if(id==='arsenal'||id==='rebalance') { renderRebalance(); }
   }
 }
 
-// ════════════════════════════════════
-// LOT CALCULATOR
-// ════════════════════════════════════
 function autoFillDiv() {
   const src = document.getElementById('sel-source').value;
   if(src!=='-'&&src!=='MULTI'&&porto[src]){
@@ -2795,7 +2870,6 @@ function renderLotGrid() {
     order = [prioSel, ...underweight.filter(t => t !== prioSel)];
   }
 
-  // Allocate budget: best-value buy first
   const alloc = {}; let rem = total;
   order.forEach((t, i) => {
     if(rem <= 0) { alloc[t] = 0; return; }
@@ -2864,7 +2938,7 @@ function renderLotGrid() {
         <div class="lc-rank">${rankLabel}</div>
         <div class="lc-ticker" style="color:${COLORS[ticker]||'var(--text)'}">${ticker}</div>
         <div class="lc-lots" style="color:${isSource||isOnTarget?'var(--dim)':(lots>0?'var(--green)':'var(--amber)')}">${isSource?'✕':isOnTarget?'—':lots+' lot'}</div>
-        <div class="lc-price">${rp(s.price)}/lbr</div>
+        <div class="lc-price">Rp${s.price.toLocaleString('id-ID')}/lbr</div>
         <div class="lc-cost">1 lot = ${rp(lotCost)}</div>
         <div style="margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;justify-content:center">${mosBadge}${rebBadge}</div>
         <div class="lc-note">${noteText}</div>
@@ -2898,7 +2972,6 @@ function renderLotGrid() {
 // ── Manual Buy Suggestion: pick cheapest underweight with best MOS ──────────
 function buildManualBuySuggestion(budget, underweightList) {
   if(!budget || !underweightList.length) return null;
-  // Filter to what's actually affordable
   const affordable = underweightList.filter(t => porto[t].price * 100 <= budget);
   if(!affordable.isEmpty && !affordable.length) return null;
   if(!affordable.length) {
@@ -2910,7 +2983,6 @@ function buildManualBuySuggestion(budget, underweightList) {
     </div>`;
   }
 
-  // Score: low price + high MOS + most underweight
   const scored = affordable.map(t => {
     const d = ANALYSIS_DATA[t];
     const consensus = d ? Math.round((d.fv_pe+d.fv_ddm+d.fv_pbv)/3) : porto[t].price;
@@ -2940,9 +3012,6 @@ function buildManualBuySuggestion(budget, underweightList) {
   </div>`;
 }
 
-// ════════════════════════════════════
-// TOP PICK HERO CARD — Lot Recommender
-// ════════════════════════════════════
 function renderTopPick(order, alloc, total) {
   const el = document.getElementById('lot-top-pick');
   if (!el) return;
@@ -3026,12 +3095,8 @@ function renderTopPick(order, alloc, total) {
     </div>`;
 }
 
-
-// ════════════════════════════════════
 // DIVIDEND CALENDAR & MONTHLY GROWTH PLAN
-// ════════════════════════════════════
 
-// Dividend schedule per ticker (bulan cum-date biasanya)
 const DIV_CALENDAR = {
   ADMF: { months:[4],    notes:'Apr only — cum 14 Apr, payment 30 Apr 2026', color:'#e8b84b' },
   ASII: { months:[6],    notes:'Jun — final annual (RUPST Apr → payment Jun)', color:'#4d9de0' },
@@ -3069,7 +3134,7 @@ function renderDivCalendar() {
     html+=`<div style="background:${cal.color}10;border:1px solid ${cal.color}33;border-radius:10px;padding:10px;text-align:center">
       <div style="font-size:9px;font-weight:500;color:${cal.color};text-transform:uppercase;margin-bottom:4px">${t}</div>
       <div style="font-size:8px;color:var(--muted);margin-bottom:5px">${cal.notes}</div>
-      <div style="font-size:12px;font-weight:500;color:var(--text)">${rp(net)}</div>
+      <div style="font-size:12px;font-weight:500;color:var(--text)">Rp${net.toLocaleString('id-ID')}</div>
       <div style="font-size:8px;color:var(--dim)">net/siklus</div>
       ${cal.months.map(m=>`<div style="font-size:7px;background:${cal.color}22;border-radius:3px;padding:2px 5px;margin-top:3px;color:${cal.color}">${MONTH_NAMES[m-1]}</div>`).join('')}
     </div>`;
@@ -3103,13 +3168,11 @@ function renderMonthlyGrowthPlan() {
     const m=((curMon-1+i)%12)+1;
     const yr=now.getFullYear()+(curMon-1+i>=12?1:0);
 
-    // Div yang cair bulan ini berdasarkan DIV_CALENDAR
     const payers=TICKERS.filter(t=>DIV_CALENDAR[t].months.includes(m));
     const divCair=payers.reduce((s,t)=>s+Math.round(simPorto[t].lots*100*simPorto[t].divPerShare*0.85),0);
     const budget=divCair+topup;
 
     // Determine best buy target: most underweight from targets, BUT must be affordable
-    // Compute actual % in simPorto
     const simTotal=TICKERS.reduce((s,t)=>s+simPorto[t].price*simPorto[t].lots*100,0);
     const simPct=t=>simTotal>0?simPorto[t].price*simPorto[t].lots*100/simTotal*100:0;
 
@@ -3118,7 +3181,6 @@ function renderMonthlyGrowthPlan() {
       .map(t=>({t, gap:targets[t]-simPct(t), lotCost:simPorto[t].price*100}))
       .filter(x=>x.gap>0 && x.lotCost<=budget) // must be underweight AND affordable
       .sort((a,b)=>{
-        // Primary: gap from target (most underweight first)
         const gapDiff=b.gap-a.gap;
         if(Math.abs(gapDiff)>1) return gapDiff;
         // Secondary: cheapest (maximize lots bought)
@@ -3135,7 +3197,6 @@ function renderMonthlyGrowthPlan() {
         sisa=budget-lotCostTotal;
         // Update simPorto for next month
         simPorto[buyTicker].lots+=lotsCanBuy;
-        // Extra annual div from new lots
         const extraDiv=Math.round(lotsCanBuy*100*simPorto[buyTicker].divPerShare*0.85);
         cumNewDiv+=extraDiv;
         cumInvested+=lotCostTotal;
@@ -3194,8 +3255,7 @@ function renderRebalance() {
     const price = porto[t].price;
 
     // Ideal lot = how many lots needed so this stock = target% of total portfolio
-    const idealMktV = totalMkt * (target/100);
-    const idealLots = price > 0 ? Math.round(idealMktV / (price*100)) : 0;
+    const idealLots = getIdealLots(t, totalMkt);
     const lotGap = idealLots - currentLots;
 
     let action, aClass;
@@ -3216,8 +3276,7 @@ function renderRebalance() {
         <td>${target}%</td>
         <td>${actual.toFixed(1)}%</td>
         <td style="color:${Math.abs(gap)>5?gap<0?'var(--green)':'var(--red)':'var(--muted)'}">${gap>0?'+':''}${gap.toFixed(1)}%</td>
-        <td class="num">${currentLots} lot</td>
-        <td class="num">${idealLots} lot</td>
+        <td class="num"><strong style="color:${COLORS[t]}">${currentLots}</strong><span style="color:var(--muted)"> / ${idealLots} lot</span></td>
         <td class="num" style="color:${lotGapColor};font-weight:500">${lotGapText}</td>
         <td class="num" style="color:${modalKurang>0?'var(--amber)':'var(--green)'};font-weight:500">${modalKurangText}</td>
         <td class="num">${rp(mktV)}</td>
@@ -3241,14 +3300,11 @@ function renderRebalance() {
         </div>
       </div>`;
   });
-  // Total row
   const totalMktAll=totalMktVal();
   const totalInvAll=totalInvested();
   const totalPnlAll=totalPnl();
   const totalModalKurang=TICKERS.reduce((s,t)=>{
-    const idealMktV=totalMktAll*(targets[t]/100);
-    const idealLots=porto[t].price>0?Math.round(idealMktV/(porto[t].price*100)):0;
-    const lotGap=idealLots-porto[t].lots;
+    const lotGap=getIdealLots(t,totalMktAll)-porto[t].lots;
     return s+(lotGap>0?lotGap*porto[t].price*100:0);
   },0);
   body.innerHTML+=`
@@ -3257,8 +3313,7 @@ function renderRebalance() {
       <td style="font-weight:500">100%</td>
       <td style="font-weight:500">100%</td>
       <td>—</td>
-      <td class="num" style="font-weight:500">${TICKERS.reduce((s,t)=>s+porto[t].lots,0)} lot</td>
-      <td class="num">—</td>
+      <td class="num" style="font-weight:500">${TICKERS.reduce((s,t)=>s+porto[t].lots,0)} lot skrg</td>
       <td class="num">—</td>
       <td class="num" style="font-weight:500;color:${totalModalKurang>0?'var(--amber)':'var(--green)'}">${totalModalKurang>0?rp(totalModalKurang):'✓ Seimbang'}</td>
       <td class="num" style="font-weight:500">${rp(totalMktAll)}</td>
@@ -3266,6 +3321,70 @@ function renderRebalance() {
     </tr>`;
   renderRebalanceReco();
   renderTargetInputs();
+  renderLotProjection();
+}
+
+function renderLotProjection() {
+  const el = document.getElementById('lot-projection-table');
+  if (!el) return;
+  const nominalRaw = parseFloat(document.getElementById('proj-nominal')?.value) || 250_000_000;
+
+  let rows = '';
+  let totalNominal = 0, totalLotIdeal = 0, totalNilaiIdeal = 0;
+
+  TICKERS.forEach(t => {
+    const targetPct = targets[t];
+    const price = porto[t].price;
+    const currentLots = porto[t].lots;
+    const nominalAlloc = nominalRaw * (targetPct / 100);
+    const idealLots = getIdealLots(t, nominalRaw);
+    const nilaiIdeal = idealLots * porto[t].price * 100;
+    const gapLots = idealLots - currentLots;
+    const gapColor = gapLots > 0 ? 'var(--green)' : gapLots < 0 ? 'var(--red)' : 'var(--muted)';
+    totalNominal += nominalAlloc;
+    totalLotIdeal += idealLots;
+    totalNilaiIdeal += nilaiIdeal;
+
+    rows += `<tr>
+      <td style="color:${COLORS[t]};font-weight:500">${t}</td>
+      <td class="num">${targetPct}%</td>
+      <td class="num">${rp(nominalAlloc)}</td>
+      <td class="num" style="font-weight:500">${idealLots} lot</td>
+      <td class="num">${rp(nilaiIdeal)}</td>
+      <td class="num" style="color:var(--accent2)">${currentLots} lot</td>
+      <td class="num" style="color:${gapColor};font-weight:500">${gapLots>0?'+':''}${gapLots} lot</td>
+    </tr>`;
+  });
+
+  el.innerHTML = `
+    <div class="overflow-x">
+      <table class="tbl">
+        <thead><tr>
+          <th>Saham</th>
+          <th class="num">Alokasi</th>
+          <th class="num">Nominal Target</th>
+          <th class="num">Lot Ideal</th>
+          <th class="num">Nilai Ideal</th>
+          <th class="num">Lot Skrg</th>
+          <th class="num">Gap Lot</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr style="border-top:2px solid var(--border3);background:var(--bg4)">
+            <td style="font-weight:500">TOTAL</td>
+            <td class="num" style="font-weight:500">100%</td>
+            <td class="num" style="font-weight:500">${rp(totalNominal)}</td>
+            <td class="num" style="font-weight:500">${totalLotIdeal} lot</td>
+            <td class="num" style="font-weight:500">${rp(totalNilaiIdeal)}</td>
+            <td class="num">${TICKERS.reduce((s,t)=>s+porto[t].lots,0)} lot</td>
+            <td class="num" style="color:var(--amber)">${totalLotIdeal - TICKERS.reduce((s,t)=>s+porto[t].lots,0)} gap</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div style="font-size:8px;color:var(--dim);margin-top:6px;line-height:1.6">
+      ⚡ Lot Ideal = floor(Nominal × Alokasi% ÷ (Harga × 100)). Harga realtime dari fetch terakhir. Ubah angka nominal di atas untuk simulasi porto berbeda.
+    </div>`;
 }
 
 function renderRebalanceReco() {
@@ -3310,9 +3429,6 @@ function resetTargets() {
   renderRebalance();
 }
 
-// ════════════════════════════════════
-// DIV FORECAST
-// ════════════════════════════════════
 function renderDivForecast() {
   const body=document.getElementById('div-forecast-body');
   if(!body) return;
@@ -3336,9 +3452,6 @@ function renderDivForecast() {
   });
 }
 
-// ════════════════════════════════════
-// PROJECTION
-// ════════════════════════════════════
 function renderProjection() {
   const target=parseFloat(document.getElementById('proj-target').value)||120_000_000;
   const monthlyTopup=parseFloat(document.getElementById('proj-topup').value)||750000;
@@ -3346,7 +3459,6 @@ function renderProjection() {
   const el=document.getElementById('proj-result');
   if(!el) return;
 
-  // Yield on current portfolio (gross)
   const startMkt=totalMktVal();
   const startDiv=annualDiv()*0.85; // net
   const yieldRate=startMkt>0?(startDiv/startMkt):0.08; // annual net yield
@@ -3401,9 +3513,6 @@ function renderProjection() {
   el.innerHTML=html;
 }
 
-// ════════════════════════════════════
-// EDIT PORTO
-// ════════════════════════════════════
 function renderPortoEdit() {
   renderPortoComposition();
   const grid=document.getElementById('porto-edit-grid');
@@ -3435,10 +3544,8 @@ function renderPortoEdit() {
       </div>`;
   });
 
-  // Cash input
   const cashInp=document.getElementById('inp-cash');
   if(cashInp) cashInp.value=getCash();
-
 
 }
 
@@ -3473,7 +3580,6 @@ function importPorto(file) {
       const data=JSON.parse(e.target.result);
       if(!data.porto) throw new Error('Format tidak valid');
       if(!confirm('Import data dari "'+file.name+'"? Porto saat ini akan ditimpa.')) return;
-      // Auto savepoint before import
       const sps=JSON.parse(localStorage.getItem('ac_savepoints')||'[]');
       sps.unshift({id:Date.now(),name:'Auto-save sebelum import',date:new Date().toLocaleDateString('id-ID'),porto:JSON.parse(JSON.stringify(porto)),totalInv:totalInvested(),totalMkt:totalMktVal(),totalDiv:annualDiv()});
       if(sps.length>5) sps.pop();
@@ -3541,7 +3647,6 @@ function savePorto() {
     // Auto-calculate P&L
     porto[t].pnl=Math.round(porto[t].price*porto[t].lots*100 - porto[t].invested);
   });
-  // Save cash
   const cashInp=document.getElementById('inp-cash');
   if(cashInp) localStorage.setItem('ac_cash',cashInp.value||'0');
 
@@ -3560,9 +3665,6 @@ function resetPorto() {
   renderPortoEdit();
 }
 
-// ════════════════════════════════════
-// SAVEPOINTS — 5 SLOTS
-// ════════════════════════════════════
 function createSavepoint() {
   const name=prompt('Nama savepoint?','Savepoint '+new Date().toLocaleDateString('id-ID'));
   if(!name) return;
@@ -3656,18 +3758,165 @@ function deleteSavepoint(idx) {
   renderSavepointList();
 }
 
-// ════════════════════════════════════
-// STOCK COMMAND MATRIX — Signal Glance (v9)
-// ════════════════════════════════════
-// ════════════════════════════════════
+function handleOCRFiles(files) {
+  ocrFiles=Array.from(files).filter(f=>f.type.startsWith('image/'));
+  if(!ocrFiles.length) return;
+  const thumbs=document.getElementById('ocr-thumbs');
+  const preview=document.getElementById('ocr-preview-row');
+  thumbs.innerHTML='';
+  ocrFiles.forEach((f,i)=>{
+    const url=URL.createObjectURL(f);
+    thumbs.innerHTML+=`
+      <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--border2)">
+        <img src="${url}" style="height:120px;width:auto;display:block;object-fit:cover">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);font-size:8px;color:#fff;padding:2px 5px;text-align:center">${f.name.slice(0,18)}</div>
+      </div>`;
+  });
+  preview.style.display='block';
+  document.getElementById('btn-ocr-scan').disabled=false;
+  document.getElementById('ocr-result').style.display='none';
+  document.getElementById('ocr-status').style.display='none';
+}
+
+function clearOCR() {
+  ocrFiles=[];ocrParsed=null;
+  document.getElementById('ocr-thumbs').innerHTML='';
+  document.getElementById('ocr-preview-row').style.display='none';
+  document.getElementById('ocr-result').style.display='none';
+  document.getElementById('ocr-status').style.display='none';
+  document.getElementById('btn-ocr-scan').disabled=true;
+  document.getElementById('ocr-file-input').value='';
+}
+
+function setOCRStatus(msg,type) {
+  const el=document.getElementById('ocr-status');
+  el.style.display='block';
+  el.className=type==='error'?'warn-box mb12':type==='ok'?'success-box mb12':'info-box mb12';
+  el.innerHTML=msg;
+}
+
+async function fileToBase64(file) {
+  return new Promise((res,rej)=>{
+    const reader=new FileReader();
+    reader.onload=()=>res(reader.result.split(',')[1]);
+    reader.onerror=rej;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function runOCR() {
+  const apiKey=localStorage.getItem('ac_apikey')||document.getElementById('ocr-api-key').value;
+  if(!apiKey||!apiKey.startsWith('sk-ant-')){setOCRStatus('⚠ Masukkan Anthropic API Key dulu (format: sk-ant-...)','error');return;}
+  if(!ocrFiles.length){setOCRStatus('⚠ Upload screenshot dulu','error');return;}
+  const btn=document.getElementById('btn-ocr-scan');
+  btn.disabled=true;btn.innerHTML='<span class="spin">⟳</span> Scanning...';
+  setOCRStatus('⟳ Mengirim screenshot ke Claude AI untuk dibaca...','info');
+  try {
+    const imageBlocks=[];
+    for(const f of ocrFiles){
+      const b64=await fileToBase64(f);
+      imageBlocks.push({type:'image',source:{type:'base64',media_type:f.type||'image/jpeg',data:b64}});
+    }
+    const prompt=`Kamu adalah sistem OCR khusus untuk membaca screenshot aplikasi Stockbit Indonesia.
+Dari screenshot ini, ekstrak data portfolio saham berikut. Ticker valid: ADMF, ASII, BMRI, ITMG, POWR.
+Angka format Indonesia: titik = pemisah ribuan, koma = desimal. P&L bisa negatif.
+Kembalikan HANYA JSON berikut, tidak ada teks lain:
+{"source":"portfolio_list","stocks":[{"ticker":"BMRI","lots":5,"avgPrice":4636.94,"currentPrice":4590,"invested":2318472,"pnl":-23473,"pnlPct":-1.01}],"notes":"catatan singkat"}
+Jika tidak ada data: {"stocks":[],"notes":"alasan"}`;
+    imageBlocks.push({type:'text',text:prompt});
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:imageBlocks}]})
+    });
+    if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err?.error?.message||`HTTP ${resp.status}`);}
+    const data=await resp.json();
+    const rawText=data.content?.map(c=>c.text||'').join('')||'';
+    const jsonMatch=rawText.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('Tidak dapat menemukan JSON dalam response');
+    const parsed=JSON.parse(jsonMatch[0]);
+    if(!parsed.stocks||!parsed.stocks.length){setOCRStatus('⚠ Tidak ada data. '+( parsed.notes||''),'error');btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';return;}
+    parsed.stocks=parsed.stocks.filter(s=>TICKERS.includes(s.ticker));
+    if(!parsed.stocks.length){setOCRStatus('⚠ Tidak ada ticker yang cocok dalam screenshot.','error');btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';return;}
+    ocrParsed=parsed;
+    renderOCRResult(parsed);
+    setOCRStatus('✓ Berhasil membaca '+parsed.stocks.length+' saham.','ok');
+  } catch(e) { setOCRStatus('✕ Error: '+e.message,'error'); }
+  btn.disabled=false;btn.innerHTML='🔍 Scan & Extract Data';
+}
+
+function renderOCRResult(parsed) {
+  const el=document.getElementById('ocr-parsed-preview');
+  const res=document.getElementById('ocr-result');
+  const rows=parsed.stocks.map(s=>{
+    const cur=porto[s.ticker];
+    const pnlColor=(s.pnl||0)>=0?'var(--green)':'var(--red)';
+    return `<tr>
+      <td style="font-weight:500;color:${COLORS[s.ticker]}">${s.ticker}</td>
+      <td class="num">${s.lots} lot</td>
+      <td class="num">${rp(s.avgPrice)}</td>
+      <td class="num">${s.currentPrice?rp(s.currentPrice):'—'}</td>
+      <td class="num">${rp(s.invested)}</td>
+      <td class="num" style="color:${pnlColor}">${(s.pnl||0)>=0?'+':''}${Math.round(s.pnl||0).toLocaleString('id')}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML=`
+    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">
+      <strong style="color:var(--text)">Ditemukan:</strong> ${parsed.stocks.length} saham &nbsp;·&nbsp; ${parsed.notes||''}
+    </div>
+    <div class="overflow-x"><table class="tbl">
+      <thead><tr><th>Ticker</th><th class="num">Lot</th><th class="num">Avg Price</th><th class="num">Harga Kini</th><th class="num">Invested</th><th class="num">P&L</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  res.style.display='block';
+}
+
+function applyOCRToPorto() {
+  if(!ocrParsed||!ocrParsed.stocks.length) return;
+  const savepoints=JSON.parse(localStorage.getItem('ac_savepoints')||'[]');
+  savepoints.unshift({
+    id:Date.now(),
+    name:`Auto-save sebelum OCR ${new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}`,
+    date:new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),
+    porto:JSON.parse(JSON.stringify(porto)),
+    totalInv:totalInvested(), totalMkt:totalMktVal(), totalDiv:annualDiv()
+  });
+  if(savepoints.length>5) savepoints.pop();
+  localStorage.setItem('ac_savepoints',JSON.stringify(savepoints));
+
+  ocrParsed.stocks.forEach(s=>{
+    if(!porto[s.ticker]) return;
+    if(s.lots!=null) porto[s.ticker].lots=s.lots;
+    if(s.avgPrice!=null) porto[s.ticker].avgPrice=s.avgPrice;
+    if(s.currentPrice!=null) porto[s.ticker].price=s.currentPrice;
+    else if(s.avgPrice!=null) porto[s.ticker].price=s.avgPrice;
+    if(s.invested!=null) porto[s.ticker].invested=s.invested;
+    if(s.pnl!=null) porto[s.ticker].pnl=s.pnl;
+  });
+  localStorage.setItem('ac_porto',JSON.stringify(porto));
+  updateHeader();
+  setOCRStatus('✓ Porto diupdate dari '+ocrParsed.stocks.length+' saham. Auto-savepoint dibuat.','ok');
+  document.getElementById('ocr-result').style.display='none';
+  setTimeout(()=>{
+    document.querySelectorAll('.sb-nav-item').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    const portoNavItem = document.querySelector('[data-tab="control"]');
+    if(portoNavItem) portoNavItem.classList.add('active');
+    document.getElementById('panel-control').classList.add('active');
+    const titleEl = document.getElementById('topbar-title');
+    if(titleEl) titleEl.textContent = TAB_TITLES['porto']||'Edit Porto';
+    renderPortoEdit();
+    renderSavepointList();
+  },1500);
+}
+
 function renderStockMatrix() {
   const el = document.getElementById('stock-matrix');
   if (!el) return;
 
   const totalMkt = totalMktVal();
-  const inv = totalInvested();
+  const TARGET_PORTO = 250_000_000;
 
-  // Compute MOS for each ticker
   const mosMap = {};
   TICKERS.forEach(t => {
     const d = ANALYSIS_DATA[t];
@@ -3676,7 +3925,6 @@ function renderStockMatrix() {
     mosMap[t] = ((consensus - porto[t].price) / porto[t].price * 100);
   });
 
-  // Sort by MOS desc for rank
   const ranked = [...TICKERS].sort((a,b) => mosMap[b] - mosMap[a]);
 
   el.innerHTML = '';
@@ -3694,6 +3942,11 @@ function renderStockMatrix() {
     const yieldOnCost = s.invested > 0 && s.lots > 0 ? (s.divPerShare / (s.invested / (s.lots * 100)) * 100) : 0;
     const pnlPct = s.invested > 0 ? (s.pnl / s.invested * 100) : 0;
 
+    // Ideal lot based on Rp250jt target
+    const idealMktV = TARGET_PORTO * (target / 100);
+    const idealLots = s.price > 0 ? Math.round(idealMktV / (s.price * 100)) : 0;
+    const idealVal  = idealLots * s.price * 100;
+
     // Signal
     let sig, sigBg, sigColor, sigBorder;
     if (mos > 35)      { sig='HAJAR';   sigBg=`linear-gradient(135deg,var(--green-bg),rgba(3,60,30,.6))`;  sigColor='var(--green)';  sigBorder='var(--green-border)'; }
@@ -3702,19 +3955,31 @@ function renderStockMatrix() {
     else if (mos > -5) { sig='HOLD';    sigBg='var(--bg5)';       sigColor='var(--muted)';  sigBorder='var(--border)';       }
     else               { sig='TUNGGU';  sigBg='var(--amber-bg)';  sigColor='var(--amber)';  sigBorder='var(--amber-border)'; }
 
-    // Ideal lot calculation (based on target % of total portfolio at target size Rp250jt)
-    const TARGET_PORTO = 250000000;
-    const idealMktV = TARGET_PORTO * (targets[t] / 100);
-    const idealLots = s.price > 0 ? Math.round(idealMktV / (s.price * 100)) : 0;
-    const lotGap = idealLots - s.lots;
-    const lotGapColor = lotGap > 0 ? 'var(--green)' : lotGap === 0 ? 'var(--muted)' : 'var(--red)';
+    // Ichimoku + RSI supplement for matrix
+    let ichLine = '';
+    if (ich) {
+      const ichColor = ich.sigClass==='bg'?'var(--green)':ich.sigClass==='bb'?'var(--blue)':ich.sigClass==='ba'?'var(--amber)':'var(--muted)';
+      const posIcon = ich.aboveCloud ? '↑' : ich.belowCloud ? '↓' : '↔';
+      const rsiColor = ich.rsi>=70?'var(--red)':ich.rsi<=30?'var(--green)':'var(--muted)';
+      const rsiLabel = ich.rsi>=70?'OB':ich.rsi<=30?'OS':'—';
+      const srLine = ich.support1!=null?`<div class="sc-row"><span class="sc-label">S1/R1</span><span class="sc-value" style="font-size:9px"><span style="color:var(--red)">${Math.round(ich.support1).toLocaleString('id')}</span> · <span style="color:var(--green)">${Math.round(ich.resistance1).toLocaleString('id')}</span></span></div>`:''
+      ichLine = `
+        <div class="sc-row">
+          <span class="sc-label">Ichimoku</span>
+          <span style="font-size:8px;color:${ichColor};font-weight:500">${posIcon} ${ich.signal}</span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">RSI 14</span>
+          <span style="font-size:9px;font-weight:500;color:${rsiColor}">${ich.rsi||'—'} <span style="font-size:7px">${rsiLabel}</span></span>
+        </div>
+        ${srLine}
+      `;
+    }
 
-    // Allocation bar
     const allocW = Math.min(actual, 100);
     const targetW = Math.min(target, 100);
     const overColor = gap > 5 ? 'var(--red)' : gap > 0 ? 'var(--amber)' : 'var(--green)';
 
-    // Medal for top ranked
     const rank = ranked.indexOf(t);
     const rankEl = rank === 0 ? '<span style="font-size:8px">🥇</span>' : rank === 1 ? '<span style="font-size:7px;opacity:.6">🥈</span>' : '';
 
@@ -3737,28 +4002,25 @@ function renderStockMatrix() {
           <!-- Price -->
           <div class="sc-row">
             <span class="sc-label">Harga</span>
-            <span class="sc-value big">${rp(s.price)}</span>
+            <span class="sc-value big">${s.price.toLocaleString('id')}</span>
           </div>
           <!-- P&L -->
           <div class="sc-row">
             <span class="sc-label">P&L</span>
-            <span class="sc-value" style="color:${s.pnl>=0?'var(--green)':'var(--red)'}">${s.pnl>=0?'+':''}${rp(s.pnl)} <span style="font-size:7.5px;opacity:.7">(${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%)</span></span>
+            <span class="sc-value" style="color:${s.pnl>=0?'var(--green)':'var(--red)'}">${rp(s.pnl)} <span style="font-size:7.5px;opacity:.7">(${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%)</span></span>
           </div>
 
           <div style="height:1px;background:var(--border);margin:3px 0"></div>
 
-          <!-- Lots + value -->
+          <!-- Lots: sekarang / ideal -->
           <div class="sc-row">
             <span class="sc-label">Posisi</span>
-            <span class="sc-value"><strong style="color:${color};font-size:11px">${s.lots}</strong> <span style="color:var(--muted)">lot</span></span>
+            <span class="sc-value"><strong style="color:${color};font-size:11px">${s.lots}</strong><span style="color:var(--muted)"> lot</span> <span style="color:var(--dim);font-size:8px">/ ${idealLots}L ideal</span></span>
           </div>
-          <div class="sc-row">
-            <span class="sc-label">Ideal Lot</span>
-            <span class="sc-value"><strong style="color:${lotGapColor};font-size:10px">${idealLots}</strong> <span style="color:var(--dim);font-size:8px">lot (${lotGap>0?'+'+lotGap:lotGap===0?'✓':lotGap})</span></span>
-          </div>
+          <!-- Nilai: sekarang / ideal -->
           <div class="sc-row">
             <span class="sc-label">Nilai Mkt</span>
-            <span class="sc-value">${rp(mktVal)}</span>
+            <span class="sc-value">${rp(mktVal)} <span style="color:var(--dim);font-size:8px">/ ${rp(idealVal)}</span></span>
           </div>
 
           <div style="height:1px;background:var(--border);margin:3px 0"></div>
@@ -3771,8 +4033,10 @@ function renderStockMatrix() {
           <!-- Div per share -->
           <div class="sc-row">
             <span class="sc-label">Div/Lbr</span>
-            <span class="sc-value" style="color:var(--green)">${rp(s.divPerShare)}</span>
+            <span class="sc-value" style="color:var(--green)">${s.divPerShare.toLocaleString('id')}</span>
           </div>
+
+          ${ichLine}
 
           <div style="height:1px;background:var(--border);margin:3px 0"></div>
 
@@ -3793,9 +4057,7 @@ function renderStockMatrix() {
   });
 }
 
-// ════════════════════════════════════
 // INIT
-// ════════════════════════════════════
 window.addEventListener('load',()=>{
   // Restore mode
   if(localStorage.getItem('ac_mode')==='light'){
@@ -3811,17 +4073,14 @@ window.addEventListener('load',()=>{
     if(btn){ btn.textContent='›'; btn.classList.add('is-collapsed'); }
   }
 
-  // Load cached ichimoku
   const savedIch=JSON.parse(localStorage.getItem('ac_ichdata')||'{}');
   Object.keys(savedIch).forEach(t=>{ if(savedIch[t]) ichData[t]=savedIch[t]; });
 
-  // Enable fetch buttons
   const fetchBtn = document.getElementById('btn-main-fetch');
   if(fetchBtn) fetchBtn.disabled = false;
   const floatBtn = document.getElementById('btn-float-fetch');
   if(floatBtn) floatBtn.disabled = false;
 
-  // Restore last fetch timestamp display
   const lastFull = localStorage.getItem('ac_last_fetch_full');
   const lastDur  = localStorage.getItem('ac_last_fetch_dur');
   const dateDisp = document.getElementById('fetch-date-display');
