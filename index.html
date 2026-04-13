@@ -1391,6 +1391,11 @@ const STOCK_NAMES = {
 // STATE
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
+// Migration guard: patch missing tickers (e.g. INDF missing from old localStorage saves)
+TICKERS.forEach(t => { if (targets[t] == null) targets[t] = DEFAULT_TARGETS[t]; });
+// If total != 100 (corrupted old data), reset to default
+const _tSum = TICKERS.reduce((s,t) => s + (targets[t]||0), 0);
+if (_tSum !== 100) { targets = JSON.parse(JSON.stringify(DEFAULT_TARGETS)); localStorage.setItem('ac_targets', JSON.stringify(targets)); }
 let ichData = {};
 let ocrFiles = [], ocrParsed = null;
 
