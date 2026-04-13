@@ -1293,16 +1293,16 @@ const TICKERS = ['ADMF','ASII','BMRI','ITMG','INDF'];
 const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#3dc88a', INDF:'#9b79e0' };
 
 const DEFAULT_PORTO = {
-  ADMF:{ price:9000,  invested:3555325, pnl:44675,  lots:4,  divPerShare:630,   avgPrice:8888 },
-  ASII:{ price:6300,  invested:1216822, pnl:43177,  lots:2,  divPerShare:481,   avgPrice:6084 },
-  BMRI:{ price:4670,  invested:2318472, pnl:16527,  lots:5,  divPerShare:466,   avgPrice:4637 },
-  ITMG:{ price:27000, invested:7871790, pnl:228210, lots:3,  divPerShare:2245,  avgPrice:26239 },
-  INDF:{ price:6550,  invested:1310000, pnl:0,      lots:2,  divPerShare:590,   avgPrice:6550 }
+  ADMF:{ price:9050,   invested:3555325, pnl:64675,  lots:4,  divPerShare:630,   avgPrice:8888 },
+  ASII:{ price:6175,   invested:1845263, pnl:7237,  lots:3,  divPerShare:481,   avgPrice:6151 },
+  BMRI:{ price:4600,   invested:4641952, pnl:-41952, lots:10, divPerShare:466,   avgPrice:4642 },
+  ITMG:{ price:26650,  invested:7871790, pnl:123210, lots:3,  divPerShare:2245,  avgPrice:26239 },
+  INDF:{ price:6750,   invested:1337002, pnl:12998,  lots:2,  divPerShare:590,   avgPrice:6685 }
 };
 
 // ── MILESTONE TARGET Rp250jt (v13 — Rebalance Apr 2026, POWR EXIT → INDF ENTRY) ──
-// Harga patokan: ADMF 9000 | BMRI 4670 | ASII 6300 | ITMG 27000 | INDF 6550
-// POSISI AKTUAL (Apr 2026): BMRI 5L | INDF 2L | ITMG 3L | ASII 2L | ADMF 4L = Rp16.61jt
+// Harga patokan: ADMF 9050 | BMRI 4600 | ASII 6175 | ITMG 26650 | INDF 6750
+// POSISI AKTUAL (Apr 2026): BMRI 10L | INDF 2L | ITMG 3L | ASII 3L | ADMF 4L = Rp19.42jt
 // TARGET LOT PORTO PENUH (Rp250jt) — ALOKASI v13:
 //   BMRI 187 lot (35%) = Rp87.33jt → gap +182 lot = Rp84.97jt  ↑ core anchor
 //   ASII  99 lot (25%) = Rp62.37jt → gap  +97 lot = Rp61.11jt  ↑ deep value
