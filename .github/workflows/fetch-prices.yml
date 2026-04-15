@@ -1,39 +1,33 @@
-name: Fetch Aegis Prices
+name: Aegis Alpha Price Sync
 
 on:
   schedule:
-    # Every 15 minutes on weekdays (Mon-Fri), Jakarta trading hours 08:30-16:30 WIB = 01:30-09:30 UTC
-    - cron: '*/15 1-9 * * 1-5'
-    # Also run at 10:00 UTC (after market close) to get final prices
-    - cron: '0 10 * * 1-5'
-  workflow_dispatch: # Allow manual trigger from GitHub UI
+    # Berjalan setiap 30 menit selama jam bursa (Senin-Jumat, 02:00 - 09:00 UTC atau 09:00 - 16:00 WIB)
+    - cron: '*/30 2-9 * * 1-5'
+  workflow_dispatch: # Memungkinkan tombol "Run workflow" manual di tab Actions
 
 jobs:
-  fetch:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # needed to push prices.json back to repo
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install requests
 
-      - name: Fetch prices
-        run: python scripts/fetch_prices.py
+      - name: Fetch Prices
+        run: python fetch_prices.py
 
-      - name: Commit & push prices.json
+      - name: Commit and Push
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Aegis-Bot"
+          git config --global user.email "bot@aegis.alpha"
           git add prices.json
-          # Only commit if file actually changed
-          git diff --staged --quiet || git commit -m "chore: update prices $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Sync Market Data: $(date)" || exit 0
           git push
