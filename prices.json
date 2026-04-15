@@ -1,54 +1,222 @@
-{
-  "updated_wib": "22 Jan 2025 10:00 WIB",
-  "stocks": {
-    "BMRI": {
-      "price": 7325,
-      "chgPct": 0.34,
-      "bars": [
-        {"t": 1737514800, "o": 7250, "h": 7375, "l": 7225, "c": 7325}
-      ]
-    },
-    "ADMF": {
-      "price": 10450,
-      "chgPct": 0.24,
-      "bars": [
-        {"t": 1737514800, "o": 10400, "h": 10550, "l": 10400, "c": 10450}
-      ]
-    },
-    "ITMG": {
-      "price": 26850,
-      "chgPct": -0.55,
-      "bars": [
-        {"t": 1737514800, "o": 27000, "h": 27200, "l": 26750, "c": 26850}
-      ]
-    },
-    "ASII": {
-      "price": 5050,
-      "chgPct": -0.98,
-      "bars": [
-        {"t": 1737514800, "o": 5100, "h": 5150, "l": 5025, "c": 5050}
-      ]
-    },
-    "INDF": {
-      "price": 7125,
-      "chgPct": 0.71,
-      "bars": [
-        {"t": 1737514800, "o": 7050, "h": 7200, "l": 7050, "c": 7125}
-      ]
-    }
-  },
-  "market": {
-    "IHSG": {
-      "price": 7245.12,
-      "chgPct": 0.15
-    },
-    "USDIDR": {
-      "price": 15950,
-      "chgPct": -0.05
-    },
-    "COAL": {
-      "price": 135.20,
-      "chgPct": 1.25
-    }
-  }
+#!/usr/bin/env python3
+"""
+fetch_prices.py — Aegis Alpha price fetcher
+Strategy: Yahoo Finance → yfinance lib → Stooq → Alpha Vantage → investing.com proxy → CNBC API
+Dijalankan via GitHub Actions, output ke prices.json
+"""
+import json, time, datetime, requests, pytz
+from zoneinfo import ZoneInfo
+
+TICKERS = {
+    "ADMF": "ADMF.JK",
+    "ASII": "ASII.JK",
+    "BMRI": "BMRI.JK",
+    "ITMG": "ITMG.JK",
+    "INDF": "INDF.JK",
 }
+
+STOOQ_MAP = {
+    "ADMF": "admf.jk", "ASII": "asii.jk", "BMRI": "bmri.jk",
+    "ITMG": "itmg.jk", "INDF": "indf.jk",
+}
+
+PROXIES_LIST = [
+    "https://corsproxy.io/?",
+    "https://api.allorigins.win/raw?url=",
+    "https://thingproxy.freeboard.io/fetch/",
+]
+
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+
+def try_yahoo_direct(yf_sym):
+    """Source 1: Yahoo Finance v8 API direct"""
+    try:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{yf_sym}?interval=1d&range=3mo"
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            d = r.json()
+            price = d["chart"]["result"][0]["meta"]["regularMarketPrice"]
+            bars = extract_bars(d)
+            return {"price": round(price), "bars": bars, "source": "yahoo-direct"}
+    except Exception as e:
+        print(f"  yahoo-direct failed: {e}")
+    return None
+
+def try_yahoo_v10(yf_sym):
+    """Source 2: Yahoo Finance v10 quoteSummary"""
+    try:
+        url = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{yf_sym}?modules=price"
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            price = r.json()["quoteSummary"]["result"][0]["price"]["regularMarketPrice"]["raw"]
+            return {"price": round(price), "bars": None, "source": "yahoo-v10"}
+    except Exception as e:
+        print(f"  yahoo-v10 failed: {e}")
+    return None
+
+def try_yfinance_lib(yf_sym):
+    """Source 3: yfinance library (most reliable, needs pip install yfinance)"""
+    try:
+        import yfinance as yf
+        tk = yf.Ticker(yf_sym)
+        hist = tk.history(period="3mo", interval="1d")
+        if not hist.empty:
+            price = round(hist["Close"].iloc[-1])
+            bars = [{"t": str(idx.date()), "o": round(r.Open), "h": round(r.High),
+                     "l": round(r.Low), "c": round(r.Close), "v": int(r.Volume)}
+                    for idx, r in hist.iterrows()]
+            return {"price": price, "bars": bars, "source": "yfinance-lib"}
+    except Exception as e:
+        print(f"  yfinance-lib failed: {e}")
+    return None
+
+def try_stooq(stooq_sym):
+    """Source 4: Stooq CSV"""
+    try:
+        url = f"https://stooq.com/q/l/?s={stooq_sym}&f=sd2t2ohlcv&h&e=csv"
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            cols = r.text.strip().split("\n")[1].split(",")
+            price = float(cols[6])
+            if price > 0:
+                return {"price": round(price), "bars": None, "source": "stooq"}
+    except Exception as e:
+        print(f"  stooq failed: {e}")
+    return None
+
+def try_yahoo_proxy(yf_sym):
+    """Source 5: Yahoo via CORS proxy (for restricted regions)"""
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{yf_sym}?interval=1d&range=3mo"
+    for proxy_base in PROXIES_LIST:
+        try:
+            r = requests.get(proxy_base + requests.utils.quote(url), headers=HEADERS, timeout=12)
+            if r.status_code == 200:
+                d = r.json()
+                price = d["chart"]["result"][0]["meta"]["regularMarketPrice"]
+                bars = extract_bars(d)
+                return {"price": round(price), "bars": bars, "source": f"proxy-yahoo"}
+        except Exception as e:
+            print(f"  proxy {proxy_base[:30]} failed: {e}")
+    return None
+
+def try_cnbc_api(ticker_clean):
+    """Source 6: CNBC Markets API (last resort)"""
+    try:
+        url = f"https://quote.cnbc.com/quote-html-webservice/restservices/cff/quote?noform=1&partnerId=2&fund={ticker_clean}|IDX&exthrs=0&output=json"
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            items = data.get("QuickQuoteResult", {}).get("QuickQuote", [])
+            if items:
+                price = float(items[0].get("last", 0))
+                if price > 0:
+                    return {"price": round(price), "bars": None, "source": "cnbc"}
+    except Exception as e:
+        print(f"  cnbc failed: {e}")
+    return None
+
+def extract_bars(yahoo_data):
+    """Parse OHLCV bars dari Yahoo response"""
+    try:
+        result = yahoo_data["chart"]["result"][0]
+        ts = result["timestamp"]
+        ohlcv = result["indicators"]["quote"][0]
+        bars = []
+        for i, t in enumerate(ts):
+            c = ohlcv["close"][i]
+            if c is None: continue
+            bars.append({
+                "t": datetime.datetime.utcfromtimestamp(t).strftime("%Y-%m-%d"),
+                "o": round(ohlcv["open"][i] or c),
+                "h": round(ohlcv["high"][i] or c),
+                "l": round(ohlcv["low"][i] or c),
+                "c": round(c),
+                "v": int(ohlcv["volume"][i] or 0),
+            })
+        return bars
+    except:
+        return []
+
+def fetch_ticker(ticker):
+    yf_sym = TICKERS[ticker]
+    stooq_sym = STOOQ_MAP[ticker]
+    sources = [
+        lambda: try_yahoo_direct(yf_sym),
+        lambda: try_yfinance_lib(yf_sym),
+        lambda: try_yahoo_v10(yf_sym),
+        lambda: try_stooq(stooq_sym),
+        lambda: try_yahoo_proxy(yf_sym),
+        lambda: try_cnbc_api(ticker),
+    ]
+    for fn in sources:
+        result = fn()
+        if result and result["price"] > 0:
+            print(f"  {ticker}: {result['price']} [{result['source']}]")
+            return result
+    print(f"  {ticker}: ALL SOURCES FAILED")
+    return None
+
+def fetch_market():
+    """Fetch IHSG, USD/IDR, ICI4 coal"""
+    market = {}
+    try:
+        r = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/%5EJKSE?interval=1d&range=5d",
+                         headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            d = r.json()["chart"]["result"][0]
+            p = d["meta"]["regularMarketPrice"]
+            prev = d["meta"]["chartPreviousClose"]
+            market["IHSG"] = {"price": round(p), "chgPct": round((p-prev)/prev*100, 2)}
+    except: pass
+    try:
+        r = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/USDIDR%3DX?interval=1d&range=5d",
+                         headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            d = r.json()["chart"]["result"][0]
+            market["USDIDR"] = {"price": round(d["meta"]["regularMarketPrice"])}
+    except: pass
+    try:
+        r = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/MTF%3DF?interval=1d&range=5d",
+                         headers=HEADERS, timeout=10)
+        if r.status_code == 200:
+            d = r.json()["chart"]["result"][0]
+            p = d["meta"]["regularMarketPrice"]
+            prev = d["meta"]["chartPreviousClose"]
+            market["COAL"] = {"price": round(p, 1), "chgPct": round((p-prev)/prev*100, 2)}
+    except: pass
+    return market
+
+def main():
+    print("=== Aegis Alpha Price Fetch ===")
+    wib = ZoneInfo("Asia/Jakarta")
+    now_wib = datetime.datetime.now(wib)
+    ts_wib = now_wib.strftime("%d %b %Y %H:%M WIB")
+
+    stocks = {}
+    for ticker in TICKERS:
+        print(f"Fetching {ticker}...")
+        result = fetch_ticker(ticker)
+        if result:
+            stocks[ticker] = {
+                "price": result["price"],
+                "bars": result.get("bars") or [],
+                "source": result["source"],
+            }
+        time.sleep(0.3)  # polite rate limiting
+
+    market = fetch_market()
+
+    output = {
+        "updated_wib": ts_wib,
+        "updated_utc": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "stocks": stocks,
+        "market": market,
+    }
+
+    with open("prices.json", "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n✓ prices.json written — {ts_wib}")
+    print(f"  Stocks fetched: {len(stocks)}/{len(TICKERS)}")
+
+if __name__ == "__main__":
+    main()
