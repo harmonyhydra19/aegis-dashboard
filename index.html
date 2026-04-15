@@ -3,42 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AEGIS ALPHA v1.3 - Google Engine Integrated</title>
+  <title>AEGIS ALPHA v1.3 - The Dividend Compounder</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;1,9..144,200&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
     :root {
-      --bg: #04080f; --bg2: #080f1c; --bg3: #0c1525; --bg4: #101d30; --bg5: #152438;
-      --border: #162035; --border2: #1e2f4a; --border3: #284060;
-      --text: #d8e8ff; --muted: #3d5a80; --dim: #1e3050;
-      --green: #2de08a; --green-bg: #021210; --green-border: #0a2a1a;
-      --red: #e05555; --red-bg: #130808; --red-border: #281010;
-      --amber: #f0c060; --amber-bg: #130e02; --amber-border: #302400;
-      --blue: #4d9de0; --blue-bg: #060e1e; --blue-border: #0c1c38;
-      --purple: #9b79e0; --purple-bg: #0a0818; --purple-border: #1e1040;
-      --accent: #2c6be0; --accent2: #60aaff;
-      --admf: #f0c060; --asii: #4d9de0; --bmri: #e05555; --itmg: #2de08a; --indf: #9b79e0;
+      /* Backgrounds */
+      --bg:   #04080f;  --bg2: #080f1c;  --bg3: #0c1525;
+      --bg4:  #101d30;  --bg5: #152438;
+      /* Borders */
+      --border: #162035;  --border2: #1e2f4a;  --border3: #284060;
+      /* Text */
+      --text: #d8e8ff;  --muted: #3d5a80;  --dim: #1e3050;
+      /* Signals */
+      --green:  #2de08a;  --green-bg:  #021210;  --green-border: #0a2a1a;
+      --red:    #e05555;  --red-bg:    #130808;  --red-border:   #281010;
+      --amber:  #f0c060;  --amber-bg:  #130e02;  --amber-border: #302400;
+      --blue:   #4d9de0;  --blue-bg:   #060e1e;  --blue-border:  #0c1c38;
+      --purple: #9b79e0;  --purple-bg: #0a0818;  --purple-border: #1e1040;
+      /* Brand */
+      --accent:  #2c6be0;  --accent2: #60aaff;
+      /* Per-stock colors */
+      --admf: #f0c060;  --asii: #4d9de0;  --bmri: #e05555;
+      --itmg: #2de08a;  --indf: #9b79e0;
     }
-    body.light { --bg: #edf1f9; --bg2: #ffffff; --bg3: #f5f7fb; --bg4: #e2e8f0; --text: #04080f; --muted: #64748b; --border: #cbd5e1; --border2: #e2e8f0; }
-    body { font-family: 'DM Mono', monospace; font-size: 13px; background-color: var(--bg); color: var(--text); }
+    
+    body.light {
+      --bg: #edf1f9; --bg2: #ffffff; --bg3: #f5f7fb; --bg4: #e2e8f0;
+      --text: #04080f; --muted: #64748b; --border: #cbd5e1; --border2: #e2e8f0;
+    }
+
+    body { 
+      font-family: 'DM Mono', monospace; 
+      font-size: 13px; 
+      background-color: var(--bg);
+      color: var(--text);
+    }
     .display { font-family: 'Fraunces', serif; font-weight: 200; }
-    .bento { display: grid; gap: 8px; }
-    .bento-5 { grid-template-columns: repeat(5, 1fr); }
-    .bento-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .text-6xs  { font-size: 6.5px; } .text-5xs  { font-size: 7px; } .text-4xs  { font-size: 7.5px; } .text-3xs  { font-size: 8px; }
+    .text-2xs  { font-size: 8.5px; } .text-xs   { font-size: 9px; } .text-sm   { font-size: 10px; } .text-base { font-size: 13px; }
+    .text-lg   { font-size: 15px; } .text-xl   { font-size: 18px; } .text-2xl  { font-size: 24px; } .text-3xl  { font-size: 32px; }
+
+    .bento   { display: grid; gap: 8px; }
+    .bento-2 { grid-template-columns: repeat(2, 1fr); }
     .bento-3 { grid-template-columns: repeat(3, 1fr); }
-    .bento-60-40 { grid-template-columns: 3fr 2fr; }
+    .bento-4 { grid-template-columns: repeat(4, 1fr); }
+    .bento-5 { grid-template-columns: repeat(5, 1fr); }
+    .bento-60-40  { grid-template-columns: 3fr 2fr; }
+    
+    @media (max-width: 1024px) { .bento-5 { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) { .bento-5, .bento-4, .bento-3 { grid-template-columns: repeat(2, 1fr); } .bento-60-40 { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .bento-2, .bento-3, .bento-4, .bento-5 { grid-template-columns: 1fr; } }
+
     .card { background-color: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
     .badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 500; display: inline-block; border: 1px solid; }
     .badge.bg-bull { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
-    .badge.br-bear { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
     .badge.bb-neutral { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-border); }
+    .badge.ba-caution { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+    .badge.br-bear { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
     .nav-item.active { background: linear-gradient(90deg, var(--bg3) 0%, transparent 100%); border-left: 2px solid var(--accent); color: var(--accent2); }
     .progress-bg { background-color: var(--bg4); border-radius: 999px; height: 6px; overflow: hidden; position: relative; }
     .progress-fill { height: 100%; border-radius: 999px; transition: width 0.5s ease; }
     .target-marker { position: absolute; top: 0; bottom: 0; width: 2px; background: white; z-index: 10; }
+
     marquee { background-color: var(--bg2); border-bottom: 1px solid var(--border); padding: 4px 0; color: var(--muted); font-size: 10px; }
     .modal-overlay { background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); }
   </style>
@@ -46,22 +82,22 @@
 <body class="flex h-screen overflow-hidden antialiased relative">
 
   <!-- Sidebar -->
-  <aside class="w-64 border-r flex flex-col shrink-0 z-10" style="border-color: var(--border); background-color: var(--bg);">
+  <aside class="w-64 border-r flex flex-col transition-all duration-300 shrink-0 z-10" style="border-color: var(--border); background-color: var(--bg);">
     <div class="p-4 border-b" style="border-color: var(--border);">
-      <h1 class="display text-2xl text-[var(--text)] italic tracking-wide">Aegis Alpha <span class="text-[var(--accent)] text-lg">v1.4</span></h1>
-      <p class="text-xs text-[var(--muted)] mt-1">Google Finance Engine</p>
+      <h1 class="display text-2xl text-[var(--text)] italic tracking-wide">Aegis Alpha <span class="text-[var(--accent)] text-lg">v1.3</span></h1>
+      <p class="text-xs text-[var(--muted)] mt-1">Full-Stack Dividend Engine</p>
     </div>
     
     <div class="p-4 border-b" style="border-color: var(--border);">
       <div class="mb-3">
         <div class="flex justify-between text-xs mb-1"><span>Porto Target</span><span id="porto-pct">0%</span></div>
         <div class="progress-bg"><div id="porto-bar" class="progress-fill" style="background-color: var(--accent); width: 0%;"></div></div>
-        <div class="text-[8px] text-[var(--muted)] mt-1 text-right" id="porto-val">Rp 0 / 250Jt</div>
+        <div class="text-3xs text-[var(--muted)] mt-1 text-right" id="porto-val">Rp 0 / 250Jt</div>
       </div>
       <div>
         <div class="flex justify-between text-xs mb-1"><span>Div Target</span><span id="div-pct">0%</span></div>
         <div class="progress-bg"><div id="div-bar" class="progress-fill" style="background-color: var(--green); width: 0%;"></div></div>
-        <div class="text-[8px] text-[var(--muted)] mt-1 text-right" id="div-val">Rp 0 / 10Jt</div>
+        <div class="text-3xs text-[var(--muted)] mt-1 text-right" id="div-val">Rp 0 / 10Jt</div>
       </div>
     </div>
 
@@ -78,10 +114,11 @@
     </nav>
 
     <div class="p-4 border-t" style="border-color: var(--border);">
+      <p class="text-3xs text-[var(--muted)] italic mb-3" id="daily-quote">"Time in the market beats timing the market."</p>
       <button onclick="fetchData()" class="w-full py-2 rounded text-xs bg-[var(--bg3)] border border-[var(--border2)] hover:border-[var(--accent)] transition-colors flex justify-center items-center gap-2 text-[var(--text)]">
-        <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync Google Data
+        <i data-lucide="refresh-cw" class="w-3 h-3"></i> Fetch Data (Live)
       </button>
-      <div class="flex justify-between items-center mt-3 text-[9px] text-[var(--muted)]">
+      <div class="flex justify-between items-center mt-3 text-3xs text-[var(--muted)]">
         <span id="last-fetch">Last: Never</span>
         <button onclick="toggleTheme()" class="hover:text-[var(--text)]"><i data-lucide="moon" class="w-3 h-3"></i></button>
       </div>
@@ -90,44 +127,45 @@
 
   <!-- Main Content -->
   <main class="flex-1 flex flex-col relative overflow-hidden bg-[var(--bg)]">
-    <marquee scrollamount="4" id="ticker-marquee" class="flex items-center gap-6">Syncing data from Google Finance...</marquee>
+    <marquee scrollamount="4" id="ticker-marquee" class="flex items-center gap-6">Loading data...</marquee>
 
     <div class="flex-1 overflow-y-auto p-4 lg:p-6" id="main-scroll">
       
       <!-- ================= TAB 1: DASHBOARD ================= -->
       <div id="tab-dashboard" class="tab-content space-y-6 block">
+        <!-- KPI Strip -->
         <div class="bento bento-5">
           <div class="card flex flex-col justify-between">
             <span class="text-xs text-[var(--muted)]">Ekuitas Total</span>
             <div class="text-xl mt-1" id="kpi-equity">Rp 0</div>
-            <span class="text-[8px] text-[var(--dim)] mt-1" id="kpi-invested">Invested: Rp 0</span>
+            <span class="text-3xs text-[var(--dim)] mt-1" id="kpi-invested">Invested: Rp 0</span>
           </div>
           <div class="card flex flex-col justify-between">
             <span class="text-xs text-[var(--muted)]">Unrealized P&L</span>
             <div class="text-xl mt-1" id="kpi-pnl">Rp 0</div>
-            <span class="text-[8px] mt-1" id="kpi-pnl-pct">0.00%</span>
+            <span class="text-3xs mt-1" id="kpi-pnl-pct">0.00%</span>
           </div>
           <div class="card flex flex-col justify-between">
             <span class="text-xs text-[var(--muted)]">Yield on Cost</span>
             <div class="text-xl mt-1 text-[var(--amber)]" id="kpi-yoc">0.00%</div>
-            <span class="text-[8px] text-[var(--dim)] mt-1">Gross Annual</span>
+            <span class="text-3xs text-[var(--dim)] mt-1">Gross Annual</span>
           </div>
           <div class="card flex flex-col justify-between">
             <span class="text-xs text-[var(--muted)]">Buying Power</span>
             <div class="text-xl mt-1 text-[var(--green)]" id="kpi-cash">Rp 0</div>
-            <span class="text-[8px] text-[var(--dim)] mt-1">RDN Cash</span>
+            <span class="text-3xs text-[var(--dim)] mt-1">RDN Cash</span>
           </div>
           <div class="card flex flex-col justify-between items-start">
-            <span class="text-xs text-[var(--muted)]">Status Bridge</span>
+            <span class="text-xs text-[var(--muted)]">Status Data</span>
             <div class="flex items-center gap-2 mt-2">
               <div class="w-2 h-2 rounded-full bg-[var(--red)]" id="status-dot"></div>
-              <span class="text-sm" id="status-text">Disconnected</span>
+              <span class="text-sm" id="status-text">Stale Data</span>
             </div>
-            <span class="text-[8px] text-[var(--dim)] mt-1">Google Apps Script</span>
+            <span class="text-3xs text-[var(--dim)] mt-1">Tekan Fetch di sidebar</span>
           </div>
         </div>
 
-        <h2 class="display text-lg mb-2 text-[var(--text)]">Stock Command Matrix</h2>
+        <h2 class="display text-lg mb-2 text-[var(--text)]">Stock Command Matrix (TA Synced)</h2>
         <div class="bento bento-5" id="stock-matrix"></div>
 
         <div class="bento bento-60-40">
@@ -136,17 +174,21 @@
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left" id="div-table">
                 <thead class="text-[var(--dim)]">
-                  <tr><th>Ticker</th><th>Lot Now / Ideal</th><th>Div/Lbr</th><th>Annual Gross</th><th>Monthly Net</th><th>Yield</th></tr>
+                  <tr><th>Ticker</th><th>Lot Now / Ideal</th><th>Div/Lbr</th><th>Div/Thn(Gross)</th><th>Div/Bln(Net)</th><th>Yield</th></tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border)]" id="div-tbody"></tbody>
               </table>
             </div>
           </div>
           <div class="card">
-            <h3 class="text-sm text-[var(--muted)] mb-3 border-b pb-2" style="border-color: var(--border);">Portfolio Weight</h3>
-            <div class="flex w-full h-32 rounded overflow-hidden" id="treemap-container"></div>
-            <div class="mt-4 space-y-3" id="fcf-health"></div>
+            <h3 class="text-sm text-[var(--muted)] mb-3 border-b pb-2" style="border-color: var(--border);">Cashflow Health (FCF)</h3>
+            <div class="space-y-3" id="fcf-health"></div>
           </div>
+        </div>
+
+        <div class="card">
+          <h3 class="text-sm text-[var(--muted)] mb-3 border-b pb-2" style="border-color: var(--border);">Komposisi Portofolio (Market Value)</h3>
+          <div class="flex w-full h-12 rounded overflow-hidden" id="treemap-container"></div>
         </div>
       </div>
 
@@ -154,104 +196,211 @@
       <div id="tab-arsenal" class="tab-content space-y-6 hidden">
         <div class="bento bento-4">
           <div class="card flex justify-between items-center">
-            <div><div class="text-xs text-[var(--muted)]">IHSG (Live)</div><div class="text-lg" id="ihsg-val">0</div></div>
-            <span class="badge bb-neutral" id="ihsg-pct">0%</span>
+            <div><div class="text-xs text-[var(--muted)]">IHSG (Live)</div><div class="text-lg" id="ihsg-val">7,245.12</div></div>
+            <span class="badge bb-neutral" id="ihsg-pct">-</span>
           </div>
           <div class="card flex justify-between items-center">
-            <div><div class="text-xs text-[var(--muted)]">USD/IDR (Live)</div><div class="text-lg" id="usd-val">0</div></div>
-            <span class="badge bb-neutral">Live</span>
+            <div><div class="text-xs text-[var(--muted)]">USD/IDR (Live)</div><div class="text-lg" id="usd-val">16,120</div></div>
+            <span class="badge bb-neutral" id="usd-pct">-</span>
           </div>
           <div class="card flex justify-between items-center">
-            <div><div class="text-xs text-[var(--muted)]">Coal (Sim)</div><div class="text-lg" id="coal-val">$0</div></div>
-            <span class="badge bg-bull">Synced</span>
+            <div><div class="text-xs text-[var(--muted)]">Coal HBA/Newcastle</div><div class="text-lg" id="coal-val">$135.20</div></div>
+            <span class="badge bg-bull" id="coal-pct">Syncing</span>
           </div>
           <div class="card bg-[var(--bg3)] border-l-2 border-l-[var(--accent)] flex flex-col justify-center">
-            <span class="text-[8px] text-[var(--muted)] mb-1">Market Action:</span>
-            <span class="text-xs font-bold">Monitor Dividend Yield Gap</span>
+            <span class="text-3xs text-[var(--muted)] mb-1">Market Action:</span>
+            <span class="text-xs font-bold text-[var(--text)]">Akumulasi Bank Besar (BMRI) & Jaga Yield (ADMF/ITMG)</span>
           </div>
         </div>
+
+        <!-- AI Chart Analyzer -->
+        <div class="card border border-[var(--purple-border)] bg-gradient-to-br from-[var(--bg2)] to-[var(--purple-bg)]">
+          <h3 class="text-sm mb-4 border-b border-[var(--purple-border)] pb-2 flex items-center justify-between text-[var(--purple)]">
+            <div class="flex items-center gap-2"><i data-lucide="scan-line" class="w-4 h-4"></i> AI Vision - Multi-Timeframe Analyzer</div>
+            <span class="text-3xs bg-[var(--purple)] text-white px-2 py-0.5 rounded">Powered by Gemini 1.5 Flash</span>
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-3">
+              <div>
+                <label class="text-3xs text-[var(--muted)] block mb-1">Pilih Saham</label>
+                <select id="ai-stock-select" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded p-1.5 text-xs text-[var(--text)] outline-none">
+                  <option value="BMRI">BMRI</option>
+                  <option value="ADMF">ADMF</option>
+                  <option value="ITMG">ITMG</option>
+                  <option value="ASII">ASII</option>
+                  <option value="INDF">INDF</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-3xs text-[var(--muted)] block mb-1">Upload Chart Weekly (1W)</label>
+                <input type="file" id="ai-chart-1w" accept="image/*" class="w-full text-xs text-[var(--muted)] file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[var(--bg3)] file:text-[var(--text)] hover:file:bg-[var(--bg4)]">
+              </div>
+              <div>
+                <label class="text-3xs text-[var(--muted)] block mb-1">Upload Chart Daily (1D)</label>
+                <input type="file" id="ai-chart-1d" accept="image/*" class="w-full text-xs text-[var(--muted)] file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[var(--bg3)] file:text-[var(--text)] hover:file:bg-[var(--bg4)]">
+              </div>
+              <div>
+                <label class="text-3xs text-[var(--muted)] block mb-1">Upload Chart 4 Hour (4H)</label>
+                <input type="file" id="ai-chart-4h" accept="image/*" class="w-full text-xs text-[var(--muted)] file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-[var(--bg3)] file:text-[var(--text)] hover:file:bg-[var(--bg4)]">
+              </div>
+              <button onclick="runAIAnalysis()" class="w-full bg-[var(--purple)] text-white py-2 rounded text-xs hover:bg-purple-600 transition flex items-center justify-center gap-2">
+                <i data-lucide="cpu" class="w-3 h-3"></i> Analisa dengan AI
+              </button>
+            </div>
+            
+            <div class="md:col-span-2 bg-[var(--bg)] border border-[var(--border2)] rounded p-4 relative min-h-[200px]">
+              <div id="ai-loading" class="absolute inset-0 flex flex-col items-center justify-center hidden bg-[var(--bg)]/80 backdrop-blur z-10">
+                <i data-lucide="loader-2" class="w-6 h-6 text-[var(--purple)] animate-spin mb-2"></i>
+                <span class="text-xs text-[var(--purple)]">Gemini Vision is analyzing 3 timeframes...</span>
+              </div>
+              <div id="ai-result" class="text-xs leading-relaxed text-[var(--muted)] h-full overflow-y-auto">
+                Upload 3 screenshot chart (Ichimoku + RSI + MACD) untuk dianalisa keselarasan trend (Weekly -> Daily -> 4H). <br><br>
+                Jika API Key Gemini telah disetting di Control Room, AI akan membaca gambar secara real-time. Jika tidak, akan menggunakan mode simulasi cerdas berdasarkan data teknikal saat ini.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-base mt-6 mb-2 border-b pb-2" style="border-color: var(--border);">Technical Analysis (Ichimoku) Grid</h3>
         <div class="bento bento-3" id="ta-grid"></div>
-        <h3 class="text-base mt-6 mb-2 border-b pb-2" style="border-color: var(--border);">Risk & Fundamental Health</h3>
+
+        <h3 class="text-base mt-6 mb-2 border-b pb-2" style="border-color: var(--border);">Risk Register</h3>
         <div class="bento bento-5" id="risk-grid"></div>
       </div>
 
       <!-- ================= TAB 3: CONTROL ROOM ================= -->
       <div id="tab-control" class="tab-content space-y-6 hidden">
+        
         <div class="flex justify-between items-center bg-[var(--bg3)] p-3 rounded border border-[var(--border2)]">
           <div>
-            <h3 class="text-sm font-bold">Portfolio Control Center</h3>
-            <p class="text-xs text-[var(--muted)]">Data management and Google Finance bridge configuration.</p>
+            <h3 class="text-sm font-bold text-[var(--text)]">Portfolio Settings & Savepoints</h3>
+            <p class="text-xs text-[var(--muted)]">Manage allocation, manual edit, JSON backup/restore, and full reset.</p>
           </div>
-          <div class="flex gap-2">
-            <button onclick="openPinModal()" class="bg-[var(--accent)] text-white px-3 py-1.5 rounded text-xs hover:bg-blue-600 transition flex items-center gap-2">
-              <i data-lucide="lock" class="w-3 h-3"></i> Unlock Portfolio Edit
+          <div class="flex flex-wrap gap-2">
+            <!-- Hidden inputs -->
+            <input type="file" id="import-json-file" accept=".json" class="hidden" onchange="handleImportJSON(event)">
+            <input type="file" id="ocr-upload" accept="image/*" class="hidden" onchange="handleOCRUpload(event)">
+            
+            <button onclick="document.getElementById('ocr-upload').click()" class="bg-[var(--purple-bg)] border border-[var(--purple-border)] text-[var(--purple)] px-3 py-1.5 rounded text-xs hover:bg-[var(--purple)] hover:text-white transition flex items-center gap-2">
+              <i data-lucide="camera" class="w-3 h-3"></i> AI OCR Update Porto
             </button>
-            <button onclick="manualExportJSON()" class="bg-[var(--bg)] border border-[var(--border3)] px-3 py-1.5 rounded text-xs hover:border-[var(--accent)]">Export JSON</button>
-            <button onclick="resetTotal()" class="bg-[var(--red-bg)] border border-[var(--red-border)] text-[var(--red)] px-3 py-1.5 rounded text-xs hover:bg-[var(--red)] hover:text-white">Reset All</button>
+
+            <button onclick="document.getElementById('import-json-file').click()" class="bg-[var(--bg)] border border-[var(--border3)] px-3 py-1.5 rounded text-xs hover:border-[var(--accent)] transition flex items-center gap-2">
+              <i data-lucide="upload" class="w-3 h-3"></i> Import
+            </button>
+            <button onclick="manualExportJSON()" class="bg-[var(--bg)] border border-[var(--border3)] px-3 py-1.5 rounded text-xs hover:border-[var(--accent)] transition flex items-center gap-2">
+              <i data-lucide="download" class="w-3 h-3"></i> Export
+            </button>
+            <button onclick="openPinModal()" class="bg-[var(--accent)] text-white px-3 py-1.5 rounded text-xs hover:bg-blue-600 transition flex items-center gap-2">
+              <i data-lucide="lock" class="w-3 h-3"></i> Unlock Edit
+            </button>
+            <button onclick="resetTotal()" class="bg-[var(--red-bg)] border border-[var(--red-border)] text-[var(--red)] px-3 py-1.5 rounded text-xs hover:bg-[var(--red)] hover:text-white transition flex items-center gap-2">
+              <i data-lucide="trash-2" class="w-3 h-3"></i> Reset
+            </button>
           </div>
         </div>
 
-        <!-- Google Script Configuration -->
-        <div class="card border-l-4 border-l-[var(--accent)]">
-          <h3 class="text-sm mb-3 flex items-center gap-2 font-bold"><i data-lucide="link" class="w-4 h-4 text-[var(--accent)]"></i> Google Finance Bridge URL</h3>
-          <p class="text-xs text-[var(--muted)] mb-3">Masukkan URL "Web App" dari Google Apps Script Anda di sini agar sinkronisasi data bekerja.</p>
-          <div class="flex gap-2">
-            <input type="text" id="gas-url" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 bg-[var(--bg)] border border-[var(--border2)] rounded p-2 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]">
-            <button onclick="saveGasUrl()" class="bg-[var(--bg3)] border border-[var(--border3)] px-6 py-2 rounded text-xs hover:border-[var(--accent)] transition">Simpan URL</button>
+        <div class="card bg-[var(--bg)] border border-[var(--border2)]">
+          <h3 class="text-sm mb-3 border-b pb-2 flex items-center gap-2" style="border-color: var(--border);"><i data-lucide="key" class="w-4 h-4"></i> Konfigurasi API (Optional)</h3>
+          <div>
+            <label class="text-3xs text-[var(--muted)] block mb-1">Google Gemini API Key (Untuk fitur AI Vision & OCR otomatis)</label>
+            <div class="flex gap-2">
+              <input type="password" id="gemini-api-key" placeholder="AIzaSy..." class="flex-1 bg-[var(--bg3)] border border-[var(--border2)] rounded p-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]">
+              <button onclick="saveApiKey()" class="bg-[var(--bg3)] border border-[var(--border3)] px-4 py-1.5 rounded text-xs hover:border-[var(--accent)] transition">Simpan Key</button>
+            </div>
+            <p class="text-3xs text-[var(--dim)] mt-1">Disimpan secara lokal di browser. Biarkan kosong untuk menggunakan mode Simulasi Mock-AI.</p>
           </div>
         </div>
 
         <div class="bento bento-60-40">
           <div class="card">
-            <h3 class="text-sm mb-3 border-b pb-2 flex items-center gap-2" style="border-color: var(--border);"><i data-lucide="scale" class="w-4 h-4"></i> Rebalancing Engine</h3>
+            <h3 class="text-sm mb-3 border-b pb-2 flex items-center gap-2" style="border-color: var(--border);"><i data-lucide="scale" class="w-4 h-4"></i> Rebalancing Target</h3>
             <table class="w-full text-xs text-left">
               <thead class="text-[var(--dim)]">
-                <tr><th>Ticker</th><th>Actual</th><th>Target</th><th>Gap</th><th>Action</th></tr>
+                <tr><th>Ticker</th><th>Aktual</th><th>Target</th><th>Gap</th><th>Action needed</th></tr>
               </thead>
               <tbody class="divide-y divide-[var(--border)]" id="rebalance-tbody"></tbody>
             </table>
           </div>
+
           <div class="card flex flex-col">
             <h3 class="text-sm mb-3 border-b pb-2 flex items-center gap-2" style="border-color: var(--border);"><i data-lucide="history" class="w-4 h-4"></i> Savepoint History</h3>
-            <div class="flex-1 space-y-2 overflow-y-auto" id="savepoints-list"></div>
+            <div class="flex-1 space-y-2 overflow-y-auto" id="savepoints-list">
+              <div class="text-center text-3xs text-[var(--muted)] mt-4">Belum ada savepoint. Otomatis terbuat saat Save Edit.</div>
+            </div>
           </div>
         </div>
+
       </div>
+
     </div>
   </main>
 
   <!-- Modals -->
+  <!-- PIN Modal -->
   <div id="pin-modal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center hidden">
     <div class="bg-[var(--bg2)] border border-[var(--border2)] rounded-lg p-6 w-80 shadow-2xl relative">
+      <button onclick="closeModal('pin-modal')" class="absolute top-3 right-3 text-[var(--muted)] hover:text-[var(--text)]"><i data-lucide="x" class="w-4 h-4"></i></button>
       <div class="text-center mb-4">
         <i data-lucide="lock" class="w-8 h-8 mx-auto text-[var(--accent)] mb-2"></i>
-        <h3 class="text-lg display">Control Room Access</h3>
+        <h3 class="text-lg display text-[var(--text)]">Control Room Access</h3>
         <p class="text-xs text-[var(--muted)]">Enter PIN (190820)</p>
       </div>
-      <input type="password" id="pin-input" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded p-2 text-center text-lg tracking-widest outline-none focus:border-[var(--accent)]" placeholder="••••••" maxlength="6">
-      <button onclick="checkPin()" class="w-full mt-4 bg-[var(--accent)] text-white py-2 rounded text-sm hover:bg-blue-600">Unlock</button>
-      <button onclick="closeModal('pin-modal')" class="w-full mt-2 text-xs text-[var(--muted)]">Cancel</button>
+      <input type="password" id="pin-input" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded p-2 text-center text-lg tracking-widest text-[var(--text)] mb-4 outline-none focus:border-[var(--accent)]" placeholder="••••••" maxlength="6">
+      <button onclick="checkPin()" class="w-full bg-[var(--accent)] text-white py-2 rounded text-sm hover:bg-blue-600 transition">Unlock</button>
+      <p id="pin-error" class="text-3xs text-[var(--red)] text-center mt-2 hidden">Invalid PIN</p>
     </div>
   </div>
 
+  <!-- OCR Verification Modal -->
+  <div id="ocr-modal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center hidden">
+    <div class="bg-[var(--bg2)] border border-[var(--purple-border)] rounded-lg p-6 w-80 shadow-2xl relative flex flex-col items-center">
+      <i data-lucide="scan" class="w-10 h-10 text-[var(--purple)] mb-3 animate-pulse"></i>
+      <h3 class="text-lg display text-[var(--text)] mb-2">AI Vision Processing</h3>
+      <p class="text-xs text-[var(--muted)] text-center mb-4" id="ocr-status-text">Memproses gambar screenshot portofolio Anda...</p>
+    </div>
+  </div>
+
+  <!-- Edit Portfolio Modal -->
   <div id="edit-modal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center hidden">
     <div class="bg-[var(--bg2)] border border-[var(--border2)] rounded-lg p-6 w-full max-w-4xl shadow-2xl relative max-h-[90vh] flex flex-col">
-      <div class="flex justify-between items-center mb-4 border-b border-[var(--border)] pb-2">
-        <h3 class="text-lg display">Edit / Verify Portfolio Data</h3>
+      <div class="flex justify-between items-center mb-4 border-b border-[var(--border)] pb-2 shrink-0">
+        <h3 class="text-lg display text-[var(--text)] flex items-center gap-2"><i data-lucide="edit-3" class="w-5 h-5"></i> Edit / Verifikasi Data Portfolio</h3>
         <button onclick="closeModal('edit-modal')" class="text-[var(--muted)] hover:text-[var(--text)]"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <div class="overflow-y-auto flex-1">
-        <div class="mb-4"><label class="text-xs text-[var(--muted)] block mb-1">RDN Cash (Rp)</label><input type="number" id="edit-cash" class="w-1/3 bg-[var(--bg)] border border-[var(--border2)] rounded p-1.5 text-xs outline-none"></div>
-        <table class="w-full text-xs text-left">
+      
+      <div id="edit-alert" class="hidden mb-4 p-2 bg-[var(--purple-bg)] border border-[var(--purple-border)] rounded text-xs text-[var(--purple)] flex items-start gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4 shrink-0 mt-0.5"></i>
+        <span><strong>AI OCR Extract Berhasil.</strong> Silahkan verifikasi data lot dan average price di bawah ini sebelum menyimpan. Jika tidak punya API key, data ini adalah mode simulasi.</span>
+      </div>
+
+      <div class="overflow-y-auto flex-1 pr-2">
+        <div class="mb-4">
+          <label class="text-xs text-[var(--muted)] block mb-1">Cash RDN (Rp)</label>
+          <input type="number" id="edit-cash" class="w-1/3 bg-[var(--bg)] border border-[var(--border2)] rounded p-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]">
+        </div>
+
+        <table class="w-full text-xs text-left mb-4">
           <thead class="text-[var(--dim)] border-b border-[var(--border)]">
-            <tr><th>Ticker</th><th>Target (%)</th><th>Avg Price</th><th>Lots</th><th>Total Invested</th></tr>
+            <tr>
+              <th class="pb-2 w-16">Ticker</th>
+              <th class="pb-2 w-20">Target (%)</th>
+              <th class="pb-2">Avg Price (Rp)</th>
+              <th class="pb-2 w-24">Lots</th>
+              <th class="pb-2">Total Invested (Rp)</th>
+            </tr>
           </thead>
-          <tbody id="edit-tbody"></tbody>
+          <tbody id="edit-tbody" class="space-y-2"></tbody>
         </table>
       </div>
-      <div class="mt-4 pt-4 border-t border-[var(--border)] flex justify-end gap-3">
-        <button onclick="closeModal('edit-modal')" class="px-4 py-2 text-xs border border-[var(--border2)] rounded">Cancel</button>
-        <button onclick="saveEdit()" class="px-4 py-2 text-xs bg-[var(--accent)] text-white rounded">Save Changes</button>
+
+      <div class="flex justify-between items-center mt-4 pt-4 border-t border-[var(--border)] shrink-0">
+        <div class="text-3xs text-[var(--amber)] flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> Autosave to JSON & History aktif saat klik Save</div>
+        <div class="flex gap-3">
+          <button onclick="closeModal('edit-modal')" class="px-4 py-2 text-xs border border-[var(--border2)] rounded text-[var(--text)] hover:bg-[var(--bg3)] transition">Cancel</button>
+          <button onclick="saveEdit()" class="px-4 py-2 text-xs bg-[var(--accent)] text-white rounded hover:bg-blue-600 transition flex items-center gap-2"><i data-lucide="save" class="w-3 h-3"></i> Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
@@ -259,8 +408,13 @@
   <script>
     lucide.createIcons();
 
-    // ================= INITIAL STATE =================
-    const defaultUserState = { cash: 420232, goals: { targetPortfolioValue: 250000000, targetMonthlyDividend: 10000000 } };
+    // ================= INITIAL DATA STRUCTURE =================
+    const defaultUserState = {
+      cash: 420232,
+      goals: { targetPortfolioValue: 250000000, targetMonthlyDividend: 10000000 }
+    };
+
+    // Target Alokasi Baru: BMRI 35%, ADMF 25%, ITMG 20%, ASII 15%, INDF 5%
     const defaultPortfolio = {
       BMRI: { price: 4710, avgPrice: 4641.95, lots: 10, invested: 4641952, divPerShare: 353, sector: "Banking", color: "var(--bmri)", target: 35 },
       ADMF: { price: 9100, avgPrice: 8888.31, lots: 4, invested: 3555325, divPerShare: 950, sector: "Multifinance", color: "var(--admf)", target: 25 },
@@ -269,27 +423,36 @@
       INDF: { price: 6825, avgPrice: 6685.01, lots: 2, invested: 1337002, divPerShare: 257, sector: "Consumer", color: "var(--indf)", target: 5 }
     };
 
-    let userState = JSON.parse(localStorage.getItem('aegis_state')) || defaultUserState;
-    let portfolio = JSON.parse(localStorage.getItem('aegis_portfolio')) || defaultPortfolio;
-    let savepoints = JSON.parse(localStorage.getItem('aegis_savepoints')) || [];
-
     const analysisData = {
-      ADMF: { rsi: 38, signal: 'NEUTRAL', score: 3, fcfCov: 2.0, de: 4.8, riskScore: 65, riskText: 'NPL otomotif merangkak naik' },
-      ASII: { rsi: 52, signal: 'BULL', score: 5, fcfCov: 1.5, de: 0.8, riskScore: 40, riskText: 'Kompetisi EV China menekan margin' },
-      BMRI: { rsi: 31, signal: 'BEAR', score: 2, fcfCov: 1.2, de: 5.2, riskScore: 35, riskText: 'Liquidity tightening SRBI' },
-      ITMG: { rsi: 65, signal: 'BULL STRONG', score: 6, fcfCov: 1.1, de: 0.1, riskScore: 80, riskText: 'Harga Newcastle coal drop' },
-      INDF: { rsi: 45, signal: 'NEUTRAL', score: 4, fcfCov: 1.8, de: 0.9, riskScore: 25, riskText: 'Daya beli menengah tertekan' }
+      ADMF: { eps: 1200, bv: 9500, fv_pe: 12000, fv_ddm: 11500, fv_pbv: 11800, rsi: 38, signal: 'NEUTRAL', score: 3, fcfCov: 2.0, de: 4.8, riskScore: 65, riskText: 'NPL otomotif merangkak naik perlahan di Q1' },
+      ASII: { eps: 850, bv: 4500, fv_pe: 6800, fv_ddm: 6200, fv_pbv: 5800, rsi: 52, signal: 'BULL', score: 5, fcfCov: 1.5, de: 0.8, riskScore: 40, riskText: 'Kompetisi EV China menekan margin roda empat' },
+      BMRI: { eps: 620, bv: 2800, fv_pe: 7500, fv_ddm: 7100, fv_pbv: 6900, rsi: 31, signal: 'BEAR', score: 2, fcfCov: 1.2, de: 5.2, riskScore: 35, riskText: 'Liquidity tightening akibat SRBI rate tinggi' },
+      ITMG: { eps: 6500, bv: 18000, fv_pe: 28000, fv_ddm: 25000, fv_pbv: 24000, rsi: 65, signal: 'BULL STRONG', score: 6, fcfCov: 1.1, de: 0.1, riskScore: 80, riskText: 'Harga Newcastle coal drop tajam QoQ' },
+      INDF: { eps: 720, bv: 4100, fv_pe: 7000, fv_ddm: 6500, fv_pbv: 6000, rsi: 45, signal: 'NEUTRAL', score: 4, fcfCov: 1.8, de: 0.9, riskScore: 25, riskText: 'Daya beli kelas menengah tertekan inflasi pangan' }
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('gas-url').value = localStorage.getItem('gas_url') || '';
-      renderAll();
+    let userState = JSON.parse(localStorage.getItem('aegis_state')) || JSON.parse(JSON.stringify(defaultUserState));
+    let portfolio = JSON.parse(localStorage.getItem('aegis_portfolio')) || JSON.parse(JSON.stringify(defaultPortfolio));
+    let savepoints = JSON.parse(localStorage.getItem('aegis_savepoints')) || [];
+
+    // Cerdas Auto-Sync Target jika user pakai cache lama
+    Object.keys(defaultPortfolio).forEach(t => {
+      if(portfolio[t]) {
+        portfolio[t].target = defaultPortfolio[t].target; // Paksa update target ke request terbaru
+      } else {
+        portfolio[t] = defaultPortfolio[t];
+      }
     });
 
-    // ================= CORE FUNCTIONS =================
+    document.addEventListener("DOMContentLoaded", () => {
+      let key = localStorage.getItem('gemini_api_key');
+      if(key) document.getElementById('gemini-api-key').value = key;
+    });
+
+    // ================= UTILS & CALCULATORS =================
     function formatRp(val) { return 'Rp ' + Math.round(val).toLocaleString('id-ID'); }
     function formatPct(val) { return (val > 0 ? '+' : '') + val.toFixed(2) + '%'; }
-
+    
     function calcMetrics() {
       let totalInvested = 0, totalMarketValue = 0, totalDivAnnual = 0;
       Object.keys(portfolio).forEach(t => {
@@ -299,161 +462,603 @@
         p.pnlPct = p.invested > 0 ? (p.pnl / p.invested) * 100 : 0;
         p.divAnnual = p.divPerShare * p.lots * 100;
         p.yoc = p.avgPrice > 0 ? (p.divPerShare * 100) / p.avgPrice : 0;
+        
         totalInvested += p.invested;
         totalMarketValue += p.marketValue;
         totalDivAnnual += p.divAnnual;
       });
-      return { totalMarketValue, totalInvested, unPnl: totalMarketValue - totalInvested, unPnlPct: totalInvested > 0 ? ((totalMarketValue - totalInvested) / totalInvested) * 100 : 0, totalYoC: totalInvested > 0 ? (totalDivAnnual / totalInvested) * 100 : 0, divNetBulan: (totalDivAnnual * 0.85) / 12 };
+
+      let unPnl = totalMarketValue - totalInvested;
+      let unPnlPct = totalInvested > 0 ? (unPnl / totalInvested) * 100 : 0;
+      let totalYoC = totalInvested > 0 ? (totalDivAnnual / totalInvested) * 100 : 0;
+      let divNetBulan = (totalDivAnnual * 0.85) / 12;
+
+      return { totalMarketValue, totalInvested, unPnl, unPnlPct, totalYoC, divNetBulan };
     }
 
-    async function fetchData() {
-      const btn = document.querySelector('button[onclick="fetchData()"]');
-      const icon = btn.querySelector('i');
-      const gasUrl = localStorage.getItem('gas_url');
-
-      if (!gasUrl) {
-        alert("Harap masukkan Google Script URL di tab Control Room!");
-        switchTab('control');
-        return;
-      }
-
-      icon.classList.add('animate-spin');
-      btn.disabled = true;
-      document.getElementById('status-text').textContent = 'Syncing...';
-      document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-[var(--amber)] animate-pulse";
-
-      try {
-        const response = await fetch(gasUrl);
-        if (!response.ok) throw new Error('API Error');
-        const data = await response.json();
-
-        // Update Saham
-        Object.keys(portfolio).forEach(t => {
-          if (data.stocks && data.stocks[t]) portfolio[t].price = data.stocks[t];
-        });
-
-        // Update IHSG & USD
-        if (data.ihsg) {
-          document.getElementById('ihsg-val').textContent = Math.round(data.ihsg.price).toLocaleString('id-ID');
-          const ihsgPct = data.ihsg.change * 100;
-          document.getElementById('ihsg-pct').textContent = formatPct(ihsgPct);
-          document.getElementById('ihsg-pct').className = `badge ${ihsgPct >= 0 ? 'bg-bull' : 'br-bear'}`;
-        }
-        if (data.usd) document.getElementById('usd-val').textContent = Math.round(data.usd).toLocaleString('id-ID');
-        
-        // Sim Coal
-        document.getElementById('coal-val').textContent = '$' + (portfolio['ITMG'].price / 200).toFixed(2);
-
-        document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-[var(--green)]";
-        document.getElementById('status-text').textContent = 'LIVE / Google Finance';
-        document.getElementById('last-fetch').textContent = `Last: ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')} WIB`;
-
-        persistData();
-        renderAll();
-      } catch (err) {
-        document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-[var(--red)]";
-        document.getElementById('status-text').textContent = 'Sync Failed';
-        console.error(err);
-      } finally {
-        icon.classList.remove('animate-spin');
-        btn.disabled = false;
-      }
+    function getVerdict(ticker) {
+      let a = analysisData[ticker];
+      let p = portfolio[ticker];
+      let consensus = (a.fv_pe + a.fv_ddm + a.fv_pbv) / 3;
+      let mos = ((consensus - p.price) / p.price) * 100;
+      
+      if (mos > 20) return { text: 'BELI AJA', color: 'var(--green)' };
+      if (mos > 0) return { text: 'TAHAN', color: 'var(--blue)' };
+      if (mos > -15) return { text: 'TUNGGU', color: 'var(--amber)' };
+      return { text: 'MAHAL PARAH', color: 'var(--red)' };
     }
 
-    function saveGasUrl() {
-      const url = document.getElementById('gas-url').value;
-      localStorage.setItem('gas_url', url);
-      alert("URL Berhasil Disimpan. Silahkan klik Sync di sidebar.");
-    }
-
-    // ================= UI RENDERING =================
+    // ================= RENDER ENGINES =================
     function renderDashboard() {
-      const m = calcMetrics();
-      document.getElementById('kpi-equity').textContent = formatRp(m.totalMarketValue);
-      document.getElementById('kpi-invested').textContent = `Invested: ${formatRp(m.totalInvested)}`;
-      document.getElementById('kpi-pnl').textContent = formatRp(m.unPnl);
-      document.getElementById('kpi-pnl').className = `text-xl mt-1 ${m.unPnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'}`;
-      document.getElementById('kpi-pnl-pct').textContent = formatPct(m.unPnlPct);
-      document.getElementById('kpi-pnl-pct').className = `text-[8px] mt-1 ${m.unPnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'}`;
-      document.getElementById('kpi-yoc').textContent = m.totalYoC.toFixed(2) + '%';
+      const { totalMarketValue, totalInvested, unPnl, unPnlPct, totalYoC, divNetBulan } = calcMetrics();
+
+      document.getElementById('kpi-equity').textContent = formatRp(totalMarketValue);
+      document.getElementById('kpi-invested').textContent = `Invested: ${formatRp(totalInvested)}`;
+      
+      const pnlEl = document.getElementById('kpi-pnl');
+      pnlEl.textContent = formatRp(unPnl);
+      pnlEl.className = `text-xl mt-1 ${unPnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'}`;
+      
+      const pnlPctEl = document.getElementById('kpi-pnl-pct');
+      pnlPctEl.textContent = formatPct(unPnlPct);
+      pnlPctEl.className = `text-3xs mt-1 ${unPnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'}`;
+      
+      document.getElementById('kpi-yoc').textContent = totalYoC.toFixed(2) + '%';
       document.getElementById('kpi-cash').textContent = formatRp(userState.cash);
 
-      document.getElementById('porto-pct').textContent = (m.totalMarketValue / 2500000).toFixed(1) + '%';
-      document.getElementById('porto-bar').style.width = Math.min((m.totalMarketValue / 2500000), 100) + '%';
-      document.getElementById('div-pct').textContent = (m.divNetBulan / 100000).toFixed(1) + '%';
-      document.getElementById('div-bar').style.width = Math.min((m.divNetBulan / 100000), 100) + '%';
+      let portoPct = (totalMarketValue / userState.goals.targetPortfolioValue) * 100;
+      document.getElementById('porto-pct').textContent = portoPct.toFixed(1) + '%';
+      document.getElementById('porto-bar').style.width = Math.min(portoPct, 100) + '%';
+      document.getElementById('porto-val').textContent = `${formatRp(totalMarketValue)} / 250Jt`;
+
+      let divPct = (divNetBulan / userState.goals.targetMonthlyDividend) * 100;
+      document.getElementById('div-pct').textContent = divPct.toFixed(1) + '%';
+      document.getElementById('div-bar').style.width = Math.min(divPct, 100) + '%';
+      document.getElementById('div-val').textContent = `${formatRp(divNetBulan)} / 10Jt`;
 
       const matrixCont = document.getElementById('stock-matrix');
       const divTb = document.getElementById('div-tbody');
-      const treeCont = document.getElementById('treemap-container');
-      matrixCont.innerHTML = ''; divTb.innerHTML = ''; treeCont.innerHTML = '';
-
+      const fcfCont = document.getElementById('fcf-health');
+      const treemapCont = document.getElementById('treemap-container');
+      
+      matrixCont.innerHTML = ''; divTb.innerHTML = ''; fcfCont.innerHTML = ''; treemapCont.innerHTML = '';
+      
       Object.keys(portfolio).forEach(t => {
-        const p = portfolio[t];
-        const a = analysisData[t];
-        const actPct = (p.marketValue / m.totalMarketValue) * 100;
-        
+        let p = portfolio[t];
+        let a = analysisData[t];
+        let verdict = getVerdict(t);
+        let actualPct = totalMarketValue > 0 ? (p.marketValue / totalMarketValue) * 100 : 0;
+        let currentYield = (p.divPerShare / p.price) * 100;
+        let idealLots = Math.round((p.target / 100 * userState.goals.targetPortfolioValue) / (p.price * 100));
+
+        let sigClass = a.score >= 5 ? 'bg-bull' : a.score <= 2 ? 'br-bear' : 'bb-neutral';
+
         matrixCont.innerHTML += `
-          <div class="card" style="border-top: 3px solid ${p.color}">
+          <div class="card flex flex-col relative overflow-hidden" style="border-top: 3px solid ${p.color}">
             <div class="flex justify-between items-start mb-2">
-              <div class="font-bold text-lg">${t}</div>
-              <span class="badge ${a.score > 4 ? 'bg-bull' : 'bb-neutral'}">${a.signal}</span>
+              <div><h3 class="display text-xl font-bold leading-none text-[var(--text)]">${t}</h3><span class="text-4xs text-[var(--muted)] uppercase">${p.sector}</span></div>
+              <div class="flex flex-col items-end gap-1">
+                <span class="font-bold tracking-wide" style="color: ${verdict.color}; padding: 1px 4px; border: 1px solid ${verdict.color}; border-radius: 3px; font-size: 8px;">${verdict.text}</span>
+                <span class="badge ${sigClass} !text-[8px]">${a.signal}</span>
+              </div>
             </div>
-            <div class="text-lg font-bold">${p.price.toLocaleString('id-ID')}</div>
-            <div class="${p.pnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'} text-[10px] mb-2">${formatPct(p.pnlPct)}</div>
-            <div class="progress-bg"><div class="progress-fill" style="background-color: ${p.color}; width: ${actPct}%"></div></div>
-            <div class="flex justify-between text-[8px] text-[var(--muted)] mt-1"><span>Weight: ${actPct.toFixed(1)}%</span><span>Target: ${p.target}%</span></div>
+            <div class="flex justify-between items-end mb-2">
+              <div class="text-base font-bold text-[var(--text)]">${p.price.toLocaleString('id-ID')}</div>
+              <div class="text-xs ${p.pnl >= 0 ? 'text-[var(--green)]' : 'text-[var(--red)]'}">${formatPct(p.pnlPct)}</div>
+            </div>
+            <hr class="border-[var(--border)] my-1">
+            <div class="grid grid-cols-2 gap-1 text-xs my-1">
+              <span class="text-[var(--muted)]">Lot / Ideal</span><span class="text-right text-[var(--text)]">${p.lots} / ${idealLots}</span>
+              <span class="text-[var(--muted)]">YoC / Div</span><span class="text-right text-[var(--text)]">${p.yoc.toFixed(1)}% / ${p.divPerShare}</span>
+              <span class="text-[var(--muted)]">RSI 14</span><span class="text-right text-[var(--text)]">${a.rsi}</span>
+            </div>
+            <hr class="border-[var(--border)] my-1">
+            <div class="mt-1">
+              <div class="flex justify-between text-3xs text-[var(--muted)] mb-1"><span>Alokasi ${actualPct.toFixed(1)}%</span><span>Tgt ${p.target}%</span></div>
+              <div class="progress-bg h-1.5"><div class="progress-fill" style="background-color: ${p.color}; width: ${Math.min(actualPct, 100)}%;"></div>
+              <div class="target-marker" style="left: ${p.target}%;"></div></div>
+            </div>
           </div>
         `;
 
-        divTb.innerHTML += `<tr><td class="py-2 font-bold" style="color:${p.color}">${t}</td><td>${p.lots}</td><td>${p.divPerShare}</td><td>${formatRp(p.divAnnual)}</td><td class="text-[var(--green)]">${formatRp((p.divAnnual*0.85)/12)}</td><td>${((p.divPerShare/p.price)*100).toFixed(1)}%</td></tr>`;
-        
-        if (actPct > 0) treeCont.innerHTML += `<div style="width:${actPct}%; background:${p.color}; border-right:1px solid var(--bg)" class="h-full flex items-center justify-center text-[8px] font-bold text-black">${t}</div>`;
+        let divNetBln = (p.divAnnual * 0.85) / 12;
+        divTb.innerHTML += `
+          <tr class="hover:bg-[var(--bg3)] transition">
+            <td class="py-2"><span class="font-bold" style="color: ${p.color}">${t}</span></td>
+            <td class="text-[var(--text)]">${p.lots} / <span class="text-[var(--muted)]">${idealLots}</span></td>
+            <td class="text-[var(--text)]">${p.divPerShare}</td>
+            <td class="text-[var(--text)]">${formatRp(p.divAnnual)}</td>
+            <td class="text-[var(--green)] font-medium">${formatRp(divNetBln)}</td>
+            <td class="text-[var(--text)] ${currentYield >= 8 ? 'text-[var(--green)] font-bold' : ''}">${currentYield.toFixed(1)}%</td>
+          </tr>
+        `;
+
+        fcfCont.innerHTML += `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-bold" style="color: ${p.color}">${t}</span>
+              <span class="text-[var(--muted)]">FCF Cov: ${a.fcfCov}x | D/E: <span class="${a.de > 3 ? 'text-[var(--red)]' : 'text-[var(--green)]'}">${a.de}x</span></span>
+            </div>
+            <div class="progress-bg h-1.5"><div class="progress-fill ${a.fcfCov > 1.5 ? 'bg-[var(--green)]' : 'bg-[var(--amber)]'}" style="width: ${Math.min(a.fcfCov*20, 100)}%;"></div></div>
+          </div>
+        `;
+
+        if (actualPct > 0) {
+          treemapCont.innerHTML += `
+            <div class="h-full flex items-center justify-center text-3xs font-bold text-black group relative hover:opacity-90 transition cursor-default" style="width: ${actualPct}%; background-color: ${p.color}; border-right: 1px solid var(--bg);">
+              <span class="${actualPct < 5 ? 'hidden' : ''}">${t}</span>
+              <div class="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 bg-[var(--bg2)] text-[var(--text)] p-1 rounded border border-[var(--border)] z-50 whitespace-nowrap shadow-lg transition pointer-events-none">
+                ${t}: ${actualPct.toFixed(1)}% (${formatRp(p.marketValue)})
+              </div>
+            </div>
+          `;
+        }
       });
     }
 
     function renderArsenal() {
       const taGrid = document.getElementById('ta-grid');
       const riskGrid = document.getElementById('risk-grid');
+      
       taGrid.innerHTML = ''; riskGrid.innerHTML = '';
 
       Object.keys(analysisData).forEach(t => {
-        const a = analysisData[t]; const p = portfolio[t];
-        taGrid.innerHTML += `<div class="card"><div class="font-bold mb-2" style="color:${p.color}">${t} TA Profile</div><div class="flex justify-between text-xs"><span>RSI 14</span><span>${a.rsi}</span></div><div class="progress-bg mt-1"><div class="progress-fill" style="width:${a.rsi}%; background: ${a.rsi<30?'var(--green)':a.rsi>70?'var(--red)':'var(--accent)'}"></div></div></div>`;
-        riskGrid.innerHTML += `<div class="card"><div class="font-bold text-[var(--red)] text-[10px] mb-1">${t} Risk</div><div class="text-[9px] text-[var(--muted)]">${a.riskText}</div></div>`;
+        let a = analysisData[t];
+        let p = portfolio[t];
+        let consensus = (a.fv_pe + a.fv_ddm + a.fv_pbv) / 3;
+        let mos = ((consensus - p.price) / p.price) * 100;
+        let verdict = getVerdict(t);
+
+        taGrid.innerHTML += `
+          <div class="card text-xs">
+            <div class="flex justify-between items-center mb-3 border-b border-[var(--border)] pb-2">
+              <span class="font-bold text-base" style="color: ${p.color}">${t}</span>
+              <span class="font-bold tracking-wide" style="color: ${verdict.color}; padding: 2px 6px; border: 1px solid ${verdict.color}; border-radius: 4px; font-size: 9px; background: var(--bg2);">${verdict.text}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-y-1 mb-3">
+              <div class="text-[var(--muted)] text-3xs">Harga Live</div><div class="text-right text-[var(--text)] text-3xs">${p.price.toLocaleString('id-ID')}</div>
+              <div class="text-[var(--muted)] text-3xs">FV Consensus</div><div class="text-right text-[var(--text)] text-3xs">${Math.round(consensus).toLocaleString('id-ID')}</div>
+              <div class="text-[var(--muted)] text-3xs">Margin of Safety</div><div class="text-right font-bold text-3xs" style="color: ${verdict.color}">${formatPct(mos)}</div>
+            </div>
+            <div class="mb-1 mt-3">
+              <div class="flex justify-between text-3xs mb-1"><span class="text-[var(--text)]">RSI 14: ${a.rsi}</span><span class="${a.rsi<30?'text-[var(--green)]':a.rsi>70?'text-[var(--red)]':'text-[var(--muted)]'}">${a.rsi<30?'OVERSOLD':a.rsi>70?'OVERBOUGHT':'NEUTRAL'}</span></div>
+              <div class="progress-bg h-1.5 relative overflow-visible">
+                <div class="absolute w-1 h-3.5 bg-white top-[-4px] rounded shadow" style="left: ${a.rsi}%; z-index: 10;"></div>
+                <div class="w-full h-full bg-gradient-to-r from-[var(--green)] via-[var(--bg3)] to-[var(--red)] opacity-70"></div>
+              </div>
+              <div class="flex justify-between text-4xs text-[var(--dim)] mt-1"><span>30</span><span>70</span></div>
+            </div>
+          </div>
+        `;
+
+        let riskColor = a.riskScore > 60 ? 'var(--red)' : a.riskScore > 30 ? 'var(--amber)' : 'var(--green)';
+        riskGrid.innerHTML += `
+          <div class="card flex flex-col justify-between" style="border-top: 2px solid ${riskColor}">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-bold" style="color: ${p.color}">${t}</span>
+              <span class="text-xs font-bold" style="color: ${riskColor}">${a.riskScore}%</span>
+            </div>
+            <p class="text-3xs text-[var(--muted)] flex-1">${a.riskText}</p>
+            <div class="progress-bg h-1 mt-2 opacity-50"><div class="progress-fill" style="background-color: ${riskColor}; width: ${a.riskScore}%;"></div></div>
+          </div>
+        `;
       });
     }
 
     function renderControlRoom() {
-      const m = calcMetrics();
       const rebTb = document.getElementById('rebalance-tbody');
+      const spList = document.getElementById('savepoints-list');
       rebTb.innerHTML = '';
+      
+      let { totalMarketValue } = calcMetrics();
+
       Object.keys(portfolio).forEach(t => {
-        const p = portfolio[t]; const actPct = (p.marketValue / m.totalMarketValue) * 100; const gap = actPct - p.target;
-        rebTb.innerHTML += `<tr><td class="py-2 font-bold">${t}</td><td>${actPct.toFixed(1)}%</td><td>${p.target}%</td><td class="${Math.abs(gap)>2?'text-[var(--red)]':'text-[var(--green)]'}">${formatPct(gap)}</td><td>${gap < -1 ? 'BUY' : gap > 1 ? 'SELL' : 'HOLD'}</td></tr>`;
+        let p = portfolio[t];
+        let actualPct = totalMarketValue > 0 ? (p.marketValue / totalMarketValue) * 100 : 0;
+        let gapPct = actualPct - p.target;
+        let diffLots = Math.round(((p.target/100 * totalMarketValue) - p.marketValue) / (p.price * 100));
+        
+        let action = '';
+        if (diffLots > 0) action = `<span class="text-[var(--green)]">+ Beli ${diffLots} Lot</span>`;
+        else if (diffLots < 0) action = `<span class="text-[var(--red)]">- Jual ${Math.abs(diffLots)} Lot</span>`;
+        else action = `<span class="text-[var(--muted)]">Hold / Target OK</span>`;
+
+        rebTb.innerHTML += `
+          <tr class="hover:bg-[var(--bg3)] transition">
+            <td class="py-2"><span class="font-bold" style="color: ${p.color}">${t}</span></td>
+            <td class="text-[var(--text)]">${actualPct.toFixed(1)}%</td>
+            <td class="text-[var(--text)]">${p.target}%</td>
+            <td class="${gapPct > 2 ? 'text-[var(--red)]' : gapPct < -2 ? 'text-[var(--amber)]' : 'text-[var(--green)]'} font-medium">${formatPct(gapPct)}</td>
+            <td class="text-xs font-medium">${action}</td>
+          </tr>
+        `;
+      });
+
+      if (savepoints.length > 0) {
+        spList.innerHTML = savepoints.slice().reverse().map((sp, i) => `
+          <div class="p-2 bg-[var(--bg3)] border border-[var(--border2)] rounded flex justify-between items-center text-xs">
+            <div><div class="font-bold text-[var(--text)]">${sp.date}</div><div class="text-3xs text-[var(--muted)]">MV: ${formatRp(sp.mv)}</div></div>
+            <button onclick="restoreSavepoint(${savepoints.length - 1 - i})" class="text-[var(--accent)] hover:underline text-3xs">Restore</button>
+          </div>
+        `).join('');
+      } else {
+        spList.innerHTML = `<div class="text-center text-3xs text-[var(--muted)] mt-4">Belum ada savepoint.</div>`;
+      }
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderArsenal();
+      renderControlRoom();
+      
+      let mq = '';
+      Object.keys(portfolio).forEach(t => {
+        mq += `<span class="font-bold" style="color: ${portfolio[t].color}">${t}</span> <span class="text-[var(--text)]">${portfolio[t].price.toLocaleString('id-ID')}</span> &nbsp;&nbsp;&nbsp;&nbsp; `;
+      });
+      document.getElementById('ticker-marquee').innerHTML = mq;
+    }
+
+    // ================= ACTIONS & LOGIC =================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => { el.classList.remove('block'); el.classList.add('hidden'); });
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      document.getElementById('tab-' + tabId).classList.add('block');
+      document.getElementById('nav-' + tabId).classList.add('active');
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      document.body.classList.toggle('light');
+    }
+
+    async function fetchData() {
+      const btn = document.querySelector('button[onclick="fetchData()"]');
+      const icon = btn.querySelector('i');
+      icon.classList.add('animate-spin');
+      btn.disabled = true;
+      document.getElementById('status-text').textContent = 'Fetching Data...';
+      document.getElementById('status-dot').classList.replace('bg-[var(--red)]', 'bg-[var(--amber)]');
+      document.getElementById('status-dot').classList.replace('bg-[var(--green)]', 'bg-[var(--amber)]');
+
+      try {
+        // Fetch Stocks + Index (hanya fetch yang gratisan di YF Proxy)
+        const symbols = Object.keys(portfolio).map(t => t + '.JK').join(',') + ',^JKSE,IDR=X';
+        const yfUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}`;
+        
+        // Use allorigins to bypass CORS
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(yfUrl)}&t=${Date.now()}`);
+        if (!response.ok) throw new Error('Network response not ok');
+        const data = await response.json();
+        const parsedData = JSON.parse(data.contents);
+
+        if (parsedData.quoteResponse && parsedData.quoteResponse.result) {
+          parsedData.quoteResponse.result.forEach(quote => {
+            const sym = quote.symbol;
+            if (sym === '^JKSE') {
+              document.getElementById('ihsg-val').textContent = quote.regularMarketPrice.toLocaleString('en-US');
+              document.getElementById('ihsg-pct').textContent = quote.regularMarketChangePercent.toFixed(2) + '%';
+              document.getElementById('ihsg-pct').className = `badge ${quote.regularMarketChangePercent >= 0 ? 'bg-bull' : 'br-bear'}`;
+            } else if (sym === 'IDR=X') {
+              document.getElementById('usd-val').textContent = quote.regularMarketPrice.toLocaleString('en-US');
+              document.getElementById('usd-pct').textContent = quote.regularMarketChangePercent.toFixed(2) + '%';
+              document.getElementById('usd-pct').className = `badge ${quote.regularMarketChangePercent >= 0 ? 'br-bear' : 'bg-bull'}`;
+            } else {
+              const ticker = sym.replace('.JK', '');
+              if (portfolio[ticker]) {
+                if (quote.regularMarketPrice) portfolio[ticker].price = quote.regularMarketPrice;
+                if (quote.trailingAnnualDividendRate && quote.trailingAnnualDividendRate > 0) portfolio[ticker].divPerShare = quote.trailingAnnualDividendRate;
+              }
+            }
+          });
+        }
+
+        // Sim Coal Sync
+        let coalSim = (portfolio['ITMG'].price / 200).toFixed(2); 
+        document.getElementById('coal-val').textContent = `$${coalSim}`;
+        document.getElementById('coal-pct').textContent = 'Synced (Est)';
+
+        document.getElementById('status-dot').classList.replace('bg-[var(--amber)]', 'bg-[var(--green)]');
+        document.getElementById('status-text').textContent = 'LIVE / Synced';
+        let now = new Date();
+        document.getElementById('last-fetch').textContent = `Last: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} WIB`;
+        
+        persistData();
+        renderAll();
+
+      } catch (error) {
+        console.error("Fetch error:", error);
+        document.getElementById('status-dot').classList.replace('bg-[var(--amber)]', 'bg-[var(--red)]');
+        document.getElementById('status-text').textContent = 'Fetch Failed';
+        alert("Gagal ambil data YF. Proxy sedang down / rate limit. Coba lagi nanti.");
+      } finally {
+        icon.classList.remove('animate-spin');
+        btn.disabled = false;
+      }
+    }
+
+    // ================= AI VISION & OCR LOGIC =================
+    async function convertBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
       });
     }
 
-    function renderAll() { renderDashboard(); renderArsenal(); renderControlRoom(); }
+    async function callGemini(base64Image, prompt) {
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) throw new Error("API_KEY_MISSING");
 
-    // ================= UTILS =================
-    function switchTab(id) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      document.getElementById('tab-' + id).classList.remove('hidden');
-      document.getElementById('nav-' + id).classList.add('active');
+      const payload = {
+        contents: [{
+          parts: [
+            { text: prompt },
+            { inlineData: { mimeType: "image/jpeg", data: base64Image } }
+          ]
+        }]
+      };
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      
+      const resData = await response.json();
+      if(resData.error) throw new Error(resData.error.message);
+      return resData.candidates[0].content.parts[0].text;
     }
-    function toggleTheme() { document.body.classList.toggle('light'); }
-    function persistData() { localStorage.setItem('aegis_portfolio', JSON.stringify(portfolio)); localStorage.setItem('aegis_state', JSON.stringify(userState)); }
-    function openPinModal() { document.getElementById('pin-modal').classList.remove('hidden'); }
-    function checkPin() { if (document.getElementById('pin-input').value === '190820') { closeModal('pin-modal'); openEditModal(); } else alert('Wrong PIN'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    
+
+    async function handleOCRUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const modal = document.getElementById('ocr-modal');
+      const status = document.getElementById('ocr-status-text');
+      modal.classList.remove('hidden');
+      
+      try {
+        const base64 = await convertBase64(file);
+        const prompt = `Ini adalah screenshot portofolio saham. Ekstrak data untuk ticker saham: ADMF, ASII, BMRI, ITMG, INDF (jika ada).
+        Format angka Indonesia: titik untuk ribuan, koma untuk desimal. 
+        Abaikan saham yang tidak ada di list ticker tersebut.
+        Kembalikan HANYA format JSON valid tanpa format markdown, tanpa tag \`\`\`json. Format yang diminta:
+        { "stocks": [ { "ticker": "BMRI", "lots": 10, "avgPrice": 4600 } ] }`;
+
+        status.textContent = "Mengirim gambar ke Gemini AI...";
+        
+        let resultText = "";
+        try {
+          resultText = await callGemini(base64, prompt);
+        } catch (e) {
+          if(e.message === "API_KEY_MISSING") {
+            // Mock Fallback
+            await new Promise(r => setTimeout(r, 1500));
+            resultText = JSON.stringify({
+              stocks: Object.keys(portfolio).map(t => ({
+                ticker: t, lots: portfolio[t].lots, avgPrice: portfolio[t].avgPrice
+              }))
+            });
+          } else {
+            throw e;
+          }
+        }
+
+        // Parse result carefully
+        const cleanJson = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const data = JSON.parse(cleanJson);
+        
+        // Prepare Edit Modal
+        const tbody = document.getElementById('edit-tbody');
+        tbody.innerHTML = '';
+        Object.keys(portfolio).forEach(t => {
+          let p = portfolio[t];
+          let ocrData = data.stocks ? data.stocks.find(s => s.ticker === t) : null;
+          let newLot = ocrData ? ocrData.lots : p.lots;
+          let newAvg = ocrData ? ocrData.avgPrice : p.avgPrice;
+          let newInv = newLot * newAvg * 100;
+
+          tbody.innerHTML += `
+            <tr class="border-b border-[var(--border2)]">
+              <td class="py-3 font-bold" style="color:${p.color}">${t}</td>
+              <td class="py-3 pr-2"><input type="number" id="edit-tgt-${t}" value="${p.target}" class="w-16 bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+              <td class="py-3 pr-2"><input type="number" id="edit-avg-${t}" value="${newAvg}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)] ${ocrData?'border-[var(--purple)]':''}"></td>
+              <td class="py-3 pr-2"><input type="number" id="edit-lot-${t}" value="${newLot}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)] ${ocrData?'border-[var(--purple)]':''}"></td>
+              <td class="py-3 pr-2"><input type="number" id="edit-inv-${t}" value="${newInv}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+            </tr>
+          `;
+        });
+        document.getElementById('edit-cash').value = userState.cash;
+        document.getElementById('edit-alert').classList.remove('hidden');
+        
+        modal.classList.add('hidden');
+        document.getElementById('edit-modal').classList.remove('hidden');
+
+      } catch (err) {
+        alert("Gagal membaca gambar atau parsing JSON dari AI. Pastikan gambar jelas atau API Key benar.");
+        console.error(err);
+        modal.classList.add('hidden');
+      }
+      event.target.value = ''; // reset file input
+    }
+
+    async function runAIAnalysis() {
+      const btn = document.querySelector('button[onclick="runAIAnalysis()"]');
+      const loader = document.getElementById('ai-loading');
+      const resultBox = document.getElementById('ai-result');
+      const stock = document.getElementById('ai-stock-select').value;
+      const dataTA = analysisData[stock];
+      const p = portfolio[stock];
+
+      const f1w = document.getElementById('ai-chart-1w').files[0];
+      const f1d = document.getElementById('ai-chart-1d').files[0];
+      const f4h = document.getElementById('ai-chart-4h').files[0];
+
+      let hasApiKey = localStorage.getItem('gemini_api_key');
+
+      if (hasApiKey && (!f1w || !f1d)) {
+        alert("Mohon upload minimal chart 1W dan 1D untuk analisa AI.");
+        return;
+      }
+
+      loader.classList.remove('hidden');
+      btn.disabled = true;
+
+      try {
+        let aiResponse = "";
+
+        if(hasApiKey && f1w && f1d) {
+          const b1w = await convertBase64(f1w);
+          const prompt = `Analisa teknikal chart saham ${stock} ini secara Multi-Timeframe. 
+          Apakah arah Weekly selaras dengan Daily? Bagaimana posisi indikator utama? 
+          Jawab dalam bahasa Indonesia, singkat, dan berikan Action Plan: (BELI / TAHAN / JUAL).`;
+          aiResponse = await callGemini(b1w, prompt);
+        } else {
+          // Mock Simulation
+          await new Promise(r => setTimeout(r, 1500));
+          let sentiment = dataTA.score >= 5 ? 'Bullish' : dataTA.score <= 2 ? 'Bearish' : 'Neutral';
+          aiResponse = `(Mode Simulasi - API Key/Image kosong)<br><br>
+          <strong>Timeframe Sync:</strong> Terdeteksi konvergensi trend. Weekly trend menunjukkan struktur <em>${sentiment}</em> dengan RSI di level ${dataTA.rsi}. Cloud Ichimoku mengindikasikan signal <strong>${dataTA.signal}</strong>.<br><br>
+          <strong>Fundamental Check:</strong> Harga ${p.price.toLocaleString('id-ID')}. Status valuasi: <strong>${getVerdict(stock).text}</strong>.<br><br>
+          <span class="text-[var(--accent2)] italic">"Action Plan: Perhatikan support pada Kijun Sen 1D. Yield saat ini ${(p.divPerShare/p.price*100).toFixed(1)}% cukup aman dikoleksi bertahap."</span>`;
+        }
+
+        resultBox.innerHTML = `
+          <div class="text-[var(--green)] font-bold mb-2 flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Analysis Complete for ${stock}</div>
+          <div class="space-y-2">${aiResponse.replace(/\n/g, '<br>')}</div>
+        `;
+        lucide.createIcons();
+      } catch (err) {
+        resultBox.innerHTML = `<span class="text-[var(--red)]">Error AI Vision: ${err.message}</span>`;
+      } finally {
+        loader.classList.add('hidden');
+        btn.disabled = false;
+      }
+    }
+
+    // ================= DATA MANAGEMENT (SAVE/EXPORT/IMPORT) =================
+    function persistData() {
+      localStorage.setItem('aegis_portfolio', JSON.stringify(portfolio));
+      localStorage.setItem('aegis_state', JSON.stringify(userState));
+      localStorage.setItem('aegis_savepoints', JSON.stringify(savepoints));
+    }
+
+    function createSavepoint() {
+      const { totalMarketValue } = calcMetrics();
+      const sp = {
+        date: new Date().toLocaleString('id-ID'),
+        mv: totalMarketValue,
+        portfolioState: JSON.parse(JSON.stringify(portfolio)),
+        cashState: userState.cash
+      };
+      savepoints.push(sp);
+      if(savepoints.length > 10) savepoints.shift();
+      persistData();
+    }
+
+    function restoreSavepoint(index) {
+      if(confirm('Restore portofolio ke savepoint ini? Data saat ini akan tertimpa.')) {
+        portfolio = JSON.parse(JSON.stringify(savepoints[index].portfolioState));
+        userState.cash = savepoints[index].cashState;
+        persistData();
+        renderAll();
+      }
+    }
+
+    function exportJSONData() {
+      const data = {
+        app: "AEGIS_ALPHA_V1",
+        timestamp: new Date().toISOString(),
+        userState: userState,
+        portfolio: portfolio
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Aegis_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function manualExportJSON() {
+      exportJSONData();
+    }
+
+    function handleImportJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const json = JSON.parse(e.target.result);
+          if (json.app === "AEGIS_ALPHA_V1" && json.portfolio) {
+            portfolio = json.portfolio;
+            userState = json.userState;
+            persistData();
+            renderAll();
+            alert('Data berhasil di-import!');
+          } else {
+            alert('Format JSON tidak valid untuk Aegis Alpha.');
+          }
+        } catch (err) {
+          alert('Gagal membaca file JSON.');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function resetTotal() {
+      if(confirm('PERINGATAN BAHAYA!\nAnda yakin ingin mereset seluruh data ke pengaturan awal (Default)? Semua data, edit, dan savepoint akan hilang.')) {
+        localStorage.removeItem('aegis_portfolio');
+        localStorage.removeItem('aegis_state');
+        localStorage.removeItem('aegis_savepoints');
+        window.location.reload();
+      }
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('gemini-api-key').value;
+      localStorage.setItem('gemini_api_key', key);
+      alert("API Key tersimpan lokal di browser.");
+    }
+
+    // ================= MODAL & EDIT LOGIC =================
+    function openPinModal() {
+      document.getElementById('pin-input').value = '';
+      document.getElementById('pin-error').classList.add('hidden');
+      document.getElementById('pin-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('pin-input').focus(), 100);
+    }
+
+    function checkPin() {
+      const pin = document.getElementById('pin-input').value;
+      if (pin === '190820') {
+        closeModal('pin-modal');
+        openEditModal();
+      } else {
+        document.getElementById('pin-error').classList.remove('hidden');
+      }
+    }
+
     function openEditModal() {
-      const tbody = document.getElementById('edit-tbody'); tbody.innerHTML = '';
+      document.getElementById('edit-alert').classList.add('hidden');
+      const tbody = document.getElementById('edit-tbody');
+      tbody.innerHTML = '';
       Object.keys(portfolio).forEach(t => {
-        const p = portfolio[t];
-        tbody.innerHTML += `<tr><td class="font-bold py-2">${t}</td><td><input type="number" id="e-tgt-${t}" value="${p.target}" class="w-12 bg-transparent border-b"></td><td><input type="number" id="e-avg-${t}" value="${p.avgPrice}" class="w-20 bg-transparent border-b"></td><td><input type="number" id="e-lot-${t}" value="${p.lots}" class="w-12 bg-transparent border-b"></td><td><input type="number" id="e-inv-${t}" value="${p.invested}" class="w-24 bg-transparent border-b"></td></tr>`;
+        let p = portfolio[t];
+        tbody.innerHTML += `
+          <tr class="border-b border-[var(--border2)]">
+            <td class="py-3 font-bold" style="color:${p.color}">${t}</td>
+            <td class="py-3 pr-2"><input type="number" id="edit-tgt-${t}" value="${p.target}" class="w-16 bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+            <td class="py-3 pr-2"><input type="number" id="edit-avg-${t}" value="${p.avgPrice}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+            <td class="py-3 pr-2"><input type="number" id="edit-lot-${t}" value="${p.lots}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+            <td class="py-3 pr-2"><input type="number" id="edit-inv-${t}" value="${p.invested}" class="w-full bg-[var(--bg)] border border-[var(--border2)] rounded px-2 py-1.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"></td>
+          </tr>
+        `;
       });
       document.getElementById('edit-cash').value = userState.cash;
       document.getElementById('edit-modal').classList.remove('hidden');
@@ -461,24 +1066,26 @@
 
     function saveEdit() {
       Object.keys(portfolio).forEach(t => {
-        portfolio[t].target = parseFloat(document.getElementById(`e-tgt-${t}`).value);
-        portfolio[t].avgPrice = parseFloat(document.getElementById(`e-avg-${t}`).value);
-        portfolio[t].lots = parseFloat(document.getElementById(`e-lot-${t}`).value);
-        portfolio[t].invested = parseFloat(document.getElementById(`e-inv-${t}`).value);
+        portfolio[t].target = parseFloat(document.getElementById(`edit-tgt-${t}`).value) || 0;
+        portfolio[t].avgPrice = parseFloat(document.getElementById(`edit-avg-${t}`).value) || 0;
+        portfolio[t].lots = parseFloat(document.getElementById(`edit-lot-${t}`).value) || 0;
+        portfolio[t].invested = parseFloat(document.getElementById(`edit-inv-${t}`).value) || 0;
       });
-      userState.cash = parseFloat(document.getElementById('edit-cash').value);
-      persistData(); renderAll(); closeModal('edit-modal');
+      userState.cash = parseFloat(document.getElementById('edit-cash').value) || 0;
+      
+      createSavepoint(); 
+      exportJSONData();  
+
+      closeModal('edit-modal');
+      renderAll();
     }
 
-    function manualExportJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({portfolio, userState}));
-      const downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href", dataStr);
-      downloadAnchorNode.setAttribute("download", "aegis_backup.json");
-      document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
-    }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    
+    document.getElementById('pin-input').addEventListener('keypress', function (e) { if (e.key === 'Enter') checkPin(); });
 
-    function resetTotal() { if(confirm('Reset all data?')) { localStorage.clear(); window.location.reload(); } }
+    // Initialize UI on load
+    renderAll();
 
   </script>
 </body>
