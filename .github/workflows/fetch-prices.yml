@@ -1,33 +1,34 @@
-name: Aegis Alpha Price Sync
+name: Fetch IDX Prices
 
 on:
   schedule:
-    # Berjalan setiap 30 menit selama jam bursa (Senin-Jumat, 02:00 - 09:00 UTC atau 09:00 - 16:00 WIB)
-    - cron: '*/30 2-9 * * 1-5'
-  workflow_dispatch: # Memungkinkan tombol "Run workflow" manual di tab Actions
+    - cron: '*/15 * * * *'   # setiap 15 menit
+  workflow_dispatch:           # bisa trigger manual dari GitHub UI
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
-      - name: Install Dependencies
-        run: pip install requests
+      - name: Install deps
+        run: pip install requests yfinance
 
-      - name: Fetch Prices
+      - name: Run fetch
         run: python fetch_prices.py
 
-      - name: Commit and Push
+      - name: Commit prices.json
         run: |
-          git config --global user.name "Aegis-Bot"
-          git config --global user.email "bot@aegis.alpha"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add prices.json
-          git commit -m "Sync Market Data: $(date)" || exit 0
+          git diff --staged --quiet || git commit -m "chore: update prices $(date -u +%H:%M)"
           git push
