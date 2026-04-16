@@ -4732,7 +4732,7 @@ async function dhCallGemini(parts) {
   if(!key || (!key.startsWith('AIza') && !key.startsWith('AQ.'))) throw new Error('API Key Gemini tidak valid. Masukkan di bagian atas (format: AIza... atau AQ.Ab8...)');
 
   const resp = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -4905,7 +4905,7 @@ Jawab dalam Bahasa Indonesia. Langsung, konkret, jangan hedge. Gunakan data port
     if(!key || (!key.startsWith('AIza') && !key.startsWith('AQ.'))) throw new Error('API Key Gemini belum diisi. Masukkan di bagian atas halaman.');
 
     const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
