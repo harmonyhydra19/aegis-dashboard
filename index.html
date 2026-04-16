@@ -4573,7 +4573,7 @@ function dhSaveKey(val) {
 function dhUpdateKeyStatus(key) {
   const el = document.getElementById('dh-key-status');
   if(!el) return;
-  if(key && key.startsWith('AIza') && key.length > 20) {
+  if(key && (key.startsWith('AIza') || key.startsWith('AQ.')) && key.length > 20) {
     el.textContent = '✓ Key tersimpan';
     el.style.color = 'var(--green)';
   } else if(key) {
@@ -4729,7 +4729,7 @@ function dhGetPortoContext() {
 // ─────────────────────────────────────────────
 async function dhCallGemini(parts) {
   const key = dhGetKey();
-  if(!key || !key.startsWith('AIza')) throw new Error('API Key Gemini tidak valid. Masukkan di bagian atas (format: AIza...)');
+  if(!key || (!key.startsWith('AIza') && !key.startsWith('AQ.'))) throw new Error('API Key Gemini tidak valid. Masukkan di bagian atas (format: AIza... atau AQ.Ab8...)');
 
   const resp = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
@@ -4902,7 +4902,7 @@ Jawab dalam Bahasa Indonesia. Langsung, konkret, jangan hedge. Gunakan data port
 
   try {
     const key = dhGetKey();
-    if(!key || !key.startsWith('AIza')) throw new Error('API Key Gemini belum diisi. Masukkan di bagian atas halaman.');
+    if(!key || (!key.startsWith('AIza') && !key.startsWith('AQ.'))) throw new Error('API Key Gemini belum diisi. Masukkan di bagian atas halaman.');
 
     const resp = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
