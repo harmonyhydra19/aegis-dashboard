@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v15 — Arsenal</title>
+<title>Aegis Alpha v16 — Arsenal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;0,9..144,300;1,9..144,200;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   AEGIS ALPHA v15 — COMMAND TERMINAL DESIGN SYSTEM
+   AEGIS ALPHA v16 — COMMAND TERMINAL DESIGN SYSTEM
    Dark mode default · "Ichimoku-style glance"
 ═══════════════════════════════════════════════════════════ */
 :root {
@@ -692,7 +692,7 @@ canvas{max-width:100%}
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v15</sup></div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v16</sup></div>
     <div class="sb-tagline">Dividend Flywheel · Target Rp250jt</div>
   </div>
 
@@ -773,17 +773,19 @@ canvas{max-width:100%}
       <span class="ticker-item">·</span>
       <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 10L · INDF 2L · ITMG 3L · ASII 3L · ADMF 17L = Rp30.13jt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt (v15)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt (v16)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📊 <strong>Yield Porto Penuh</strong> — ~8.5% gross · Rp21.25jt/thn · Rp1.50jt/bln net</span>
+      <span class="ticker-item" id="ticker-yield-item">📊 <strong>Yield Porto Penuh</strong> — ~8.5% gross · <span id="ticker-annual-div">—</span>/thn · <span id="ticker-monthly-div">—</span>/bln net</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🔄 <strong>Rebalance v15 Apr 2026</strong> — BMRI↑35% · ASII↑25% · ADMF↓20% · ITMG=15% · INDF=5% · EXIT POWR</span>
+      <span class="ticker-item">🔄 <strong>Rebalance v16 Apr 2026</strong> — BMRI↑35% · ASII↑25% · ADMF↓20% · ITMG=15% · INDF=5% · EXIT POWR</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli SETELAH ex-date → target 14 lot total</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt (v15)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
+      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — <span id="ticker-pos-aktual-dup">BMRI 10L · INDF 2L · ITMG 3L · ASII 3L · ADMF 17L</span></span>
+      <span class="ticker-item">·</span>
+      <span class="ticker-item">🎯 <strong>Target Rp250jt (v16)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
     </div>
   </div>
 
@@ -974,7 +976,7 @@ canvas{max-width:100%}
   </div>
   <div class="bcard mb10" style="padding:10px 14px">
     <div style="font-size:9px;color:var(--muted);line-height:1.7" id="market-narrative">
-      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual Rp30.13jt — butuh fresh capital ~Rp219.4jt menuju target Rp250jt. ITMG ex-div 21 Apr — prioritas beli +11 lot setelah ex-date. ADMF posisi terbesar 17L (avg 8,492) — kurangi sizing ke target 20% setelah dividen Rp630 cair 30 Apr. <strong style="color:var(--purple)">v15 UPDATE:</strong> POWR di-exit, INDF masuk sebagai consumer staples defensif 5% — yield 8.5% gross terkunci dengan ASII special div konservatif.
+      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual <span id="journal-porto-val">—</span> — butuh fresh capital ~<span id="journal-fresh-cap">—</span> menuju target Rp250jt. ITMG ex-div 21 Apr — prioritas beli +11 lot setelah ex-date. ADMF posisi terbesar 17L (avg 8,492) — arahkan dividen Rp630 (cair 30 Apr) ke BMRI sesuai Rule #9. <strong style="color:var(--purple)">v16 UPDATE:</strong> Porto Rp30.13jt — ADMF +12 lot dari sesi sebelumnya. POWR sudah exit, INDF 2L consumer staples anchor.
     </div>
   </div>
 
@@ -1124,8 +1126,8 @@ canvas{max-width:100%}
     <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
   </div>
 
-  <div class="info-box mb10">
-    <strong>🎯 Milestone Porto Rp250jt (v15)</strong> — Target lot penuh: <strong>BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</strong>. Fresh capital ~Rp232.7jt. Yield ~8.5% gross = <strong>Rp21.25jt/thn</strong>. Urutan inject: BMRI dulu → ASII → ADMF (setelah MFIN confirm) → hold ITMG → INDF (consumer staples anchor).
+  <div class="info-box mb10" id="milestone-infobox">
+    <strong>🎯 Milestone Porto Rp250jt (v16)</strong> — Target lot penuh: <strong>BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</strong>. Fresh capital ~<span id="milestone-fresh-cap">—</span>. Yield ~8.5% gross = <strong><span id="milestone-annual-yield">—</span>/thn</strong>. Urutan inject: BMRI dulu → ASII → ADMF (setelah MFIN confirm) → hold ITMG → INDF (consumer staples anchor).
   </div>
 
   <div class="bcard overflow-x mb10">
@@ -1642,21 +1644,21 @@ const DEFAULT_PORTO = {
   INDF:{ price:6975,   invested:1337002,  pnl:57997,   lots:2,  divPerShare:590,   avgPrice:6685 }
 };
 
-// ── MILESTONE TARGET Rp250jt (v14 — Rebalance Apr 2026, POWR EXIT → INDF ENTRY) ──
+// ── MILESTONE TARGET Rp250jt (v16 — Rebalance Apr 2026, POWR EXIT → INDF ENTRY) ──
 // Harga patokan: ADMF 8375 | BMRI 4650 | ASII 6300 | ITMG 27425 | INDF 6825
 // POSISI AKTUAL (Apr 2026): BMRI 10L | INDF 2L | ITMG 3L | ASII 3L | ADMF 17L = Rp30.13jt
-// TARGET LOT PORTO PENUH (Rp250jt) — ALOKASI v15:
+// TARGET LOT PORTO PENUH (Rp250jt) — ALOKASI v16:
 //   BMRI 187 lot (35%) = Rp87.33jt → gap +182 lot = Rp84.97jt  ↑ core anchor
 //   ASII  99 lot (25%) = Rp62.37jt → gap  +97 lot = Rp61.11jt  ↑ deep value
 //   ADMF  55 lot (20%) = Rp49.50jt → gap  +38 lot = Rp34.20jt  ↓ income satellite
 //   ITMG  14 lot (15%) = Rp37.80jt → gap  +11 lot = Rp29.70jt  = hold only
 //   INDF  19 lot ( 5%) = Rp12.45jt → gap  +17 lot = Rp11.13jt  = consumer staples defensif
-// Total target porto: ~Rp249.45jt | Fresh capital needed: ~Rp232.8jt
+// Total target porto: ~Rp249.45jt | Fresh capital needed: ~Rp219.3jt (v16: ADMF 17L sudah masuk)
 // Blended yield (porto penuh): ~8.5% gross | Div gross/thn: ~Rp21,205,100 | Div net/bln: ~Rp1,502,028
 // ASII div = Rp406 regular + Rp75 special div konservatif (historis ASII bayar special saat neraca kuat)
 // Urutan inject: BMRI (core anchor) → ASII (defensif) → ADMF (post-MFIN confirm) → ITMG (hold only) → INDF (last)
 
-const DEFAULT_TARGETS = { ADMF:20, ASII:25, BMRI:35, ITMG:15, INDF:5 }; // v15 → 250jt: BMRI 187L | ASII 99L | ADMF 55L | ITMG 14L | INDF 19L
+const DEFAULT_TARGETS = { ADMF:20, ASII:25, BMRI:35, ITMG:15, INDF:5 }; // v16 → 250jt: BMRI 187L | ASII 99L | ADMF 55L | ITMG 14L | INDF 19L
 // Shared helper — ideal lots for a given nominal portfolio size
 const getIdealLots = (t, nominal) => {
   const p = porto[t].price;
@@ -1730,7 +1732,14 @@ const STOCK_NAMES = {
   INDF: 'Indofood CBP'
 };
 
-// STATE
+// STATE — versioned migration: bump AC_PORTO_VERSION whenever DEFAULT_PORTO changes
+const AC_PORTO_VERSION = 'v16_2026-04-21';
+const storedVersion = localStorage.getItem('ac_porto_version');
+if (storedVersion !== AC_PORTO_VERSION) {
+  // New version detected — flush stale porto data and write fresh defaults
+  localStorage.setItem('ac_porto', JSON.stringify(DEFAULT_PORTO));
+  localStorage.setItem('ac_porto_version', AC_PORTO_VERSION);
+}
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
 // Migration guard: patch missing tickers (e.g. INDF missing from old localStorage saves)
@@ -1880,6 +1889,51 @@ function updateHeader() {
   if(e('sb-div-val'))   e('sb-div-val').textContent   = rp(monthlyDiv) + '/bln';
   const dot = e('live-dot-indicator');
   if(dot) dot.style.background = mkt > 0 ? 'var(--green)' : 'var(--muted)';
+  renderMilestoneInfobox();
+  renderJournalTicker();
+}
+
+function renderMilestoneInfobox() {
+  const T_PORTO = 250_000_000;
+  const mkt = totalMktVal();
+  const freshCap = Math.max(T_PORTO - mkt, 0);
+  const annualYield = annualDiv() * 0.85; // net of tax
+  const el_fresh = document.getElementById('milestone-fresh-cap');
+  const el_yield = document.getElementById('milestone-annual-yield');
+  if(el_fresh) el_fresh.textContent = rp(freshCap);
+  if(el_yield) el_yield.textContent = rp(annualYield);
+}
+
+function renderJournalTicker() {
+  const mkt = totalMktVal();
+  const freshCap = Math.max(250_000_000 - mkt, 0);
+  const lotsStr = TICKERS.map(t => `${t} ${porto[t].lots}L`).join(' · ');
+  const grossDiv = annualDiv();
+  const netMonthly = grossDiv * 0.85 / 12;
+
+  // Update ALL ticker tape "Posisi Aktual" items (both copies for seamless scroll)
+  document.querySelectorAll('.ticker-item').forEach(el => {
+    const strong = el.querySelector('strong');
+    if(strong && strong.textContent.trim() === 'Posisi Aktual') {
+      el.innerHTML = `📍 <strong>Posisi Aktual</strong> — ${lotsStr} = ${rp(mkt)}`;
+    }
+  });
+
+  // Update duplicate posisi aktual span (second ticker copy)
+  const dup = document.getElementById('ticker-pos-aktual-dup');
+  if(dup) dup.textContent = lotsStr;
+
+  // Update yield ticker item
+  const tad = document.getElementById('ticker-annual-div');
+  const tmd = document.getElementById('ticker-monthly-div');
+  if(tad) tad.textContent = rp(grossDiv);
+  if(tmd) tmd.textContent = rp(netMonthly);
+
+  // Update journal dynamic spans
+  const jv = document.getElementById('journal-porto-val');
+  const jf = document.getElementById('journal-fresh-cap');
+  if(jv) jv.textContent = rp(mkt);
+  if(jf) jf.textContent = rp(freshCap);
 }
 
 function renderSnapshotPanel() {
@@ -2325,7 +2379,7 @@ function renderSuggestionGrid() {
   });
 }
 
-const ANALYSIS_DATE = 'Apr 2026 (v15)'; // analisa data per bulan ini
+const ANALYSIS_DATE = 'Apr 2026 (v16)'; // analisa data per bulan ini
 
 function renderStockAnalysis() {
   const el = document.getElementById('stock-analysis-grid');
