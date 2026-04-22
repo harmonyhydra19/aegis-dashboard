@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Alpha v16 — Arsenal</title>
+<title>Aegis Alpha v17 — Arsenal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,100;0,9..144,200;0,9..144,300;1,9..144,200;1,9..144,300&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   AEGIS ALPHA v16 — COMMAND TERMINAL DESIGN SYSTEM
+   AEGIS ALPHA v17 — COMMAND TERMINAL DESIGN SYSTEM
    Dark mode default · "Ichimoku-style glance"
 ═══════════════════════════════════════════════════════════ */
 :root {
@@ -40,11 +40,11 @@
   --accent2: #60aaff;
 
   /* Stock colors */
-  --admf: #f0c060;
-  --asii: #4d9de0;
+  --bbca: #e8b84b;
+  --smsm: #4d9de0;
   --bmri: #e05555;
-  --itmg: #2de08a;
-  --indf: #9b79e0;
+  --akra: #2de08a;
+  --sido: #9b79e0;
 
   /* Shadows */
   --card-shadow:       0 2px 20px rgba(0,0,0,0.6);
@@ -156,7 +156,7 @@ body.light::before{
 .sb-kpi-block{padding:10px 14px;border-bottom:1px solid var(--border)}
 .sb-kpi-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
 .sb-kpi-l{font-size:8.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
-.sb-kpi-v{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;font-family:'Fraunces',serif;font-weight:200;font-size:14px}
+.sb-kpi-v{font-variant-numeric:tabular-nums;font-family:'Fraunces',serif;font-weight:200;font-size:14px}
 
 /* Quote */
 .sb-quote-block{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
@@ -453,8 +453,6 @@ body.light::before{
 .info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--blue);line-height:1.7;margin-bottom:10px}
 .warn-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--amber);line-height:1.7;margin-bottom:10px}
 .success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:9px 13px;font-size:9.5px;color:var(--green);line-height:1.7;margin-bottom:10px}
-.banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:9px 13px;font-size:9.5px;color:var(--amber);line-height:1.7;margin-bottom:10px}
-
 .tbl{width:100%;border-collapse:collapse;font-size:10.5px}
 .tbl th{text-align:left;font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400;padding:7px 8px;border-bottom:1px solid var(--border)}
 .tbl td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -692,15 +690,15 @@ canvas{max-width:100%}
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v16</sup></div>
-    <div class="sb-tagline">Dividend Flywheel · Target Rp250jt</div>
+    <div class="sb-logo">Aegis <em>Alpha</em> <sup>v17</sup></div>
+    <div class="sb-tagline">Dividend Growth Compounder · Target Rp1.6M</div>
   </div>
 
   <div class="sb-kpi-block">
     <!-- Porto Target milestone -->
     <div style="margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)">Porto → Rp250jt</span>
+        <span style="font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)">Porto → Rp1.6M</span>
         <span style="font-size:8px;font-weight:500;color:var(--accent2)" id="sb-porto-pct">—</span>
       </div>
       <div style="height:5px;background:var(--bg5);border-radius:3px;overflow:hidden">
@@ -708,7 +706,7 @@ canvas{max-width:100%}
       </div>
       <div style="display:flex;justify-content:space-between;margin-top:3px">
         <span style="font-size:7px;color:var(--muted)" id="sb-porto-val">—</span>
-        <span style="font-size:7px;color:var(--dim)">Rp250jt</span>
+        <span style="font-size:7px;color:var(--dim)">Rp1.6M</span>
       </div>
     </div>
     <!-- Div/Bln milestone -->
@@ -767,25 +765,25 @@ canvas{max-width:100%}
   <!-- Ticker bar -->
   <div class="ticker-bar">
     <div class="ticker-inner" id="ticker-inner">
-      <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
+      <span class="ticker-item">💰 <strong>SIDO Semi-Annual Jun</strong> — est. Rp22/saham · SMSM Interim Des · AKRA Agt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli SETELAH ex-date → target 14 lot total</span>
+      <span class="ticker-item">📅 <strong>BMRI RUPST 29 Apr</strong> · Dividen ~Rp383/saham · Payment est. Mei 2026 · Lo dapat: 32 lot = Rp1.225.600</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BMRI 10L · INDF 2L · ITMG 3L · ASII 3L · ADMF 17L = Rp30.13jt</span>
+      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — BBCA 30L · BMRI 32L · SMSM 72L · AKRA 60L · SIDO 135L = Rp63.25jt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt (v16)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
+      <span class="ticker-item">🎯 <strong>Target Rp1.6M — Aegis Alpha v17</strong> — BBCA · BMRI · SMSM · AKRA · SIDO · DCA Rp1.5jt/bln</span>
       <span class="ticker-item">·</span>
       <span class="ticker-item" id="ticker-yield-item">📊 <strong>Yield Porto Penuh</strong> — ~8.5% gross · <span id="ticker-annual-div">—</span>/thn · <span id="ticker-monthly-div">—</span>/bln net</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🔄 <strong>Rebalance v16 Apr 2026</strong> — BMRI↑35% · ASII↑25% · ADMF↓20% · ITMG=15% · INDF=5% · EXIT POWR</span>
+      <span class="ticker-item">🔄 <strong>Aegis Alpha v17</strong> — BBCA 28% · BMRI 22% · SMSM 18% · AKRA 12% · SIDO 10% · Cash 10%</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">⚑ <strong>ADMF Cum Date 14 Apr</strong> — jangan jual sebelum ex-date 15 Apr · Div Rp 630/saham cair 30 Apr</span>
+      <span class="ticker-item">💰 <strong>SIDO Semi-Annual Jun</strong> — est. Rp22/saham · SMSM Interim Des · AKRA Agt</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📅 <strong>ITMG Ex-Div 21 Apr</strong> · Rp 2,245/saham · Payment 7 Mei · Beli SETELAH ex-date → target 14 lot total</span>
+      <span class="ticker-item">📅 <strong>BMRI RUPST 29 Apr</strong> · Dividen ~Rp383/saham · Payment est. Mei 2026 · Lo dapat: 32 lot = Rp1.225.600</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — <span id="ticker-pos-aktual-dup">BMRI 10L · INDF 2L · ITMG 3L · ASII 3L · ADMF 17L</span></span>
+      <span class="ticker-item">📍 <strong>Posisi Aktual</strong> — <span id="ticker-pos-aktual-dup">BBCA 30L · BMRI 32L · SMSM 72L · AKRA 60L · SIDO 135L</span></span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">🎯 <strong>Target Rp250jt (v16)</strong> — BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</span>
+      <span class="ticker-item">🎯 <strong>Target Rp1.6M — Aegis Alpha v17</strong> — BBCA · BMRI · SMSM · AKRA · SIDO · DCA Rp1.5jt/bln</span>
     </div>
   </div>
 
@@ -876,7 +874,7 @@ canvas{max-width:100%}
           <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--accent2)" id="pm-yoc">—</div>
         </div>
         <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
-          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Progress Rp250jt</div>
+          <div style="font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px">Progress Rp1.6M</div>
           <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:200;color:var(--amber)" id="pm-progress">—</div>
         </div>
         <div style="text-align:center;padding:8px;background:var(--bg2);border-radius:7px;border:1px solid var(--border)">
@@ -976,7 +974,7 @@ canvas{max-width:100%}
   </div>
   <div class="bcard mb10" style="padding:10px 14px">
     <div style="font-size:9px;color:var(--muted);line-height:1.7" id="market-narrative">
-      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual <span id="journal-porto-val">—</span> — butuh fresh capital ~<span id="journal-fresh-cap">—</span> menuju target Rp250jt. ITMG ex-div 21 Apr — prioritas beli +11 lot setelah ex-date. ADMF posisi terbesar 17L (avg 8,492) — arahkan dividen Rp630 (cair 30 Apr) ke BMRI sesuai Rule #9. <strong style="color:var(--purple)">v16 UPDATE:</strong> Porto Rp30.13jt — ADMF +12 lot dari sesi sebelumnya. POWR sudah exit, INDF 2L consumer staples anchor.
+      <strong style="color:var(--text)">April 2026:</strong> IDX tertekan tarif Trump + rupiah melemah ke 16.450. Porto aktual <span id="journal-porto-val">—</span> — target akumulasi jangka panjang Rp1.6M. BMRI RUPST 29 Apr — dividen ~Rp383/saham konfirmasi. BBCA ex-date sudah lewat — tunggu FY2026. <strong style="color:var(--purple)">v17 UPDATE:</strong> Porto direfresh ke Aegis Alpha 5 — BBCA 30L · BMRI 32L · SMSM 72L · AKRA 60L · SIDO 135L = Rp63.25jt. Struktur dividend growth compounder.
     </div>
   </div>
 
@@ -1007,11 +1005,11 @@ canvas{max-width:100%}
         <label>Sumber Dividen</label>
         <select id="sel-source" onchange="autoFillDiv()">
           <option value="-">— Bulan kosong</option>
-          <option value="ADMF" selected>ADMF</option>
-          <option value="ASII">ASII</option>
-          <option value="BMRI">BMRI</option>
-          <option value="ITMG">ITMG</option>
-          <option value="INDF">INDF</option>
+          <option value="BBCA">BBCA</option>
+          <option value="BMRI" selected>BMRI</option>
+          <option value="SMSM">SMSM</option>
+          <option value="AKRA">AKRA</option>
+          <option value="SIDO">SIDO</option>
           <option value="MULTI">Multiple (manual)</option>
         </select>
       </div>
@@ -1019,11 +1017,11 @@ canvas{max-width:100%}
         <label>Override Prioritas</label>
         <select id="sel-prio">
           <option value="auto">Auto — sistem rekomendasikan</option>
-          <option value="ADMF">ADMF</option>
-          <option value="ASII">ASII</option>
+          <option value="BBCA">BBCA</option>
           <option value="BMRI">BMRI</option>
-          <option value="ITMG">ITMG</option>
-          <option value="INDF">INDF</option>
+          <option value="SMSM">SMSM</option>
+          <option value="AKRA">AKRA</option>
+          <option value="SIDO">SIDO</option>
         </select>
       </div>
     </div>
@@ -1127,7 +1125,7 @@ canvas{max-width:100%}
   </div>
 
   <div class="info-box mb10" id="milestone-infobox">
-    <strong>🎯 Milestone Porto Rp250jt (v16)</strong> — Target lot penuh: <strong>BMRI 187L · ASII 99L · ADMF 55L · ITMG 14L · INDF 19L</strong>. Fresh capital ~<span id="milestone-fresh-cap">—</span>. Yield ~8.5% gross = <strong><span id="milestone-annual-yield">—</span>/thn</strong>. Urutan inject: BMRI dulu → ASII → ADMF (setelah MFIN confirm) → hold ITMG → INDF (consumer staples anchor).
+    <strong>🎯 Aegis Alpha — Target Rp1.6M (Passive Income Rp10jt/bln)</strong> — Porto saat ini Rp63.25jt. DCA Rp1.5jt/bulan + reinvest dividen. Urutan top up: BMRI → SIDO → BBCA → SMSM → AKRA. Fresh capital ~<span id="milestone-fresh-cap">—</span>. Yield blended ~7% gross = <strong><span id="milestone-annual-yield">—</span>/thn</strong>.
   </div>
 
   <div class="bcard overflow-x mb10">
@@ -1570,15 +1568,15 @@ canvas{max-width:100%}
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #2 — Arahkan ke Paling Diskon</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (core 35%) → ASII (25%) → ADMF (20%) → ITMG (hold) → INDF (consumer staples 5%)</strong>.</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dari 80%, beli saham yang paling jauh dari nilai wajar. Prioritas: <strong style="color:var(--text)">BMRI (22%) → SIDO (10%) → BBCA (28%) → SMSM (18%) → AKRA (12%)</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
       <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #3 — Naikkan Injeksi Tiap 6 Bulan</div>
       <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Setiap 6 bulan, naikkan injeksi minimal <strong style="color:var(--text)">Rp100–200rb dari level sebelumnya</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--accent)">
-      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #4 — ITMG Dikunci</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">ITMG <strong style="color:var(--red)">dikunci di 15%</strong> — jangan tambah kecuali coal recovery terkonfirmasi. INDF <strong style="color:var(--amber)">dikunci di 5%</strong> — consumer staples defensif, bukan posisi akumulasi utama.</div>
+      <div style="font-size:7.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #4 — AKRA Ketat</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">AKRA <strong style="color:var(--amber)">hanya top up di bawah Rp1.300</strong> — MOS tipis, payout 84% tinggi. Prioritas terakhir. Tunggu dip.</div>
     </div>
   </div>
 
@@ -1606,7 +1604,7 @@ canvas{max-width:100%}
   <div class="bento bento-4 mb12">
     <div class="bcard" style="border-left:3px solid var(--amber)">
       <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #9 — Cross-Feeding Wajib</div>
-      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">ITMG, ADMF, INDF</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau ASII</strong>.</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.7">Dividen dari <strong style="color:var(--text)">AKRA, SMSM, SIDO</strong> wajib disuntikkan ke <strong style="color:var(--green)">BMRI atau BBCA</strong>.</div>
     </div>
     <div class="bcard" style="border-left:3px solid var(--amber)">
       <div style="font-size:7.5px;color:var(--amber);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px">Rule #10 — Beli Lot Segera</div>
@@ -1624,7 +1622,7 @@ canvas{max-width:100%}
 
   <div class="bcard mb12" style="border:1px solid var(--amber-border);background:var(--amber-bg)">
     <div style="font-size:9px;color:var(--amber);line-height:1.8">
-      ⚠ <strong>Coal Trap Protocol (Khusus ITMG):</strong> Jika harga batu bara global hancur, harga ITMG akan ikut jatuh. Tetap disiplin cicil di harga bawah menggunakan uang dingin, selama ITMG tidak mencetak kerugian atau menumpuk utang baru.
+      ⚠ <strong>Dividen Trap Protocol:</strong> Jangan kejar yield tinggi dari perusahaan yang earnings-nya deteriorating. Cek FCF coverage sebelum top up setiap quarter.
     </div>
   </div>
 
@@ -1633,32 +1631,29 @@ canvas{max-width:100%}
 <script>
 'use strict';
 
-const TICKERS = ['ADMF','ASII','BMRI','ITMG','INDF'];
-const COLORS = { ADMF:'#e8b84b', ASII:'#4d9de0', BMRI:'#e05555', ITMG:'#3dc88a', INDF:'#9b79e0' };
+const TICKERS = ['BBCA','BMRI','SMSM','AKRA','SIDO'];
+const COLORS = { BBCA:'#e8b84b', BMRI:'#e05555', SMSM:'#4d9de0', AKRA:'#3dc88a', SIDO:'#9b79e0' };
 
 const DEFAULT_PORTO = {
-  ADMF:{ price:8300,   invested:14436622, pnl:-326622, lots:17, divPerShare:630,   avgPrice:8492 },
-  ASII:{ price:6325,   invested:1845263,  pnl:52236,   lots:3,  divPerShare:481,   avgPrice:6151 },
-  BMRI:{ price:4660,   invested:4641952,  pnl:18047,   lots:10, divPerShare:466,   avgPrice:4642 },
-  ITMG:{ price:26500,  invested:7871790,  pnl:78210,   lots:3,  divPerShare:2245,  avgPrice:26239 },
-  INDF:{ price:6975,   invested:1337002,  pnl:57997,   lots:2,  divPerShare:590,   avgPrice:6685 }
+  BBCA:{ price:6500,   invested:19529250, pnl:-29250,  lots:30, divPerShare:336,   avgPrice:6510 },
+  BMRI:{ price:4740,   invested:15094608, pnl:73392,   lots:32, divPerShare:383,   avgPrice:4717 },
+  SMSM:{ price:1795,   invested:12907332, pnl:16668,   lots:72, divPerShare:138,   avgPrice:1793 },
+  AKRA:{ price:1470,   invested:8893320,  pnl:-73320,  lots:60, divPerShare:100,   avgPrice:1482 },
+  SIDO:{ price:505,    invested:6827726,  pnl:-10226,  lots:135,divPerShare:44,    avgPrice:506  }
 };
 
-// ── MILESTONE TARGET Rp250jt (v16 — Rebalance Apr 2026, POWR EXIT → INDF ENTRY) ──
-// Harga patokan: ADMF 8375 | BMRI 4650 | ASII 6300 | ITMG 27425 | INDF 6825
-// POSISI AKTUAL (Apr 2026): BMRI 10L | INDF 2L | ITMG 3L | ASII 3L | ADMF 17L = Rp30.13jt
-// TARGET LOT PORTO PENUH (Rp250jt) — ALOKASI v16:
-//   BMRI 187 lot (35%) = Rp87.33jt → gap +182 lot = Rp84.97jt  ↑ core anchor
-//   ASII  99 lot (25%) = Rp62.37jt → gap  +97 lot = Rp61.11jt  ↑ deep value
-//   ADMF  55 lot (20%) = Rp49.50jt → gap  +38 lot = Rp34.20jt  ↓ income satellite
-//   ITMG  14 lot (15%) = Rp37.80jt → gap  +11 lot = Rp29.70jt  = hold only
-//   INDF  19 lot ( 5%) = Rp12.45jt → gap  +17 lot = Rp11.13jt  = consumer staples defensif
-// Total target porto: ~Rp249.45jt | Fresh capital needed: ~Rp219.3jt (v16: ADMF 17L sudah masuk)
-// Blended yield (porto penuh): ~8.5% gross | Div gross/thn: ~Rp21,205,100 | Div net/bln: ~Rp1,502,028
-// ASII div = Rp406 regular + Rp75 special div konservatif (historis ASII bayar special saat neraca kuat)
-// Urutan inject: BMRI (core anchor) → ASII (defensif) → ADMF (post-MFIN confirm) → ITMG (hold only) → INDF (last)
+// ── AEGIS ALPHA v17 — Porto Aktual April 2026 ──
+// Harga patokan: BBCA 6500 | BMRI 4740 | SMSM 1795 | AKRA 1470 | SIDO 505
+// POSISI AKTUAL: BBCA 30L | BMRI 32L | SMSM 72L | AKRA 60L | SIDO 135L = Rp63.25jt
 
-const DEFAULT_TARGETS = { ADMF:20, ASII:25, BMRI:35, ITMG:15, INDF:5 }; // v16 → 250jt: BMRI 187L | ASII 99L | ADMF 55L | ITMG 14L | INDF 19L
+// Urutan inject: BMRI → SIDO → BBCA → SMSM → AKRA
+
+
+
+
+// Urutan inject: BMRI → SIDO → BBCA → SMSM → AKRA
+
+const DEFAULT_TARGETS = { BBCA:28, BMRI:22, SMSM:18, AKRA:12, SIDO:10 }; // v17 → Aegis Alpha: BBCA 28% · BMRI 22% · SMSM 18% · AKRA 12% · SIDO 10% · Cash 10%
 // Shared helper — ideal lots for a given nominal portfolio size
 const getIdealLots = (t, nominal) => {
   const p = porto[t].price;
@@ -1666,83 +1661,83 @@ const getIdealLots = (t, nominal) => {
 };
 
 const ANALYSIS_DATA = {
-  ADMF:{
-    sector:'Multifinance', moat:'Jaringan pembiayaan otomotif nasional', holding:'Bank Danamon → MUFG Jepang (92%) · Free float ~8% · Retail ~2% · Inst. domestik ~6%',
-    pe_hist:8.2, pe_curr:7.5, pbv:1.8, roe:18.5, roa:3.2, div_payout:50,
-    eps:1260, bvps:4722, div_5yr_cagr:-7.8,
-    fv_pe:Math.round(1260*8.2), fv_ddm:Math.round((630*1.05)/(0.12-0.05)), fv_pbv:Math.round(4722*1.9),
-    bear:6500, base:9200, bull:11000,
-    quality_rating:3,
-    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ADMF diturunkan ke INCOME POSITION 20% (v15) — div growth CAGR 5Y negatif -7.8% dan free float 8% adalah dua alasan yang tidak bisa diabaikan untuk tidak over-sizing. Payout 57% bersih, dividen earned dari FCF — tapi ini income generator, bukan compounder. Dividen Rp630/saham confirmed, cair 30 Apr 2026. <strong style="color:var(--amber)">[Vanguard]</strong> ⚠ Free float 8% = liquidity trap jika ada emergency exit. Integrasi MFIN belum settle — sizing 20% adalah batas aman sampai integrasi terkonfirmasi. Jangan tambah melewati 20% sebelum ada bukti div growth recovery. <strong style="color:var(--green)">[JP Morgan]</strong> Post-rebalance v15: ADMF bukan lagi co-anchor. Dia adalah income satellite yang membayar dividen bersih tapi tidak growing. Arahkan dividen ADMF untuk akumulasi BMRI — bukan reinvest ke ADMF.',
-    risks:[{label:'Integrasi merger MFIN belum settle',level:'mid'},{label:'Dividend growth negatif 5 tahun',level:'hi'},{label:'NPL otomotif creeping',level:'mid'},{label:'Suku bunga BI tinggi',level:'mid'}],
-    risk_pct:{ 'Integrasi merger MFIN belum settle':45,'Dividend growth negatif 5 tahun':70,'NPL otomotif creeping':40,'Suku bunga BI tinggi':55 }
-  },
-  ASII:{
-    sector:'Konglomerat / Otomotif', moat:'Distribusi otomotif dominan + diversifikasi bisnis', holding:'Jardine Matheson HK (50.1%) · Free float ~49.7% · Inst. asing ~14.6% · Retail ~15%',
-    pe_hist:14.5, pe_curr:7.8, pbv:1.4, roe:12.8, roa:5.1, div_payout:62,
-    eps:782, bvps:4357, div_5yr_cagr:30.0,
-    fv_pe:Math.round(782*14.5), fv_ddm:Math.round((481*1.05)/(0.12-0.05)), fv_pbv:Math.round(4357*1.6),
-    bear:4200, base:7250, bull:9000,
-    quality_rating:4,
-    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ASII trading di diskon historis signifikan — P/E 7.8x vs rata-rata 5 tahun 14.5x. Buyback aktif Rp2 triliun (Mar–Jun 2026) memberi floor harga. Free float ~49.7%, dengan Jardine Matheson HK 50.1% controlling. Retail ~15%, institusi domestik ~20%, asing non-Jardine ~14.6%. Div/saham Rp481 mencerminkan Rp406 reguler + Rp75 special div konservatif — historis ASII sudah bayar special div di tahun neraca kuat (FY2022: Rp190 special). Dengan buyback aktif dan cash generation solid, special div di RUPST Apr 2026 sangat realistis. <strong style="color:var(--amber)">[Vanguard]</strong> Market share otomotif turun ke 49% Q1 2026 karena tekanan BYD EV — risiko struktural, bukan siklus. Payout total 62% termasuk special — sustainable dari balance sheet yang sehat. Dividend CAGR 30% dalam 5 tahun dari basis rendah pasca-COVID. <strong style="color:var(--green)">[JP Morgan]</strong> RUPST 23 Apr 2026 ada kabar pergantian pimpinan — pantau arah strategi EV response. Entry menarik di harga ini, MOS signifikan vs historical average. Posisi 25% justified sebagai deep value anchor kedua setelah BMRI.',
-    risks:[{label:'Market share tergerus BYD EV',level:'hi'},{label:'Perlambatan penjualan kendaraan',level:'mid'},{label:'Pergantian manajemen Apr 2026',level:'mid'},{label:'Forex risk (Jardine repatriasi)',level:'mid'}],
-    risk_pct:{ 'Market share tergerus BYD EV':55,'Perlambatan penjualan kendaraan':45,'Pergantian manajemen Apr 2026':35,'Forex risk (Jardine repatriasi)':40 }
+  BBCA:{
+    sector:'Perbankan Swasta', moat:'CASA franchise terkuat IDX — CASA ratio 80%+, switching cost ekstremal tinggi', holding:'Djarum/BCA Group via Farindo (54.94%) · Free float ~45% · Inst. asing ~25% · Inst. domestik ~12% · Retail ~8%',
+    pe_hist:28.0, pe_curr:13.8, pbv:3.0, roe:21.0, roa:3.8, div_payout:72,
+    eps:471, bvps:2167, div_5yr_cagr:13.0,
+    fv_pe:Math.round(471*28.0), fv_ddm:Math.round((336*1.13)/(0.10-0.05)), fv_pbv:Math.round(2167*3.9),
+    bear:5200, base:8800, bull:10000,
+    quality_rating:5,
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> BBCA di P/E 13.8x adalah anomali historis — pertama kalinya saham ini di bawah P/BV 3.0x sejak 2020. Katalis tekanan: MSCI rebalancing + foreign outflow IDR. Bisnis tidak berubah: laba tumbuh 5%, DPS naik 20% ke Rp336, ROE 21% stabil. Ini bukan fundamental deterioration — ini liquidity-driven discount. <strong style="color:var(--amber)">[Vanguard]</strong> DPS CAGR 13%/tahun dalam 5 tahun dari payout yang terus naik (60% → 72%). Yield on cost lo hari ini 5.2% — dalam 5 tahun dengan growth ini, yield on cost bisa mencapai 9%+ tanpa tambah modal. Ini definisi dividend growth compounder sejati. <strong style="color:var(--green)">[JP Morgan]</strong> BBCA tidak akan kembali ke P/E 28x dalam waktu dekat — repricing ke P/E 18-20x adalah skenario realistis. Dengan EPS Rp471, fair value konservatif Rp8.800. Posisi 28% justified sebagai quality anchor porto. Ex-date dividen Rp336 sudah lewat Apr 2026 — dividen berikutnya FY2026 est. Rp380+.',
+    risks:[{label:'Foreign outflow MSCI rebalancing',level:'mid'},{label:'NIM compression jika BI rate turun',level:'mid'},{label:'Tekanan valuasi vs regional peers',level:'lo'},{label:'Kenaikan NPL segmen UKM',level:'lo'}],
+    risk_pct:{ 'Foreign outflow MSCI rebalancing':55,'NIM compression jika BI rate turun':40,'Tekanan valuasi vs regional peers':30,'Kenaikan NPL segmen UKM':25 }
   },
   BMRI:{
     sector:'Perbankan SOE', moat:'Jaringan BUMN + captive gov deposits', holding:'Pemerintah RI (52%) · Free float ~48% · Inst. asing ~18% · Inst. domestik ~20% · Retail ~10%',
-    pe_hist:11.2, pe_curr:8.6, pbv:1.7, roe:18.4, roa:2.9, div_payout:65,
-    eps:603, bvps:2912, div_5yr_cagr:25.8,
-    fv_pe:Math.round(603*11.2), fv_ddm:Math.round((466*1.05)/(0.11-0.05)), fv_pbv:Math.round(2912*2.0),
-    bear:3800, base:6200, bull:7800,
+    pe_hist:11.2, pe_curr:9.8, pbv:1.56, roe:20.0, roa:2.9, div_payout:75,
+    eps:478, bvps:3020, div_5yr_cagr:25.8,
+    fv_pe:Math.round(478*11.2), fv_ddm:Math.round((383*1.12)/(0.11-0.05)), fv_pbv:Math.round(3020*2.0),
+    bear:3800, base:5500, bull:6250,
     quality_rating:4,
-    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> BMRI dinaikkan ke CORE ANCHOR 35% (v15) — satu-satunya true dividend compounder di porto ini. Div CAGR 26% dalam 5 tahun, ROE 18%+ konsisten multi-siklus, earnings +34.9% YoY. Dikecualikan dari BUMN-rule karena BI/OJK prudential framework yang ketat. Pemerintah RI 52%, free float efektif ~48%. 35% justified karena tidak ada nama lain di porto yang compound earnings DAN compound dividen secara bersamaan. <strong style="color:var(--amber)">[Vanguard]</strong> Bahkan di skenario bear, total return BMRI masih positif jika dividen di-reinvest — itulah definisi compounder sejati. Payout 65% dari earnings yang tumbuh = highly sustainable. Semua dividen dari ADMF dan ITMG harus di-redirect ke akumulasi BMRI. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko utama: government-directed lending KUR dan tekanan politik dividen. NIM sensitivity terhadap siklus BI Rate dipantau ketat. Ini posisi yang harus dibangun paling cepat — setiap injeksi modal dimulai dari BMRI.',
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> BMRI di P/E 9.8x dan P/BV 1.56x untuk bank ROE 20% adalah irrasional murahnya. 75.7% dari 27 analis Bloomberg masih BUY. RUPST 29 Apr — pengumuman dividen final ~Rp383/saham. Dikecualikan dari BUMN-rule karena BI/OJK prudential framework yang ketat. <strong style="color:var(--amber)">[Vanguard]</strong> Div CAGR 26% dalam 5 tahun, ROE naik dari 15% ke 20% dalam 3 tahun = struktural improvement bukan siklus. Yield on cost lo 8.1% sudah lebih dari cukup untuk bayar sabar. Bahkan di skenario bear, total return BMRI positif jika dividen di-reinvest. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko utama: government-directed lending KUR dan tekanan politik dividen. NIM sensitivity terhadap siklus BI Rate. Monitor NPL KUR setiap lapkeu quarterly — kalau >5%, review thesis. Ini posisi ke-2 terbesar yang perlu dibangun lebih cepat dari BBCA.',
     risks:[{label:'Government-directed lending KUR',level:'hi'},{label:'NPL corporate naik',level:'mid'},{label:'Suku bunga BI menekan NIM',level:'mid'},{label:'Tekanan politik dividen',level:'hi'}],
     risk_pct:{ 'Government-directed lending KUR':65,'NPL corporate naik':45,'Suku bunga BI menekan NIM':55,'Tekanan politik dividen':60 }
   },
-  ITMG:{
-    sector:'Batubara Thermal', moat:'Kualitas coal + long-term supply contracts Asia', holding:'Banpu Minerals SG (65%) · Free float ~35% · Inst. asing ~18% · Retail domestik ~17%',
-    pe_hist:7.2, pe_curr:9.3, pbv:2.1, roe:31.5, roa:20.8, div_payout:106,
-    eps:2832, bvps:12857, div_5yr_cagr:26.0,
-    fv_pe:Math.round(2832*7.2), fv_ddm:Math.round((2245*1.05)/(0.14-0.05)), fv_pbv:Math.round(12857*2.3),
-    bear:18000, base:26900, bull:35000,
-    quality_rating:3,
-    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> ITMG adalah cash engine Aegis untuk dividen jangka pendek — dividen Rp2,245/saham ex-date 21 Apr 2026 sudah terkunci. Banpu Minerals SG 65% controlling, free float ~35% (institusi asing ~18%, retail domestik ~17%). Likuiditas cukup baik untuk ukuran saham batubara. <strong style="color:var(--amber)">[Vanguard]</strong> ⚠ PERINGATAN: Payout ratio FY2025 mencapai 106% karena laba bersih turun 49% YoY jadi USD190.9jt. Dividen ini sebagian dari kas historis — tidak sustainable jika earnings FY2026 tidak recover. Fixed di 15% — jangan tambah. <strong style="color:var(--green)">[JP Morgan]</strong> Setelah ex-date 21 Apr, arahkan fresh capital ke BMRI/ASII. Monitor ICI4 coal price dan earnings Q1 2026 sebagai leading indicator apakah dividen FY2026 bisa dipertahankan.',
-    risks:[{label:'Payout ratio >100% dari earnings',level:'hi'},{label:'Penurunan harga coal ICI4',level:'hi'},{label:'Regulasi karbon global',level:'hi'},{label:'Transisi energi jangka panjang',level:'mid'}],
-    risk_pct:{ 'Payout ratio >100% dari earnings':80,'Penurunan harga coal ICI4':55,'Regulasi karbon global':70,'Transisi energi jangka panjang':75 }
-  },
-  INDF:{
-    sector:'Consumer Staples / F&B', moat:'Distribusi nasional Bogasari + brand dominan mie instan (Indomie)', holding:'First Pacific HK via CAB Holdings (50.07%) · Anthoni Salim controlled · Free float ~49.9% · Inst. asing ~22% · Inst. domestik ~18% · Retail ~9%',
-    pe_hist:10.5, pe_curr:9.2, pbv:1.5, roe:15.8, roa:6.4, div_payout:35,
-    eps:718, bvps:4367, div_5yr_cagr:7.8,
-    fv_pe:Math.round(718*10.5), fv_ddm:Math.round((590*1.05)/(0.12-0.05)), fv_pbv:Math.round(4367*1.8),
-    bear:5000, base:7500, bull:9200,
+  SMSM:{
+    sector:'Komponen Otomotif', moat:'Filter & komponen OEM + aftermarket — captive demand suku cadang', holding:'Keluarga Setiawan Djodi (58.13%) · Free float ~41.87% · Inst. domestik ~22% · Retail ~15% · Asing ~5%',
+    pe_hist:14.0, pe_curr:9.1, pbv:2.68, roe:27.0, roa:18.5, div_payout:76,
+    eps:162, bvps:668, div_5yr_cagr:11.0,
+    fv_pe:Math.round(162*14.0), fv_ddm:Math.round((138*1.11)/(0.10-0.05)), fv_pbv:Math.round(668*3.2),
+    bear:1200, base:2200, bull:2520,
     quality_rating:4,
-    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> INDF menggantikan POWR sebagai posisi defensif 5% — ini upgrade kualitas fundamental yang tidak bisa diperdebatkan. Consumer staples dengan captive demand permanen: Indomie dikonsumsi 15 miliar bungkus/tahun, Bogasari menguasai 57% pasar tepung nasional. Salim Group controlling via First Pacific HK — ownership transparan dan sudah terdokumentasi puluhan tahun tanpa RPT abuse material. Payout ratio 35% dari earnings riil = dividen strukturally earned, bukan dari kas atau utang. <strong style="color:var(--amber)">[Vanguard]</strong> Yield 9.0% on price dari payout konservatif 35% adalah kombinasi yang jarang ditemukan di IDX — biasanya yield tinggi datang dari payout >80%. INDF membayar Rp590/saham dari EPS Rp718 = coverage 1.2x. Div CAGR 5yr 7.8% konsisten melampaui inflasi. Tidak ada flag merah integrity: ownership jelas, auditor Big 4, laporan keuangan konsolidat transparan. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko utama: IDR melemah memukul margin impor gandum (input Bogasari), dan kenaikan harga CPO menekan biaya minyak goreng. Keduanya siklus — bukan struktural. Di level harga ini, INDF adalah consumer staples compounder yang membayar yield setara obligasi korporat investment grade dengan upside ekuitas.',
-    risks:[{label:'Depresiasi IDR vs USD (impor gandum)',level:'mid'},{label:'Kenaikan harga CPO input',level:'mid'},{label:'Persaingan private label ritel modern',level:'lo'},{label:'Regulasi HET pangan pemerintah',level:'mid'}],
-    risk_pct:{ 'Depresiasi IDR vs USD (impor gandum)':45,'Kenaikan harga CPO input':40,'Persaingan private label ritel modern':25,'Regulasi HET pangan pemerintah':35 }
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> SMSM adalah bisnis paling bersih di porto — debt minimal, FCF kuat, management tidak korup, DPS CAGR 11%/tahun konsisten. P/E 9x untuk bisnis EBITDA margin 30% dengan export exposure adalah sangat murah. Keluarga Setiawan (58%) dengan track record dividend payment bersih tanpa delay. <strong style="color:var(--amber)">[Vanguard]</strong> Payout 76% dari net profit riil — bukan dari kas atau hutang. Total dividen dibayarkan Rp777M dari laba Rp1.02T = matematis bersih. DPS naik dari Rp120 (2023) ke Rp138 (2024) — trajectory positif. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko terbesar: perlambatan permintaan ekspor dan otomotif domestik. Tapi di P/E 9x, risiko ini sudah terprice lebih dari cukup. Prioritas #3 untuk top up — setelah BMRI dan SIDO yang MOS-nya lebih besar sekarang.',
+    risks:[{label:'Perlambatan permintaan ekspor',level:'mid'},{label:'Perlambatan otomotif domestik',level:'mid'},{label:'Kenaikan harga bahan baku',level:'lo'},{label:'Tekanan kompetitor regional',level:'lo'}],
+    risk_pct:{ 'Perlambatan permintaan ekspor':45,'Perlambatan otomotif domestik':40,'Kenaikan harga bahan baku':30,'Tekanan kompetitor regional':25 }
+  },
+  AKRA:{
+    sector:'Distribusi BBM & Kawasan Industri', moat:'Lisensi distribusi BBM non-Pertamina + JIIPE Gresik recurring revenue', holding:'Keluarga Adikoesoemo (59.17%) · Free float ~40.83% · Inst. domestik ~18% · Inst. asing ~12% · Retail ~10%',
+    pe_hist:15.0, pe_curr:13.0, pbv:2.5, roe:18.0, roa:8.5, div_payout:84,
+    eps:115, bvps:592, div_5yr_cagr:5.0,
+    fv_pe:Math.round(115*15.0), fv_ddm:Math.round((100*1.05)/(0.10-0.05)), fv_pbv:Math.round(592*2.8),
+    bear:1100, base:1600, bull:1850,
+    quality_rating:3,
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> AKRA memiliki dua bisnis yang sangat berbeda: distribusi BBM (stabil, margin tipis) dan JIIPE Gresik (kawasan industri — recurring revenue setiap tenant baru). JIIPE adalah optionality yang belum fully priced. 13/13 analis: BUY, konsensus target Rp1.591. <strong style="color:var(--amber)">[Vanguard]</strong> Payout ratio 84% adalah yang tertinggi di porto — sustainable selama JIIPE revenue tumbuh dan distribusi BBM stabil. Harga sekarang Rp1.480 masih slight MOS (+8% ke fair value konservatif). Tapi ini bukan kandidat top up prioritas — tunggu dip ke Rp1.300. <strong style="color:var(--green)">[JP Morgan]</strong> Monitor perkembangan JIIPE setiap kuartal — setiap tenant baru = recurring revenue baru. Risiko: regulasi BBM berubah dan ketergantungan Pertamina sebagai supplier. Prioritas #4 untuk top up — MOS paling tipis di porto.',
+    risks:[{label:'Regulasi distribusi BBM berubah',level:'mid'},{label:'Payout ratio 84% tinggi',level:'mid'},{label:'JIIPE occupancy rate stagnasi',level:'mid'},{label:'Ketergantungan harga minyak global',level:'mid'}],
+    risk_pct:{ 'Regulasi distribusi BBM berubah':45,'Payout ratio 84% tinggi':50,'JIIPE occupancy rate stagnasi':40,'Ketergantungan harga minyak global':45 }
+  },
+  SIDO:{
+    sector:'Consumer Health / Jamu', moat:'Brand jamu & herbal generasi — pricing power lokal tanpa kompetitor asing', holding:'Keluarga Irwan Hidayat via PT Industri Jamu Sido Muncul (76.5%) · Free float ~23.5% · Inst. domestik ~12% · Retail ~8% · Asing ~3.5%',
+    pe_hist:18.0, pe_curr:12.45, pbv:4.87, roe:37.0, roa:30.5, div_payout:90,
+    eps:40, bvps:103, div_5yr_cagr:8.0,
+    fv_pe:Math.round(40*18.0), fv_ddm:Math.round((44*1.08)/(0.10-0.05)), fv_pbv:Math.round(103*6.0),
+    bear:380, base:650, bull:720,
+    quality_rating:4,
+    summary:'<strong style="color:var(--accent2)">[BlackRock]</strong> SIDO di Rp500 adalah posisi paling menarik secara dividen di porto — zero debt, EBITDA margin 40%, brand pricing power lokal yang tidak bisa digantikan asing. Yield 8.7% on cost untuk perusahaan debt-free adalah sangat langka di IDX. Beta 0.33 — bisnis tidak berubah, tekanan murni dari foreign outflow. <strong style="color:var(--amber)">[Vanguard]</strong> Zero debt = 100% payout dari FCF. Dividen SIDO adalah yang paling aman di porto karena tidak ada bunga bank yang bersaing. DPS naik dari Rp36 (2023) ke Rp44 (2025) — CAGR 8% konsisten. Harga saat ini di -2SD historis — anomali yang tidak mencerminkan fundamental. <strong style="color:var(--green)">[JP Morgan]</strong> Risiko utama: slowdown konsumsi domestik dan persaingan produk herbal baru. Tapi moat brand SIDO terlalu dalam untuk digeser dalam 5 tahun. Di harga Rp500 dengan MOS 26-44%, ini adalah deep value yang harus diakumulasi. Prioritas #2 untuk top up setelah BMRI.',
+    risks:[{label:'Slowdown konsumsi domestik',level:'mid'},{label:'Persaingan produk herbal baru',level:'lo'},{label:'Ketergantungan bahan baku herbal',level:'lo'},{label:'Foreign outflow tekanan jangka pendek',level:'mid'}],
+    risk_pct:{ 'Slowdown konsumsi domestik':40,'Persaingan produk herbal baru':25,'Ketergantungan bahan baku herbal':30,'Foreign outflow tekanan jangka pendek':55 }
   }
 };
 
 // Full company names for display
 const STOCK_NAMES = {
-  ADMF: 'Adira Finance',
-  ASII: 'Astra International',
+  BBCA: 'Bank Central Asia',
   BMRI: 'Bank Mandiri',
-  ITMG: 'Indo Tambangraya',
-  INDF: 'Indofood CBP'
+  SMSM: 'Selamat Sempurna',
+  AKRA: 'AKR Corporindo',
+  SIDO: 'Industri Jamu Sido Muncul'
 };
 
-// STATE — versioned migration: bump AC_PORTO_VERSION whenever DEFAULT_PORTO changes
-const AC_PORTO_VERSION = 'v16_2026-04-21';
+// STATE — versioned migration: bump AC_PORTO_V17 whenever DEFAULT_PORTO changes
+const AC_PORTO_V17 = 'v17_2026-04-22';
 const storedVersion = localStorage.getItem('ac_porto_version');
-if (storedVersion !== AC_PORTO_VERSION) {
+if (storedVersion !== AC_PORTO_V17) {
   // New version detected — flush stale porto data and write fresh defaults
   localStorage.setItem('ac_porto', JSON.stringify(DEFAULT_PORTO));
-  localStorage.setItem('ac_porto_version', AC_PORTO_VERSION);
+  localStorage.setItem('ac_porto_version', AC_PORTO_V17);
 }
 let porto = JSON.parse(localStorage.getItem('ac_porto') || 'null') || JSON.parse(JSON.stringify(DEFAULT_PORTO));
 let targets = JSON.parse(localStorage.getItem('ac_targets') || 'null') || JSON.parse(JSON.stringify(DEFAULT_TARGETS));
-// Migration guard: patch missing tickers (e.g. INDF missing from old localStorage saves)
+// Migration guard: patch missing tickers from old localStorage saves
 TICKERS.forEach(t => { if (targets[t] == null) targets[t] = DEFAULT_TARGETS[t]; });
 // If total != 100 (corrupted old data), reset to default
 const _tSum = TICKERS.reduce((s,t) => s + (targets[t]||0), 0);
@@ -1877,7 +1872,7 @@ function renderDailyQuote() {
 
 function updateHeader() {
   const mkt = totalMktVal(), monthlyDiv = annualDiv() * 0.85 / 12;
-  const T_PORTO = 250_000_000, T_DIV = 10_000_000;
+  const T_PORTO = 1_600_000_000, T_DIV = 10_000_000;
   const portoPct = Math.min(mkt / T_PORTO * 100, 100);
   const divPct   = Math.min(monthlyDiv / T_DIV * 100, 100);
   const e = id => document.getElementById(id);
@@ -1894,7 +1889,7 @@ function updateHeader() {
 }
 
 function renderMilestoneInfobox() {
-  const T_PORTO = 250_000_000;
+  const T_PORTO = 1_600_000_000;
   const mkt = totalMktVal();
   const freshCap = Math.max(T_PORTO - mkt, 0);
   const annualYield = annualDiv() * 0.85; // net of tax
@@ -1906,7 +1901,7 @@ function renderMilestoneInfobox() {
 
 function renderJournalTicker() {
   const mkt = totalMktVal();
-  const freshCap = Math.max(250_000_000 - mkt, 0);
+  const freshCap = Math.max(1_600_000_000 - mkt, 0);
   const lotsStr = TICKERS.map(t => `${t} ${porto[t].lots}L`).join(' · ');
   const grossDiv = annualDiv();
   const netMonthly = grossDiv * 0.85 / 12;
@@ -1965,7 +1960,7 @@ function renderSnapshotPanel() {
 
   const allocEl = document.getElementById('alloc-bars-snap');
   allocEl.innerHTML = '';
-  const TARGET_PORTO = 250_000_000;
+  const TARGET_PORTO = 1_600_000_000;
   TICKERS.forEach(t => {
     const actual = actualPct(t);
     const target = targets[t];
@@ -2073,7 +2068,7 @@ function updatePortfolioMetrics() {
   const yoc = inv > 0 ? (grossDiv/inv*100) : 0;
   const retPct = inv > 0 ? (pnl/inv*100) : 0;
   const totalLots = TICKERS.reduce((s,t) => s + porto[t].lots, 0);
-  const progressPct = mkt / 250_000_000 * 100;
+  const progressPct = mkt / 1_600_000_000 * 100;
 
   const set = (id, val, colorClass) => {
     const el = document.getElementById(id);
@@ -2122,11 +2117,11 @@ function renderHeatmap() {
 // CASHFLOW HEALTH — FCF & DIV COVERAGE
 // FCF data (static, based on last reported annuals)
 const FCF_DATA = {
-  ADMF:{ fcf_per_share:1280, fcf_growth:3.8, debt_eq:4.8, coverage:2.0, interest_cover:2.9, note:'Multifinance: FCF post-MFIN merger masih in process. Merger efektif Oct 2025 — angka konsolidasi masih estimasi.' },
-  ASII: { fcf_per_share:820,  fcf_growth:3.1, debt_eq:0.6, coverage:1.7, interest_cover:8.4, note:'Konglomerat: FCF konsolidasi semua segmen. Coverage 1.7x termasuk special div Rp75.' },
-  BMRI: { fcf_per_share:710,  fcf_growth:9.4, debt_eq:6.2, coverage:1.7, interest_cover:2.8, note:'Bank: FCF = net income - capex, adjusted for provisions' },
-  ITMG: { fcf_per_share:2800, fcf_growth:-48.9,debt_eq:0.0, coverage:1.2, interest_cover:99,  note:'Coal: debt-free tapi FCF turun drastis FY2025 — laba bersih -49% YoY. Payout >100% earnings dari kas historis. WARNING zone.' },
-  INDF: { fcf_per_share:820,  fcf_growth:6.2, debt_eq:0.8, coverage:1.4, interest_cover:7.2, note:'Consumer staples: FCF solid dari segmen CBP (Indomie) + Bogasari. Debt/Eq 0.8x konservatif untuk konglomerat F&B.' }
+  BBCA: { fcf_per_share:380,  fcf_growth:8.5, debt_eq:0.0, coverage:1.13, interest_cover:99,  note:'Bank: FCF = net income - capex. CASA ratio 80%+ = cost of fund paling murah di IDX. Zero utang bank konvensional.' },
+  BMRI: { fcf_per_share:510,  fcf_growth:9.4, debt_eq:6.2, coverage:1.7, interest_cover:2.8, note:'Bank: FCF = net income - capex, adjusted for provisions. Payout 75% dari earnings yang tumbuh = highly sustainable.' },
+  SMSM: { fcf_per_share:148,  fcf_growth:8.3, debt_eq:0.3, coverage:1.07, interest_cover:15.2, note:'Komponen otomotif: FCF solid dari aftermarket yang recurring. Debt minimal, coverage 1.07x dari DPS Rp138.' },
+  AKRA: { fcf_per_share:115,  fcf_growth:5.0, debt_eq:0.8, coverage:1.19, interest_cover:8.5,  note:'Distribusi BBM + JIIPE: FCF stabil dari distribusi, optionality dari JIIPE tenant baru. Payout 84% = tight coverage.' },
+  SIDO: { fcf_per_share:44,   fcf_growth:8.0, debt_eq:0.0, coverage:1.10, interest_cover:99,  note:'Jamu: ZERO DEBT. Seluruh payout dari FCF operasional murni. EBITDA margin 40% = mesin kas yang sangat efisien.' }
 };
 
 function renderCashflowHealth() {
@@ -2379,7 +2374,7 @@ function renderSuggestionGrid() {
   });
 }
 
-const ANALYSIS_DATE = 'Apr 2026 (v16)'; // analisa data per bulan ini
+const ANALYSIS_DATE = 'Apr 2026 (v17)'; // analisa data per bulan ini
 
 function renderStockAnalysis() {
   const el = document.getElementById('stock-analysis-grid');
@@ -2833,30 +2828,35 @@ function renderForecastTable() {
 
 // Risk explanations — keys HARUS match persis label di ANALYSIS_DATA.risks
 const RISK_EXPLAIN = {
-    'Integrasi merger MFIN belum settle':'Merger ADMF + MFIN efektif Oktober 2025. Konsolidasi sistem, SDM, dan loan book masih berjalan. Potensi biaya integrasi tak terduga dan NPL tersembunyi dari portofolio MFIN.',
-  'Dividend growth negatif 5 tahun':'ADMF mencatat CAGR dividen -7.8% dalam 5 tahun terakhir — berlawanan dengan BMRI yang tumbuh 25%+. Ini signal bahwa earnings power ADMF struktural melemah pasca-peak siklus otomotif.',
-  'NPL otomotif creeping':'Non-Performing Loan di segmen otomotif naik perlahan. Konsumen cicilan motor/mobil mulai gagal bayar akibat daya beli tertekan inflasi dan stagnasi upah riil.',
-  'Suku bunga BI tinggi':'BI Rate tinggi menekan NIM (Net Interest Margin) lembaga keuangan. Cost of fund naik, margin bersih per pinjaman menyempit dan menekan laba.',
+  // BBCA
+  'Foreign outflow MSCI rebalancing':'MSCI rebalancing menyebabkan passive fund asing menjual BBCA secara sistematis. Bukan karena fundamental jelek — ini liquidity event. Harga tertekan lebih jauh dari yang seharusnya, menciptakan entry window langka.',
+  'NIM compression jika BI rate turun':'Saat BI Rate turun, NIM bank tertekan karena yield aset turun lebih cepat dari cost of fund. BBCA punya CASA ratio 80%+ yang memitigasi ini — cost of fund mereka sudah sangat rendah vs peers.',
+  'Tekanan valuasi vs regional peers':'BBCA masih premium vs bank regional Asia — P/BV 3.0x vs rata-rata 1.5-2.0x. Jika investor asing rebalance ke bank Thailand atau Malaysia yang lebih murah, tekanan bisa berlanjut.',
+  'Kenaikan NPL segmen UKM':'Segmen kredit UKM paling rentan terhadap perlambatan ekonomi. Meski NPL BBCA gross masih rendah (~1.9%), kenaikan gradual dari UKM bisa memukul provisioning dan menekan laba.',
 
-    'Market share tergerus BYD EV':'Market share otomotif ASII turun ke 49% Q1 2026 dari 54% tahun lalu. BYD dan EV China agresif di segmen premium. Tren ini struktural dan sulit dibalik jangka pendek.',
-  'Perlambatan penjualan kendaraan':'Permintaan mobil dan motor baru melambat seiring kenaikan harga dan stagnasi upah riil. Langsung memukul segmen otomotif ASII yang masih ~50% dari revenue konsolidasi.',
-  'Pergantian manajemen Apr 2026':'RUPST ASII 23 April 2026 diperkirakan ada perubahan direksi/komisaris. Pergantian kepemimpinan membawa ketidakpastian arah strategi jangka menengah, terutama terkait respons terhadap ancaman EV.',
-  'Forex risk (Jardine repatriasi)':'ASII punya eksposur impor komponen dalam USD. Rupiah melemah otomatis menaikkan biaya produksi. Selain itu, Jardine Matheson sebagai pemegang 50% rutin merepatriasi dividen — tekanan IDR struktural.',
-
-    'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi — risiko kualitas aset tersembunyi.',
+  // BMRI
+  'Government-directed lending KUR':'KUR (Kredit Usaha Rakyat) diarahkan pemerintah dengan bunga subsidi. Volume besar tapi margin rendah dan potensi NPL tersamar dalam laporan resmi — risiko kualitas aset tersembunyi.',
   'NPL corporate naik':'Debitur korporasi besar mulai kesulitan membayar cicilan pinjaman. Bila beberapa kasus besar macet, provisi BMRI melonjak dan laba terpangkas lebih dalam dari yang diantisipasi pasar.',
   'Suku bunga BI menekan NIM':'Saat BI Rate turun, NIM bank ikut tertekan karena yield aset turun lebih cepat dari biaya dana. Profitabilitas jangka pendek terdampak — BMRI punya gap repricing yang perlu dipantau.',
   'Tekanan politik dividen':'Pemegang saham pemerintah (52%) dapat mendorong BMRI untuk membayar dividen besar demi penerimaan negara, meski internal capital adequacy lebih butuh retensi laba untuk ekspansi kredit.',
 
-    'Payout ratio >100% dari earnings':'FY2025 ITMG membayar dividen lebih besar dari laba bersih — payout ratio 106%. Ini diambil dari kas historis. Tidak sustainable jika earnings tidak recover di FY2026.',
-  'Penurunan harga coal ICI4':'ICI4 adalah patokan batubara kalori rendah — produk utama ITMG. Penurunan harga langsung memangkas revenue dan laba per ton yang dijual. Sensitivitas sangat tinggi terhadap harga spot.',
-  'Regulasi karbon global':'Negara maju menerapkan carbon border adjustment. Pembeli batubara di Eropa/Jepang terbebani tarif karbon, mengurangi daya saing ITMG di pasar ekspor premium jangka menengah.',
-  'Transisi energi jangka panjang':'Energi terbarukan makin murah dan demand batubara untuk pembangkit listrik menurun struktural 10-15 tahun ke depan. Risiko eksistensial jangka panjang yang tidak bisa diabaikan.',
+  // SMSM
+  'Perlambatan permintaan ekspor':'SMSM mengekspor komponen otomotif ke pasar Asia dan Timur Tengah. Perlambatan ekonomi global atau penurunan produksi otomotif di pasar tujuan langsung memukul revenue segmen ekspor.',
+  'Perlambatan otomotif domestik':'Penjualan kendaraan baru domestik melambat → demand komponen OEM ikut turun. Meski aftermarket lebih stabil, OEM masih menyumbang porsi signifikan revenue SMSM.',
+  'Kenaikan harga bahan baku':'Filter dan komponen otomotif menggunakan bahan baku logam dan plastik yang harganya sensitif terhadap komoditas global. Kenaikan bahan baku menekan margin jika tidak bisa di-pass-through ke harga.',
+  'Tekanan kompetitor regional':'Komponen aftermarket impor dari China semakin murah dan mudah diakses. Meski kualitas SMSM lebih baik, price war di segmen bawah bisa menekan ASP dan market share retail.',
 
-    'Depresiasi IDR vs USD (impor gandum)':'Bogasari mengimpor gandum dalam USD. Pelemahan rupiah langsung menaikkan COGS tepung terigu. Margin bisa tertekan 2-4% jika IDR melemah >10% — perlu dimonitor dalam konteks BI Rate dan current account.',
-  'Kenaikan harga CPO input':'Segmen minyak goreng (Bimoli) dan mi instan menggunakan minyak sawit sebagai bahan baku. Lonjakan harga CPO menekan margin CBP, segmen terbesar INDF dalam kontribusi laba.',
-  'Persaingan private label ritel modern':'Hypermart, Indomaret, dan Alfamart mulai agresif meluncurkan private label mie dan tepung. Pangsa pasar premium bisa tergerus di segmen bawah — tapi brand equity Indomie masih jauh di atas.',
-  'Regulasi HET pangan pemerintah':'Pemerintah RI sewaktu-waktu bisa menetapkan Harga Eceran Tertinggi untuk beras, tepung, minyak goreng. Kontrol harga langsung memangkas pricing power — risiko regulasi khas sektor pangan strategis.'
+  // AKRA
+  'Regulasi distribusi BBM berubah':'Pemerintah sewaktu-waktu bisa mengubah kebijakan lisensi distribusi BBM non-Pertamina. Perubahan regulasi adalah risiko eksistensial untuk bisnis inti distribusi AKRA.',
+  'Payout ratio 84% tinggi':'Payout 84% dari earnings berarti coverage ratio tipis — hanya 1.19x. Jika earnings turun, dividen terancam dipotong. Monitor JIIPE occupancy dan distribusi BBM volume setiap kuartal.',
+  'JIIPE occupancy rate stagnasi':'JIIPE Gresik adalah growth driver utama AKRA. Jika tenant baru stagnan atau ada tenant besar keluar, recurring revenue berkurang dan valuasi premium yang diberikan pasar untuk JIIPE bisa terdeflasi.',
+  'Ketergantungan harga minyak global':'Harga BBM yang AKRA distribusikan terkait harga minyak global. Volatilitas harga minyak mempengaruhi volume dan margin distribusi — meskipun AKRA lebih sebagai distributor, bukan trader.',
+
+  // SIDO
+  'Slowdown konsumsi domestik':'Produk jamu dan herbal adalah consumer discretionary yang menyamar sebagai staples. Saat daya beli masyarakat turun, konsumen bisa mengurangi frekuensi konsumsi — meski brand SIDO sangat sticky.',
+  'Persaingan produk herbal baru':'Banyak pemain baru masuk segmen herbal dan wellness seiring tren kesehatan. Meski moat SIDO dalam, segmen produk baru (energy drink herbal, suplemen) bisa terpotong oleh merek lokal dan impor.',
+  'Ketergantungan bahan baku herbal':'Bahan baku rempah dan herbal sensitif terhadap cuaca dan musim panen. Gagal panen atau gangguan supply chain bahan baku bisa menekan margin produksi jangka pendek.',
+  'Foreign outflow tekanan jangka pendek':'Beta 0.33 membuktikan bisnis tidak berubah — tekanan harga murni dari selling asing yang exit IDX secara umum. Ini risiko harga jangka pendek, bukan risiko fundamental bisnis.'
 };
 
 function renderRiskGrid() {
@@ -2919,8 +2919,8 @@ function renderRiskGrid() {
   });
 }
 
-const YF_MAP = { ADMF:'ADMF.JK',ASII:'ASII.JK',BMRI:'BMRI.JK',ITMG:'ITMG.JK',INDF:'INDF.JK' };
-const STOOQ_MAP = { ADMF:'admf.jk',ASII:'asii.jk',BMRI:'bmri.jk',ITMG:'itmg.jk',INDF:'indf.jk' };
+const YF_MAP = { BBCA:'BBCA.JK',BMRI:'BMRI.JK',SMSM:'SMSM.JK',AKRA:'AKRA.JK',SIDO:'SIDO.JK' };
+const STOOQ_MAP = { BBCA:'bbca.jk',BMRI:'bmri.jk',SMSM:'smsm.jk',AKRA:'akra.jk',SIDO:'sido.jk' };
 
 function parseYahooOHLCV(data) {
   const result = data?.chart?.result?.[0];
@@ -2979,8 +2979,6 @@ function closePinModal() {
   document.getElementById('pin-modal').style.display='none';
   window._pinCallback=null;
 }
-
-const _origSwitchTab = window.switchTab;
 
 // MARKET DATA FETCH (IHSG, USD/IDR, Coal)
 // FETCH STRATEGY
@@ -3234,9 +3232,8 @@ async function fetchAllPrices() {
   const activePanel = document.querySelector('.panel.active');
   if(activePanel) {
     const id = activePanel.id.replace('panel-','');
-    if(id==='snapshot') renderSnapshotPanel();
-    if(id==='analytics') renderAnalyticsPanel();
-    if(id==='lot') renderLotGrid();
+    if(id==='dashboard') { renderSnapshotPanel(); renderAnalyticsPanel(); }
+    if(id==='arsenal')   renderArsenal();
   }
 }
 
@@ -3408,7 +3405,7 @@ function renderLotGrid() {
 function buildManualBuySuggestion(budget, underweightList) {
   if(!budget || !underweightList.length) return null;
   const affordable = underweightList.filter(t => porto[t].price * 100 <= budget);
-  if(!affordable.isEmpty && !affordable.length) return null;
+  if(!affordable.length) return null;
   if(!affordable.length) {
     const cheapest = underweightList.sort((a,b)=>porto[a].price-porto[b].price)[0];
     return `<div class="info-box" style="font-size:10px">
@@ -3533,11 +3530,11 @@ function renderTopPick(order, alloc, total) {
 // DIVIDEND CALENDAR & MONTHLY GROWTH PLAN
 
 const DIV_CALENDAR = {
-  ADMF: { months:[4],    notes:'Apr only — cum 14 Apr, payment 30 Apr 2026', color:'#e8b84b' },
-  ASII: { months:[6],    notes:'Jun — final annual (RUPST Apr → payment Jun)', color:'#4d9de0' },
-  BMRI: { months:[1,4],  notes:'Jan & Apr — interim + final (gov payout schedule)', color:'#e05555' },
-  ITMG: { months:[4,11], notes:'Apr & Nov — interim tinggi (ex-div 21 Apr 2026)', color:'#3dc88a' },
-  INDF: { months:[6,12], notes:'Jun & Des — konsisten dari earnings CBP + Bogasari, payout 35% konservatif', color:'#9b79e0' }
+  BBCA: { months:[4],    notes:'Apr only — ex-date sudah lewat Apr 2026. Dividen FY2026 est. cair Apr 2027', color:'#e8b84b' },
+  BMRI: { months:[5],    notes:'Mei — RUPST 29 Apr 2026, dividen ~Rp383/saham, payment est. Mei 2026', color:'#e05555' },
+  SMSM: { months:[6,12], notes:'Jun & Des — interim + final, DPS total ~Rp138/saham', color:'#4d9de0' },
+  AKRA: { months:[3,8],  notes:'Mar & Agt — quarterly/semi-annual, DPS total ~Rp100/saham', color:'#3dc88a' },
+  SIDO: { months:[6,11], notes:'Jun & Nov — semi-annual 2x/tahun, DPS total ~Rp44/saham', color:'#9b79e0' }
 };
 
 const MONTH_NAMES=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
@@ -3589,7 +3586,7 @@ function renderMonthlyGrowthPlan() {
   TICKERS.forEach(t=>{ simPorto[t]={...porto[t]}; });
 
   let html=`<div class="info-box mb10" style="font-size:10px">
-    Cross-feed: dividen dari ITMG/ADMF/INDF → reinvest ke saham paling underweight yang <strong>terjangkau</strong> bulan itu. Porto makin gemuk setiap siklus. 📈
+    Cross-feed: dividen dari AKRA/SMSM/SIDO → reinvest ke saham paling underweight yang <strong>terjangkau</strong> bulan itu. Porto makin gemuk setiap siklus. 📈
   </div>`;
   html+=`<div class="overflow-x"><table class="tbl"><thead><tr>
     <th>Bulan</th><th>Dividen Cair (dari siapa)</th><th>Budget Total</th>
@@ -3762,7 +3759,7 @@ function renderRebalance() {
 function renderLotProjection() {
   const el = document.getElementById('lot-projection-table');
   if (!el) return;
-  const nominalRaw = parseFloat(document.getElementById('proj-nominal')?.value) || 250_000_000;
+  const nominalRaw = parseFloat(document.getElementById('proj-nominal')?.value) || 1_600_000_000;
 
   let rows = '';
   let totalNominal = 0, totalLotIdeal = 0, totalNilaiIdeal = 0;
@@ -4093,7 +4090,7 @@ function savePorto() {
 }
 
 function resetPorto() {
-  if(!confirm('Reset ke data default April 2026?\n\nLot aktual: ADMF 4 | ASII 2 | BMRI 5 | ITMG 3 | INDF 2\nSemua perubahan manual akan hilang.')) return;
+  if(!confirm('Reset ke data default April 2026?\n\nLot aktual: BBCA 30 | BMRI 32 | SMSM 72 | AKRA 60 | SIDO 135\nSemua perubahan manual akan hilang.')) return;
   porto=JSON.parse(JSON.stringify(DEFAULT_PORTO));
   localStorage.setItem('ac_porto',JSON.stringify(porto));
   updateHeader();
@@ -4253,7 +4250,7 @@ async function runOCR() {
       imageBlocks.push({type:'image',source:{type:'base64',media_type:f.type||'image/jpeg',data:b64}});
     }
     const prompt=`Kamu adalah sistem OCR khusus untuk membaca screenshot aplikasi Stockbit Indonesia.
-Dari screenshot ini, ekstrak data portfolio saham berikut. Ticker valid: ADMF, ASII, BMRI, ITMG, INDF.
+Dari screenshot ini, ekstrak data portfolio saham berikut. Ticker valid: BBCA, BMRI, SMSM, AKRA, SIDO.
 Angka format Indonesia: titik = pemisah ribuan, koma = desimal. P&L bisa negatif.
 Kembalikan HANYA JSON berikut, tidak ada teks lain:
 {"source":"portfolio_list","stocks":[{"ticker":"BMRI","lots":5,"avgPrice":4636.94,"currentPrice":4590,"invested":2318472,"pnl":-23473,"pnlPct":-1.01}],"notes":"catatan singkat"}
@@ -4350,7 +4347,7 @@ function renderStockMatrix() {
   if (!el) return;
 
   const totalMkt = totalMktVal();
-  const TARGET_PORTO = 250_000_000;
+  const TARGET_PORTO = 1_600_000_000;
 
   const mosMap = {};
   TICKERS.forEach(t => {
@@ -4643,7 +4640,7 @@ function dhRenderTickerSelector() {
   const el = document.getElementById('dh-ticker-selector');
   if(!el) return;
   // Use TICKERS from main app, plus a few common IDX names
-  const tickers = typeof TICKERS !== 'undefined' ? TICKERS : ['ADMF','ASII','BMRI','ITMG','INDF'];
+  const tickers = typeof TICKERS !== 'undefined' ? TICKERS : ['BBCA','BMRI','SMSM','AKRA','SIDO'];
   el.innerHTML = tickers.map(t => {
     const color = (typeof COLORS !== 'undefined' && COLORS[t]) ? COLORS[t] : 'var(--accent2)';
     const isActive = DH.selectedTicker === t;
