@@ -720,6 +720,160 @@ select.styled:focus { border-color: var(--accent); }
   border-left: 1px solid var(--border2);
 }
 
+/* ── AI ANALISA ── */
+.ai-section {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  transition: border-color .2s;
+}
+.ai-section:has(.ai-body-wrap.open) { border-color: var(--border2); }
+.ai-section-header {
+  display: flex; align-items: center;
+  padding: 9px 14px; gap: 10px;
+  cursor: pointer;
+  transition: background .15s;
+  user-select: none;
+}
+.ai-section-header:hover { background: var(--surface2); }
+.ai-ticker-label { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.ai-name-label { font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text-muted); flex: 1; }
+.ai-chevron {
+  font-size: 9px; color: var(--text-muted);
+  transition: transform .2s; margin-left: 4px;
+}
+.ai-body-wrap { display: none; border-top: 1px solid var(--border); }
+.ai-body-wrap.open { display: block; }
+.ai-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+
+/* Upload row — compact inline */
+.ai-upload-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.ai-dropzone {
+  flex: 1; position: relative; overflow: hidden;
+  border: 1px dashed var(--border2); border-radius: 6px;
+  padding: 7px 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 7px;
+  transition: border-color .18s, background .18s;
+  min-width: 0;
+}
+.ai-dropzone:hover { border-color: var(--accent); background: var(--accent-glow); }
+.ai-dropzone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.ai-dropzone-icon { font-size: 13px; flex-shrink: 0; }
+.ai-dropzone-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.08em; color: var(--text-muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ai-thumb {
+  width: 36px; height: 28px; object-fit: cover;
+  border-radius: 3px; border: 1px solid var(--border);
+  display: none; flex-shrink: 0;
+}
+
+/* Result collapsible */
+.ai-result-wrap { display: none; }
+.ai-result-wrap.visible { display: block; }
+.ai-result-toggle {
+  width: 100%; background: none; border: none;
+  border-top: 1px solid var(--border);
+  padding: 6px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; color: var(--text-muted);
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  transition: color .15s, background .15s;
+}
+.ai-result-toggle:hover { color: var(--accent); background: var(--accent-glow); }
+.ai-result-toggle .chev { transition: transform .2s; font-size: 8px; }
+.ai-result-toggle.collapsed .chev { transform: rotate(-90deg); }
+.ai-result-body {
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif; font-size: 11px;
+  color: var(--text-dim); line-height: 1.75;
+  white-space: pre-wrap;
+  border-top: 1px solid var(--border);
+}
+.ai-result-body.hidden { display: none; }
+
+/* Porto analyzer */
+.ai-porto-zone {
+  border: 1px dashed var(--border2); border-radius: 6px;
+  padding: 10px 14px; cursor: pointer; position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 10px;
+  transition: border-color .18s, background .18s;
+}
+.ai-porto-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
+.ai-porto-zone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.ai-porto-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; color: var(--text-muted); }
+
+.ai-btn {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.08em; padding: 6px 14px;
+  border-radius: 5px; cursor: pointer;
+  border: 1px solid var(--accent-dim);
+  background: var(--accent-glow); color: var(--accent);
+  transition: all .18s; white-space: nowrap; flex-shrink: 0;
+}
+.ai-btn:hover { background: var(--accent); color: #0c0e0c; }
+.ai-btn:disabled { opacity: .4; cursor: not-allowed; }
+.ai-btn-sm {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.06em; padding: 5px 10px;
+  border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--border2);
+  background: none; color: var(--text-dim);
+  transition: all .15s; white-space: nowrap; flex-shrink: 0;
+}
+.ai-btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+.ai-key-row { display: flex; gap: 8px; align-items: center; }
+.ai-key-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 5px; color: var(--text);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  padding: 7px 10px; outline: none; transition: border-color .2s;
+}
+.ai-key-input:focus { border-color: var(--accent); }
+
+/* PIN modal */
+.pin-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.75); z-index: 200;
+  align-items: center; justify-content: center;
+}
+.pin-overlay.open { display: flex; }
+.pin-modal {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 28px 24px; width: 300px;
+  text-align: center;
+}
+.pin-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.pin-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 18px; }
+.pin-dots { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
+.pin-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 1.5px solid var(--border2); background: none;
+  transition: background .15s, border-color .15s;
+}
+.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+.pin-dot.error { background: var(--red); border-color: var(--red); }
+.pin-numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+.pin-key {
+  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+  padding: 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text); transition: all .15s;
+}
+.pin-key:hover { border-color: var(--accent); color: var(--accent); }
+.pin-key.del { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text-dim); }
+.pin-err { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--red); height: 14px; }
+
 /* Loading spinner */
 .loading-spinner {
   display: inline-block;
@@ -981,8 +1135,42 @@ select.styled:focus { border-color: var(--accent); }
   </div>
 </div>
 
-<!-- ═══════════ TAB 4: KELOLA SAHAM ═══════════ -->
+<!-- ═══════════ TAB 4: ARSENAL ═══════════ -->
 <div class="tab-panel" id="tab-kelola">
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header">
+      <div class="card-title">◈ Gemini AI</div>
+      <span id="ai-key-status" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">—</span>
+    </div>
+
+    <!-- API Key -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">API Key</div>
+    <div class="ai-key-row" style="margin-bottom:16px">
+      <input class="ai-key-input" type="password" id="gemini-key-input" placeholder="AIza...">
+      <button class="ai-btn-sm" onclick="toggleShowKey()">👁</button>
+      <button class="ai-btn" onclick="saveGeminiKey()">Simpan</button>
+    </div>
+
+    <div id="ai-analyze-all" style="display:none">
+      <!-- Porto Analyzer -->
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Update Lot dari Screenshot Porto</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div class="ai-porto-zone">
+          <input type="file" accept="image/*" onchange="handlePortoUpload(event)">
+          <span style="font-size:14px">🗂</span>
+          <span class="ai-porto-label" id="porto-upload-label">Upload screenshot portofolio</span>
+        </div>
+        <button class="ai-btn" id="porto-analyze-btn" onclick="analyzePorto()" disabled>Perbarui Lot</button>
+      </div>
+      <div id="porto-result" style="display:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--green);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;white-space:pre;margin-bottom:14px"></div>
+
+      <!-- Per-stock chart analysis -->
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Analisa Chart per Saham</div>
+      <div id="ai-stock-sections"></div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-header">
       <div class="card-title">⚙ Kelola Saham Portfolio</div>
@@ -999,8 +1187,39 @@ select.styled:focus { border-color: var(--accent); }
     <button class="btn-add" onclick="addStockInline()">+ Tambah Saham Baru</button>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
       <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">Akan disimpan ke Supabase cloud ☁</span>
-      <button class="btn btn-primary" onclick="applyInline()">✓ Terapkan & Simpan</button>
+      <button class="btn btn-primary" onclick="applyInlineWithPin()">✓ Terapkan &amp; Simpan</button>
     </div>
+  </div>
+</div>
+
+<!-- PIN MODAL -->
+<div class="pin-overlay" id="pin-overlay">
+  <div class="pin-modal">
+    <div class="pin-title">Konfirmasi</div>
+    <div class="pin-hint">// TANGGAL NIKAH</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+    </div>
+    <div class="pin-numpad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key del" onclick="pinKey('cancel')">Batal</button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key del" onclick="pinKey('del')">⌫</button>
+    </div>
+    <div class="pin-err" id="pin-err"></div>
   </div>
 </div>
 
@@ -1248,7 +1467,7 @@ function switchTab(id) {
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', tabIds[i] === id));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
-  if (id === 'kelola') renderKelola();
+  if (id === 'kelola') { renderKelola(); if (GEMINI_KEY) renderAISections(); }
 }
 
 // ── MODAL ──
@@ -1751,6 +1970,374 @@ function calcPensiun() {
 
 // ── INIT ──
 loadFromSupabase();
+
+// ── PIN SYSTEM ──
+let _pinBuffer = '';
+let _pinCallback = null;
+
+function requirePin(callback) {
+  _pinBuffer = '';
+  _pinCallback = callback;
+  document.getElementById('pin-overlay').classList.add('open');
+  document.getElementById('pin-err').textContent = '';
+  updatePinDots();
+}
+
+function pinKey(k) {
+  if (k === 'cancel') {
+    _pinBuffer = '';
+    document.getElementById('pin-overlay').classList.remove('open');
+    return;
+  }
+  if (k === 'del') {
+    _pinBuffer = _pinBuffer.slice(0, -1);
+    updatePinDots();
+    return;
+  }
+  if (_pinBuffer.length >= 6) return;
+  _pinBuffer += k;
+  updatePinDots();
+  if (_pinBuffer.length === 6) {
+    setTimeout(() => {
+      if (_pinBuffer === '190820') {
+        document.getElementById('pin-overlay').classList.remove('open');
+        if (_pinCallback) _pinCallback();
+        _pinBuffer = '';
+      } else {
+        // shake + error
+        document.getElementById('pin-err').textContent = 'PIN salah, coba lagi';
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
+        setTimeout(() => {
+          dots.forEach(d => d.classList.remove('error'));
+          _pinBuffer = '';
+          updatePinDots();
+          document.getElementById('pin-err').textContent = '';
+        }, 800);
+      }
+    }, 120);
+  }
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 6; i++) {
+    const d = document.getElementById('pd'+i);
+    if (!d) continue;
+    d.classList.toggle('filled', i < _pinBuffer.length);
+    d.classList.remove('error');
+  }
+}
+
+// ── APPLY INLINE WITH PIN ──
+function applyInlineWithPin() {
+  requirePin(applyInline);
+}
+
+// ── GEMINI AI ──
+let GEMINI_KEY = '';
+const AI_NOTES = {};
+
+async function loadGeminiKey() {
+  try {
+    const { data } = await sb.from('settings').select('value').eq('key','gemini_key').single();
+    if (data?.value) {
+      GEMINI_KEY = data.value;
+      document.getElementById('gemini-key-input').value = '••••••••••••••••';
+      document.getElementById('ai-key-status').textContent = 'Key aktif ✓';
+      document.getElementById('ai-key-status').style.color = 'var(--green)';
+      document.getElementById('ai-analyze-all').style.display = 'block';
+    }
+  } catch(e) {}
+}
+
+async function saveGeminiKey() {
+  const inp = document.getElementById('gemini-key-input');
+  const val = inp.value.trim();
+  if (!val || val.startsWith('•')) return;
+  GEMINI_KEY = val;
+  try {
+    await sb.from('settings').upsert({ key:'gemini_key', value:val }, { onConflict:'key' });
+    document.getElementById('ai-key-status').textContent = 'Tersimpan ✓';
+    document.getElementById('ai-key-status').style.color = 'var(--green)';
+    inp.value = '••••••••••••••••';
+    document.getElementById('ai-analyze-all').style.display = 'block';
+    renderAISections();
+  } catch(e) {
+    document.getElementById('ai-key-status').textContent = 'Gagal simpan';
+    document.getElementById('ai-key-status').style.color = 'var(--red)';
+  }
+}
+
+function toggleShowKey() {
+  const inp = document.getElementById('gemini-key-input');
+  if (inp.type === 'password') { inp.type = 'text'; }
+  else { inp.type = 'password'; }
+}
+
+function toggleAISection(id) {
+  const wrap = document.getElementById('ai-wrap-'+id);
+  const chev = document.getElementById('ai-chev-'+id);
+  if (!wrap) return;
+  const isOpen = wrap.classList.toggle('open');
+  if (chev) chev.style.transform = isOpen ? 'rotate(180deg)' : '';
+}
+
+function toggleAIResult(id) {
+  const body = document.getElementById('ai-rbody-'+id);
+  const btn  = document.getElementById('ai-rtoggle-'+id);
+  if (!body || !btn) return;
+  const hidden = body.classList.toggle('hidden');
+  btn.classList.toggle('collapsed', hidden);
+}
+
+function renderAISections() {
+  const wrap = document.getElementById('ai-stock-sections');
+  if (!wrap) return;
+  wrap.innerHTML = STOCKS.map((s, idx) => {
+    const col  = getColor(s.id, idx);
+    const note = AI_NOTES[s.id];
+    const hasResult = note && note.reasoning;
+    return `<div class="ai-section">
+      <div class="ai-section-header" onclick="toggleAISection('${s.id}')">
+        <span class="ai-ticker-label" style="color:${col}">${s.id.toUpperCase()}</span>
+        <span class="ai-name-label">${s.name}</span>
+        ${note ? `<span class="mos mos-${note.sigKey}">${note.sigLabel}</span>` : `<span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">— belum dianalisa</span>`}
+        <span class="ai-chevron" id="ai-chev-${s.id}">▼</span>
+      </div>
+      <div class="ai-body-wrap" id="ai-wrap-${s.id}">
+        <div class="ai-body">
+          <div class="ai-upload-row">
+            <div class="ai-dropzone" id="zone-${s.id}">
+              <input type="file" accept="image/*" onchange="handleChartUpload(event,'${s.id}')">
+              <span class="ai-dropzone-icon">📊</span>
+              <span class="ai-dropzone-label" id="zone-label-${s.id}">Upload chart 1W / 1D</span>
+              <img class="ai-thumb" id="preview-${s.id}" alt="">
+            </div>
+            <button class="ai-btn" id="btn-${s.id}" onclick="analyzeChart('${s.id}')" disabled>Analisa</button>
+          </div>
+          ${hasResult ? `
+          <div class="ai-result-wrap visible" id="ai-rwrap-${s.id}">
+            <button class="ai-result-toggle" id="ai-rtoggle-${s.id}" onclick="toggleAIResult('${s.id}')">
+              <span>Detail Analisa ${note.ts ? '· '+note.ts : ''}</span>
+              <span class="chev">▼</span>
+            </button>
+            <div class="ai-result-body hidden" id="ai-rbody-${s.id}">${note.reasoning}</div>
+          </div>` : `<div class="ai-result-wrap" id="ai-rwrap-${s.id}">
+            <button class="ai-result-toggle collapsed" id="ai-rtoggle-${s.id}" onclick="toggleAIResult('${s.id}')" style="display:none">
+              <span>Detail Analisa</span><span class="chev">▼</span>
+            </button>
+            <div class="ai-result-body hidden" id="ai-rbody-${s.id}"></div>
+          </div>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function handleChartUpload(event, id) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('preview-'+id);
+    const label   = document.getElementById('zone-label-'+id);
+    const btn     = document.getElementById('btn-'+id);
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    label.textContent = file.name.length > 22 ? file.name.slice(0,20)+'…' : file.name;
+    btn.disabled = false;
+    btn._imageData = e.target.result.split(',')[1];
+    btn._mimeType  = file.type;
+  };
+  reader.readAsDataURL(file);
+}
+
+const SIG_MAP = {
+  'STRONG BUY': { key:'strong-buy',  label:'⚡ Strong Buy' },
+  'BUY':        { key:'buy',         label:'✓ Buy' },
+  'ACCUMULATE': { key:'accumulate',  label:'◎ Accumulate' },
+  'HOLD':       { key:'hold',        label:'◆ Hold' },
+  'TRIM':       { key:'trim',        label:'▲ Trim' },
+  'EXIT':       { key:'exit',        label:'✕ Exit' },
+};
+
+function parseSig(text) {
+  const line = (text.match(/SIGNAL[:\s]+([^
+]+)/i)?.[1] || '').trim().toUpperCase();
+  const matched = Object.entries(SIG_MAP).find(([k]) => line.includes(k));
+  return matched ? matched[1] : { key:'unknown', label:'— N/A' };
+}
+
+async function analyzeChart(id) {
+  if (!GEMINI_KEY) { alert('Simpan Gemini API key dulu!'); return; }
+  const btn    = document.getElementById('btn-'+id);
+  const rbody  = document.getElementById('ai-rbody-'+id);
+  const rwrap  = document.getElementById('ai-rwrap-'+id);
+  const rtoggle = document.getElementById('ai-rtoggle-'+id);
+  if (!btn._imageData) return;
+
+  btn.disabled = true;
+  btn.textContent = '⏳';
+  rwrap.classList.add('visible');
+  rtoggle.style.display = 'flex';
+  rtoggle.classList.remove('collapsed');
+  rbody.classList.remove('hidden');
+  rbody.textContent = 'Gemini sedang membaca chart...';
+
+  const s = STOCKS.find(x => x.id === id);
+  const bz = BUY_ZONES[id.toLowerCase()] || [];
+  const bzText = bz.length ? `Buy zones: SB≤${bz[0]}, Buy≤${bz[1]}, Acc≤${bz[2]}, Hold≤${bz[3]}, Trim≤${bz[4]}` : '';
+
+  const prompt = `Kamu adalah analis teknikal IDX berpengalaman. Analisa chart saham ${id.toUpperCase()} (${s?.name||''}) ini.
+
+${bzText}
+Harga saat ini: Rp ${s?.price?.toLocaleString('id-ID')||'—'}
+
+Berikan analisa singkat dan tegas. Gunakan format persis ini:
+
+SIGNAL: [pilih tepat satu: STRONG BUY / BUY / ACCUMULATE / HOLD / TRIM / EXIT]
+TREND: [kondisi trend, 1-2 kalimat]
+S/R: [level support dan resistance kunci]
+REASONING: [kenapa signal tersebut, 2-3 kalimat, fokus price action]
+WATCHOUT: [risiko atau kondisi yang perlu diwaspadai]`;
+
+  try {
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [
+            { text: prompt },
+            { inline_data: { mime_type: btn._mimeType, data: btn._imageData } }
+          ]}]
+        })
+      }
+    );
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Tidak ada respons';
+
+    rbody.textContent = text;
+    const sigObj = parseSig(text);
+    const ts = new Date().toLocaleString('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+    AI_NOTES[id] = { sigKey: sigObj.key, sigLabel: sigObj.label, reasoning: text, ts };
+
+    await sb.from('settings').upsert(
+      { key:'ai_note_'+id, value: JSON.stringify(AI_NOTES[id]) },
+      { onConflict:'key' }
+    );
+
+    btn.textContent = 'Analisa';
+    btn.disabled = false;
+    // Update header signal badge without full re-render
+    renderAISections();
+
+  } catch(e) {
+    rbody.textContent = 'Error: ' + e.message;
+    btn.textContent = 'Analisa';
+    btn.disabled = false;
+  }
+}
+
+// ── PORTO ANALYZER ──
+let _portoImageData = null, _portoMime = null;
+
+function handlePortoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _portoImageData = e.target.result.split(',')[1];
+    _portoMime = file.type;
+    const lbl = document.getElementById('porto-upload-label');
+    const btn = document.getElementById('porto-analyze-btn');
+    if (lbl) lbl.textContent = '✓ ' + (file.name.length > 24 ? file.name.slice(0,22)+'…' : file.name);
+    if (btn) btn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function analyzePorto() {
+  if (!GEMINI_KEY) { alert('Simpan Gemini API key dulu!'); return; }
+  if (!_portoImageData) return;
+  const btn    = document.getElementById('porto-analyze-btn');
+  const result = document.getElementById('porto-result');
+  btn.disabled = true;
+  btn.textContent = '⏳';
+  result.style.display = 'block';
+  result.textContent = 'Membaca portofolio...';
+
+  const tickerList = STOCKS.map(s => s.id.toUpperCase()).join(', ');
+  const prompt = `Kamu membaca screenshot portofolio saham IDX. Identifikasi setiap baris dan ekstrak: ticker saham + jumlah lot yang dimiliki.
+
+Saham yang diketahui dalam portofolio: ${tickerList}
+
+Balas HANYA dengan JSON array, tidak ada teks lain:
+[{"ticker":"BBCA","lot":30},{"ticker":"BMRI","lot":32}]
+
+Jika ada saham yang tidak terbaca, skip. Gunakan ticker uppercase.`;
+
+  try {
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [
+            { text: prompt },
+            { inline_data: { mime_type: _portoMime, data: _portoImageData } }
+          ]}]
+        })
+      }
+    );
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Strip markdown fences
+    text = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(text);
+
+    // Apply to STOCKS
+    let updated = 0;
+    parsed.forEach(row => {
+      const s = STOCKS.find(x => x.id.toUpperCase() === row.ticker.toUpperCase());
+      if (s && row.lot >= 0) { s.have = parseInt(row.lot); updated++; }
+    });
+
+    CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
+    buildInputs(); calcLot(); calcPensiun();
+    await saveToSupabase();
+
+    result.textContent = `✓ ${updated} saham diperbarui:
+` + parsed.map(r => `  ${r.ticker}: ${r.lot} lot`).join('
+');
+    btn.textContent = 'Perbarui Lot';
+    btn.disabled = false;
+    renderKelola();
+
+  } catch(e) {
+    result.textContent = 'Error: ' + e.message + '\nPastikan screenshot terbaca jelas.';
+    btn.textContent = 'Perbarui Lot';
+    btn.disabled = false;
+  }
+}
+
+async function loadAINotes() {
+  try {
+    const { data } = await sb.from('settings').select('key,value').like('key','ai_note_%');
+    if (data) {
+      data.forEach(row => {
+        const id = row.key.replace('ai_note_','');
+        try { AI_NOTES[id] = JSON.parse(row.value); } catch(e) {}
+      });
+    }
+  } catch(e) {}
+}
+
+setTimeout(() => { loadGeminiKey(); loadAINotes(); }, 800);
 </script>
 </body>
 </html>
