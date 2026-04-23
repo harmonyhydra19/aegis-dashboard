@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="light" id="html-root">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1357,8 +1357,7 @@ async function loadFromSupabase() {
     showStatus('Offline — data lokal', 'err');
     // Fall back to local defaults so the UI still works
     loadLocalDefaults();
-    loadGeminiKey();
-    loadAINotes();
+    // Skip AI data — Supabase is unreachable
   }
 }
 
@@ -1395,38 +1394,45 @@ async function seedDefaultStocks() {
 async function saveToSupabase() {
   showStatus('Menyimpan...', 'loading');
   try {
-    for (const s of STOCKS) {
-      const payload = {
-        ticker:   s.id.toUpperCase(),
-        nama:     s.name,
-        harga:    s.price,
-        lot:      s.have,
-        dps:      s.dpsCurr,
-        avg_cost: s.avgCost,
-        role:     s.role,
-        alloc:    s.alloc,
-        dps_cagr: s.dpsCagr || 0.10,
-        color:    s._color || null,
-      };
-      if (s._dbId) {
-        await sb.from('stocks').update(payload).eq('id', s._dbId);
-      } else {
-        const { data } = await sb.from('stocks').insert(payload).select().single();
-        if (data) s._dbId = data.id;
-      }
+    const payloads = STOCKS.map(s => ({
+      ...(s._dbId ? { id: s._dbId } : {}),
+      ticker:   s.id.toUpperCase(),
+      nama:     s.name,
+      harga:    s.price,
+      lot:      s.have,
+      dps:      s.dpsCurr,
+      avg_cost: s.avgCost,
+      role:     s.role,
+      alloc:    s.alloc,
+      dps_cagr: s.dpsCagr || 0.10,
+      color:    s._color || null,
+    }));
+
+    const { data: upserted, error } = await sb.from('stocks')
+      .upsert(payloads, { onConflict: 'id', ignoreDuplicates: false })
+      .select('id, ticker');
+    if (error) throw error;
+
+    // Sync back generated IDs for new rows
+    if (upserted) {
+      upserted.forEach(row => {
+        const s = STOCKS.find(x => x.id.toUpperCase() === row.ticker);
+        if (s && !s._dbId) s._dbId = row.id;
+      });
     }
-    // Delete removed stocks — use correct Supabase filter syntax
-    const existingIds = STOCKS.filter(s => s._dbId).map(s => s._dbId);
-    if (existingIds.length > 0) {
-      // Fetch all DB IDs first, then delete ones not in our current list
+
+    // Delete rows no longer in STOCKS
+    const activeIds = STOCKS.filter(s => s._dbId).map(s => s._dbId);
+    if (activeIds.length > 0) {
       const { data: allRows } = await sb.from('stocks').select('id');
       if (allRows) {
-        const toDelete = allRows.map(r => r.id).filter(id => !existingIds.includes(id));
+        const toDelete = allRows.map(r => r.id).filter(id => !activeIds.includes(id));
         for (const did of toDelete) {
           await sb.from('stocks').delete().eq('id', did);
         }
       }
     }
+
     showStatus('Tersimpan ✓', 'ok');
   } catch(e) {
     console.error('Save error:', e);
@@ -1455,9 +1461,9 @@ function getColor(id, idx) {
 function getMOS(id, price) {
   const bz = BUY_ZONES[id.toLowerCase()];
   if (!bz || !price || price <= 0) return { key:'unknown', label:'— N/A', note:'No data' };
-  const [sb2, b, ac, h, t] = bz;
-  if (price <= sb2) return { key:'strong-buy',  label:'⚡ Strong Buy', note:`≤ ${sb2.toLocaleString('id-ID')}` };
-  if (price <= b)   return { key:'buy',          label:'✓ Buy',         note:`${sb2.toLocaleString('id-ID')}–${b.toLocaleString('id-ID')}` };
+  const [sbz, b, ac, h, t] = bz;
+  if (price <= sbz) return { key:'strong-buy',  label:'⚡ Strong Buy', note:`≤ ${sbz.toLocaleString('id-ID')}` };
+  if (price <= b)   return { key:'buy',          label:'✓ Buy',         note:`${sbz.toLocaleString('id-ID')}–${b.toLocaleString('id-ID')}` };
   if (price <= ac)  return { key:'accumulate',   label:'◎ Accumulate',  note:`${b.toLocaleString('id-ID')}–${ac.toLocaleString('id-ID')}` };
   if (price <= h)   return { key:'hold',         label:'◆ Hold',        note:`${ac.toLocaleString('id-ID')}–${h.toLocaleString('id-ID')}` };
   if (price <= t)   return { key:'trim',         label:'▲ Trim',        note:`${h.toLocaleString('id-ID')}–${t.toLocaleString('id-ID')}` };
@@ -1465,11 +1471,18 @@ function getMOS(id, price) {
 }
 
 // ── THEME ──
+(function initTheme() {
+  const saved = localStorage.getItem('aegis-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
 function toggleTheme() {
   const html = document.documentElement;
   const now = html.getAttribute('data-theme');
-  html.setAttribute('data-theme', now === 'dark' ? 'light' : 'dark');
-  document.getElementById('theme-btn').textContent = now === 'dark' ? '🌙 Dark' : '☀ Light';
+  const next = now === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('aegis-theme', next);
+  document.getElementById('theme-btn').textContent = next === 'dark' ? '☀ Light' : '🌙 Dark';
   buildInputs(); calcLot();
 }
 
@@ -1479,7 +1492,11 @@ function switchTab(id) {
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', tabIds[i] === id));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
-  if (id === 'kelola') { renderKelola(); if (GEMINI_KEY) renderAISections(); }
+  if (id === 'kelola') {
+    renderKelola();
+    // Always render AI sections if key is available (key may have loaded async after tab was last opened)
+    if (GEMINI_KEY) renderAISections();
+  }
 }
 
 // ── MODAL ──
@@ -1678,12 +1695,9 @@ function parseTarget(input) {
   const raw = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
   const num = parseInt(raw) || 0;
   const formatted = fmtDots(num);
+  // Only reformat if value changed — avoid triggering on every keystroke
   if (input.value !== formatted) {
-    const cur = input.selectionStart;
-    const prev = input.value.length;
     input.value = formatted;
-    const diff = formatted.length - prev;
-    input.setSelectionRange(cur + diff, cur + diff);
   }
   document.getElementById('target-val').value = num;
   calcLot();
@@ -1987,6 +2001,13 @@ function calcPensiun() {
 }
 
 // ── INIT ──
+// Set theme button label to match persisted theme
+(function syncThemeBtn() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'light';
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = theme === 'dark' ? '☀ Light' : '🌙 Dark';
+})();
+
 loadFromSupabase();
 
 // ── PIN SYSTEM ──
@@ -2057,15 +2078,17 @@ const AI_NOTES = {};
 
 async function loadGeminiKey() {
   try {
-    const { data } = await sb.from('settings').select('value').eq('key','gemini_key').single();
+    const { data, error } = await sb.from('settings').select('value').eq('key','gemini_key').maybeSingle();
+    if (error) { console.warn('loadGeminiKey error:', error.message); return; }
     if (data?.value) {
       GEMINI_KEY = data.value;
       document.getElementById('gemini-key-input').value = '••••••••••••••••';
       document.getElementById('ai-key-status').textContent = 'Key aktif ✓';
       document.getElementById('ai-key-status').style.color = 'var(--green)';
       document.getElementById('ai-analyze-all').style.display = 'block';
+      renderAISections();
     }
-  } catch(e) {}
+  } catch(e) { console.warn('loadGeminiKey exception:', e); }
 }
 
 async function saveGeminiKey() {
@@ -2074,14 +2097,17 @@ async function saveGeminiKey() {
   if (!val || val.startsWith('•')) return;
   GEMINI_KEY = val;
   try {
-    await sb.from('settings').upsert({ key:'gemini_key', value:val }, { onConflict:'key' });
+    const { error } = await sb.from('settings')
+      .upsert({ key: 'gemini_key', value: val }, { onConflict: 'key' });
+    if (error) throw error;
     document.getElementById('ai-key-status').textContent = 'Tersimpan ✓';
     document.getElementById('ai-key-status').style.color = 'var(--green)';
     inp.value = '••••••••••••••••';
     document.getElementById('ai-analyze-all').style.display = 'block';
     renderAISections();
   } catch(e) {
-    document.getElementById('ai-key-status').textContent = 'Gagal simpan';
+    console.error('saveGeminiKey error:', e);
+    document.getElementById('ai-key-status').textContent = 'Gagal simpan: ' + e.message;
     document.getElementById('ai-key-status').style.color = 'var(--red)';
   }
 }
@@ -2241,10 +2267,11 @@ WATCHOUT: [risiko atau kondisi yang perlu diwaspadai]`;
     const ts = new Date().toLocaleString('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
     AI_NOTES[id] = { sigKey: sigObj.key, sigLabel: sigObj.label, reasoning: text, ts };
 
-    await sb.from('settings').upsert(
+    const { error: saveErr } = await sb.from('settings').upsert(
       { key:'ai_note_'+id, value: JSON.stringify(AI_NOTES[id]) },
       { onConflict:'key' }
     );
+    if (saveErr) console.warn('AI note save error:', saveErr.message);
 
     btn.textContent = 'Analisa';
     btn.disabled = false;
@@ -2315,7 +2342,15 @@ Jika ada saham yang tidak terbaca, skip. Gunakan ticker uppercase.`;
     let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     // Strip markdown fences
     text = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(text);
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch(parseErr) {
+      throw new Error('Respons Gemini bukan JSON valid. Coba lagi.');
+    }
+    if (!Array.isArray(parsed)) {
+      throw new Error('Gemini tidak mengembalikan array. Pastikan screenshot terbaca jelas.');
+    }
 
     // Apply to STOCKS
     let updated = 0;
@@ -2344,14 +2379,15 @@ Jika ada saham yang tidak terbaca, skip. Gunakan ticker uppercase.`;
 
 async function loadAINotes() {
   try {
-    const { data } = await sb.from('settings').select('key,value').like('key','ai_note_%');
+    const { data, error } = await sb.from('settings').select('key,value').like('key','ai_note_%');
+    if (error) { console.warn('loadAINotes error:', error.message); return; }
     if (data) {
       data.forEach(row => {
         const id = row.key.replace('ai_note_','');
         try { AI_NOTES[id] = JSON.parse(row.value); } catch(e) {}
       });
     }
-  } catch(e) {}
+  } catch(e) { console.warn('loadAINotes exception:', e); }
 }
 
 // loadGeminiKey and loadAINotes are called after loadFromSupabase completes (no race condition)
