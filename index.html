@@ -915,7 +915,7 @@ select.styled:focus { border-color: var(--accent); }
         <rect x="7" y="2" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
         <path d="M7 12h6M7 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
-      <div class="save-tooltip" id="save-tooltip">Menghubungkan...</div>
+      <div class="save-tooltip" id="save-tooltip"></div>
     </div>
     <button class="btn" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
   </div>
@@ -1349,11 +1349,16 @@ async function loadFromSupabase() {
     calcLot();
     calcPensiun();
     showStatus('Tersimpan ✓', 'ok');
+    // Load AI data after main data is ready — no race condition
+    loadGeminiKey();
+    loadAINotes();
   } catch(e) {
     console.error('Load error:', e);
     showStatus('Offline — data lokal', 'err');
     // Fall back to local defaults so the UI still works
     loadLocalDefaults();
+    loadGeminiKey();
+    loadAINotes();
   }
 }
 
@@ -1410,10 +1415,17 @@ async function saveToSupabase() {
         if (data) s._dbId = data.id;
       }
     }
-    // Delete removed stocks
+    // Delete removed stocks — use correct Supabase filter syntax
     const existingIds = STOCKS.filter(s => s._dbId).map(s => s._dbId);
     if (existingIds.length > 0) {
-      await sb.from('stocks').delete().not('id', 'in', `(${existingIds.join(',')})`);
+      // Fetch all DB IDs first, then delete ones not in our current list
+      const { data: allRows } = await sb.from('stocks').select('id');
+      if (allRows) {
+        const toDelete = allRows.map(r => r.id).filter(id => !existingIds.includes(id));
+        for (const did of toDelete) {
+          await sb.from('stocks').delete().eq('id', did);
+        }
+      }
     }
     showStatus('Tersimpan ✓', 'ok');
   } catch(e) {
@@ -1550,6 +1562,9 @@ async function applyInline() {
     s.role    = document.getElementById(`ke-r-${i}`)?.value.trim() || s.role;
     const ce  = document.getElementById(`ke-c-${i}`);
     s._color  = ce ? ce.value : (s._color || pal[i % pal.length]);
+    // Sync alloc from DOM alloc input if available, else keep existing
+    const allocEl = document.getElementById('alloc-' + s.id);
+    if (allocEl) s.alloc = parseFloat(allocEl.value) || s.alloc;
   });
   CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
   buildInputs(); calcLot(); calcPensiun();
@@ -1583,6 +1598,9 @@ async function applyModal() {
     s.role    = document.getElementById(`me-r-${i}`)?.value.trim() || s.role;
     const ce  = document.getElementById(`me-c-${i}`);
     s._color  = ce ? ce.value : (s._color || pal[i % pal.length]);
+    // Sync alloc from DOM if available
+    const allocEl = document.getElementById('alloc-' + s.id);
+    if (allocEl) s.alloc = parseFloat(allocEl.value) || s.alloc;
   });
   CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
   buildInputs(); calcLot(); calcPensiun();
@@ -2162,8 +2180,7 @@ const SIG_MAP = {
 };
 
 function parseSig(text) {
-  const line = (text.match(/SIGNAL[:\s]+([^
-]+)/i)?.[1] || '').trim().toUpperCase();
+  const line = (text.match(/SIGNAL[:\s]+([^\n]+)/i)?.[1] || '').trim().toUpperCase();
   const matched = Object.entries(SIG_MAP).find(([k]) => line.includes(k));
   return matched ? matched[1] : { key:'unknown', label:'— N/A' };
 }
@@ -2337,7 +2354,7 @@ async function loadAINotes() {
   } catch(e) {}
 }
 
-setTimeout(() => { loadGeminiKey(); loadAINotes(); }, 800);
+// loadGeminiKey and loadAINotes are called after loadFromSupabase completes (no race condition)
 </script>
 </body>
 </html>
