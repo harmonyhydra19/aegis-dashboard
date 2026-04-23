@@ -67,22 +67,22 @@ body::before {
 
 /* ── HEADER ── */
 .header {
-  padding: 32px 0 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  padding: 20px 0 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
   border-bottom: 1px solid var(--border2);
   margin-bottom: 0;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 0 20px;
 }
-.header-brand { display: flex; align-items: baseline; gap: 8px; }
+.header-brand { display: flex; align-items: center; gap: 10px; }
 .header-wordmark {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 5vw, 42px);
+  font-size: clamp(22px, 3.5vw, 30px);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
+  white-space: nowrap;
 }
 .header-wordmark span { color: var(--accent); }
 .header-tag {
@@ -94,22 +94,33 @@ body::before {
   border: 1px solid var(--border2);
   border-radius: 3px;
   padding: 2px 6px;
+  white-space: nowrap;
 }
+/* middle: actions centered */
+.header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+/* right: porto value */
 .header-right { text-align: right; }
 .header-val {
   font-family: 'Syne', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
+  white-space: nowrap;
 }
 .header-meta {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   color: var(--text-dim);
-  margin-top: 4px;
+  margin-top: 3px;
+  white-space: nowrap;
 }
-.header-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
 
 /* Save status */
 #save-status {
@@ -118,6 +129,18 @@ body::before {
   letter-spacing: 0.1em;
   color: var(--text-muted);
   transition: color .3s;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+  }
+  .header-brand { grid-column: 1; }
+  .header-right { grid-column: 2; grid-row: 1; }
+  .header-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
 /* ── TABS ── */
@@ -643,7 +666,61 @@ select.styled:focus { border-color: var(--accent); }
 .sum-warn { color: var(--accent2); }
 .sum-err { color: var(--red); }
 
-/* Loading state */
+/* Save indicator icon */
+.save-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+.save-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  transition: color .3s;
+  flex-shrink: 0;
+}
+.save-indicator[data-state="ok"]      .save-icon { color: var(--accent); }
+.save-indicator[data-state="err"]     .save-icon { color: var(--red); }
+.save-indicator[data-state="loading"] .save-icon { color: var(--text-dim); animation: pulse-opacity 1s ease-in-out infinite; }
+
+@keyframes pulse-opacity { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+
+.save-tooltip {
+  position: fixed;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--text-dim);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .18s, transform .18s;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  top: 52px;
+  right: 20px;
+}
+.save-indicator[data-state="ok"]  .save-tooltip { color: var(--accent); }
+.save-indicator[data-state="err"] .save-tooltip { color: var(--red); }
+.save-indicator:hover .save-tooltip,
+.save-indicator.show-tip .save-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Settings tab — pushed to right */
+.tab-settings {
+  margin-left: auto;
+  border-left: 1px solid var(--border2);
+}
+
+/* Loading spinner */
 .loading-spinner {
   display: inline-block;
   width: 8px; height: 8px;
@@ -673,29 +750,33 @@ select.styled:focus { border-color: var(--accent); }
 
 <!-- HEADER -->
 <div class="header">
-  <div>
-    <div class="header-brand">
-      <div class="header-wordmark">Aegis <span>Growth</span></div>
-      <div class="header-tag">IDX · Dividend</div>
+  <div class="header-brand">
+    <div class="header-wordmark">Aegis <span>Growth</span></div>
+    <div class="header-tag">IDX · Dividend</div>
+  </div>
+  <div class="header-actions">
+    <div class="save-indicator" id="save-indicator" title="">
+      <svg class="save-icon" id="save-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 4a2 2 0 0 1 2-2h6.586A2 2 0 0 1 14 2.586L15.414 4A2 2 0 0 1 16 5.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        <rect x="7" y="2" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        <path d="M7 12h6M7 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <div class="save-tooltip" id="save-tooltip">Menghubungkan...</div>
     </div>
-    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted);margin-top:6px;letter-spacing:0.1em">ZenkichiArc Portfolio</div>
+    <button class="btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
   </div>
   <div class="header-right">
     <div class="header-val" id="hdr-val">—</div>
     <div class="header-meta" id="hdr-meta">current portfolio</div>
-    <div class="header-actions">
-      <span id="save-status">Menghubungkan...</span>
-      <button class="btn" onclick="openModal()">⚙ Kelola Saham</button>
-      <button class="btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
-    </div>
   </div>
 </div>
 
 <!-- TABS -->
 <div class="tabs" style="margin-top:0">
-  <button class="tab active" onclick="switchTab('lot')">① Lot Calculator</button>
-  <button class="tab" onclick="switchTab('pensiun')">② Proyeksi Pensiun</button>
-  <button class="tab" onclick="switchTab('rules')">③ Aturan Porto</button>
+  <button class="tab active" onclick="switchTab('lot')">◈ Radar Lot</button>
+  <button class="tab" onclick="switchTab('pensiun')">◎ Visi Pensiun</button>
+  <button class="tab" onclick="switchTab('rules')">⬡ Codex Porto</button>
+  <button class="tab tab-settings" onclick="switchTab('kelola')">⚙ Arsenal</button>
 </div>
 
 <!-- ═══════════ TAB 1: LOT CALCULATOR ═══════════ -->
@@ -900,7 +981,28 @@ select.styled:focus { border-color: var(--accent); }
   </div>
 </div>
 
-</div><!-- /wrap -->
+<!-- ═══════════ TAB 4: KELOLA SAHAM ═══════════ -->
+<div class="tab-panel" id="tab-kelola">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">⚙ Kelola Saham Portfolio</div>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
+      Edit ticker, nama, harga, lot punya, avg cost, DPS per saham. Perubahan disimpan otomatis ke Supabase.
+    </div>
+    <div class="me-grid header">
+      <span>Ticker</span><span>Nama</span><span>Harga</span>
+      <span>Lot</span><span>DPS</span><span>Avg Cost</span>
+      <span>Role</span><span></span>
+    </div>
+    <div id="kelola-rows"></div>
+    <button class="btn-add" onclick="addStockInline()">+ Tambah Saham Baru</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">Akan disimpan ke Supabase cloud ☁</span>
+      <button class="btn btn-primary" onclick="applyInline()">✓ Terapkan & Simpan</button>
+    </div>
+  </div>
+</div>
 
 <div style="text-align:center;padding:28px 0 16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);position:relative;z-index:1">
   ZenkichiArc · <span style="color:var(--accent)">Aegis Growth Dividend</span> · IDX Compounder
@@ -976,13 +1078,15 @@ let CURRENT_VAL = 0;
 // SUPABASE HELPERS
 // ══════════════════════════════════════════════════
 function showStatus(msg, type) {
-  const el = document.getElementById('save-status');
-  if (!el) return;
-  el.textContent = msg;
-  el.style.color = type === 'ok'      ? 'var(--accent)'
-                 : type === 'err'     ? 'var(--red)'
-                 : type === 'loading' ? 'var(--text-dim)'
-                 :                      'var(--text-muted)';
+  const ind = document.getElementById('save-indicator');
+  const tip = document.getElementById('save-tooltip');
+  if (!ind || !tip) return;
+  ind.setAttribute('data-state', type || 'idle');
+  tip.textContent = msg;
+  // Flash the tooltip briefly on state change
+  ind.classList.add('show-tip');
+  clearTimeout(ind._tipTimer);
+  ind._tipTimer = setTimeout(() => ind.classList.remove('show-tip'), 2800);
 }
 
 async function loadFromSupabase() {
@@ -1140,9 +1244,11 @@ function toggleTheme() {
 
 // ── TAB ──
 function switchTab(id) {
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['lot','pensiun','rules'][i] === id));
+  const tabIds = ['lot','pensiun','rules','kelola'];
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', tabIds[i] === id));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'kelola') renderKelola();
 }
 
 // ── MODAL ──
@@ -1171,6 +1277,64 @@ function renderModal() {
       </div>
     </div>`;
   }).join('');
+}
+
+function addStockInline() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const pal = isLight ? LIGHT_PAL : DARK_PAL;
+  STOCKS.push({ id:'new'+STOCKS.length, name:'Nama Perusahaan', role:'CUSTOM', have:0, avgCost:1000, price:1000, alloc:0, dpsCurr:0, dpsCagr:0.10, _color: pal[STOCKS.length % pal.length] });
+  renderKelola();
+  document.getElementById('kelola-rows').scrollIntoView({ behavior:'smooth', block:'end' });
+}
+
+function renderKelola() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const pal = isLight ? LIGHT_PAL : DARK_PAL;
+  const wrap = document.getElementById('kelola-rows');
+  if (!wrap) return;
+  wrap.innerHTML = STOCKS.map((s, i) => {
+    const col = s._color || pal[i % pal.length];
+    return `<div class="me-grid" id="kr-${i}">
+      <input class="se-input ticker" style="color:${col}" type="text" id="ke-t-${i}" value="${s.id.toUpperCase()}" oninput="this.value=this.value.toUpperCase()">
+      <input class="se-input" type="text" id="ke-n-${i}" value="${s.name}">
+      <input class="se-input" type="number" id="ke-p-${i}" value="${s.price}">
+      <input class="se-input" type="number" id="ke-h-${i}" value="${s.have}">
+      <input class="se-input" type="number" id="ke-d-${i}" value="${s.dpsCurr}">
+      <input class="se-input" type="number" id="ke-a-${i}" value="${s.avgCost||s.price}">
+      <input class="se-input" type="text"   id="ke-r-${i}" value="${s.role}">
+      <div style="position:relative;display:flex;align-items:center;gap:3px">
+        <div class="color-swatch" style="background:${col}" onclick="document.getElementById('ke-c-${i}').click()"></div>
+        <input class="se-color-input" type="color" id="ke-c-${i}" value="${col}"
+          oninput="document.getElementById('kr-${i}').querySelector('.color-swatch').style.background=this.value;document.getElementById('ke-t-${i}').style.color=this.value">
+        ${STOCKS.length > 1 ? `<button class="btn-del" onclick="delStockInline(${i})">×</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function delStockInline(i) {
+  if (STOCKS.length <= 1) return;
+  STOCKS.splice(i, 1);
+  renderKelola();
+}
+
+async function applyInline() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const pal = isLight ? LIGHT_PAL : DARK_PAL;
+  STOCKS.forEach((s, i) => {
+    s.id      = (document.getElementById(`ke-t-${i}`)?.value || s.id).trim().toLowerCase().replace(/\s+/g, '');
+    s.name    = document.getElementById(`ke-n-${i}`)?.value.trim() || s.name;
+    s.price   = parseFloat(document.getElementById(`ke-p-${i}`)?.value) || s.price;
+    s.have    = parseInt(document.getElementById(`ke-h-${i}`)?.value) || 0;
+    s.dpsCurr = parseFloat(document.getElementById(`ke-d-${i}`)?.value) || s.dpsCurr;
+    s.avgCost = parseFloat(document.getElementById(`ke-a-${i}`)?.value) || s.price;
+    s.role    = document.getElementById(`ke-r-${i}`)?.value.trim() || s.role;
+    const ce  = document.getElementById(`ke-c-${i}`);
+    s._color  = ce ? ce.value : (s._color || pal[i % pal.length]);
+  });
+  CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
+  buildInputs(); calcLot(); calcPensiun();
+  await saveToSupabase();
 }
 
 function addStock() {
