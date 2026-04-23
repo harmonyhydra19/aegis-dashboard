@@ -1193,7 +1193,7 @@ select.styled:focus { border-color: var(--accent); }
 </div>
 
 <!-- PIN MODAL -->
-<div class="pin-overlay" id="pin-overlay">
+<div class="pin-overlay" id="pin-overlay" tabindex="-1">
   <div class="pin-modal">
     <div class="pin-title">Konfirmasi</div>
     <div class="pin-hint">// TANGGAL NIKAH</div>
@@ -2079,7 +2079,17 @@ function requirePin(callback) {
   document.getElementById('pin-overlay').classList.add('open');
   document.getElementById('pin-err').textContent = '';
   updatePinDots();
+  // Focus trap so keyboard events work immediately
+  setTimeout(() => document.getElementById('pin-overlay').focus(), 50);
 }
+
+// Global keyboard handler for PIN
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('pin-overlay').classList.contains('open')) return;
+  if (e.key >= '0' && e.key <= '9') { e.preventDefault(); pinKey(e.key); }
+  else if (e.key === 'Backspace') { e.preventDefault(); pinKey('del'); }
+  else if (e.key === 'Escape') { e.preventDefault(); pinKey('cancel'); }
+});
 
 function pinKey(k) {
   if (k === 'cancel') {
@@ -2305,7 +2315,7 @@ WATCHOUT: [risiko atau kondisi yang perlu diwaspadai]`;
 
   try {
     const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2384,7 +2394,7 @@ Jika ada saham yang tidak terbaca, skip. Gunakan ticker uppercase.`;
 
   try {
     const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
