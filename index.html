@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -751,7 +751,7 @@ select.styled:focus { border-color: var(--accent); }
 <!-- HEADER -->
 <div class="header">
   <div class="header-brand">
-    <div class="header-wordmark">Aegis <span>Growth</span></div>
+    <div class="header-wordmark" onclick="location.reload()" style="cursor:pointer" title="Reload">Aegis <span>Growth</span></div>
     <div class="header-tag">IDX · Dividend</div>
   </div>
   <div class="header-actions">
@@ -763,7 +763,7 @@ select.styled:focus { border-color: var(--accent); }
       </svg>
       <div class="save-tooltip" id="save-tooltip">Menghubungkan...</div>
     </div>
-    <button class="btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+    <button class="btn" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
   </div>
   <div class="header-right">
     <div class="header-val" id="hdr-val">—</div>
