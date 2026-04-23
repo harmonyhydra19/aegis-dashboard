@@ -597,32 +597,6 @@ select.styled:focus { border-color: var(--accent); }
 .sig-desc { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); }
 .integrity-list { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-dim); line-height: 2.1; }
 
-/* ── MODAL ── */
-.modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.8); z-index: 100;
-  align-items: center; justify-content: center; padding: 16px;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 12px; padding: 24px;
-  width: 100%; max-width: 720px;
-  max-height: 90vh; overflow-y: auto;
-}
-.modal-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px; font-weight: 700;
-  margin-bottom: 18px; padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.modal-close {
-  background: none; border: none; color: var(--text-dim);
-  font-size: 18px; cursor: pointer; line-height: 1;
-}
-.modal-close:hover { color: var(--text); }
 .me-grid {
   display: grid;
   grid-template-columns: 68px 1fr 76px 70px 70px 76px 80px 28px;
@@ -1230,30 +1204,6 @@ select.styled:focus { border-color: var(--accent); }
   ZenkichiArc · <span style="color:var(--accent)">Aegis Growth Dividend</span> · IDX Compounder
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
-  <div class="modal">
-    <div class="modal-title">
-      ⚙ Kelola Saham Portfolio
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
-      Edit ticker, nama, harga, lot punya, avg cost, DPS per saham. Perubahan disimpan otomatis ke Supabase.
-    </div>
-    <div class="me-grid header">
-      <span>Ticker</span><span>Nama</span><span>Harga</span>
-      <span>Lot</span><span>DPS</span><span>Avg Cost</span>
-      <span>Role</span><span></span>
-    </div>
-    <div id="modal-rows"></div>
-    <button class="btn-add" onclick="addStock()">+ Tambah Saham Baru</button>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
-      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">Akan disimpan ke Supabase cloud ☁</span>
-      <button class="btn btn-primary" onclick="applyModal()">✓ Terapkan & Simpan</button>
-    </div>
-  </div>
-</div>
-
 <!-- SUPABASE SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1356,7 +1306,6 @@ async function loadFromSupabase() {
     loadGeminiKey();
     loadAINotes();
     loadSettings();
-    fetchPrices(); // auto-fetch harga saat app load
   } catch(e) {
     console.error('Load error:', e);
     showStatus('Offline — data lokal', 'err');
@@ -1504,34 +1453,6 @@ function switchTab(id) {
   }
 }
 
-// ── MODAL ──
-function openModal() { renderModal(); document.getElementById('modal').classList.add('open'); }
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
-
-function renderModal() {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  document.getElementById('modal-rows').innerHTML = STOCKS.map((s, i) => {
-    const col = s._color || pal[i % pal.length];
-    return `<div class="me-grid" id="mr-${i}">
-      <input class="se-input ticker" style="color:${col}" type="text" id="me-t-${i}" value="${s.id.toUpperCase()}" oninput="this.value=this.value.toUpperCase()">
-      <input class="se-input" type="text" id="me-n-${i}" value="${s.name}">
-      <input class="se-input" type="number" id="me-p-${i}" value="${s.price}">
-      <input class="se-input" type="number" id="me-h-${i}" value="${s.have}">
-      <input class="se-input" type="number" id="me-d-${i}" value="${s.dpsCurr}">
-      <input class="se-input" type="number" id="me-a-${i}" value="${s.avgCost||s.price}">
-      <input class="se-input" type="text"   id="me-r-${i}" value="${s.role}">
-      <div style="position:relative;display:flex;align-items:center;gap:3px">
-        <div class="color-swatch" style="background:${col}" onclick="document.getElementById('me-c-${i}').click()"></div>
-        <input class="se-color-input" type="color" id="me-c-${i}" value="${col}"
-          oninput="document.getElementById('mr-${i}').querySelector('.color-swatch').style.background=this.value;document.getElementById('me-t-${i}').style.color=this.value">
-        ${STOCKS.length > 1 ? `<button class="btn-del" onclick="delStock(${i})">×</button>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-}
-
 function addStockInline() {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const pal = isLight ? LIGHT_PAL : DARK_PAL;
@@ -1590,43 +1511,6 @@ async function applyInline() {
   });
   CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
   buildInputs(); calcLot(); calcPensiun();
-  await saveToSupabase();
-}
-
-function addStock() {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  STOCKS.push({ id:'new'+STOCKS.length, name:'Nama Perusahaan', role:'CUSTOM', have:0, avgCost:1000, price:1000, alloc:0, dpsCurr:0, dpsCagr:0.10, _color: pal[STOCKS.length % pal.length] });
-  renderModal();
-  document.querySelector('.modal').scrollTop = 99999;
-}
-
-function delStock(i) {
-  if (STOCKS.length <= 1) return;
-  STOCKS.splice(i, 1);
-  renderModal();
-}
-
-async function applyModal() {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  STOCKS.forEach((s, i) => {
-    s.id      = (document.getElementById(`me-t-${i}`)?.value || s.id).trim().toLowerCase().replace(/\s+/g, '');
-    s.name    = document.getElementById(`me-n-${i}`)?.value.trim() || s.name;
-    s.price   = parseFloat(document.getElementById(`me-p-${i}`)?.value) || s.price;
-    s.have    = parseInt(document.getElementById(`me-h-${i}`)?.value) || 0;
-    s.dpsCurr = parseFloat(document.getElementById(`me-d-${i}`)?.value) || s.dpsCurr;
-    s.avgCost = parseFloat(document.getElementById(`me-a-${i}`)?.value) || s.price;
-    s.role    = document.getElementById(`me-r-${i}`)?.value.trim() || s.role;
-    const ce  = document.getElementById(`me-c-${i}`);
-    s._color  = ce ? ce.value : (s._color || pal[i % pal.length]);
-    // Sync alloc from DOM if available
-    const allocEl = document.getElementById('alloc-' + s.id);
-    if (allocEl) s.alloc = parseFloat(allocEl.value) || s.alloc;
-  });
-  CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
-  buildInputs(); calcLot(); calcPensiun();
-  closeModal();
   await saveToSupabase();
 }
 
@@ -2010,7 +1894,6 @@ function calcPensiun() {
 // ── REALTIME PRICE FETCH (Supabase Edge Function → Yahoo Finance) ──
 let _lastFetch = 0;
 const FETCH_COOLDOWN = 60000;
-const EDGE_FN_URL = 'https://xwriyfmwzyresycqfayj.supabase.co/functions/v1/fetch-prices';
 
 // Legacy proxy fallbacks (used only if Edge Function fails)
 const PROXIES = [
@@ -2109,25 +1992,6 @@ async function tryProxy(proxyFn, yahooUrl) {
   return quotes;
 }
 
-async function fetchViaEdgeFunction() {
-  const tickers = STOCKS.map(s => s.id.toUpperCase());
-  const res = await fetch(EDGE_FN_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'apikey': SUPABASE_KEY,
-    },
-    body: JSON.stringify({ tickers }),
-    signal: abortAfter(10000),
-  });
-  if (!res.ok) throw new Error('Edge Function HTTP ' + res.status);
-  const data = await res.json();
-  if (data.error) throw new Error('Edge Function: ' + data.error);
-  if (!data.quotes || data.quotes.length === 0) throw new Error('Edge Function: empty result');
-  return data.quotes;
-}
-
 async function fetchPrices(manual = false) {
   const now = Date.now();
   if (!manual && now - _lastFetch < FETCH_COOLDOWN) return;
@@ -2139,30 +2003,19 @@ async function fetchPrices(manual = false) {
 
   let quotes = null;
   let lastErr = '';
-  let fetchSource = 'Edge Function';
+  let fetchSource = 'Yahoo Proxy';
 
-  // Primary: Supabase Edge Function (no CORS issues, reliable)
-  try {
-    quotes = await fetchViaEdgeFunction();
-    fetchSource = 'Edge Function';
-    console.log('[fetchPrices] Edge Function OK');
-  } catch(e) {
-    lastErr = e.message;
-    console.warn('[fetchPrices] Edge Function gagal:', e.message, '— fallback ke proxy...');
-    fetchSource = 'Yahoo Proxy';
-
-    // Fallback: legacy public proxies
-    const yahooUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${STOCKS.map(s=>s.id.toUpperCase()+'.JK').join(',')}&fields=regularMarketPrice,regularMarketChangePercent,symbol`;
-    for (let i = 0; i < PROXIES.length; i++) {
-      try {
-        quotes = await tryProxy(PROXIES[i], yahooUrl);
-        fetchSource = 'Proxy ' + (i + 1);
-        console.log('[fetchPrices] Proxy', i+1, 'OK');
-        break;
-      } catch(pe) {
-        lastErr = pe.message;
-        console.warn(`[fetchPrices] Proxy ${i+1} gagal:`, pe.message);
-      }
+  // Proxy fallback — fetch harga via public proxy
+  const yahooUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${STOCKS.map(s=>s.id.toUpperCase()+'.JK').join(',')}&fields=regularMarketPrice,regularMarketChangePercent,symbol`;
+  for (let i = 0; i < PROXIES.length; i++) {
+    try {
+      quotes = await tryProxy(PROXIES[i], yahooUrl);
+      fetchSource = 'Proxy ' + (i + 1);
+      console.log('[fetchPrices] Proxy', i+1, 'OK');
+      break;
+    } catch(pe) {
+      lastErr = pe.message;
+      console.warn(`[fetchPrices] Proxy ${i+1} gagal:`, pe.message);
     }
   }
 
