@@ -998,15 +998,15 @@ select.styled:focus { border-color: var(--accent); }
     <div class="grid-3">
       <div>
         <div class="ctrl-label">Top-up / bulan</div>
-        <div class="input-row"><input type="number" id="p-topup" value="1500000" step="250000" oninput="calcPensiun()"></div>
+        <div class="input-row"><input type="number" id="p-topup" value="1500000" step="250000" oninput="calcPensiun();saveSettings()"></div>
       </div>
       <div>
         <div class="ctrl-label">DPS CAGR (%/yr)</div>
-        <div class="input-row"><input type="number" id="p-dps" value="10" step="0.5" min="2" max="20" oninput="calcPensiun()"></div>
+        <div class="input-row"><input type="number" id="p-dps" value="10" step="0.5" min="2" max="20" oninput="calcPensiun();saveSettings()"></div>
       </div>
       <div>
         <div class="ctrl-label">Reinvest dividen</div>
-        <select class="styled" id="p-reinvest" onchange="calcPensiun()">
+        <select class="styled" id="p-reinvest" onchange="calcPensiun();saveSettings()">
           <option value="1">100% reinvest</option>
           <option value="0.5">50% reinvest</option>
           <option value="0">Ambil semua</option>
@@ -1014,15 +1014,15 @@ select.styled:focus { border-color: var(--accent); }
       </div>
       <div>
         <div class="ctrl-label">Harga growth (%/yr)</div>
-        <div class="input-row"><input type="number" id="p-price" value="5" step="0.5" oninput="calcPensiun()"></div>
+        <div class="input-row"><input type="number" id="p-price" value="5" step="0.5" oninput="calcPensiun();saveSettings()"></div>
       </div>
       <div>
         <div class="ctrl-label">Inflasi IDR (%/yr)</div>
-        <div class="input-row"><input type="number" id="p-inflasi" value="4" step="0.5" oninput="calcPensiun()"></div>
+        <div class="input-row"><input type="number" id="p-inflasi" value="4" step="0.5" oninput="calcPensiun();saveSettings()"></div>
       </div>
       <div>
         <div class="ctrl-label">Horizon (tahun)</div>
-        <div class="input-row"><input type="number" id="p-years" value="25" min="5" max="40" oninput="calcPensiun()"></div>
+        <div class="input-row"><input type="number" id="p-years" value="25" min="5" max="40" oninput="calcPensiun();saveSettings()"></div>
       </div>
     </div>
   </div>
@@ -1352,6 +1352,7 @@ async function loadFromSupabase() {
     // Load AI data after main data is ready — no race condition
     loadGeminiKey();
     loadAINotes();
+    loadSettings();
   } catch(e) {
     console.error('Load error:', e);
     showStatus('Offline — data lokal', 'err');
@@ -1701,7 +1702,7 @@ function parseTarget(input) {
   }
   document.getElementById('target-val').value = num;
   calcLot();
-}
+  saveSettings();
 
 function setTarget(juta, btn) {
   const val = juta * 1e6;
@@ -1710,6 +1711,7 @@ function setTarget(juta, btn) {
   document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   calcLot();
+  saveSettings();
 }
 
 function toggleBZ(btn, id) {
@@ -1998,6 +2000,62 @@ function calcPensiun() {
       <td style="color:var(--text-muted);font-size:9px">${r.badge||(isEnd?'🎯':'—')}</td>
     </tr>`;
   }).join('');
+}
+
+// ── SETTINGS SYNC ──
+async function loadSettings() {
+  try {
+    const { data, error } = await sb.from('settings').select('key,value')
+      .in('key', ['target_porto','topup_bulan','dps_cagr','price_growth','inflasi','horizon','reinvest_pct','usia']);
+    if (error) { console.warn('loadSettings error:', error.message); return; }
+    if (!data) return;
+    const map = {};
+    data.forEach(r => { map[r.key] = r.value; });
+
+    if (map.target_porto) {
+      const v = parseFloat(map.target_porto);
+      document.getElementById('target-val').value = v;
+      document.getElementById('target-display').value = fmtDots(v);
+      // Sync milestone pill
+      document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+      const juta = v / 1e6;
+      document.querySelectorAll('.pill').forEach(b => {
+        if (b.textContent.includes(juta >= 1000 ? (juta/1000).toFixed(1)+' Miliar' : juta+' Jt')) b.classList.add('active');
+      });
+    }
+    if (map.topup_bulan)   setIfEl('p-topup',   map.topup_bulan);
+    if (map.dps_cagr)      setIfEl('p-dps',      map.dps_cagr);
+    if (map.price_growth)  setIfEl('p-price',    map.price_growth);
+    if (map.inflasi)       setIfEl('p-inflasi',  map.inflasi);
+    if (map.horizon)       setIfEl('p-years',    map.horizon);
+    if (map.reinvest_pct) {
+      const sel = document.getElementById('p-reinvest');
+      if (sel) sel.value = (parseFloat(map.reinvest_pct) / 100).toString();
+    }
+
+    calcLot(); calcPensiun();
+  } catch(e) { console.warn('loadSettings exception:', e); }
+}
+
+function setIfEl(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+async function saveSettings() {
+  const rows = [
+    { key:'target_porto',  value: String(document.getElementById('target-val')?.value || 250000000) },
+    { key:'topup_bulan',   value: String(document.getElementById('p-topup')?.value || 1500000) },
+    { key:'dps_cagr',      value: String(document.getElementById('p-dps')?.value || 10) },
+    { key:'price_growth',  value: String(document.getElementById('p-price')?.value || 5) },
+    { key:'inflasi',       value: String(document.getElementById('p-inflasi')?.value || 4) },
+    { key:'horizon',       value: String(document.getElementById('p-years')?.value || 25) },
+    { key:'reinvest_pct',  value: String(parseFloat(document.getElementById('p-reinvest')?.value || 1) * 100) },
+  ];
+  try {
+    const { error } = await sb.from('settings').upsert(rows, { onConflict: 'key' });
+    if (error) console.warn('saveSettings error:', error.message);
+  } catch(e) { console.warn('saveSettings exception:', e); }
 }
 
 // ── INIT ──
@@ -2363,9 +2421,7 @@ Jika ada saham yang tidak terbaca, skip. Gunakan ticker uppercase.`;
     buildInputs(); calcLot(); calcPensiun();
     await saveToSupabase();
 
-    result.textContent = `✓ ${updated} saham diperbarui:
-` + parsed.map(r => `  ${r.ticker}: ${r.lot} lot`).join('
-');
+    result.textContent = '✓ ' + updated + ' saham diperbarui:\n' + parsed.map(r => '  ' + r.ticker + ': ' + r.lot + ' lot').join('\n');
     btn.textContent = 'Perbarui Lot';
     btn.disabled = false;
     renderKelola();
