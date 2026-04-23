@@ -918,6 +918,7 @@ select.styled:focus { border-color: var(--accent); }
       <div class="save-tooltip" id="save-tooltip"></div>
     </div>
     <button class="btn" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
+    <button class="btn" id="refresh-btn" onclick="fetchPrices(true)" title="Refresh harga realtime">↻ Harga</button>
   </div>
   <div class="header-right">
     <div class="header-val" id="hdr-val">—</div>
@@ -975,7 +976,7 @@ select.styled:focus { border-color: var(--accent); }
       <div class="legend" id="legend"></div>
     </div>
     <div class="card" style="margin-bottom:0">
-      <div class="card-header"><div class="card-title">Zone Radar</div></div>
+      <div class="card-header"><div class="card-title">Zone Radar</div><span id="zone-radar-ts" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">— belum sync</span></div>
       <div class="price-grid" id="price-cards"></div>
     </div>
   </div>
@@ -1353,6 +1354,7 @@ async function loadFromSupabase() {
     loadGeminiKey();
     loadAINotes();
     loadSettings();
+    fetchPrices(); // auto-fetch harga saat app load
   } catch(e) {
     console.error('Load error:', e);
     showStatus('Offline — data lokal', 'err');
@@ -2001,6 +2003,205 @@ function calcPensiun() {
       <td style="color:var(--text-muted);font-size:9px">${r.badge||(isEnd?'🎯':'—')}</td>
     </tr>`;
   }).join('');
+}
+
+// ── REALTIME PRICE FETCH (Supabase Edge Function → Yahoo Finance) ──
+let _lastFetch = 0;
+const FETCH_COOLDOWN = 60000;
+const EDGE_FN_URL = 'https://xwriyfmwzyresycqfayj.supabase.co/functions/v1/fetch-prices';
+
+// Legacy proxy fallbacks (used only if Edge Function fails)
+const PROXIES = [
+  u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u => `https://proxy.cors.sh/${u}`,
+  u => `https://thingproxy.freeboard.io/fetch/${u}`,
+  u => `https://cors-anywhere.herokuapp.com/${u}`,
+  u => `https://api.codetabs.com/v1/proxy?quest=${u}`,
+  u => `https://corsproxy.org/?${encodeURIComponent(u)}`,
+];
+
+function showPriceStatus(msg, ok) {
+  const btn = document.getElementById('refresh-btn');
+  if (!btn) return;
+  btn.textContent = ok === 'loading' ? '⏳' : (ok ? '↻ Harga ✓' : '↻ Harga ✗');
+  btn.title = msg;
+  if (ok !== 'loading') setTimeout(() => { btn.textContent = '↻ Harga'; btn.title = ''; }, 4000);
+}
+
+function showPricePopup(quotes) {
+  // Remove existing popup
+  const old = document.getElementById('price-popup');
+  if (old) old.remove();
+
+  const ts = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+  const rows = STOCKS.map(s => {
+    const q = quotes.find(q => q.symbol.replace('.JK','').toLowerCase() === s.id);
+    if (!q) return '';
+    const price = q.regularMarketPrice;
+    const change = q.regularMarketChangePercent || 0;
+    const color = change >= 0 ? 'var(--green)' : 'var(--red)';
+    const sign = change >= 0 ? '+' : '';
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);gap:16px">
+      <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">${s.id.toUpperCase()}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px">Rp ${price.toLocaleString('id-ID')}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:${color}">${sign}${change.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+
+  const popup = document.createElement('div');
+  popup.id = 'price-popup';
+  popup.style.cssText = `
+    position:fixed; top:56px; right:20px; z-index:500;
+    background:var(--surface); border:1px solid var(--border2);
+    border-radius:10px; padding:14px 16px; min-width:220px;
+    box-shadow:0 8px 32px rgba(0,0,0,.25);
+    font-family:'DM Mono',monospace;
+    animation: fadeInDown .2s ease;
+  `;
+  popup.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)">Harga Realtime · ${ts}</span>
+      <span style="cursor:pointer;color:var(--text-muted);font-size:14px;line-height:1" onclick="document.getElementById('price-popup').remove()">×</span>
+    </div>
+    ${rows}
+    <div style="margin-top:8px;font-size:8px;color:var(--text-muted);text-align:right">Yahoo Finance · delay ~15 menit</div>
+  `;
+
+  // Add fadeInDown animation if not exist
+  if (!document.getElementById('popup-style')) {
+    const style = document.createElement('style');
+    style.id = 'popup-style';
+    style.textContent = `@keyframes fadeInDown { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }`;
+    document.head.appendChild(style);
+  }
+
+  document.body.appendChild(popup);
+  // Auto-close after 8 detik
+  setTimeout(() => { const p = document.getElementById('price-popup'); if (p) p.remove(); }, 8000);
+}
+
+async function tryProxy(proxyFn, yahooUrl) {
+  const url = proxyFn(yahooUrl);
+  const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const text = await res.text();
+  // allorigins wraps in {contents:...}, others return raw
+  let jsonStr = text;
+  try {
+    const wrapper = JSON.parse(text);
+    if (wrapper.contents) jsonStr = wrapper.contents;
+  } catch(e) {}
+  const data = JSON.parse(jsonStr);
+  const quotes = data?.quoteResponse?.result;
+  if (!quotes || quotes.length === 0) throw new Error('Empty result');
+  return quotes;
+}
+
+async function fetchViaEdgeFunction() {
+  const tickers = STOCKS.map(s => s.id.toUpperCase());
+  const res = await fetch(EDGE_FN_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ tickers }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error('Edge Function HTTP ' + res.status);
+  const data = await res.json();
+  if (data.error) throw new Error('Edge Function: ' + data.error);
+  if (!data.quotes || data.quotes.length === 0) throw new Error('Edge Function: empty result');
+  return data.quotes;
+}
+
+async function fetchPrices(manual = false) {
+  const now = Date.now();
+  if (!manual && now - _lastFetch < FETCH_COOLDOWN) return;
+  _lastFetch = now;
+
+  showPriceStatus('Memuat...', 'loading');
+  const btn = document.getElementById('refresh-btn');
+  if (btn) btn.disabled = true;
+
+  let quotes = null;
+  let lastErr = '';
+
+  // Primary: Supabase Edge Function (no CORS issues, reliable)
+  try {
+    quotes = await fetchViaEdgeFunction();
+    console.log('[fetchPrices] Edge Function OK');
+  } catch(e) {
+    lastErr = e.message;
+    console.warn('[fetchPrices] Edge Function gagal:', e.message, '— fallback ke proxy...');
+
+    // Fallback: legacy public proxies
+    const yahooUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${STOCKS.map(s=>s.id.toUpperCase()+'.JK').join(',')}&fields=regularMarketPrice,regularMarketChangePercent,symbol`;
+    for (let i = 0; i < PROXIES.length; i++) {
+      try {
+        quotes = await tryProxy(PROXIES[i], yahooUrl);
+        console.log('[fetchPrices] Proxy', i+1, 'OK');
+        break;
+      } catch(pe) {
+        lastErr = pe.message;
+        console.warn(`[fetchPrices] Proxy ${i+1} gagal:`, pe.message);
+      }
+    }
+  }
+
+  if (btn) btn.disabled = false;
+
+  if (!quotes) {
+    showPriceStatus('Gagal fetch harga: ' + lastErr, false);
+    return;
+  }
+
+  let updated = 0;
+  quotes.forEach(q => {
+    const ticker = q.symbol.replace('.JK', '').toLowerCase();
+    const s = STOCKS.find(x => x.id === ticker);
+    if (s && q.regularMarketPrice) {
+      s.price = q.regularMarketPrice;
+      const inp = document.getElementById('price-' + s.id);
+      if (inp) inp.value = s.price;
+      updated++;
+    }
+  });
+
+  if (updated > 0) {
+    calcLot();
+    calcPensiun();
+    const ts = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    showPriceStatus('Update ' + ts + ' (' + updated + ' saham)', true);
+    showPricePopup(quotes);
+    // Sync updated prices to Supabase (harga column only — no full save)
+    // Zone Radar timestamp updated inside syncPricesToSupabase on success
+    syncPricesToSupabase();
+  } else {
+    showPriceStatus('Ticker tidak cocok', false);
+  }
+}
+
+async function syncPricesToSupabase() {
+  try {
+    // Batch upsert harga saja — lebih efisien dari loop individual
+    const updates = STOCKS
+      .filter(s => s._dbId && s.price > 0)
+      .map(s => ({ id: s._dbId, harga: s.price }));
+    if (updates.length === 0) return;
+    const { error } = await sb.from('stocks')
+      .upsert(updates, { onConflict: 'id', ignoreDuplicates: false });
+    if (error) throw error;
+    const radarTs = document.getElementById('zone-radar-ts');
+    const ts = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    if (radarTs) radarTs.textContent = '✓ Yahoo synced · ' + ts;
+    console.log('[syncPricesToSupabase] harga synced:', updates.length, 'saham');
+  } catch(e) {
+    const radarTs = document.getElementById('zone-radar-ts');
+    if (radarTs) radarTs.textContent = '⚠ sync gagal';
+    console.warn('[syncPricesToSupabase] gagal:', e.message);
+  }
 }
 
 // ── SETTINGS SYNC ──
