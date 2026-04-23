@@ -53,7 +53,6 @@ body {
   transition: background .25s, color .25s;
 }
 
-/* Subtle grid texture */
 body::before {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
@@ -110,7 +109,16 @@ body::before {
   color: var(--text-dim);
   margin-top: 4px;
 }
-.header-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
+.header-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
+
+/* Save status */
+#save-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  transition: color .3s;
+}
 
 /* ── TABS ── */
 .tabs {
@@ -168,7 +176,6 @@ body::before {
   text-transform: uppercase;
 }
 
-/* ── SMALL LABEL ── */
 .label {
   font-family: 'DM Mono', monospace;
   font-size: 9px;
@@ -364,7 +371,7 @@ body::before {
 .mos-exit       { background: rgba(255,95,87,.12); color: #ff5f57; border: 1px solid rgba(255,95,87,.28); }
 .mos-unknown    { background: rgba(107,128,107,.1); color: var(--text-muted); border: 1px solid var(--border); }
 
-/* ── STOCK CARDS (combined breakdown + buy zone) ── */
+/* ── STOCK CARDS ── */
 .stock-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -414,7 +421,6 @@ body::before {
 .need-zero { color: var(--text-muted); }
 .need-neg { color: var(--accent2); }
 
-/* Progress bar inside card */
 .lot-progress {
   padding: 8px 16px 10px;
   border-top: 1px solid var(--border);
@@ -433,10 +439,7 @@ body::before {
 .bz-moat-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
 .bz-moat-text { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.4; }
 .bz-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.chip {
-  font-family: 'DM Mono', monospace; font-size: 8px; padding: 2px 6px;
-  border-radius: 12px; white-space: nowrap;
-}
+.chip { font-family: 'DM Mono', monospace; font-size: 8px; padding: 2px 6px; border-radius: 12px; white-space: nowrap; }
 .chip-green { background: rgba(74,222,128,.1); color: #4ade80; border: 1px solid rgba(74,222,128,.2); }
 .chip-red   { background: rgba(255,95,87,.1);  color: #ff7a75; border: 1px solid rgba(255,95,87,.2); }
 
@@ -462,7 +465,6 @@ body::before {
 .bz-stat-label { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-muted); display: block; margin-bottom: 2px; }
 .bz-stat-val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
 
-/* Toggle button */
 .toggle-btn {
   width: 100%; background: none;
   border: none; border-top: 1px solid var(--border);
@@ -477,7 +479,6 @@ body::before {
 .toggle-icon { font-size: 9px; transition: transform .2s; display: inline-block; }
 .buyzone-section.open ~ .toggle-btn .toggle-icon { transform: rotate(180deg); }
 
-/* Summary row */
 .summary-row {
   display: flex; align-items: center; justify-content: center;
   gap: 8px; padding: 12px 16px; flex-wrap: wrap;
@@ -488,7 +489,6 @@ body::before {
 
 /* ── PENSIUN TAB ── */
 .scenario-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-
 .ctrl-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
 .input-row {
   display: flex; align-items: center; gap: 6px;
@@ -532,7 +532,6 @@ select.styled:focus { border-color: var(--accent); }
   font-style: italic;
 }
 
-/* Chart bars */
 .chart-row { display: grid; grid-template-columns: 64px 1fr 84px; gap: 10px; align-items: center; margin-bottom: 6px; }
 .chart-year { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); }
 .chart-track { height: 10px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
@@ -540,7 +539,6 @@ select.styled:focus { border-color: var(--accent); }
 .chart-fill.highlight { background: linear-gradient(90deg, #2d7a4a, var(--green)); }
 .chart-val { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; text-align: right; }
 
-/* Timeline table */
 .t-table { width: 100%; border-collapse: collapse; font-size: 11px; }
 .t-table th {
   text-align: left; font-family: 'DM Mono', monospace;
@@ -559,7 +557,6 @@ select.styled:focus { border-color: var(--accent); }
   border-radius: 2px; margin-left: 4px; font-family: 'DM Mono', monospace;
 }
 
-/* Lot table */
 .lot-tbody tr td { padding: 9px 0; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 10px; }
 .lot-tbody tr td:not(:first-child) { text-align: right; }
 
@@ -573,10 +570,9 @@ select.styled:focus { border-color: var(--accent); }
 .sig-grid { display: flex; flex-wrap: wrap; gap: 10px 20px; }
 .sig-item { display: flex; align-items: center; gap: 8px; }
 .sig-desc { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); }
-
 .integrity-list { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-dim); line-height: 2.1; }
 
-/* ── MANAGE MODAL ── */
+/* ── MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,.8); z-index: 100;
@@ -643,10 +639,22 @@ select.styled:focus { border-color: var(--accent); }
 }
 .se-color-input { position: absolute; opacity: 0; width: 0; height: 0; }
 
-/* alloc sum badge */
 .sum-ok { color: var(--accent); }
 .sum-warn { color: var(--accent2); }
 .sum-err { color: var(--red); }
+
+/* Loading state */
+.loading-spinner {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border: 1px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 640px) {
   .stock-card-top { grid-template-columns: 80px 1fr; }
@@ -676,6 +684,7 @@ select.styled:focus { border-color: var(--accent); }
     <div class="header-val" id="hdr-val">—</div>
     <div class="header-meta" id="hdr-meta">current portfolio</div>
     <div class="header-actions">
+      <span id="save-status">Menghubungkan...</span>
       <button class="btn" onclick="openModal()">⚙ Kelola Saham</button>
       <button class="btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
     </div>
@@ -691,8 +700,6 @@ select.styled:focus { border-color: var(--accent); }
 
 <!-- ═══════════ TAB 1: LOT CALCULATOR ═══════════ -->
 <div class="tab-panel active" id="tab-lot">
-
-  <!-- Milestone pills -->
   <div class="pills" id="milestone-pills">
     <button class="pill" onclick="setTarget(100,this)">100 Jt</button>
     <button class="pill active" onclick="setTarget(250,this)">250 Jt</button>
@@ -702,7 +709,6 @@ select.styled:focus { border-color: var(--accent); }
     <button class="pill" onclick="setTarget(5000,this)">5 Miliar</button>
   </div>
 
-  <!-- Target card -->
   <div class="target-card">
     <div class="target-inner">
       <div class="target-left">
@@ -723,9 +729,7 @@ select.styled:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- Alloc + Price -->
   <div class="grid-2" style="margin-bottom:16px">
-    <!-- Alloc -->
     <div class="card" style="margin-bottom:0">
       <div class="card-header">
         <div class="card-title">Alokasi</div>
@@ -735,21 +739,17 @@ select.styled:focus { border-color: var(--accent); }
       <div class="donut-bar" id="donut-bar"></div>
       <div class="legend" id="legend"></div>
     </div>
-    <!-- Price -->
     <div class="card" style="margin-bottom:0">
       <div class="card-header"><div class="card-title">Zone Radar</div></div>
       <div class="price-grid" id="price-cards"></div>
     </div>
   </div>
 
-  <!-- Breakdown + buy zone cards -->
   <div id="breakdown"></div>
-
 </div>
 
 <!-- ═══════════ TAB 2: PENSIUN ═══════════ -->
 <div class="tab-panel" id="tab-pensiun">
-
   <span class="label">Skenario</span>
   <div class="scenario-row">
     <button class="btn active" onclick="setScenario('base',this)">Base (10%, +5%)</button>
@@ -825,12 +825,10 @@ select.styled:focus { border-color: var(--accent); }
       <tbody id="timeline"></tbody>
     </table>
   </div>
-
 </div>
 
 <!-- ═══════════ TAB 3: RULES ═══════════ -->
 <div class="tab-panel" id="tab-rules">
-
   <div class="card">
     <div class="card-header"><div class="card-title">Golden Rules — Kebal Badai</div></div>
     <div class="rule-item">
@@ -877,7 +875,6 @@ select.styled:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- Signal Legend -->
   <div class="card">
     <div class="card-header"><div class="card-title">Signal Legend</div></div>
     <div class="sig-grid">
@@ -890,7 +887,6 @@ select.styled:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- Integrity Check -->
   <div class="card">
     <div class="card-header"><div class="card-title">Integrity Check — Annual Review</div></div>
     <div class="integrity-list">
@@ -902,12 +898,10 @@ select.styled:focus { border-color: var(--accent); }
       ⑥ RPT di catatan lapkeu — wajar atau mencurigakan?
     </div>
   </div>
-
 </div>
 
 </div><!-- /wrap -->
 
-<!-- Footer -->
 <div style="text-align:center;padding:28px 0 16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);position:relative;z-index:1">
   ZenkichiArc · <span style="color:var(--accent)">Aegis Growth Dividend</span> · IDX Compounder
 </div>
@@ -920,7 +914,7 @@ select.styled:focus { border-color: var(--accent); }
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
-      Edit ticker, nama, harga, lot punya, avg cost, DPS per saham.
+      Edit ticker, nama, harga, lot punya, avg cost, DPS per saham. Perubahan disimpan otomatis ke Supabase.
     </div>
     <div class="me-grid header">
       <span>Ticker</span><span>Nama</span><span>Harga</span>
@@ -930,24 +924,27 @@ select.styled:focus { border-color: var(--accent); }
     <div id="modal-rows"></div>
     <button class="btn-add" onclick="addStock()">+ Tambah Saham Baru</button>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
-      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">Perubahan akan recalculate semua data</span>
-      <button class="btn btn-primary" onclick="applyModal()">✓ Terapkan</button>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted)">Akan disimpan ke Supabase cloud ☁</span>
+      <button class="btn btn-primary" onclick="applyModal()">✓ Terapkan & Simpan</button>
     </div>
   </div>
 </div>
 
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── DATA ──
+// ══════════════════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════════════════
+const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── PALETTE & STATIC DATA ──
 const DARK_PAL  = ['#4fc3f7','#81c784','#ffb74d','#ce93d8','#f06292','#80cbc4','#ffcc80','#ef9a9a'];
 const LIGHT_PAL = ['#0288d1','#2e7d32','#e65100','#7b1fa2','#c2185b','#00695c','#bf360c','#b71c1c'];
 
-let STOCKS = [
-  { id:'bbca', name:'Bank Central Asia',  role:'ANCHOR',      have:30,  avgCost:6509.75, price:6450, alloc:30, dpsCurr:300, dpsCagr:0.13 },
-  { id:'bmri', name:'Bank Mandiri',       role:'INCOME CORE', have:32,  avgCost:4717.06, price:4750, alloc:25, dpsCurr:466, dpsCagr:0.11 },
-  { id:'smsm', name:'Selamat Sempurna',   role:'COMPOUNDER',  have:72,  avgCost:1792.68, price:1800, alloc:25, dpsCurr:135, dpsCagr:0.15 },
-  { id:'tspc', name:'Tempo Scan Pacific', role:'DEFENSIVE ⚠', have:36,  avgCost:2413.61, price:2410, alloc:10, dpsCurr:80,  dpsCagr:0.07 },
-  { id:'sido', name:'Sido Muncul',        role:'BALLAST',     have:137, avgCost:505.75,  price:505,  alloc:10, dpsCurr:39,  dpsCagr:0.08 },
-];
+let STOCKS = [];
 
 const BUY_ZONES = {
   bbca: [5900,6300,6700,7200,7800],
@@ -966,14 +963,141 @@ const FUNDAMENTALS = {
 };
 
 const SCENARIOS = {
-  base: { dps:10, price:5,  inflasi:4 },
-  bull: { dps:13, price:8,  inflasi:3.5 },
-  bear: { dps:7,  price:2,  inflasi:5 },
-  storm:{ dps:5,  price:-5, inflasi:6 },
+  base:  { dps:10, price:5,  inflasi:4   },
+  bull:  { dps:13, price:8,  inflasi:3.5 },
+  bear:  { dps:7,  price:2,  inflasi:5   },
+  storm: { dps:5,  price:-5, inflasi:6   },
 };
 
 const START_AGE = 30;
 let CURRENT_VAL = 0;
+
+// ══════════════════════════════════════════════════
+// SUPABASE HELPERS
+// ══════════════════════════════════════════════════
+function showStatus(msg, type) {
+  const el = document.getElementById('save-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = type === 'ok'      ? 'var(--accent)'
+                 : type === 'err'     ? 'var(--red)'
+                 : type === 'loading' ? 'var(--text-dim)'
+                 :                      'var(--text-muted)';
+}
+
+async function loadFromSupabase() {
+  showStatus('Memuat...', 'loading');
+  try {
+    const { data, error } = await sb.from('stocks').select('*').order('id');
+    if (error) throw error;
+
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const pal = isLight ? LIGHT_PAL : DARK_PAL;
+
+    if (data && data.length > 0) {
+      STOCKS = data.map((row, i) => ({
+        id:       row.ticker ? row.ticker.toLowerCase() : ('s'+i),
+        name:     row.nama || '',
+        role:     row.role || 'CUSTOM',
+        have:     row.lot || 0,
+        avgCost:  row.avg_cost || row.harga || 0,
+        price:    row.harga || 0,
+        alloc:    row.alloc || 0,
+        dpsCurr:  row.dps || 0,
+        dpsCagr:  row.dps_cagr || 0.10,
+        _color:   row.color || pal[i % pal.length],
+        _dbId:    row.id,
+      }));
+
+      // Normalize alloc if all zero
+      const totalAlloc = STOCKS.reduce((s, x) => s + x.alloc, 0);
+      if (totalAlloc === 0) {
+        const eq = Math.floor(100 / STOCKS.length);
+        STOCKS.forEach((s, i) => s.alloc = i === STOCKS.length - 1 ? 100 - eq * (STOCKS.length - 1) : eq);
+      }
+    } else {
+      // No data → seed defaults
+      await seedDefaultStocks();
+      return;
+    }
+
+    CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
+    buildInputs();
+    calcLot();
+    calcPensiun();
+    showStatus('Tersimpan ✓', 'ok');
+  } catch(e) {
+    console.error('Load error:', e);
+    showStatus('Offline — data lokal', 'err');
+    // Fall back to local defaults so the UI still works
+    loadLocalDefaults();
+  }
+}
+
+function loadLocalDefaults() {
+  STOCKS = [
+    { id:'bbca', name:'Bank Central Asia',  role:'ANCHOR',      have:30,  avgCost:6509.75, price:6450, alloc:30, dpsCurr:300, dpsCagr:0.13 },
+    { id:'bmri', name:'Bank Mandiri',       role:'INCOME CORE', have:32,  avgCost:4717.06, price:4750, alloc:25, dpsCurr:466, dpsCagr:0.11 },
+    { id:'smsm', name:'Selamat Sempurna',   role:'COMPOUNDER',  have:72,  avgCost:1792.68, price:1800, alloc:25, dpsCurr:135, dpsCagr:0.15 },
+    { id:'tspc', name:'Tempo Scan Pacific', role:'DEFENSIVE ⚠', have:36,  avgCost:2413.61, price:2410, alloc:10, dpsCurr:80,  dpsCagr:0.07 },
+    { id:'sido', name:'Sido Muncul',        role:'BALLAST',     have:137, avgCost:505.75,  price:505,  alloc:10, dpsCurr:39,  dpsCagr:0.08 },
+  ];
+  CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
+  buildInputs(); calcLot(); calcPensiun();
+}
+
+async function seedDefaultStocks() {
+  const defaults = [
+    { ticker:'BBCA', nama:'Bank Central Asia',  role:'ANCHOR',      lot:30,  avg_cost:6509.75, harga:6450, alloc:30, dps:300, dps_cagr:0.13 },
+    { ticker:'BMRI', nama:'Bank Mandiri',        role:'INCOME CORE', lot:32,  avg_cost:4717.06, harga:4750, alloc:25, dps:466, dps_cagr:0.11 },
+    { ticker:'SMSM', nama:'Selamat Sempurna',    role:'COMPOUNDER',  lot:72,  avg_cost:1792.68, harga:1800, alloc:25, dps:135, dps_cagr:0.15 },
+    { ticker:'TSPC', nama:'Tempo Scan Pacific',  role:'DEFENSIVE ⚠', lot:36,  avg_cost:2413.61, harga:2410, alloc:10, dps:80,  dps_cagr:0.07 },
+    { ticker:'SIDO', nama:'Sido Muncul',          role:'BALLAST',     lot:137, avg_cost:505.75,  harga:505,  alloc:10, dps:39,  dps_cagr:0.08 },
+  ];
+  try {
+    const { error } = await sb.from('stocks').insert(defaults);
+    if (error) throw error;
+    await loadFromSupabase();
+  } catch(e) {
+    console.error('Seed error:', e);
+    loadLocalDefaults();
+  }
+}
+
+async function saveToSupabase() {
+  showStatus('Menyimpan...', 'loading');
+  try {
+    for (const s of STOCKS) {
+      const payload = {
+        ticker:   s.id.toUpperCase(),
+        nama:     s.name,
+        harga:    s.price,
+        lot:      s.have,
+        dps:      s.dpsCurr,
+        avg_cost: s.avgCost,
+        role:     s.role,
+        alloc:    s.alloc,
+        dps_cagr: s.dpsCagr || 0.10,
+        color:    s._color || null,
+      };
+      if (s._dbId) {
+        await sb.from('stocks').update(payload).eq('id', s._dbId);
+      } else {
+        const { data } = await sb.from('stocks').insert(payload).select().single();
+        if (data) s._dbId = data.id;
+      }
+    }
+    // Delete removed stocks
+    const existingIds = STOCKS.filter(s => s._dbId).map(s => s._dbId);
+    if (existingIds.length > 0) {
+      await sb.from('stocks').delete().not('id', 'in', `(${existingIds.join(',')})`);
+    }
+    showStatus('Tersimpan ✓', 'ok');
+  } catch(e) {
+    console.error('Save error:', e);
+    showStatus('Gagal simpan: ' + e.message, 'err');
+  }
+}
 
 // ── UTILS ──
 function fmt(n, d=1) {
@@ -984,10 +1108,10 @@ function fmt(n, d=1) {
   return Math.round(n).toLocaleString('id-ID');
 }
 const rp = n => 'Rp ' + fmt(n);
-const fmtDots = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const fmtDots = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 function getColor(id, idx) {
-  const s = STOCKS.find(x=>x.id===id);
+  const s = STOCKS.find(x => x.id === id);
   if (s?._color) return s._color;
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   return (isLight ? LIGHT_PAL : DARK_PAL)[idx % DARK_PAL.length];
@@ -995,14 +1119,14 @@ function getColor(id, idx) {
 
 function getMOS(id, price) {
   const bz = BUY_ZONES[id.toLowerCase()];
-  if (!bz || !price || price<=0) return { key:'unknown', label:'— N/A', note:'No data' };
-  const [sb,b,ac,h,t] = bz;
-  if (price<=sb) return { key:'strong-buy',  label:'⚡ Strong Buy', note:`≤ ${sb.toLocaleString('id-ID')}` };
-  if (price<=b)  return { key:'buy',          label:'✓ Buy',         note:`${sb.toLocaleString('id-ID')}–${b.toLocaleString('id-ID')}` };
-  if (price<=ac) return { key:'accumulate',   label:'◎ Accumulate',  note:`${b.toLocaleString('id-ID')}–${ac.toLocaleString('id-ID')}` };
-  if (price<=h)  return { key:'hold',         label:'◆ Hold',        note:`${ac.toLocaleString('id-ID')}–${h.toLocaleString('id-ID')}` };
-  if (price<=t)  return { key:'trim',         label:'▲ Trim',        note:`${h.toLocaleString('id-ID')}–${t.toLocaleString('id-ID')}` };
-  return              { key:'exit',            label:'✕ Exit',        note:`> ${t.toLocaleString('id-ID')}` };
+  if (!bz || !price || price <= 0) return { key:'unknown', label:'— N/A', note:'No data' };
+  const [sb2, b, ac, h, t] = bz;
+  if (price <= sb2) return { key:'strong-buy',  label:'⚡ Strong Buy', note:`≤ ${sb2.toLocaleString('id-ID')}` };
+  if (price <= b)   return { key:'buy',          label:'✓ Buy',         note:`${sb2.toLocaleString('id-ID')}–${b.toLocaleString('id-ID')}` };
+  if (price <= ac)  return { key:'accumulate',   label:'◎ Accumulate',  note:`${b.toLocaleString('id-ID')}–${ac.toLocaleString('id-ID')}` };
+  if (price <= h)   return { key:'hold',         label:'◆ Hold',        note:`${ac.toLocaleString('id-ID')}–${h.toLocaleString('id-ID')}` };
+  if (price <= t)   return { key:'trim',         label:'▲ Trim',        note:`${h.toLocaleString('id-ID')}–${t.toLocaleString('id-ID')}` };
+  return                   { key:'exit',          label:'✕ Exit',        note:`> ${t.toLocaleString('id-ID')}` };
 }
 
 // ── THEME ──
@@ -1016,21 +1140,21 @@ function toggleTheme() {
 
 // ── TAB ──
 function switchTab(id) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['lot','pensiun','rules'][i]===id));
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['lot','pensiun','rules'][i] === id));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
 }
 
 // ── MODAL ──
 function openModal() { renderModal(); document.getElementById('modal').classList.add('open'); }
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
-function handleOverlayClick(e) { if (e.target===document.getElementById('modal')) closeModal(); }
+function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
 
 function renderModal() {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  document.getElementById('modal-rows').innerHTML = STOCKS.map((s,i) => {
-    const col = s._color || pal[i%pal.length];
+  document.getElementById('modal-rows').innerHTML = STOCKS.map((s, i) => {
+    const col = s._color || pal[i % pal.length];
     return `<div class="me-grid" id="mr-${i}">
       <input class="se-input ticker" style="color:${col}" type="text" id="me-t-${i}" value="${s.id.toUpperCase()}" oninput="this.value=this.value.toUpperCase()">
       <input class="se-input" type="text" id="me-n-${i}" value="${s.name}">
@@ -1043,7 +1167,7 @@ function renderModal() {
         <div class="color-swatch" style="background:${col}" onclick="document.getElementById('me-c-${i}').click()"></div>
         <input class="se-color-input" type="color" id="me-c-${i}" value="${col}"
           oninput="document.getElementById('mr-${i}').querySelector('.color-swatch').style.background=this.value;document.getElementById('me-t-${i}').style.color=this.value">
-        ${STOCKS.length>1?`<button class="btn-del" onclick="delStock(${i})">×</button>`:''}
+        ${STOCKS.length > 1 ? `<button class="btn-del" onclick="delStock(${i})">×</button>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -1052,43 +1176,40 @@ function renderModal() {
 function addStock() {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  STOCKS.push({ id:'new'+STOCKS.length, name:'Nama Perusahaan', role:'CUSTOM', have:0, avgCost:1000, price:1000, alloc:0, dpsCurr:0, dpsCagr:0.10, _color: pal[STOCKS.length%pal.length] });
+  STOCKS.push({ id:'new'+STOCKS.length, name:'Nama Perusahaan', role:'CUSTOM', have:0, avgCost:1000, price:1000, alloc:0, dpsCurr:0, dpsCagr:0.10, _color: pal[STOCKS.length % pal.length] });
   renderModal();
   document.querySelector('.modal').scrollTop = 99999;
 }
 
 function delStock(i) {
-  if (STOCKS.length<=1) return;
-  STOCKS.splice(i,1);
+  if (STOCKS.length <= 1) return;
+  STOCKS.splice(i, 1);
   renderModal();
 }
 
-function applyModal() {
+async function applyModal() {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const pal = isLight ? LIGHT_PAL : DARK_PAL;
-  STOCKS.forEach((s,i) => {
-    s.id = (document.getElementById(`me-t-${i}`)?.value||s.id).trim().toLowerCase().replace(/\s+/g,'');
-    s.name = document.getElementById(`me-n-${i}`)?.value.trim() || s.name;
-    s.price = parseFloat(document.getElementById(`me-p-${i}`)?.value)||s.price;
-    s.have = parseInt(document.getElementById(`me-h-${i}`)?.value)||0;
-    s.dpsCurr = parseFloat(document.getElementById(`me-d-${i}`)?.value)||s.dpsCurr;
-    s.avgCost = parseFloat(document.getElementById(`me-a-${i}`)?.value)||s.price;
-    s.role = document.getElementById(`me-r-${i}`)?.value.trim()||s.role;
-    const ce = document.getElementById(`me-c-${i}`);
-    s._color = ce ? ce.value : (s._color || pal[i%pal.length]);
+  STOCKS.forEach((s, i) => {
+    s.id      = (document.getElementById(`me-t-${i}`)?.value || s.id).trim().toLowerCase().replace(/\s+/g, '');
+    s.name    = document.getElementById(`me-n-${i}`)?.value.trim() || s.name;
+    s.price   = parseFloat(document.getElementById(`me-p-${i}`)?.value) || s.price;
+    s.have    = parseInt(document.getElementById(`me-h-${i}`)?.value) || 0;
+    s.dpsCurr = parseFloat(document.getElementById(`me-d-${i}`)?.value) || s.dpsCurr;
+    s.avgCost = parseFloat(document.getElementById(`me-a-${i}`)?.value) || s.price;
+    s.role    = document.getElementById(`me-r-${i}`)?.value.trim() || s.role;
+    const ce  = document.getElementById(`me-c-${i}`);
+    s._color  = ce ? ce.value : (s._color || pal[i % pal.length]);
   });
-  CURRENT_VAL = STOCKS.reduce((sum,s) => sum + s.have*s.price*100, 0);
+  CURRENT_VAL = STOCKS.reduce((sum, s) => sum + s.have * s.price * 100, 0);
   buildInputs(); calcLot(); calcPensiun();
   closeModal();
+  await saveToSupabase();
 }
 
 // ── BUILD INPUTS ──
 function buildInputs() {
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const pal = isLight ? LIGHT_PAL : DARK_PAL;
-
-  // Alloc rows
-  document.getElementById('alloc-rows').innerHTML = STOCKS.map((s,i) => {
+  document.getElementById('alloc-rows').innerHTML = STOCKS.map((s, i) => {
     const col = getColor(s.id, i);
     return `<div class="alloc-row">
       <div class="alloc-ticker" style="color:${col}">${s.id.toUpperCase()}</div>
@@ -1098,16 +1219,14 @@ function buildInputs() {
     </div>`;
   }).join('');
 
-  // Donut
-  document.getElementById('donut-bar').innerHTML = STOCKS.map((s,i) =>
+  document.getElementById('donut-bar').innerHTML = STOCKS.map((s, i) =>
     `<div class="donut-seg" id="dseg-${s.id}" style="width:${s.alloc}%;background:${getColor(s.id,i)}"></div>`
   ).join('');
-  document.getElementById('legend').innerHTML = STOCKS.map((s,i) =>
+  document.getElementById('legend').innerHTML = STOCKS.map((s, i) =>
     `<div class="legend-item"><div class="legend-dot" style="background:${getColor(s.id,i)}"></div><span>${s.id.toUpperCase()}</span></div>`
   ).join('');
 
-  // Price cards
-  document.getElementById('price-cards').innerHTML = STOCKS.map((s,i) => {
+  document.getElementById('price-cards').innerHTML = STOCKS.map((s, i) => {
     const col = getColor(s.id, i);
     const sig = getMOS(s.id, s.price);
     return `<div class="price-card">
@@ -1132,45 +1251,45 @@ function buildInputs() {
 function getAllocs() {
   let total = 0;
   const a = {};
-  STOCKS.forEach(s => { a[s.id] = parseFloat(document.getElementById('alloc-'+s.id)?.value)||0; total += a[s.id]; });
+  STOCKS.forEach(s => { a[s.id] = parseFloat(document.getElementById('alloc-'+s.id)?.value) || 0; total += a[s.id]; });
   return { a, total };
 }
 
 function syncAlloc() {
   const { a, total } = getAllocs();
-  STOCKS.forEach(s => {
-    const pct = total > 0 ? a[s.id]/total*100 : 0;
+  STOCKS.forEach((s, i) => {
+    const col = getColor(s.id, i);
+    const pct = total > 0 ? a[s.id] / total * 100 : 0;
     const el = document.getElementById('bar-'+s.id);
-    if (el) el.style.width = pct+'%';
+    if (el) el.style.width = pct + '%';
     const ds = document.getElementById('dseg-'+s.id);
-    if (ds) ds.style.width = pct+'%';
+    if (ds) ds.style.width = pct + '%';
     const pe = document.getElementById('pct-'+s.id);
-    if (pe) pe.textContent = a[s.id]+'%';
+    if (pe) pe.textContent = a[s.id] + '%';
   });
   const badge = document.getElementById('alloc-sum');
-  badge.textContent = total.toFixed(0)+'%';
-  badge.className = Math.abs(total-100)<0.5 ? 'sum-ok' : total>100 ? 'sum-err' : 'sum-warn';
+  badge.textContent = total.toFixed(0) + '%';
+  badge.className = Math.abs(total-100) < 0.5 ? 'sum-ok' : total > 100 ? 'sum-err' : 'sum-warn';
   calcLot(); calcPensiun();
 }
 
-// ── TARGET ──
 function parseTarget(input) {
-  const raw = input.value.replace(/\./g,'').replace(/[^0-9]/g,'');
-  const num = parseInt(raw)||0;
+  const raw = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+  const num = parseInt(raw) || 0;
   const formatted = fmtDots(num);
   if (input.value !== formatted) {
     const cur = input.selectionStart;
     const prev = input.value.length;
     input.value = formatted;
     const diff = formatted.length - prev;
-    input.setSelectionRange(cur+diff, cur+diff);
+    input.setSelectionRange(cur + diff, cur + diff);
   }
   document.getElementById('target-val').value = num;
   calcLot();
 }
 
 function setTarget(juta, btn) {
-  const val = juta*1e6;
+  const val = juta * 1e6;
   document.getElementById('target-val').value = val;
   document.getElementById('target-display').value = fmtDots(val);
   document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
@@ -1178,7 +1297,6 @@ function setTarget(juta, btn) {
   calcLot();
 }
 
-// ── TOGGLE BUY ZONE ──
 function toggleBZ(btn, id) {
   const sec = document.getElementById('bz-'+id);
   if (!sec) return;
@@ -1191,74 +1309,66 @@ function toggleBZ(btn, id) {
 
 // ── CALC LOT ──
 function calcLot() {
-  const target = parseFloat(document.getElementById('target-val').value)||250e6;
+  const target = parseFloat(document.getElementById('target-val').value) || 250e6;
   const { a, total } = getAllocs();
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
-  // Recompute current val
-  CURRENT_VAL = STOCKS.reduce((sum,s) => {
-    const p = parseFloat(document.getElementById('price-'+s.id)?.value)||s.price;
-    return sum + s.have*p*100;
+  CURRENT_VAL = STOCKS.reduce((sum, s) => {
+    const p = parseFloat(document.getElementById('price-'+s.id)?.value) || s.price;
+    return sum + s.have * p * 100;
   }, 0);
 
-  // Header
-  const pct = Math.min(CURRENT_VAL/target*100, 100);
+  const pct = Math.min(CURRENT_VAL / target * 100, 100);
   document.getElementById('hdr-val').textContent = rp(CURRENT_VAL);
   const tLabel = target>=1e9 ? (target/1e9).toFixed(1)+' Miliar' : target>=1e6 ? (target/1e6).toFixed(0)+' Jt' : fmt(target);
   document.getElementById('hdr-meta').textContent = `current · ${pct.toFixed(1)}% dari ${tLabel}`;
   document.getElementById('t-curr').textContent = rp(CURRENT_VAL);
   document.getElementById('t-pct').textContent = pct.toFixed(1).replace('.',',') + '% dari target';
-  document.getElementById('t-bar').style.width = pct.toFixed(1)+'%';
+  document.getElementById('t-bar').style.width = pct.toFixed(1) + '%';
 
-  // Build stock cards
   const wrap = document.getElementById('breakdown');
   wrap.innerHTML = '';
 
   STOCKS.forEach((s, idx) => {
-    const price = parseFloat(document.getElementById('price-'+s.id)?.value)||s.price;
-    const avgCost = parseFloat(document.getElementById('avg-'+s.id)?.value)||s.avgCost||price;
-    const allocFrac = total > 0 ? a[s.id]/total : s.alloc/100;
-    const targetLot = Math.floor(target * allocFrac / (price*100));
+    const price   = parseFloat(document.getElementById('price-'+s.id)?.value) || s.price;
+    const avgCost = parseFloat(document.getElementById('avg-'+s.id)?.value) || s.avgCost || price;
+    const allocFrac = total > 0 ? a[s.id] / total : s.alloc / 100;
+    const targetLot = Math.floor(target * allocFrac / (price * 100));
     const actualVal = targetLot * price * 100;
-    const needLot = targetLot - s.have;
-    const yoc = avgCost > 0 ? s.dpsCurr/avgCost*100 : 0;
-    const col = getColor(s.id, idx);
-    const sig = getMOS(s.id, price);
-    const fd = FUNDAMENTALS[s.id];
-    const bz = BUY_ZONES[s.id.toLowerCase()];
-    const yocColor = yoc>=8 ? 'var(--green)' : yoc>=5 ? 'var(--accent2)' : 'var(--text-dim)';
-    const lotPct = targetLot > 0 ? Math.min(s.have/targetLot*100, 100) : 0;
+    const needLot   = targetLot - s.have;
+    const yoc       = avgCost > 0 ? s.dpsCurr / avgCost * 100 : 0;
+    const col       = getColor(s.id, idx);
+    const sig       = getMOS(s.id, price);
+    const fd        = FUNDAMENTALS[s.id];
+    const bz        = BUY_ZONES[s.id.toLowerCase()];
+    const yocColor  = yoc >= 8 ? 'var(--green)' : yoc >= 5 ? 'var(--accent2)' : 'var(--text-dim)';
+    const lotPct    = targetLot > 0 ? Math.min(s.have / targetLot * 100, 100) : 0;
 
-    // Buy zone ladder HTML
     let bzHtml = '';
     if (bz) {
-      const [sb,b,ac,h,t] = bz;
+      const [sbz, b, ac, h, t] = bz;
       const totalRange = t * 1.25;
       const segs = [
-        {key:'sb',  lo:0,  hi:sb, cls:'bz-sb'},
-        {key:'buy', lo:sb, hi:b,  cls:'bz-buy'},
-        {key:'acc', lo:b,  hi:ac, cls:'bz-acc'},
-        {key:'hold',lo:ac, hi:h,  cls:'bz-hold'},
-        {key:'trim',lo:h,  hi:t,  cls:'bz-trim'},
-        {key:'exit',lo:t,  hi:totalRange, cls:'bz-exit'},
+        {key:'sb',   lo:0,   hi:sbz, cls:'bz-sb'},
+        {key:'buy',  lo:sbz, hi:b,   cls:'bz-buy'},
+        {key:'acc',  lo:b,   hi:ac,  cls:'bz-acc'},
+        {key:'hold', lo:ac,  hi:h,   cls:'bz-hold'},
+        {key:'trim', lo:h,   hi:t,   cls:'bz-trim'},
+        {key:'exit', lo:t,   hi:totalRange, cls:'bz-exit'},
       ];
       const sigMap = {'strong-buy':'sb','buy':'buy','accumulate':'acc','hold':'hold','trim':'trim','exit':'exit'};
-      const activeCls = sigMap[sig.key]||'';
+      const activeCls = sigMap[sig.key] || '';
       const segHtml = segs.map(sg => {
-        const pct2 = ((sg.hi-sg.lo)/totalRange*100).toFixed(1);
-        const isActive = sg.key === activeCls;
+        const p2 = ((sg.hi - sg.lo) / totalRange * 100).toFixed(1);
         const label = {sb:'SB',buy:'Buy',acc:'Acc',hold:'Hold',trim:'Trim',exit:'Exit'}[sg.key];
-        return `<div class="bz-seg ${sg.cls}${isActive?' active':''}" style="width:${pct2}%">${label}</div>`;
+        return `<div class="bz-seg ${sg.cls}${sg.key === activeCls ? ' active' : ''}" style="width:${p2}%">${label}</div>`;
       }).join('');
       const labelHtml = segs.map(sg => {
-        const pct2 = ((sg.hi-sg.lo)/totalRange*100).toFixed(1);
-        const val = sg.key==='exit' ? `>${t.toLocaleString('id-ID')}` : sg.hi.toLocaleString('id-ID');
-        return `<div class="bz-label" style="width:${pct2}%">${val}</div>`;
+        const p2  = ((sg.hi - sg.lo) / totalRange * 100).toFixed(1);
+        const val = sg.key === 'exit' ? `>${t.toLocaleString('id-ID')}` : sg.hi.toLocaleString('id-ID');
+        return `<div class="bz-label" style="width:${p2}%">${val}</div>`;
       }).join('');
-
       const kChips = (fd?.kekuatan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-green">${c}</span>`).join('');
       const rChips = (fd?.kerentanan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-red">${c}</span>`).join('');
-
       bzHtml = `
         <div class="buyzone-section" id="bz-${s.id}">
           <div>
@@ -1340,7 +1450,6 @@ function calcLot() {
     wrap.appendChild(card);
   });
 
-  // Summary
   const rem = Math.max(0, target - CURRENT_VAL);
   const sumRow = document.createElement('div');
   sumRow.className = 'summary-row';
@@ -1354,22 +1463,21 @@ function calcLot() {
   `;
   wrap.appendChild(sumRow);
 
-  // Update price card MOS badges
   STOCKS.forEach(s => {
-    const price = parseFloat(document.getElementById('price-'+s.id)?.value)||s.price;
-    const sig = getMOS(s.id, price);
-    const b = document.getElementById('card-sig-'+s.id);
-    const n = document.getElementById('card-note-'+s.id);
-    if (b) { b.className='mos mos-'+sig.key; b.textContent=sig.label; }
-    if (n) n.textContent = sig.note;
+    const price = parseFloat(document.getElementById('price-'+s.id)?.value) || s.price;
+    const sig   = getMOS(s.id, price);
+    const b2    = document.getElementById('card-sig-'+s.id);
+    const n2    = document.getElementById('card-note-'+s.id);
+    if (b2) { b2.className = 'mos mos-' + sig.key; b2.textContent = sig.label; }
+    if (n2) n2.textContent = sig.note;
   });
 }
 
 // ── SCENARIO ──
 function setScenario(key, btn) {
   const sc = SCENARIOS[key];
-  document.getElementById('p-dps').value = sc.dps;
-  document.getElementById('p-price').value = sc.price;
+  document.getElementById('p-dps').value    = sc.dps;
+  document.getElementById('p-price').value  = sc.price;
   document.getElementById('p-inflasi').value = sc.inflasi;
   document.querySelectorAll('.scenario-row .btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -1378,24 +1486,24 @@ function setScenario(key, btn) {
 
 // ── CALC PENSIUN ──
 function calcPensiun() {
-  const topup = (parseFloat(document.getElementById('p-topup')?.value)||1500000) * 12;
-  const dpsCagr = (parseFloat(document.getElementById('p-dps')?.value)||10) / 100;
-  const reinvest = parseFloat(document.getElementById('p-reinvest')?.value)||1;
-  const priceGr = (parseFloat(document.getElementById('p-price')?.value)||5) / 100;
-  const inflasi = (parseFloat(document.getElementById('p-inflasi')?.value)||4) / 100;
-  const years = parseInt(document.getElementById('p-years')?.value)||25;
+  const topup   = (parseFloat(document.getElementById('p-topup')?.value) || 1500000) * 12;
+  const dpsCagr = (parseFloat(document.getElementById('p-dps')?.value) || 10) / 100;
+  const reinvest = parseFloat(document.getElementById('p-reinvest')?.value) || 1;
+  const priceGr = (parseFloat(document.getElementById('p-price')?.value) || 5) / 100;
+  const inflasi = (parseFloat(document.getElementById('p-inflasi')?.value) || 4) / 100;
+  const years   = parseInt(document.getElementById('p-years')?.value) || 25;
 
   let porto = CURRENT_VAL;
-  let yld = 0.045;
+  let yld   = 0.045;
   const rows = [];
   const milestones = [100e6,250e6,500e6,1e9,2e9,3e9,5e9];
-  const mlabels = ['100 Jt','250 Jt','500 Jt','1 Miliar','2 Miliar','3 Miliar','5 Miliar'];
-  const reached = {};
+  const mlabels    = ['100 Jt','250 Jt','500 Jt','1 Miliar','2 Miliar','3 Miliar','5 Miliar'];
+  const reached    = {};
 
-  for (let yr=0; yr<=years; yr++) {
+  for (let yr = 0; yr <= years; yr++) {
     const div = porto * yld;
     let badge = '';
-    milestones.forEach((mv,i) => { if (!reached[i] && porto>=mv) { reached[i]=true; badge=mlabels[i]; } });
+    milestones.forEach((mv, i) => { if (!reached[i] && porto >= mv) { reached[i] = true; badge = mlabels[i]; } });
     rows.push({ yr, age:START_AGE+yr, porto, div, divMo:div/12, yoc:div/Math.max(CURRENT_VAL,1)*100, real:porto/Math.pow(1+inflasi,yr), badge });
     if (yr < years) { porto = porto*(1+priceGr) + topup + div*reinvest; yld = Math.min(yld*(1+dpsCagr), 0.4); }
   }
@@ -1420,36 +1528,34 @@ function calcPensiun() {
     </div>
   `;
 
-  // Chart
   const chartDiv = document.getElementById('chart-bars');
   chartDiv.innerHTML = '';
   const maxV = fin.porto;
-  const chartYrs = [...new Set([0,5,10,15,20,25,years].filter(y=>y<=years))].sort((a,b)=>a-b);
+  const chartYrs = [...new Set([0,5,10,15,20,25,years].filter(y => y <= years))].sort((a,b) => a-b);
   chartYrs.forEach(yr => {
     const r = rows[yr]; if (!r) return;
-    const pct = (r.porto/maxV*100).toFixed(1);
-    const isEnd = yr===years;
+    const p2 = (r.porto / maxV * 100).toFixed(1);
+    const isEnd = yr === years;
     const d = document.createElement('div');
     d.className = 'chart-row';
     d.innerHTML = `
       <div class="chart-year" style="${isEnd?'color:var(--accent)':''}">${yr===0?'Skrg':'Thn '+yr}${isEnd?' 🎯':''}</div>
-      <div class="chart-track"><div class="chart-fill${isEnd?' highlight':''}" style="width:${pct}%"></div></div>
+      <div class="chart-track"><div class="chart-fill${isEnd?' highlight':''}" style="width:${p2}%"></div></div>
       <div class="chart-val" style="${isEnd?'color:var(--accent)':''}">${rp(r.porto)}</div>
     `;
     chartDiv.appendChild(d);
   });
 
-  // Lot @ pensiun
   const { a, total } = getAllocs();
-  document.getElementById('pensiun-lot').innerHTML = STOCKS.map((s,idx) => {
-    const allocFrac = total>0 ? a[s.id]/total : s.alloc/100;
-    const priceEnd = s.price * Math.pow(1+priceGr, years);
-    const targetLot = Math.floor(fin.porto*allocFrac/(priceEnd*100));
-    const targetLotNow = Math.floor(fin.porto*allocFrac/(s.price*100));
-    const dpsEnd = s.dpsCurr * Math.pow(1+dpsCagr*0.7+s.dpsCagr*0.3, years);
-    const divEnd = targetLot * dpsEnd * 100;
-    const need = Math.max(0, targetLotNow - s.have);
-    const col = getColor(s.id, idx);
+  document.getElementById('pensiun-lot').innerHTML = STOCKS.map((s, idx) => {
+    const allocFrac = total > 0 ? a[s.id] / total : s.alloc / 100;
+    const priceEnd  = s.price * Math.pow(1 + priceGr, years);
+    const targetLot = Math.floor(fin.porto * allocFrac / (priceEnd * 100));
+    const targetLotNow = Math.floor(fin.porto * allocFrac / (s.price * 100));
+    const dpsEnd    = s.dpsCurr * Math.pow(1 + dpsCagr * 0.7 + s.dpsCagr * 0.3, years);
+    const divEnd    = targetLot * dpsEnd * 100;
+    const need      = Math.max(0, targetLotNow - s.have);
+    const col       = getColor(s.id, idx);
     return `<tr>
       <td><span style="font-family:'Syne',sans-serif;font-weight:700;color:${col}">${s.id.toUpperCase()}</span><br><span style="font-size:9px;color:var(--text-muted)">${s.name}</span></td>
       <td>${(allocFrac*100).toFixed(0)}%</td>
@@ -1462,12 +1568,11 @@ function calcPensiun() {
     </tr>`;
   }).join('');
 
-  // Timeline
-  const keyYrs = [...new Set([0,1,2,3,5,7,10,12,15,17,20,22,25,years].filter(y=>y<=years))].sort((a,b)=>a-b);
+  const keyYrs = [...new Set([0,1,2,3,5,7,10,12,15,17,20,22,25,years].filter(y => y <= years))].sort((a,b) => a-b);
   document.getElementById('timeline').innerHTML = keyYrs.map(yr => {
     const r = rows[yr]; if (!r) return '';
-    const isEnd = yr===years;
-    const isHL = [5,10,15,20,25,years].includes(yr);
+    const isEnd = yr === years;
+    const isHL  = [5,10,15,20,25,years].includes(yr);
     return `<tr${isHL?' class="hl"':''}>
       <td><span style="${isEnd?'color:var(--accent);font-weight:700':''}">${yr===0?'Sekarang':'Thn '+yr}</span>${isEnd?'<span class="ms-badge">PENSIUN 🎯</span>':''}${r.badge&&!isEnd?`<span class="ms-badge">${r.badge}</span>`:''}</td>
       <td style="color:var(--text-dim)">${r.age}</td>
@@ -1481,10 +1586,7 @@ function calcPensiun() {
 }
 
 // ── INIT ──
-CURRENT_VAL = STOCKS.reduce((sum,s) => sum+s.have*s.price*100, 0);
-buildInputs();
-calcLot();
-calcPensiun();
+loadFromSupabase();
 </script>
 </body>
 </html>
