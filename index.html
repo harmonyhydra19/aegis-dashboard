@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aegis Growth Dividend</title>
+<title>⚔ Aegis Growth Dividend</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230c0e0c'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%23b8f55a' opacity='0.9'/><circle cx='16' cy='16' r='3.5' fill='%230c0e0c'/></svg>">
+<link rel="icon" type="image/svg+xml" media="(prefers-color-scheme: light)" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23f3f4f0'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%234a8e08' opacity='0.95'/><circle cx='16' cy='16' r='3.5' fill='%23f3f4f0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -2029,7 +2031,7 @@ function showPriceStatus(msg, ok) {
   if (ok !== 'loading') setTimeout(() => { btn.textContent = '↻ Harga'; btn.title = ''; }, 4000);
 }
 
-function showPricePopup(quotes) {
+function showPricePopup(quotes, source) {
   // Remove existing popup
   const old = document.getElementById('price-popup');
   if (old) old.remove();
@@ -2066,7 +2068,7 @@ function showPricePopup(quotes) {
       <span style="cursor:pointer;color:var(--text-muted);font-size:14px;line-height:1" onclick="document.getElementById('price-popup').remove()">×</span>
     </div>
     ${rows}
-    <div style="margin-top:8px;font-size:8px;color:var(--text-muted);text-align:right">Yahoo Finance · delay ~15 menit</div>
+    <div style="margin-top:8px;font-size:8px;color:var(--text-muted);text-align:right">${source || 'Yahoo Finance'} · delay ~15 menit</div>
   `;
 
   // Add fadeInDown animation if not exist
@@ -2082,9 +2084,17 @@ function showPricePopup(quotes) {
   setTimeout(() => { const p = document.getElementById('price-popup'); if (p) p.remove(); }, 8000);
 }
 
+// AbortSignal.timeout polyfill for older browsers
+function abortAfter(ms) {
+  if (AbortSignal.timeout) return AbortSignal.timeout(ms);
+  const ctrl = new AbortController();
+  setTimeout(() => ctrl.abort(), ms);
+  return ctrl.signal;
+}
+
 async function tryProxy(proxyFn, yahooUrl) {
   const url = proxyFn(yahooUrl);
-  const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+  const res = await fetch(url, { signal: abortAfter(6000) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   const text = await res.text();
   // allorigins wraps in {contents:...}, others return raw
@@ -2105,9 +2115,11 @@ async function fetchViaEdgeFunction() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'apikey': SUPABASE_KEY,
     },
     body: JSON.stringify({ tickers }),
-    signal: AbortSignal.timeout(10000),
+    signal: abortAfter(10000),
   });
   if (!res.ok) throw new Error('Edge Function HTTP ' + res.status);
   const data = await res.json();
@@ -2127,20 +2139,24 @@ async function fetchPrices(manual = false) {
 
   let quotes = null;
   let lastErr = '';
+  let fetchSource = 'Edge Function';
 
   // Primary: Supabase Edge Function (no CORS issues, reliable)
   try {
     quotes = await fetchViaEdgeFunction();
+    fetchSource = 'Edge Function';
     console.log('[fetchPrices] Edge Function OK');
   } catch(e) {
     lastErr = e.message;
     console.warn('[fetchPrices] Edge Function gagal:', e.message, '— fallback ke proxy...');
+    fetchSource = 'Yahoo Proxy';
 
     // Fallback: legacy public proxies
     const yahooUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${STOCKS.map(s=>s.id.toUpperCase()+'.JK').join(',')}&fields=regularMarketPrice,regularMarketChangePercent,symbol`;
     for (let i = 0; i < PROXIES.length; i++) {
       try {
         quotes = await tryProxy(PROXIES[i], yahooUrl);
+        fetchSource = 'Proxy ' + (i + 1);
         console.log('[fetchPrices] Proxy', i+1, 'OK');
         break;
       } catch(pe) {
@@ -2174,16 +2190,16 @@ async function fetchPrices(manual = false) {
     calcPensiun();
     const ts = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     showPriceStatus('Update ' + ts + ' (' + updated + ' saham)', true);
-    showPricePopup(quotes);
+    showPricePopup(quotes, fetchSource);
     // Sync updated prices to Supabase (harga column only — no full save)
     // Zone Radar timestamp updated inside syncPricesToSupabase on success
-    syncPricesToSupabase();
+    syncPricesToSupabase(fetchSource);
   } else {
     showPriceStatus('Ticker tidak cocok', false);
   }
 }
 
-async function syncPricesToSupabase() {
+async function syncPricesToSupabase(source) {
   try {
     // Batch upsert harga saja — lebih efisien dari loop individual
     const updates = STOCKS
@@ -2195,7 +2211,8 @@ async function syncPricesToSupabase() {
     if (error) throw error;
     const radarTs = document.getElementById('zone-radar-ts');
     const ts = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    if (radarTs) radarTs.textContent = '✓ Yahoo synced · ' + ts;
+    const src = source === 'Edge Function' ? '⚡ Edge Fn' : '⚠ Proxy';
+    if (radarTs) radarTs.textContent = `✓ ${src} synced · ${ts}`;
     console.log('[syncPricesToSupabase] harga synced:', updates.length, 'saham');
   } catch(e) {
     const radarTs = document.getElementById('zone-radar-ts');
