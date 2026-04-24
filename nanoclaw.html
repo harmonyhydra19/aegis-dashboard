@@ -1,59 +1,61 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>NanoClaw — ZenkichiArc</title>
+<title>Senku Room — ZenkichiArc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0c0e0c;
-  --surface: #131613;
-  --surface2: #191c19;
-  --surface3: #1f231f;
-  --border: #232723;
-  --border2: #2b302b;
-  --accent: #b8f55a;
-  --accent-dim: #7aab28;
-  --accent-glow: rgba(184,245,90,0.08);
-  --accent2: #ffd166;
-  --green: #4ade80;
-  --red: #ff5f57;
-  --text: #dfe8df;
-  --text-dim: #677867;
-  --text-muted: #3a4a3a;
-  --teal: #1D9E75;
-  --teal2: #5DCAA5;
-  --teal-bg: rgba(29,158,117,0.10);
-  --blue: #378ADD;
-  --blue2: #85B7EB;
-  --blue-bg: rgba(55,138,221,0.10);
-  --amber: #EF9F27;
+  /* Dr. Stone — deep cave stone, neon science, primal fire */
+  --bg: #0d0c0a;
+  --surface: #141210;
+  --surface2: #1c1a16;
+  --surface3: #242018;
+  --border: #2a2620;
+  --border2: #36302a;
+  --accent: #39ff6a;
+  --accent-dim: #22c44a;
+  --accent-glow: rgba(57,255,106,0.08);
+  --accent2: #ff8c00;
+  --green: #39ff6a;
+  --red: #ff4040;
+  --text: #e8e0d0;
+  --text-dim: #7a7060;
+  --text-muted: #3d3828;
+  --teal: #00c896;
+  --teal2: #3ddcaa;
+  --teal-bg: rgba(0,200,150,0.10);
+  --blue: #e8a020;
+  --blue2: #f0bc58;
+  --blue-bg: rgba(232,160,32,0.10);
+  --amber: #ff8c00;
 }
 [data-theme="light"] {
-  --bg: #f3f4f0;
-  --surface: #ffffff;
-  --surface2: #eef0eb;
-  --surface3: #e5e8e1;
-  --border: #d8dcd3;
-  --border2: #c8cdc2;
-  --accent: #4a8e08;
-  --accent-dim: #3a7006;
-  --accent-glow: rgba(74,142,8,0.08);
-  --accent2: #b07000;
-  --green: #1a8f47;
-  --red: #cc2a2a;
-  --text: #181e18;
-  --text-dim: #4a5e4a;
-  --text-muted: #8a9e8a;
-  --teal: #1a8f60;
-  --teal2: #1a7a50;
-  --teal-bg: rgba(26,143,96,0.08);
-  --blue: #1a5faa;
-  --blue2: #1a5faa;
-  --blue-bg: rgba(26,95,170,0.08);
-  --amber: #a06800;
+  /* Dr. Stone light — limestone, forest, fire */
+  --bg: #f0ede6;
+  --surface: #faf8f4;
+  --surface2: #eeeae0;
+  --surface3: #e4dfd2;
+  --border: #d0c8b8;
+  --border2: #bdb5a2;
+  --accent: #0d8c3a;
+  --accent-dim: #0a6e2d;
+  --accent-glow: rgba(13,140,58,0.08);
+  --accent2: #c06000;
+  --green: #0d8c3a;
+  --red: #b82020;
+  --text: #1a1610;
+  --text-dim: #52483a;
+  --text-muted: #8a8070;
+  --teal: #0a7a50;
+  --teal2: #0a6040;
+  --teal-bg: rgba(10,122,80,0.08);
+  --blue: #a05000;
+  --blue2: #804000;
+  --blue-bg: rgba(160,80,0,0.08);
+  --amber: #c06000;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,9 +75,11 @@ body::before {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background-image:
     linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.25;
+    linear-gradient(90deg, var(--border) 1px, transparent 1px),
+    linear-gradient(45deg, var(--border) 1px, transparent 1px),
+    linear-gradient(-45deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px, 96px 96px, 96px 96px;
+  opacity: 0.18;
 }
 
 .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
@@ -91,14 +95,14 @@ body::before {
   width: 28px; height: 28px; border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800;
-  background: var(--accent); color: #0c0e0c; flex-shrink: 0;
+  background: var(--accent); color: #0d0c0a; flex-shrink: 0; box-shadow: 0 0 10px rgba(57,255,106,0.3);
 }
 .header-wordmark {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(22px, 3.5vw, 32px); font-weight: 800;
   letter-spacing: -0.04em; line-height: 1;
 }
-.header-wordmark span { color: var(--accent); }
+.header-wordmark span { color: var(--accent); text-shadow: 0 0 12px rgba(57,255,106,0.5); }
 .header-sub {
   font-family: 'DM Mono', monospace; font-size: 9px;
   letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);
@@ -122,176 +126,17 @@ body::before {
 }
 .btn-back:hover { color: var(--text); border-color: var(--border); }
 
-/* TABS */
-.tabs {
-  display: flex; gap: 0; border-bottom: 1px solid var(--border2);
-  margin-bottom: 24px; position: sticky; top: 0;
-  background: var(--bg); z-index: 10;
-}
-.tab {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 13px 20px; cursor: pointer; color: var(--text-dim);
-  border: none; background: none; border-bottom: 2px solid transparent;
-  margin-bottom: -1px; white-space: nowrap; transition: color .2s, border-color .2s;
-}
-.tab:hover { color: var(--text); }
-.tab.active-i { color: var(--teal2); border-bottom-color: var(--teal); }
-.tab.active-k { color: var(--blue2); border-bottom-color: var(--blue); }
 
-/* CARDS */
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 20px; margin-bottom: 16px;
-  transition: background .2s, border-color .2s;
-}
-.card-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
-}
-.card-title {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
-  font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
-}
-.label {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 8px; display: block;
-}
 
-/* STOCK MONITOR */
-.stock-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px;
-}
-@media (max-width: 640px) { .stock-grid { grid-template-columns: repeat(3, 1fr); } }
-.stock-tile {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color .15s;
-}
-.stock-tile:hover { border-color: var(--border2); }
-.stock-tile.sel { border-color: var(--teal); background: var(--teal-bg); }
-.st-ticker { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0.04em; }
-.st-price  { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.1; margin: 3px 0; }
-.st-meta   { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-muted); letter-spacing: 0.04em; }
-.st-badge  {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px;
-  font-weight: 700; padding: 2px 6px; border-radius: 3px;
-  margin-top: 5px; letter-spacing: 0.05em; text-transform: uppercase;
-}
-.b-buy  { background: rgba(29,158,117,0.15); color: var(--teal2); }
-.b-acc  { background: rgba(184,245,90,0.10); color: var(--accent); }
-.b-hold { background: rgba(239,159,39,0.15); color: var(--amber); }
-.b-trim { background: rgba(255,95,87,0.12);  color: var(--red); }
 
-/* CHIPS */
-.chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
-.chip {
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em;
-  padding: 5px 11px; border-radius: 20px; cursor: pointer;
-  border: 1px solid var(--border2); background: none;
-  color: var(--text-muted); transition: all .15s; text-transform: uppercase;
-}
-.chip:hover { color: var(--text); border-color: var(--border); }
-.chip.sel-i { background: var(--teal-bg); border-color: var(--teal); color: var(--teal2); }
-.chip.sel-k { background: var(--blue-bg); border-color: var(--blue); color: var(--blue2); }
-
-/* INPUTS */
-.field-input {
-  width: 100%; background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 6px; padding: 8px 12px;
-  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text);
-  outline: none; transition: border-color .18s; margin-bottom: 12px;
-}
-.field-input:focus { border-color: var(--teal); }
-.field-ta {
-  width: 100%; background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 6px; padding: 10px 12px;
-  font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text);
-  outline: none; transition: border-color .18s;
-  resize: vertical; min-height: 80px; line-height: 1.7; margin-bottom: 14px;
-}
-.field-ta:focus { border-color: var(--teal); }
-.field-ta.ta-k:focus { border-color: var(--blue); }
-
-/* UPLOAD */
-.upload-zone {
-  border: 1px dashed var(--border2); border-radius: 6px;
-  padding: 16px; text-align: center; cursor: pointer;
-  margin-bottom: 14px; transition: all .15s; position: relative;
-}
-.upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.upload-zone:hover { border-color: var(--teal); background: var(--teal-bg); }
-.upload-zone.has-file { border-style: solid; border-color: var(--teal); background: var(--teal-bg); }
-.upload-zone.zone-k:hover { border-color: var(--blue); background: var(--blue-bg); }
-.upload-zone.zone-k.has-file { border-color: var(--blue); background: var(--blue-bg); }
-.upload-icon { font-size: 18px; margin-bottom: 4px; }
-.upload-text { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.06em; }
-.upload-fname { font-family: 'DM Mono', monospace; font-size: 9px; margin-top: 4px; font-weight: 600; color: var(--teal2); }
-.upload-fname.fname-k { color: var(--blue2); }
-
-/* QUICK PROMPTS */
-.quick-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
-.qbtn {
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.04em;
-  padding: 5px 10px; border: 1px solid var(--border); border-radius: 4px;
-  background: var(--surface2); color: var(--text-muted); cursor: pointer; transition: all .15s;
-}
-.qbtn:hover { border-color: var(--border2); color: var(--text); }
-
-/* RUN BTN */
-.run-btn {
-  width: 100%; padding: 11px;
-  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  border: none; border-radius: 6px; cursor: pointer; transition: opacity .15s;
-}
-.run-btn:hover { opacity: .88; }
-.run-btn:disabled { opacity: .4; cursor: not-allowed; }
-.run-i { background: var(--teal); color: #fff; }
-.run-k { background: var(--blue); color: #fff; }
-
-/* OUTPUT */
-.out-box { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 14px; }
-.out-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 16px; background: var(--surface2); border-bottom: 1px solid var(--border);
-}
-.out-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 600; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
-.status-pill {
-  font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 600;
-  padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;
-}
-.s-run { background: var(--blue-bg); color: var(--blue2); }
-.s-ok  { background: var(--teal-bg); color: var(--teal2); }
-.s-err { background: rgba(255,95,87,0.1); color: var(--red); }
-.out-content {
-  padding: 16px 18px; font-family: 'DM Sans', sans-serif; font-size: 11px;
-  line-height: 1.85; color: var(--text-dim); white-space: pre-wrap;
-  max-height: 520px; overflow-y: auto;
-}
-.out-content::-webkit-scrollbar { width: 3px; }
-.out-content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-.verdict-line {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 16px; background: var(--surface2); border-top: 1px solid var(--border);
-  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
-}
-.v-buy   { color: var(--teal2); }
-.v-hold  { color: var(--amber); }
-.v-avoid { color: var(--red); }
-
-/* SPINNER */
-@keyframes spin { to { transform: rotate(360deg); } }
-.spinner {
-  display: inline-block; width: 9px; height: 9px;
-  border: 1.5px solid var(--border2); border-top-color: var(--blue2);
-  border-radius: 50%; animation: spin .7s linear infinite;
-  vertical-align: middle; margin-right: 4px;
-}
-.spinner-i { border-top-color: var(--teal2); }
 
 
 /* ══════ DRIVE BAR ══════ */
+.drive-bar {
+  animation: slideDown .18s ease;
+}
+@keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+.btn-ref-active { background: var(--blue) !important; color: #fff !important; border-color: var(--blue) !important; }
 .drive-bar {
   display: flex; align-items: center; justify-content: space-between;
   gap: 14px; padding: 13px 18px;
@@ -349,7 +194,7 @@ body::before {
 .chat-head-left { display: flex; align-items: center; gap: 10px; }
 .chat-avatar {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-  background: var(--blue); color: #fff;
+  background: var(--blue); color: #0d0c0a;
   font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
 }
@@ -401,7 +246,7 @@ body::before {
   display: flex; align-items: center; justify-content: center;
   font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800;
 }
-.msg-avatar-ai { background: var(--blue); color: #fff; }
+.msg-avatar-ai { background: var(--blue); color: #0d0c0a; font-weight: 800; box-shadow: 0 0 8px rgba(232,160,32,0.4); }
 .msg-avatar-user { background: var(--surface3); color: var(--text-dim); font-size: 10px; }
 .msg-body { flex: 1; min-width: 0; max-width: 85%; }
 .msg-user .msg-body { align-items: flex-end; }
@@ -441,7 +286,7 @@ body::before {
   display: flex; gap: 10px; align-items: flex-start;
   padding: 0 18px 14px;
 }
-.thinking-avatar { width: 26px; height: 26px; border-radius: 6px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+.thinking-avatar { width: 26px; height: 26px; border-radius: 6px; background: var(--blue); color: #0d0c0a; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800; flex-shrink: 0; }
 .thinking-bubble {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: 10px 10px 10px 3px; padding: 10px 14px;
@@ -475,7 +320,7 @@ body::before {
 .chat-input::placeholder { color: var(--text-muted); }
 .chat-send-btn {
   width: 36px; height: 36px; border-radius: 8px;
-  background: var(--blue); border: none; color: #fff;
+  background: var(--blue); border: none; color: #0d0c0a; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: opacity .15s; flex-shrink: 0;
 }
@@ -498,7 +343,7 @@ body::before {
   .chat-action-btn span { display: none; }
   .chat-action-btn { padding: 5px 8px; }
 }
-
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -506,121 +351,26 @@ body::before {
 <!-- HEADER -->
 <div class="header">
   <div class="header-brand">
-    <div class="nav-logo">N</div>
+    <div class="nav-logo">S</div>
     <div>
-      <div class="header-wordmark">Nano<span>Claw</span></div>
+      <div class="header-wordmark">Senku<span>Room</span></div>
       <div class="header-sub">ZenkichiArc · v2.0</div>
     </div>
   </div>
   <div class="header-actions">
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle tema">☀️</button>
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle tema">🌙</button>
     <a href="./index.html" class="btn-back">← Aegis Growth</a>
   </div>
 </div>
 
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab" id="tab-i" onclick="setMode('i')">◈ Investasi</button>
-  <button class="tab active-k" id="tab-k" onclick="setMode('k')">⬡ Karantina</button>
-</div>
-
-<!-- ══════ PANEL INVESTASI ══════ -->
-<div id="panel-i" style="display:none">
-
-  <div class="card">
-    <div class="card-header"><div class="card-title">Aegis Alpha — Monitor Posisi</div></div>
-    <div class="stock-grid">
-      <div class="stock-tile" onclick="selectStock(this,'BBCA','6.050','Avg 6.448 · Gap -6.2%','BUY')">
-        <div class="st-ticker">BBCA</div>
-        <div class="st-price">6.050</div>
-        <div class="st-meta">Buy zone 5.900–6.300</div>
-        <div class="st-badge b-buy">BUY</div>
-      </div>
-      <div class="stock-tile" onclick="selectStock(this,'BMRI','4.500','Avg 4.717 · Gap -4.6%','ACCUMULATE')">
-        <div class="st-ticker">BMRI</div>
-        <div class="st-price">4.500</div>
-        <div class="st-meta">Acc zone 4.300–4.700</div>
-        <div class="st-badge b-acc">ACCUMULATE</div>
-      </div>
-      <div class="stock-tile" onclick="selectStock(this,'SMSM','1.800','Avg 1.792 · Gap +0.4%','ACCUMULATE')">
-        <div class="st-ticker">SMSM</div>
-        <div class="st-price">1.800</div>
-        <div class="st-meta">Acc zone 1.750–1.950</div>
-        <div class="st-badge b-acc">ACCUMULATE</div>
-      </div>
-      <div class="stock-tile" onclick="selectStock(this,'TSPC','2.430','Avg 2.413 · Gap +0.7%','ACCUMULATE')">
-        <div class="st-ticker">TSPC</div>
-        <div class="st-price">2.430</div>
-        <div class="st-meta">Acc zone 2.200–2.500</div>
-        <div class="st-badge b-acc">ACCUMULATE</div>
-      </div>
-      <div class="stock-tile" onclick="selectStock(this,'SIDO','498','Avg 505 · Gap -1.5%','ACCUMULATE')">
-        <div class="st-ticker">SIDO</div>
-        <div class="st-price">498</div>
-        <div class="st-meta">Acc zone 480–540</div>
-        <div class="st-badge b-acc">ACCUMULATE</div>
-      </div>
-    </div>
-    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:0.04em">klik saham untuk auto-fill · atau ketik ticker lain di bawah</div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><div class="card-title">Modul Analisis</div></div>
-    <div class="chip-row">
-      <button class="chip sel-i" onclick="toggleChip(this,'integrity','i')">integrity check</button>
-      <button class="chip sel-i" onclick="toggleChip(this,'dividend','i')">dividend quality</button>
-      <button class="chip" onclick="toggleChip(this,'valuation','i')">valuation</button>
-      <button class="chip" onclick="toggleChip(this,'gtc','i')">GTC strategy</button>
-      <button class="chip" onclick="toggleChip(this,'sbn','i')">SBN/FR bond</button>
-      <button class="chip" onclick="toggleChip(this,'stress','i')">stress test</button>
-    </div>
-
-    <span class="label">Ticker / Emiten</span>
-    <input class="field-input" type="text" id="ticker-i" placeholder="BMRI, BBCA, SMSM, FR0096 ...">
-
-    <span class="label">Upload Laporan Keuangan (opsional)</span>
-    <div class="upload-zone" id="drop-i" onclick="document.getElementById('file-i').click()">
-      <input type="file" id="file-i" accept=".pdf,.txt" onchange="handleFile(event,'i')">
-      <div class="upload-icon">⬆</div>
-      <div class="upload-text">klik atau drag PDF annual report / laporan keuangan</div>
-      <div class="upload-fname" id="fname-i"></div>
-    </div>
-
-    <span class="label">Quick Prompt</span>
-    <div class="quick-row">
-      <button class="qbtn" onclick="setCtx('i','Apakah entry saat ini masih menarik post-ex-dividend? Berikan rekomendasi GTC limit order dengan tranche sizing.')">post-ex-div entry?</button>
-      <button class="qbtn" onclick="setCtx('i','Stress test: jika dividen dipotong 50% dan harga turun 30%, apakah investment thesis masih hold?')">stress test</button>
-      <button class="qbtn" onclick="setCtx('i','Bandingkan dengan existing Aegis Alpha positions — apakah worth alokasi tambahan?')">vs Aegis Alpha</button>
-      <button class="qbtn" onclick="setCtx('i','Apakah ada red flag ownership atau RPT yang mencurigakan? Trace konglomerat controlling shareholder.')">integrity deep dive</button>
-    </div>
-
-    <span class="label">Context Tambahan</span>
-    <textarea class="field-ta" id="ctx-i" placeholder="e.g. Harga saat ini 5.200, DY ~8.5%, laporan Q4 baru keluar dengan NPL naik tipis..."></textarea>
-
-    <button class="run-btn run-i" id="run-i" onclick="runMode('i')">▶ Jalankan Analisis Investasi</button>
-
-    <div class="out-box" id="out-i" style="display:none">
-      <div class="out-header">
-        <span class="out-label" id="out-label-i">output</span>
-        <span class="status-pill" id="st-i"></span>
-      </div>
-      <div class="out-content" id="out-content-i"></div>
-      <div class="verdict-line" id="verdict-i" style="display:none"></div>
-    </div>
-  </div>
-
-</div>
-
 <!-- ══════ PANEL KARANTINA ══════ -->
-<div id="panel-k">
-
-<!-- Drive Config Bar -->
-<div class="drive-bar" id="drive-bar">
+<!-- Drive Config Bar (collapsible, default hidden) -->
+<div class="drive-bar" id="drive-bar" style="display:none">
   <div class="drive-bar-left">
     <span class="drive-icon">⬡</span>
     <div>
-      <div class="drive-bar-title">Basis Pengetahuan · Google Drive</div>
-      <div class="drive-bar-sub" id="drive-status-txt">Belum terhubung — masukkan Folder ID untuk memuat index regulasi</div>
+      <div class="drive-bar-title">Referensi Karantina</div>
+      <div class="drive-bar-sub" id="drive-status-txt">Belum terhubung — masukkan Folder ID</div>
     </div>
   </div>
   <div class="drive-bar-right">
@@ -642,18 +392,21 @@ body::before {
   <!-- Chat header -->
   <div class="chat-head">
     <div class="chat-head-left">
-      <div class="chat-avatar">K</div>
+      <div class="chat-avatar">S</div>
       <div>
-        <div class="chat-head-name">Asisten Karantina</div>
+        <div class="chat-head-name">Senku Ishigami</div>
         <div class="chat-head-sub" id="chat-status-line">Siap · tanya seputar regulasi Barantin</div>
       </div>
     </div>
     <div class="chat-head-right">
+      <button class="chat-action-btn" id="btn-ref" onclick="toggleDriveBar()" title="Referensi Karantina">
+        <span>⬡</span> Referensi
+      </button>
       <button class="chat-action-btn" id="btn-summary" onclick="runSummary()" title="Buat ringkasan sesi" style="display:none">
         <span>⊞</span> Summary
       </button>
-      <button class="chat-action-btn" id="btn-save" onclick="savePrint()" title="Simpan / Print" style="display:none">
-        <span>↓</span> Simpan
+      <button class="chat-action-btn" id="btn-save" onclick="savePrint()" title="Export PDF" style="display:none">
+        <span>↓</span> PDF
       </button>
       <button class="chat-action-btn chat-clear-btn" onclick="clearChat()" title="Hapus riwayat">
         ⊘ Hapus
@@ -666,7 +419,7 @@ body::before {
     <!-- Welcome state -->
     <div class="chat-welcome" id="chat-welcome">
       <div class="welcome-icon">⬡</div>
-      <div class="welcome-title">Asisten Regulasi Karantina</div>
+      <div class="welcome-title">Senku Ishigami</div>
       <div class="welcome-sub">Tanya tentang peraturan, prosedur tindak karantina, PNBP, komoditas, atau minta draft surat dinas. Hubungkan Drive untuk basis pengetahuan dari dokumen resmi.</div>
       <div class="welcome-chips">
         <button class="wchip" onclick="quickAsk('Apa saja tindak karantina yang berlaku untuk komoditas hewan hidup?')">Tindak karantina hewan hidup</button>
@@ -681,7 +434,7 @@ body::before {
 
   <!-- Thinking indicator (hidden) -->
   <div class="chat-thinking" id="chat-thinking" style="display:none">
-    <div class="thinking-avatar">K</div>
+    <div class="thinking-avatar">S</div>
     <div class="thinking-bubble">
       <div class="thinking-src" id="thinking-src"></div>
       <div class="thinking-dots"><span></span><span></span><span></span></div>
@@ -707,151 +460,26 @@ body::before {
 
 </div><!-- end chat-shell -->
 
-</div><!-- end panel-k -->
-
 <div style="text-align:center;padding:28px 0 16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);position:relative;z-index:1">
-  ZenkichiArc · <span style="color:var(--accent)">NanoClaw</span> · AI Research Agent
+  ZenkichiArc · <span style="color:var(--accent)">Senku Room</span> · AI Research Agent
 </div>
 
 </div>
 
 <script>
-const chipsI = new Set(['integrity','dividend']);
-const chipsK = new Set(['rangkum']);
-let pdfI = '', pdfK = '';
-
-const SYS_I = `You are a senior investment analyst with 40 years of institutional experience at JPMorgan Asset Management, Vanguard, Blackstone, and BlackRock Dividend & Income Division. You specialize in IDX dividend equity and Indonesian fixed income.
-
-MANDATORY INTEGRITY CHECK (5 points, never skip):
-1. Ownership & Conglomerate Mapping — who controls? which group? (Salim, Sinar Mas, Lippo, Bakrie, Djarum/BCA, CT Corp, etc.)
-2. Cross-Ownership Web — circular shareholding risks, listed subsidiaries
-3. Related-Party Transaction Red Flags — RPT pricing, minority shareholder value drain
-4. Price Manipulation Indicators — thin float, volume spikes, retail pump signals
-5. Earnings & Dividend Authenticity — cash flow vs reported earnings, auditor quality
-
-Investor portfolio context (Aegis Alpha — ZenkichiArc):
-- BBCA: harga 6.050, avg cost 6.448, gap -6.2%, buy zone 5.900–6.300, BUY signal
-- BMRI: harga 4.500, avg cost 4.717, gap -4.6%, acc zone 4.300–4.700, ROE >21%
-- SMSM: harga 1.800, avg cost 1.792, gap +0.4%, acc zone 1.750–1.950, FCF konsisten
-- TSPC: harga 2.430, avg cost 2.413, gap +0.7%, acc zone 2.200–2.500, free float concern ⚠
-- SIDO: harga 498, avg cost 505, gap -1.5%, acc zone 480–540, market share 72% herbal
-
-RULES: Never skip integrity check. Never recommend non-bank BUMN. Never chase yield. Give direct verdict: BUY/HOLD/AVOID/RED FLAG with conviction %. End with clear VERDICT block.
-Respond in Indonesian mixed with English financial terminology — direct, no hedging.`;
-
-const SYS_K = `Kamu adalah asisten ahli untuk pegawai Badan Karantina Indonesia (Barantin). Kamu memahami peraturan karantina pertanian, perikanan, dan kehewanan di Indonesia; regulasi PNBP karantina; prosedur tindak karantina; komoditas yang diatur; dan administrasi pemerintahan.
-
-Tugas utama:
-- Rangkum dokumen regulasi/peraturan secara akurat dan terstruktur per bab/pasal
-- Ekstrak poin-poin teknis yang relevan untuk petugas lapangan di UPT
-- Riset dan jelaskan ketentuan teknis untuk komoditas tertentu
-- Rekap data statistik kegiatan dalam format tabel siap lapor
-- Draft surat dinas atau laporan formal sesuai standar administrasi pemerintah Indonesia
-- Jelaskan ketentuan PNBP karantina yang berlaku
-
-Gaya output: profesional, ringkas, menggunakan bahasa Indonesia formal. Struktur dengan header bernomor. Data dalam tabel. Tidak ada jargon yang tidak perlu.`;
+function toggleDriveBar() {
+  const bar = document.getElementById('drive-bar');
+  const btn = document.getElementById('btn-ref');
+  const visible = bar.style.display !== 'none';
+  bar.style.display = visible ? 'none' : 'flex';
+  btn.classList.toggle('btn-ref-active', !visible);
+}
 
 function toggleTheme() {
   const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('theme-btn').textContent = isDark ? '☀️' : '🌙';
-}
-
-function setMode(m) {
-  document.getElementById('panel-i').style.display = m==='i' ? 'block' : 'none';
-  document.getElementById('panel-k').style.display = m==='k' ? 'block' : 'none';
-  document.getElementById('tab-i').className = 'tab' + (m==='i' ? ' active-i' : '');
-  document.getElementById('tab-k').className = 'tab' + (m==='k' ? ' active-k' : '');
-}
-setMode('k');
-
-// ── INVESTASI (unchanged) ──
-function toggleChip(el, id, mode) {
-  const set = mode==='k' ? chipsK : chipsI;
-  const cls = mode==='k' ? 'sel-k' : 'sel-i';
-  if (set.has(id)) { set.delete(id); el.classList.remove(cls); }
-  else             { set.add(id);    el.classList.add(cls); }
-}
-function setCtx(mode, text) { document.getElementById('ctx-'+mode).value = text; }
-function selectStock(el, ticker, price, meta, verdict) {
-  document.getElementById('ticker-i').value = ticker;
-  document.querySelectorAll('.stock-tile').forEach(x => x.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('ctx-i').value =
-    `Saham: ${ticker} | Harga: ${price} | ${meta} | Verdict sebelumnya: ${verdict}\n\nLakukan full analysis update termasuk integrity check dan apakah posisi existing masih valid.`;
-}
-function handleFile(ev, mode) {
-  const file = ev.target.files[0];
-  if (!file) return;
-  document.getElementById('fname-'+mode).textContent = '✓ ' + file.name;
-  document.getElementById('drop-'+mode).classList.add('has-file');
-  const reader = new FileReader();
-  reader.onload = e => {
-    const txt = (e.target.result||'').substring(0, 6000);
-    if (mode==='i') pdfI = txt; else pdfK = txt;
-  };
-  reader.readAsText(file);
-}
-function buildPromptI() {
-  const ticker = document.getElementById('ticker-i').value.trim();
-  const ctx    = document.getElementById('ctx-i').value.trim();
-  const taskMap = {
-    'integrity': 'Integrity Check 5 poin wajib (ownership mapping, cross-ownership, RPT flags, manipulation indicators, earnings authenticity)',
-    'dividend':  'Dividend Quality (payout history, growth rate CAGR, FCF coverage, payout ratio, sustainability under stress)',
-    'valuation': 'Valuation Assessment (P/E, P/BV, EV/EBITDA vs 5yr history dan regional peers)',
-    'gtc':       'GTC Order Strategy (entry price, tranche sizing T1/T2/T3)',
-    'sbn':       'SBN/FR Bond Analysis (YTM, modified duration, coupon schedule)',
-    'stress':    'Stress Test (skenario dividen dipotong 50% + harga -30%, apakah thesis masih hold?)'
-  };
-  let prompt = `Analisis${ticker ? ' emiten/instrumen: '+ticker.toUpperCase() : ''}.\n\nModul yang diminta:\n`;
-  prompt += [...chipsI].map((s,i) => `${i+1}. ${taskMap[s]||s}`).join('\n');
-  if (pdfI) prompt += `\n\nDATA DARI DOKUMEN:\n${pdfI}`;
-  if (ctx)  prompt += `\n\nContext dari investor:\n${ctx}`;
-  prompt += '\n\nTutup dengan blok VERDICT: rating (BUY/HOLD/AVOID/RED FLAG), conviction %, dan entry logic jika applicable.';
-  return prompt;
-}
-async function runMode(mode) {
-  const prompt    = buildPromptI();
-  const sys       = SYS_I;
-  const outBox    = document.getElementById('out-i');
-  const contentEl = document.getElementById('out-content-i');
-  const statusEl  = document.getElementById('st-i');
-  const labelEl   = document.getElementById('out-label-i');
-  const btn       = document.getElementById('run-i');
-  const verdictEl = document.getElementById('verdict-i');
-  const ticker = document.getElementById('ticker-i').value.trim()||'analisis';
-  labelEl.textContent = ticker.toUpperCase();
-  outBox.style.display = 'block';
-  contentEl.textContent = '';
-  verdictEl.style.display = 'none';
-  statusEl.innerHTML = `<span class="spinner spinner-i"></span>running`;
-  statusEl.className = 'status-pill s-run';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYS_I, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    if (data.content?.[0]?.text) {
-      const txt = data.content[0].text;
-      contentEl.textContent = txt;
-      statusEl.textContent = 'selesai'; statusEl.className = 'status-pill s-ok';
-      const vl = txt.toUpperCase(); let verdict='', cls='';
-      if      (vl.includes('RED FLAG'))                                { verdict='⚠ RED FLAG';    cls='v-avoid'; }
-      else if (vl.includes('FUCKING BUY')||vl.includes('STRONG BUY')) { verdict='⚡ STRONG BUY'; cls='v-buy';   }
-      else if (vl.includes('BUY'))                                     { verdict='✓ BUY';          cls='v-buy';   }
-      else if (vl.includes('AVOID'))                                   { verdict='✕ AVOID';        cls='v-avoid'; }
-      else if (vl.includes('HOLD'))                                    { verdict='◆ HOLD';         cls='v-hold';  }
-      else if (vl.includes('TRIM'))                                    { verdict='▲ TRIM';         cls='v-hold';  }
-      if (verdict) {
-        verdictEl.innerHTML = `<span class="${cls}">${verdict}</span><span style="color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:400"> — scroll ke bawah untuk full reasoning</span>`;
-        verdictEl.style.display = 'flex';
-      }
-    } else { contentEl.textContent = 'Error: '+(data.error?.message||'Unknown error'); statusEl.textContent='error'; statusEl.className='status-pill s-err'; }
-  } catch(e) { contentEl.textContent='Gagal terhubung ke API.'; statusEl.textContent='error'; statusEl.className='status-pill s-err'; }
-  btn.disabled = false; contentEl.scrollTop = 0;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
 }
 
 // ══════════════════════════════════════════
@@ -937,7 +565,7 @@ function clearChat() {
   msgs.innerHTML = `
     <div class="chat-welcome" id="chat-welcome">
       <div class="welcome-icon">⬡</div>
-      <div class="welcome-title">Asisten Regulasi Karantina</div>
+      <div class="welcome-title">Senku Ishigami</div>
       <div class="welcome-sub">Tanya tentang peraturan, prosedur tindak karantina, PNBP, komoditas, atau minta draft surat dinas. Hubungkan Drive untuk basis pengetahuan dari dokumen resmi.</div>
       <div class="welcome-chips">
         <button class="wchip" onclick="quickAsk('Apa saja tindak karantina yang berlaku untuk komoditas hewan hidup?')">Tindak karantina hewan hidup</button>
@@ -1158,7 +786,7 @@ function savePrint() {
   let msgHtml = '';
   chatHistory.forEach(function(m) {
     const isUser = m.role === 'user';
-    const who    = isUser ? 'Petugas' : 'Asisten Karantina';
+    const who    = isUser ? 'Petugas' : 'Senku Ishigami';
     const whoCls = isUser ? 'who user' : 'who';
     const refHtml = m.docRef ? '<div class="ref">&#x2B21; Dokumen: ' + esc(m.docRef) + '</div>' : '';
     msgHtml += '<div class="msg">'
@@ -1179,34 +807,24 @@ function savePrint() {
     + '.who.user{color:#1a4a1a}'
     + '.body{background:#f5f7f5;border-radius:6px;padding:12px 16px;white-space:pre-wrap;font-size:11.5px}'
     + '.ref{font-size:9px;color:#888;margin-top:4px}'
-    + '@media print{body{margin:20px}}'
-    + '</style></head><body>'
-    + '<h1>Sesi Konsultasi Regulasi Karantina</h1>'
-    + '<div class="meta">NanoClaw &middot; ZenkichiArc &middot; Dicetak: ' + ts + '</div>'
+    + '@media print{'+'body{margin:15mm 20mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+'h1{page-break-after:avoid}'+'.msg{page-break-inside:avoid;margin-bottom:18px}'+'}'
+    + '<\/style><\/head><body>'
+    + '<h1>Sesi Konsultasi · Senku Ishigami</h1>'
+    + '<div class="meta">Senku Room &middot; ZenkichiArc &middot; Dicetak: ' + ts + '</div>'
     + msgHtml
-    + '</body></html>';
+    + '<\/body><\/html>';
 
-  // Download file
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const dlUrl = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = dlUrl;
-  a.download = 'sesi-karantina-' + new Date().toISOString().slice(0,10) + '.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  // Open print window — use fresh blob URL (separate from download URL)
-  const blob2  = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const prtUrl = URL.createObjectURL(blob2);
-  const w = window.open(prtUrl, '_blank');
-  if (w) {
-    w.onload = function() {
-      w.print();
-      setTimeout(function() { URL.revokeObjectURL(prtUrl); }, 2000);
-    };
-  }
-  setTimeout(function() { URL.revokeObjectURL(dlUrl); }, 3000);
+  // Print via hidden iframe → user pilih "Save as PDF" di dialog
+  var iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;width:0;height:0;border:none;left:-9999px;top:-9999px';
+  document.body.appendChild(iframe);
+  var doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
+  setTimeout(function() {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    setTimeout(function() { document.body.removeChild(iframe); }, 3000);
+  }, 400);
 }
 
 </script>
