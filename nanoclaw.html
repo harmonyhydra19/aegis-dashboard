@@ -1150,46 +1150,63 @@ async function runSummary() {
 // ── Save / Print ──
 function savePrint() {
   const ts = new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' });
-  const lines = chatHistory.map(m => {
-    const who = m.role === 'user' ? 'PETUGAS' : 'ASISTEN';
-    const ref  = m.docRef ? ` [Ref: ${m.docRef}]` : '';
-    return `[${who}]${ref}\n${m.content}`;
-  }).join('\n\n─────────────────────────────────\n\n');
 
-  const html = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
-<title>Sesi Karantina — ${ts}</title>
-<style>
-  body { font-family: 'Segoe UI', sans-serif; font-size: 12px; line-height: 1.8; max-width: 800px; margin: 40px auto; padding: 0 24px; color: #1a1a1a; }
-  h1 { font-size: 18px; font-weight: 700; border-bottom: 2px solid #1a5faa; padding-bottom: 8px; margin-bottom: 24px; }
-  .meta { font-size: 10px; color: #666; margin-bottom: 32px; }
-  .msg { margin-bottom: 24px; }
-  .who { font-weight: 700; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #1a5faa; margin-bottom: 6px; }
-  .who.user { color: #1a4a1a; }
-  .body { background: #f5f7f5; border-radius: 6px; padding: 12px 16px; white-space: pre-wrap; }
-  .ref { font-size: 9px; color: #888; margin-top: 4px; }
-  @media print { body { margin: 20px; } }
-</style></head><body>
-<h1>Sesi Konsultasi Regulasi Karantina</h1>
-<div class="meta">NanoClaw · ZenkichiArc · Dicetak: ${ts}</div>
-${chatHistory.map(m => `<div class="msg">
-  <div class="who ${m.role==='user'?'user':''}">${m.role==='user'?'Petugas':'Asisten Karantina'}</div>
-  <div class="body">${m.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-  ${m.docRef ? `<div class="ref">⬡ Dokumen: ${m.docRef}</div>` : ''}
-</div>`).join('')}
-</body></html>`;
+  function esc(s) {
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
-  const blob = new Blob([html], { type: 'text/html' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url;
-  a.download = `sesi-karantina-${new Date().toISOString().slice(0,10)}.html`;
+  let msgHtml = '';
+  chatHistory.forEach(function(m) {
+    const isUser = m.role === 'user';
+    const who    = isUser ? 'Petugas' : 'Asisten Karantina';
+    const whoCls = isUser ? 'who user' : 'who';
+    const refHtml = m.docRef ? '<div class="ref">&#x2B21; Dokumen: ' + esc(m.docRef) + '</div>' : '';
+    msgHtml += '<div class="msg">'
+      + '<div class="' + whoCls + '">' + who + '</div>'
+      + '<div class="body">' + esc(m.content) + '</div>'
+      + refHtml
+      + '</div>';
+  });
+
+  const html = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">'
+    + '<title>Sesi Karantina</title>'
+    + '<style>'
+    + 'body{font-family:Segoe UI,sans-serif;font-size:12px;line-height:1.8;max-width:800px;margin:40px auto;padding:0 24px;color:#1a1a1a}'
+    + 'h1{font-size:18px;font-weight:700;border-bottom:2px solid #1a5faa;padding-bottom:8px;margin-bottom:8px}'
+    + '.meta{font-size:10px;color:#666;margin-bottom:28px}'
+    + '.msg{margin-bottom:22px}'
+    + '.who{font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#1a5faa;margin-bottom:5px}'
+    + '.who.user{color:#1a4a1a}'
+    + '.body{background:#f5f7f5;border-radius:6px;padding:12px 16px;white-space:pre-wrap;font-size:11.5px}'
+    + '.ref{font-size:9px;color:#888;margin-top:4px}'
+    + '@media print{body{margin:20px}}'
+    + '</style></head><body>'
+    + '<h1>Sesi Konsultasi Regulasi Karantina</h1>'
+    + '<div class="meta">NanoClaw &middot; ZenkichiArc &middot; Dicetak: ' + ts + '</div>'
+    + msgHtml
+    + '</body></html>';
+
+  // Download file
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const dlUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = dlUrl;
+  a.download = 'sesi-karantina-' + new Date().toISOString().slice(0,10) + '.html';
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
-  // Also trigger print dialog
-  setTimeout(() => {
-    const w = window.open(url);
-    if (w) setTimeout(() => w.print(), 800);
-  }, 200);
+  document.body.removeChild(a);
+
+  // Open print window — use fresh blob URL (separate from download URL)
+  const blob2  = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const prtUrl = URL.createObjectURL(blob2);
+  const w = window.open(prtUrl, '_blank');
+  if (w) {
+    w.onload = function() {
+      w.print();
+      setTimeout(function() { URL.revokeObjectURL(prtUrl); }, 2000);
+    };
+  }
+  setTimeout(function() { URL.revokeObjectURL(dlUrl); }, 3000);
 }
 
 </script>
