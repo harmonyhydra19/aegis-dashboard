@@ -678,6 +678,78 @@ select.styled:focus { border-color: var(--accent); }
   color: var(--text-muted); margin-bottom: 4px;
   padding-bottom: 6px; border-bottom: 1px solid var(--border);
 }
+
+/* ── KELOLA MOBILE RESPONSIVE ── */
+@media (max-width: 640px) {
+  /* Hide desktop header row */
+  .me-grid.header { display: none; }
+
+  /* Each stock row becomes a card */
+  .me-grid {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  /* Ticker + delete button on top row */
+  .me-grid > input.se-input.ticker {
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    background: none;
+    padding: 0 0 6px 0;
+    width: calc(100% - 40px);
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 10px;
+    border-radius: 0;
+  }
+
+  /* Color swatch + delete — absolute top-right */
+  .me-grid > div:last-child {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Name input — full width */
+  .me-grid > input[id^="ke-n-"] {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  /* Numeric fields — 2 per row using inner grid */
+  .me-grid > input[id^="ke-p-"],
+  .me-grid > input[id^="ke-h-"],
+  .me-grid > input[id^="ke-d-"],
+  .me-grid > input[id^="ke-a-"],
+  .me-grid > input[id^="ke-r-"] {
+    width: calc(50% - 4px);
+    display: inline-block;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    vertical-align: top;
+    font-size: 11px;
+    box-sizing: border-box;
+  }
+
+  .me-grid > input[id^="ke-r-"] {
+    width: calc(50% - 4px);
+    margin-right: 0;
+  }
+
+  /* Numeric inputs — add pseudo-label via placeholder override */
+  .me-grid > input.se-input:not(.ticker) {
+    padding: 6px 8px;
+  }
+}
 .se-input {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: 4px; color: var(--text);
@@ -685,6 +757,7 @@ select.styled:focus { border-color: var(--accent); }
   padding: 6px 8px; outline: none; width: 100%;
   transition: border-color .2s;
 }
+.se-input::placeholder { color: var(--text-muted); opacity: 1; }
 .se-input:focus { border-color: var(--accent); }
 .se-input.ticker { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; }
 .btn-del {
@@ -1684,13 +1757,13 @@ function renderKelola() {
   wrap.innerHTML = STOCKS.map((s, i) => {
     const col = s._color || pal[i % pal.length];
     return `<div class="me-grid" id="kr-${i}">
-      <input class="se-input ticker" style="color:${col}" type="text" id="ke-t-${i}" value="${s.id.toUpperCase()}" oninput="this.value=this.value.toUpperCase()">
-      <input class="se-input" type="text" id="ke-n-${i}" value="${s.name}">
-      <input class="se-input" type="number" id="ke-p-${i}" value="${s.price}">
-      <input class="se-input" type="number" id="ke-h-${i}" value="${s.have}">
-      <input class="se-input" type="number" id="ke-d-${i}" value="${s.dpsCurr}">
-      <input class="se-input" type="number" id="ke-a-${i}" value="${s.avgCost||s.price}">
-      <input class="se-input" type="text"   id="ke-r-${i}" value="${s.role}">
+      <input class="se-input ticker" style="color:${col}" type="text" id="ke-t-${i}" value="${s.id.toUpperCase()}" placeholder="TICKER" oninput="this.value=this.value.toUpperCase()">
+      <input class="se-input" type="text" id="ke-n-${i}" value="${s.name}" placeholder="Nama perusahaan">
+      <input class="se-input" type="number" id="ke-p-${i}" value="${s.price}" placeholder="Harga">
+      <input class="se-input" type="number" id="ke-h-${i}" value="${s.have}" placeholder="Lot punya">
+      <input class="se-input" type="number" id="ke-d-${i}" value="${s.dpsCurr}" placeholder="DPS/sh">
+      <input class="se-input" type="number" id="ke-a-${i}" value="${s.avgCost||s.price}" placeholder="Avg cost">
+      <input class="se-input" type="text"   id="ke-r-${i}" value="${s.role}" placeholder="Role">
       <div style="position:relative;display:flex;align-items:center;gap:3px">
         <div class="color-swatch" style="background:${col}" onclick="document.getElementById('ke-c-${i}').click()"></div>
         <input class="se-color-input" type="color" id="ke-c-${i}" value="${col}"
