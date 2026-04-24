@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light" id="html-root">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -78,18 +78,18 @@ body::before {
 
 /* ── HEADER ── */
 .header {
-  padding: 20px 0 16px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  padding: 16px 0 14px;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--border2);
   margin-bottom: 0;
-  gap: 0 20px;
+  gap: 16px;
 }
-.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .header-wordmark {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(22px, 3.5vw, 30px);
+  font-size: clamp(28px, 4.5vw, 42px);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -107,16 +107,23 @@ body::before {
   padding: 2px 6px;
   white-space: nowrap;
 }
-/* middle: actions centered */
+
+/* right block: actions row + porto value below */
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
 .header-actions {
   display: flex;
   gap: 6px;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
 }
-/* right: porto value */
-.header-right { text-align: right; }
+.header-porto {
+  text-align: right;
+}
 .header-val {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 18px;
@@ -129,31 +136,35 @@ body::before {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   color: var(--text-dim);
-  margin-top: 3px;
-  white-space: nowrap;
-}
-
-/* Save status */
-#save-status {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  transition: color .3s;
+  margin-top: 2px;
   white-space: nowrap;
 }
 
 @media (max-width: 600px) {
-  .header {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    row-gap: 8px;
-  }
-  .header-brand { grid-column: 1; }
-  .header-right { grid-column: 2; grid-row: 1; }
-  .header-actions { grid-column: 1 / -1; justify-content: flex-start; }
+  .header { padding: 12px 0 10px; gap: 8px; }
+  .header-brand { flex-direction: column; align-items: flex-start; gap: 3px; }
+  .header-tag { display: none; }
+  .header-porto { display: none; }
+  .header-porto-mobile { display: flex !important; }
+  .header-actions { gap: 5px; }
   .header-wordmark { font-size: 20px; }
-  .header-val { font-size: 15px; }
+}
+.header-porto-mobile {
+  display: none;
+  align-items: baseline;
+  gap: 6px;
+}
+.header-porto-mobile .hpm-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.header-porto-mobile .hpm-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
 }
 
 /* ── TABS ── */
@@ -241,6 +252,13 @@ body::before {
 }
 .btn:hover { border-color: var(--accent); color: var(--accent); }
 .btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+.btn-icon {
+  padding: 6px 8px;
+  font-size: 14px;
+  line-height: 1;
+  min-width: 32px;
+  text-align: center;
+}
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
@@ -326,7 +344,6 @@ body::before {
 .pill.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
 
 /* ── GRID LAYOUTS ── */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
 
 /* ── ALLOC RADAR HEADER (reused for Zone Radar card) ── */
@@ -436,9 +453,6 @@ body::before {
 .gap-bar-avg {
   position: absolute; top: 0; bottom: 0; width: 2px; background: var(--text-dim);
   border-radius: 1px;
-}
-.gap-bar-price {
-  height: 100%; border-radius: 2px; transition: width .3s ease;
 }
 
 /* ── MOS BADGES ── */
@@ -667,88 +681,76 @@ select.styled:focus { border-color: var(--accent); }
 .sig-desc { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); }
 .integrity-list { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-dim); line-height: 2.1; }
 
-.me-grid {
+/* ── KELOLA STOCK CARD (card layout) ── */
+.ke-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.ke-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ke-ticker-input {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  outline: none;
+  width: 80px;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+  padding: 0;
+}
+.ke-name-input {
+  flex: 1;
+  min-width: 0;
+}
+.ke-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.ke-fields {
   display: grid;
-  grid-template-columns: 68px 1fr 76px 70px 70px 76px 80px 28px;
-  gap: 6px; align-items: center; margin-bottom: 8px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
 }
-.me-grid.header {
-  font-family: 'DM Mono', monospace; font-size: 8px;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 4px;
-  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+@media (max-width: 400px) {
+  .ke-fields { grid-template-columns: 1fr 1fr; }
 }
-
-/* ── KELOLA MOBILE RESPONSIVE ── */
-@media (max-width: 640px) {
-  /* Hide desktop header row */
-  .me-grid.header { display: none; }
-
-  /* Each stock row becomes a card */
-  .me-grid {
-    display: block;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    position: relative;
-  }
-
-  /* Ticker + delete button on top row */
-  .me-grid > input.se-input.ticker {
-    font-size: 16px;
-    font-weight: 700;
-    border: none;
-    background: none;
-    padding: 0 0 6px 0;
-    width: calc(100% - 40px);
-    border-bottom: 1px solid var(--border2);
-    margin-bottom: 10px;
-    border-radius: 0;
-  }
-
-  /* Color swatch + delete — absolute top-right */
-  .me-grid > div:last-child {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* Name input — full width */
-  .me-grid > input[id^="ke-n-"] {
-    width: 100%;
-    margin-bottom: 10px;
-    font-size: 11px;
-  }
-
-  /* Numeric fields — 2 per row using inner grid */
-  .me-grid > input[id^="ke-p-"],
-  .me-grid > input[id^="ke-h-"],
-  .me-grid > input[id^="ke-d-"],
-  .me-grid > input[id^="ke-a-"],
-  .me-grid > input[id^="ke-r-"] {
-    width: calc(50% - 4px);
-    display: inline-block;
-    margin-right: 6px;
-    margin-bottom: 6px;
-    vertical-align: top;
-    font-size: 11px;
-    box-sizing: border-box;
-  }
-
-  .me-grid > input[id^="ke-r-"] {
-    width: calc(50% - 4px);
-    margin-right: 0;
-  }
-
-  /* Numeric inputs — add pseudo-label via placeholder override */
-  .me-grid > input.se-input:not(.ticker) {
-    padding: 6px 8px;
-  }
+.ke-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ke-field-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ke-field input.se-input {
+  width: 100%;
+}
+.ke-ticker-input.se-input {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  width: 80px;
+  min-width: 60px;
 }
 .se-input {
   background: var(--surface2); border: 1px solid var(--border);
@@ -993,19 +995,6 @@ select.styled:focus { border-color: var(--accent); }
 .pin-key.del { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text-dim); }
 .pin-err { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--red); height: 14px; }
 
-/* Loading spinner */
-.loading-spinner {
-  display: inline-block;
-  width: 8px; height: 8px;
-  border: 1px solid var(--border2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin .6s linear infinite;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* ═══════════════════════════════════════════
    TABLET — 641px to 900px: Zone Radar 3-col
    ═══════════════════════════════════════════ */
@@ -1022,15 +1011,7 @@ select.styled:focus { border-color: var(--accent); }
   .wrap { padding: 0 12px; }
 
   /* ── HEADER ── */
-  .header {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    row-gap: 8px;
-    padding: 12px 0 10px;
-  }
-  .header-brand { grid-column: 1; }
-  .header-right { grid-column: 2; grid-row: 1; text-align: right; }
-  .header-actions { grid-column: 1 / -1; justify-content: flex-start; gap: 5px; }
+  .header { padding: 12px 0 10px; }
   .header-wordmark { font-size: 20px; }
   .header-val { font-size: 15px; }
   .header-meta { font-size: 9px; }
@@ -1054,7 +1035,6 @@ select.styled:focus { border-color: var(--accent); }
   .card-header { margin-bottom: 12px; padding-bottom: 10px; }
 
   /* ── GRID LAYOUTS ── */
-  .grid-2 { grid-template-columns: 1fr; gap: 12px; }
   .grid-3 { grid-template-columns: 1fr 1fr; gap: 8px; }
 
   /* ── PRICE GRID (Zone Radar) ── */
@@ -1112,18 +1092,6 @@ select.styled:focus { border-color: var(--accent); }
   .grid-3 .ctrl-label { font-size: 10px; }
   .grid-3 input, .grid-3 select { font-size: 12px; }
 
-  /* ── ARSENAL / KELOLA ── */
-  .me-grid {
-    grid-template-columns: 52px 1fr 60px 52px;
-    gap: 4px;
-  }
-  /* Hide DPS, Avg Cost, Role columns on mobile - show only Ticker, Nama, Harga, Lot */
-  .me-grid .se-input:nth-child(5),
-  .me-grid .se-input:nth-child(6),
-  .me-grid .se-input:nth-child(7) { display: none; }
-  .me-grid.header span:nth-child(5),
-  .me-grid.header span:nth-child(6),
-  .me-grid.header span:nth-child(7) { display: none; }
   .se-input { font-size: 10px; padding: 5px 6px; }
 
   /* ── AI SECTIONS ── */
@@ -1157,11 +1125,9 @@ select.styled:focus { border-color: var(--accent); }
   .price-grid > *:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .pills { gap: 3px; }
   .pill { font-size: 8px; padding: 3px 7px; }
-  .alloc-row { display: none; } /* removed alloc pane */
   .stock-card-top { grid-template-columns: 90px 1fr; }
   .stock-stats { grid-template-columns: 1fr 1fr; }
   .chart-row { grid-template-columns: 44px 1fr 60px; font-size: 10px; }
-  .me-grid { grid-template-columns: 46px 1fr 54px 46px; }
   .target-input { font-size: 16px; }
   .stat-val { font-size: 13px; }
 }
@@ -1175,27 +1141,33 @@ select.styled:focus { border-color: var(--accent); }
   <div class="header-brand">
     <div class="header-wordmark" onclick="location.reload()" style="cursor:pointer" title="Reload">Aegis <span>Growth</span></div>
     <div class="header-tag">IDX · Dividend</div>
-  </div>
-  <div class="header-actions">
-    <div class="save-indicator" id="save-indicator" title="">
-      <svg class="save-icon" id="save-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4a2 2 0 0 1 2-2h6.586A2 2 0 0 1 14 2.586L15.414 4A2 2 0 0 1 16 5.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-        <rect x="7" y="2" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-        <path d="M7 12h6M7 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-      <div class="save-tooltip" id="save-tooltip"></div>
+    <div class="header-porto-mobile">
+      <span class="hpm-val" id="hdr-val-mobile">—</span>
+      <span class="hpm-meta" id="hdr-meta-mobile">current</span>
     </div>
-    <button class="btn" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
-    <button class="btn" id="refresh-btn" onclick="fetchPrices(true)" title="Refresh harga realtime">↻ Harga</button>
   </div>
   <div class="header-right">
-    <div class="header-val" id="hdr-val">—</div>
-    <div class="header-meta" id="hdr-meta">current portfolio</div>
+    <div class="header-actions">
+      <div class="save-indicator" id="save-indicator" title="">
+        <svg class="save-icon" id="save-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4a2 2 0 0 1 2-2h6.586A2 2 0 0 1 14 2.586L15.414 4A2 2 0 0 1 16 5.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <rect x="7" y="2" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M7 12h6M7 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <div class="save-tooltip" id="save-tooltip"></div>
+      </div>
+      <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle tema">🌙</button>
+      <button class="btn btn-icon" id="refresh-btn" onclick="fetchPrices(true)" title="Refresh harga realtime">↻</button>
+    </div>
+    <div class="header-porto">
+      <div class="header-val" id="hdr-val">—</div>
+      <div class="header-meta" id="hdr-meta">current portfolio</div>
+    </div>
   </div>
 </div>
 
 <!-- TABS -->
-<div class="tabs" style="margin-top:0">
+<div class="tabs">
   <button class="tab active" onclick="switchTab('lot')">◈ Radar Lot</button>
   <button class="tab" onclick="switchTab('pensiun')">◎ Visi Pensiun</button>
   <button class="tab" onclick="switchTab('rules')">⬡ Codex Porto</button>
@@ -1442,11 +1414,6 @@ select.styled:focus { border-color: var(--accent); }
     </div>
     <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
       Edit ticker, nama, harga, lot punya, avg cost, DPS per saham. Perubahan disimpan otomatis ke Supabase.
-    </div>
-    <div class="me-grid header">
-      <span>Ticker</span><span>Nama</span><span>Harga</span>
-      <span>Lot</span><span>DPS</span><span>Avg Cost</span>
-      <span>Role</span><span></span>
     </div>
     <div id="kelola-rows"></div>
     <button class="btn-add" onclick="addStockInline()">+ Tambah Saham Baru</button>
@@ -1724,7 +1691,7 @@ function toggleTheme() {
   const next = now === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('aegis-theme', next);
-  document.getElementById('theme-btn').textContent = next === 'dark' ? '☀ Light' : '🌙 Dark';
+  document.getElementById('theme-btn').textContent = next === 'dark' ? '☀' : '🌙';
   buildInputs(); calcLot();
 }
 
@@ -1756,19 +1723,38 @@ function renderKelola() {
   if (!wrap) return;
   wrap.innerHTML = STOCKS.map((s, i) => {
     const col = s._color || pal[i % pal.length];
-    return `<div class="me-grid" id="kr-${i}">
-      <input class="se-input ticker" style="color:${col}" type="text" id="ke-t-${i}" value="${s.id.toUpperCase()}" placeholder="TICKER" oninput="this.value=this.value.toUpperCase()">
-      <input class="se-input" type="text" id="ke-n-${i}" value="${s.name}" placeholder="Nama perusahaan">
-      <input class="se-input" type="number" id="ke-p-${i}" value="${s.price}" placeholder="Harga">
-      <input class="se-input" type="number" id="ke-h-${i}" value="${s.have}" placeholder="Lot punya">
-      <input class="se-input" type="number" id="ke-d-${i}" value="${s.dpsCurr}" placeholder="DPS/sh">
-      <input class="se-input" type="number" id="ke-a-${i}" value="${s.avgCost||s.price}" placeholder="Avg cost">
-      <input class="se-input" type="text"   id="ke-r-${i}" value="${s.role}" placeholder="Role">
-      <div style="position:relative;display:flex;align-items:center;gap:3px">
-        <div class="color-swatch" style="background:${col}" onclick="document.getElementById('ke-c-${i}').click()"></div>
-        <input class="se-color-input" type="color" id="ke-c-${i}" value="${col}"
-          oninput="document.getElementById('kr-${i}').querySelector('.color-swatch').style.background=this.value;document.getElementById('ke-t-${i}').style.color=this.value">
-        ${STOCKS.length > 1 ? `<button class="btn-del" onclick="delStockInline(${i})">×</button>` : ''}
+    return `<div class="ke-card" id="kr-${i}">
+      <div class="ke-card-top">
+        <input class="ke-ticker-input se-input ticker" style="color:${col}" type="text" id="ke-t-${i}" value="${s.id.toUpperCase()}" placeholder="TICKER" oninput="this.value=this.value.toUpperCase()">
+        <input class="se-input ke-name-input" type="text" id="ke-n-${i}" value="${s.name}" placeholder="Nama perusahaan">
+        <div class="ke-card-actions">
+          <div class="color-swatch" style="background:${col}" onclick="document.getElementById('ke-c-${i}').click()"></div>
+          <input class="se-color-input" type="color" id="ke-c-${i}" value="${col}"
+            oninput="document.getElementById('kr-${i}').querySelector('.color-swatch').style.background=this.value;document.getElementById('ke-t-${i}').style.color=this.value">
+          ${STOCKS.length > 1 ? `<button class="btn-del" onclick="delStockInline(${i})">×</button>` : ''}
+        </div>
+      </div>
+      <div class="ke-fields">
+        <div class="ke-field">
+          <span class="ke-field-label">Harga</span>
+          <input class="se-input" type="number" id="ke-p-${i}" value="${s.price}" placeholder="Harga">
+        </div>
+        <div class="ke-field">
+          <span class="ke-field-label">Lot</span>
+          <input class="se-input" type="number" id="ke-h-${i}" value="${s.have}" placeholder="Lot punya">
+        </div>
+        <div class="ke-field">
+          <span class="ke-field-label">DPS/sh</span>
+          <input class="se-input" type="number" id="ke-d-${i}" value="${s.dpsCurr}" placeholder="DPS/sh">
+        </div>
+        <div class="ke-field">
+          <span class="ke-field-label">Avg Cost</span>
+          <input class="se-input" type="number" id="ke-a-${i}" value="${s.avgCost||s.price}" placeholder="Avg cost">
+        </div>
+        <div class="ke-field">
+          <span class="ke-field-label">Role</span>
+          <input class="se-input" type="text" id="ke-r-${i}" value="${s.role}" placeholder="Role">
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -1861,17 +1847,6 @@ function buildInputs() {
   }).join('');
 }
 
-function getAllocs() {
-  let total = 0;
-  const a = {};
-  STOCKS.forEach(s => { a[s.id] = parseFloat(document.getElementById('alloc-'+s.id)?.value) || 0; total += a[s.id]; });
-  return { a, total };
-}
-
-function syncAlloc() {
-  calcLot(); calcPensiun();
-}
-
 function parseTarget(input) {
   const raw = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
   const num = parseInt(raw) || 0;
@@ -1908,7 +1883,7 @@ function toggleBZ(btn, id) {
 // ── CALC LOT ──
 function calcLot() {
   const target = parseFloat(document.getElementById('target-val').value) || 250e6;
-  const { a, total } = getAllocs();
+  const totalAlloc = STOCKS.reduce((s, x) => s + x.alloc, 0);
 
   CURRENT_VAL = STOCKS.reduce((sum, s) => {
     const p = parseFloat(document.getElementById('price-'+s.id)?.value) || s.price;
@@ -1919,6 +1894,10 @@ function calcLot() {
   document.getElementById('hdr-val').textContent = rp(CURRENT_VAL);
   const tLabel = target>=1e9 ? (target/1e9).toFixed(1)+' Miliar' : target>=1e6 ? (target/1e6).toFixed(0)+' Jt' : fmt(target);
   document.getElementById('hdr-meta').textContent = `current · ${pct.toFixed(1)}% dari ${tLabel}`;
+  const mVal = document.getElementById('hdr-val-mobile');
+  const mMeta = document.getElementById('hdr-meta-mobile');
+  if (mVal) mVal.textContent = rp(CURRENT_VAL);
+  if (mMeta) mMeta.textContent = `${pct.toFixed(1)}% dari ${tLabel}`;
   document.getElementById('t-curr').textContent = rp(CURRENT_VAL);
   document.getElementById('t-pct').textContent = pct.toFixed(1).replace('.',',') + '% dari target';
   document.getElementById('t-bar').style.width = pct.toFixed(1) + '%';
@@ -1929,7 +1908,7 @@ function calcLot() {
   STOCKS.forEach((s, idx) => {
     const price   = parseFloat(document.getElementById('price-'+s.id)?.value) || s.price;
     const avgCost = parseFloat(document.getElementById('avg-'+s.id)?.value) || s.avgCost || price;
-    const allocFrac = total > 0 ? a[s.id] / total : s.alloc / 100;
+    const allocFrac = totalAlloc > 0 ? s.alloc / totalAlloc : 1 / STOCKS.length;
     const targetLot = Math.floor(target * allocFrac / (price * 100));
     const actualVal = targetLot * price * 100;
     const needLot   = targetLot - s.have;
@@ -2147,9 +2126,9 @@ function calcPensiun() {
     chartDiv.appendChild(d);
   });
 
-  const { a, total } = getAllocs();
+  const totalAlloc = STOCKS.reduce((s, x) => s + x.alloc, 0);
   document.getElementById('pensiun-lot').innerHTML = STOCKS.map((s, idx) => {
-    const allocFrac = total > 0 ? a[s.id] / total : s.alloc / 100;
+    const allocFrac = totalAlloc > 0 ? s.alloc / totalAlloc : 1 / STOCKS.length;
     const priceEnd  = s.price * Math.pow(1 + priceGr, years);
     const targetLot = Math.floor(fin.porto * allocFrac / (priceEnd * 100));
     const targetLotNow = Math.floor(fin.porto * allocFrac / (s.price * 100));
@@ -2204,9 +2183,9 @@ const PROXIES = [
 function showPriceStatus(msg, ok) {
   const btn = document.getElementById('refresh-btn');
   if (!btn) return;
-  btn.textContent = ok === 'loading' ? '⏳' : (ok ? '↻ Harga ✓' : '↻ Harga ✗');
+  btn.textContent = ok === 'loading' ? '⏳' : '↻';
   btn.title = msg;
-  if (ok !== 'loading') setTimeout(() => { btn.textContent = '↻ Harga'; btn.title = ''; }, 4000);
+  if (ok !== 'loading') setTimeout(() => { btn.title = ''; }, 4000);
 }
 
 function showPricePopup(quotes, source) {
@@ -2426,11 +2405,11 @@ async function saveSettings() {
 }
 
 // ── INIT ──
-// Set theme button label to match persisted theme
+// Set theme button icon to match persisted theme
 (function syncThemeBtn() {
   const theme = document.documentElement.getAttribute('data-theme') || 'light';
   const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = theme === 'dark' ? '☀ Light' : '🌙 Dark';
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '🌙';
 })();
 
 loadFromSupabase();
