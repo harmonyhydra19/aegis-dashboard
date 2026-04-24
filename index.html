@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -25,6 +25,14 @@
   --text: #dfe8df;
   --text-dim: #677867;
   --text-muted: #3a4a3a;
+  --teal: #1D9E75;
+  --teal2: #5DCAA5;
+  --teal-bg: rgba(29,158,117,0.10);
+  --blue: #378ADD;
+  --blue2: #85B7EB;
+  --blue-bg: rgba(55,138,221,0.10);
+  --amber: #EF9F27;
+  --sun: #ffd166;
 }
 [data-theme="light"] {
   --bg: #f3f4f0;
@@ -42,6 +50,14 @@
   --text: #181e18;
   --text-dim: #4a5e4a;
   --text-muted: #8a9e8a;
+  --teal: #1a8f60;
+  --teal2: #1a7a50;
+  --teal-bg: rgba(26,143,96,0.08);
+  --blue: #1a5faa;
+  --blue2: #1a5faa;
+  --blue-bg: rgba(26,95,170,0.08);
+  --amber: #a06800;
+  --sun: #c07800;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -268,6 +284,16 @@ body::before {
   font-size: 11px;
 }
 .btn-primary:hover { opacity: .85; color: #0c0e0c; }
+.btn-nanoclaw {
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.06em; border-radius: 6px; cursor: pointer;
+  transition: all .18s; border: 1px solid var(--accent-dim);
+  background: var(--accent-glow); color: var(--accent); padding: 5px 10px;
+}
+.btn-nanoclaw:hover { background: var(--accent); color: #0c0e0c; border-color: var(--accent); }
+.btn-nanoclaw:hover svg path { fill: #0c0e0c; }
+.btn-nanoclaw:hover svg circle { fill: var(--accent); }
 
 /* ── TARGET CARD ── */
 .target-card {
@@ -1156,9 +1182,15 @@ select.styled:focus { border-color: var(--accent); }
         </svg>
         <div class="save-tooltip" id="save-tooltip"></div>
       </div>
-      <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle tema">🌙</button>
+      <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle tema" style="display:flex;align-items:center;justify-content:center;padding:6px 7px">
+        <svg id="theme-icon-sun" viewBox="0 0 18 18" fill="none" width="15" height="15" style="display:none"><circle cx="9" cy="9" r="3.5" stroke="var(--sun)" stroke-width="1.5"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.22 3.22l1.42 1.42M13.36 13.36l1.42 1.42M3.22 14.78l1.42-1.42M13.36 4.64l1.42-1.42" stroke="var(--sun)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg id="theme-icon-moon" viewBox="0 0 18 18" fill="none" width="14" height="14"><path d="M15 10.5A6.5 6.5 0 0 1 7.5 3a6.5 6.5 0 1 0 7.5 7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
       <button class="btn btn-icon" id="refresh-btn" onclick="fetchPrices(true)" title="Refresh harga realtime">↻</button>
-      <a href="./nanoclaw.html" class="btn" style="text-decoration:none;font-size:9px;letter-spacing:0.06em" title="NanoClaw AI">⚡ AI</a>
+      <button class="btn btn-nanoclaw" onclick="window.open('nanoclaw__2_.html','_blank')" title="Buka NanoClaw — AI Analyst">
+        <svg viewBox="0 0 20 20" fill="none" width="13" height="13" style="flex-shrink:0"><path d="M10 2L12.5 7H18L13.5 10.5L15.5 16L10 12.5L4.5 16L6.5 10.5L2 7H7.5L10 2Z" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="2.2" fill="var(--bg)"/></svg>
+        <span>NanoClaw</span>
+      </button>
     </div>
     <div class="header-porto">
       <div class="header-val" id="hdr-val">—</div>
@@ -1172,7 +1204,6 @@ select.styled:focus { border-color: var(--accent); }
   <button class="tab active" onclick="switchTab('lot')">◈ Radar Lot</button>
   <button class="tab" onclick="switchTab('pensiun')">◎ Visi Pensiun</button>
   <button class="tab" onclick="switchTab('rules')">⬡ Codex Porto</button>
-  <a class="tab" href="./nanoclaw.html" style="text-decoration:none">⚡ NanoClaw</a>
   <button class="tab tab-settings" onclick="switchTab('kelola')">⚙ Arsenal</button>
 </div>
 
@@ -1683,7 +1714,7 @@ function getMOS(id, price) {
 
 // ── THEME ──
 (function initTheme() {
-  const saved = localStorage.getItem('aegis-theme') || 'light';
+  const saved = localStorage.getItem('aegis-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
@@ -1693,8 +1724,15 @@ function toggleTheme() {
   const next = now === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('aegis-theme', next);
-  document.getElementById('theme-btn').textContent = next === 'dark' ? '☀' : '🌙';
+  _syncThemeIcons(next);
   buildInputs(); calcLot();
+}
+function _syncThemeIcons(theme) {
+  const isDark = theme === 'dark';
+  const sun = document.getElementById('theme-icon-sun');
+  const moon = document.getElementById('theme-icon-moon');
+  if (sun)  sun.style.display  = isDark  ? 'none'  : 'block';
+  if (moon) moon.style.display = isDark  ? 'block' : 'none';
 }
 
 // ── TAB ──
@@ -2409,9 +2447,8 @@ async function saveSettings() {
 // ── INIT ──
 // Set theme button icon to match persisted theme
 (function syncThemeBtn() {
-  const theme = document.documentElement.getAttribute('data-theme') || 'light';
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = theme === 'dark' ? '☀' : '🌙';
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  _syncThemeIcons(theme);
 })();
 
 loadFromSupabase();
