@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230c0e0c'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%23b8f55a' opacity='0.9'/><circle cx='16' cy='16' r='3.5' fill='%230c0e0c'/></svg>">
 <link rel="icon" type="image/svg+xml" media="(prefers-color-scheme: light)" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23f3f4f0'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%234a8e08' opacity='0.95'/><circle cx='16' cy='16' r='3.5' fill='%23f3f4f0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0c0e0c;
@@ -87,7 +87,7 @@ body::before {
 }
 .header-brand { display: flex; align-items: center; gap: 10px; }
 .header-wordmark {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(22px, 3.5vw, 30px);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -117,7 +117,7 @@ body::before {
 /* right: porto value */
 .header-right { text-align: right; }
 .header-val {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--accent);
@@ -208,7 +208,7 @@ body::before {
   border-bottom: 1px solid var(--border);
 }
 .card-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -283,14 +283,14 @@ body::before {
 }
 .target-input {
   background: none; border: none; outline: none;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 22px; font-weight: 700;
   color: var(--text); width: 100%;
   letter-spacing: -0.02em;
 }
 .target-right { text-align: right; }
 .target-curr {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 15px; font-weight: 700;
 }
 .target-pct {
@@ -334,8 +334,8 @@ body::before {
   padding: 5px 0;
 }
 .alloc-ticker {
-  font-family: 'Syne', sans-serif;
-  font-size: 13px; font-weight: 700;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 800; letter-spacing: 0.02em;
 }
 .bar-track { height: 4px; background: var(--surface3); border-radius: 2px; }
 .bar-fill { height: 100%; border-radius: 2px; transition: width .3s ease; }
@@ -375,7 +375,7 @@ body::before {
 }
 .price-card:focus-within { border-color: var(--accent); }
 .price-card-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-.price-card-ticker { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.price-card-ticker { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 10px; }
 .price-field { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
 .price-field-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); width: 44px; flex-shrink: 0; }
 .price-field input {
@@ -508,10 +508,10 @@ body::before {
 .bz-label { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-muted); text-align: center; flex-shrink: 0; }
 .bz-price-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
 .bz-curr-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); }
-.bz-curr-val { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.bz-curr-val { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; }
 .bz-stats { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
 .bz-stat-label { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-muted); display: block; margin-bottom: 2px; }
-.bz-stat-val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
+.bz-stat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; }
 
 .toggle-btn {
   width: 100%; background: none;
@@ -568,7 +568,7 @@ select.styled:focus { border-color: var(--accent); }
 }
 .verdict-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(125px,1fr)); gap: 16px; margin-bottom: 14px; }
 .stat-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
-.stat-val { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; line-height: 1; }
+.stat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; line-height: 1; }
 .stat-val.accent { color: var(--accent); }
 .stat-val.gold { color: var(--accent2); }
 .stat-val.green { color: var(--green); }
@@ -611,7 +611,7 @@ select.styled:focus { border-color: var(--accent); }
 /* ── RULES TAB ── */
 .rule-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
 .rule-item:last-child { border-bottom: none; }
-.rule-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent-dim); flex-shrink: 0; width: 26px; line-height: 1.2; }
+.rule-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent-dim); flex-shrink: 0; width: 26px; line-height: 1.2; }
 .rule-head { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; margin-bottom: 5px; letter-spacing: 0.03em; }
 .rule-desc { font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text-dim); line-height: 1.75; }
 
@@ -639,7 +639,7 @@ select.styled:focus { border-color: var(--accent); }
   transition: border-color .2s;
 }
 .se-input:focus { border-color: var(--accent); }
-.se-input.ticker { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; }
+.se-input.ticker { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; }
 .btn-del {
   background: none; border: 1px solid var(--border);
   border-radius: 4px; color: var(--red); font-size: 14px;
@@ -736,7 +736,7 @@ select.styled:focus { border-color: var(--accent); }
   user-select: none;
 }
 .ai-section-header:hover { background: var(--surface2); }
-.ai-ticker-label { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.ai-ticker-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; }
 .ai-name-label { font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text-muted); flex: 1; }
 .ai-chevron {
   font-size: 9px; color: var(--text-muted);
@@ -852,7 +852,7 @@ select.styled:focus { border-color: var(--accent); }
   border-radius: 12px; padding: 28px 24px; width: 300px;
   text-align: center;
 }
-.pin-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.pin-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
 .pin-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 18px; }
 .pin-dots { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
 .pin-dot {
@@ -864,7 +864,7 @@ select.styled:focus { border-color: var(--accent); }
 .pin-dot.error { background: var(--red); border-color: var(--red); }
 .pin-numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
 .pin-key {
-  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700;
   padding: 12px; border-radius: 8px; cursor: pointer;
   border: 1px solid var(--border); background: var(--surface2);
   color: var(--text); transition: all .15s;
@@ -1929,11 +1929,11 @@ function calcLot() {
   sumRow.className = 'summary-row';
   sumRow.innerHTML = `
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted)">Total porto</span>
-    <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent)">${rp(CURRENT_VAL)}</span>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--accent)">${rp(CURRENT_VAL)}</span>
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted)">dari</span>
-    <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700">${rp(target)}</span>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700">${rp(target)}</span>
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted)">— kurang</span>
-    <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--accent2)">${rp(rem)}</span>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:var(--accent2)">${rp(rem)}</span>
   `;
   wrap.appendChild(sumRow);
 
@@ -2031,9 +2031,9 @@ function calcPensiun() {
     const need      = Math.max(0, targetLotNow - s.have);
     const col       = getColor(s.id, idx);
     return `<tr>
-      <td><span style="font-family:'Syne',sans-serif;font-weight:700;color:${col}">${s.id.toUpperCase()}</span><br><span style="font-size:9px;color:var(--text-muted)">${s.name}</span></td>
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:${col}">${s.id.toUpperCase()}</span><br><span style="font-size:9px;color:var(--text-muted)">${s.name}</span></td>
       <td>${(allocFrac*100).toFixed(0)}%</td>
-      <td style="font-family:'Syne',sans-serif;font-weight:700;color:${col}">${targetLot.toLocaleString('id-ID')} lot</td>
+      <td style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:${col}">${targetLot.toLocaleString('id-ID')} lot</td>
       <td>${rp(fin.porto*allocFrac)}</td>
       <td>Rp ${Math.round(dpsEnd).toLocaleString('id-ID')}/sh</td>
       <td style="color:var(--green)">${rp(divEnd)}</td>
@@ -2097,7 +2097,7 @@ function showPricePopup(quotes, source) {
     const color = change >= 0 ? 'var(--green)' : 'var(--red)';
     const sign = change >= 0 ? '+' : '';
     return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);gap:16px">
-      <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px">${s.id.toUpperCase()}</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px">${s.id.toUpperCase()}</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px">Rp ${price.toLocaleString('id-ID')}</span>
       <span style="font-family:'DM Mono',monospace;font-size:10px;color:${color}">${sign}${change.toFixed(2)}%</span>
     </div>`;
