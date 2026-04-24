@@ -2,7 +2,7 @@
 <html lang="id" data-theme="light" id="html-root">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>⚔ Aegis Growth Dividend</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230c0e0c'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%23b8f55a' opacity='0.9'/><circle cx='16' cy='16' r='3.5' fill='%230c0e0c'/></svg>">
 <link rel="icon" type="image/svg+xml" media="(prefers-color-scheme: light)" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23f3f4f0'/><path d='M16 4 L20 12 L28 12 L22 18 L24 26 L16 22 L8 26 L10 18 L4 12 L12 12 Z' fill='%234a8e08' opacity='0.95'/><circle cx='16' cy='16' r='3.5' fill='%23f3f4f0'/></svg>">
@@ -46,12 +46,20 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Mobile touch improvements */
+button, input, select { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+input[type=number] { -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
-  padding-bottom: 64px;
+  padding-bottom: max(64px, env(safe-area-inset-bottom));
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   transition: background .25s, color .25s;
 }
 
@@ -138,11 +146,13 @@ body::before {
   .header {
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
-    row-gap: 10px;
+    row-gap: 8px;
   }
   .header-brand { grid-column: 1; }
   .header-right { grid-column: 2; grid-row: 1; }
   .header-actions { grid-column: 1 / -1; justify-content: flex-start; }
+  .header-wordmark { font-size: 20px; }
+  .header-val { font-size: 15px; }
 }
 
 /* ── TABS ── */
@@ -153,6 +163,10 @@ body::before {
   margin-bottom: 28px;
   overflow-x: auto;
   scrollbar-width: none;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
 }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
@@ -863,15 +877,159 @@ select.styled:focus { border-color: var(--accent); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ═══════════════════════════════════════════
+   MOBILE — 640px and below
+   ═══════════════════════════════════════════ */
 @media (max-width: 640px) {
-  .stock-card-top { grid-template-columns: 80px 1fr; }
+  /* ── WRAP ── */
+  .wrap { padding: 0 12px; }
+
+  /* ── HEADER ── */
+  .header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 8px;
+    padding: 12px 0 10px;
+  }
+  .header-brand { grid-column: 1; }
+  .header-right { grid-column: 2; grid-row: 1; text-align: right; }
+  .header-actions { grid-column: 1 / -1; justify-content: flex-start; gap: 5px; }
+  .header-wordmark { font-size: 20px; }
+  .header-val { font-size: 15px; }
+  .header-meta { font-size: 9px; }
+  .header-tag { display: none; }
+
+  /* ── TABS ── */
+  .tab { padding: 11px 12px; font-size: 9px; letter-spacing: 0.04em; }
+
+  /* ── PILLS ── */
+  .pills { gap: 4px; flex-wrap: wrap; }
+  .pill { font-size: 9px; padding: 4px 9px; }
+
+  /* ── TARGET CARD ── */
+  .target-inner { gap: 10px; padding: 14px 14px 12px; }
+  .target-input { font-size: 18px; }
+  .target-curr { font-size: 13px; }
+  .target-pct { font-size: 9px; }
+
+  /* ── CARDS ── */
+  .card { padding: 14px; }
+  .card-header { margin-bottom: 12px; padding-bottom: 10px; }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+  .grid-3 { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* ── ALLOC ROW ── */
+  .alloc-row { grid-template-columns: 44px 1fr 40px 38px; gap: 6px; }
+  .alloc-ticker { font-size: 11px; }
+  .alloc-input { font-size: 10px; padding: 3px 4px; }
+
+  /* ── PRICE GRID (Zone Radar) ── */
+  .price-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .price-card { padding: 10px 11px; }
+  .price-card-ticker { font-size: 13px; margin-bottom: 7px; }
+  .price-field input { font-size: 12px; }
+
+  /* ── STOCK CARDS ── */
+  .stock-card-top { grid-template-columns: 72px 1fr; }
+  .stock-identity { padding: 11px 12px; }
+  .stock-ticker { font-size: 15px; }
+  .stock-name { font-size: 9px; }
+  .stock-role { font-size: 7px; }
   .stock-stats { grid-template-columns: 1fr 1fr; }
-  .stock-stat:nth-child(3), .stock-stat:nth-child(4) { border-top: 1px solid var(--border); }
-  .buyzone-section.open { grid-template-columns: 1fr; }
-  .grid-2 { grid-template-columns: 1fr; }
-  .grid-3 { grid-template-columns: 1fr 1fr; }
-  .price-grid { grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+  .stock-stat { padding: 9px 10px; }
+  .stock-stat:nth-child(2) { border-right: none; }
+  .stock-stat:nth-child(3),
+  .stock-stat:nth-child(4) { border-top: 1px solid var(--border); }
+  .stock-stat-big { font-size: 15px; }
+  .stock-stat-sub { font-size: 8px; }
+  .stock-stat-label { font-size: 7px; }
+
+  /* ── LOT PROGRESS ── */
+  .lot-progress { padding: 7px 12px 9px; }
+  .lot-bar-labels { font-size: 8px; }
+
+  /* ── BUY ZONE ── */
+  .buyzone-section.open { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
+  .bz-stats { display: flex; gap: 14px; }
+  .bz-chips { gap: 3px; }
+  .chip { font-size: 8px; padding: 2px 6px; }
+  .toggle-btn { font-size: 9px; padding: 7px 12px; }
+
+  /* ── TABLES: horizontal scroll ── */
+  .t-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+  .t-table { min-width: 540px; font-size: 11px; }
+  .t-table th, .t-table td { padding: 7px 8px; }
+
+  /* ── PENSIUN TAB ── */
+  .scenario-row { flex-wrap: wrap; gap: 5px; }
+  .scenario-row .btn { font-size: 9px; padding: 5px 10px; }
+  .verdict-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .verdict-card { padding: 14px; }
+  .stat-val { font-size: 14px; }
+  .stat-label { font-size: 8px; }
+  .stat-sub { font-size: 8px; }
+  .chart-row { grid-template-columns: 50px 1fr 68px; gap: 6px; font-size: 11px; }
+  .verdict-note { font-size: 10px; line-height: 1.6; }
+  .grid-3 .ctrl-label { font-size: 10px; }
+  .grid-3 input, .grid-3 select { font-size: 12px; }
+
+  /* ── ARSENAL / KELOLA ── */
+  .me-grid {
+    grid-template-columns: 52px 1fr 60px 52px;
+    gap: 4px;
+  }
+  /* Hide DPS, Avg Cost, Role columns on mobile - show only Ticker, Nama, Harga, Lot */
+  .me-grid .se-input:nth-child(5),
+  .me-grid .se-input:nth-child(6),
+  .me-grid .se-input:nth-child(7) { display: none; }
+  .me-grid.header span:nth-child(5),
+  .me-grid.header span:nth-child(6),
+  .me-grid.header span:nth-child(7) { display: none; }
+  .se-input { font-size: 10px; padding: 5px 6px; }
+
+  /* ── AI SECTIONS ── */
+  .ai-section-header { padding: 8px 12px; gap: 7px; }
+  .ai-ticker-label { font-size: 12px; }
+  .ai-name-label { font-size: 9px; }
+  .ai-upload-row { flex-wrap: wrap; gap: 6px; }
+  .ai-dropzone { min-width: 0; }
+  .ai-key-row { flex-wrap: wrap; }
+  .ai-key-input { min-width: 0; flex: 1 1 160px; }
+
+  /* ── RULES TAB ── */
+  .rule-num { font-size: 28px; }
+  .integrity-list { font-size: 10px; }
+}
+
+/* ═══════════════════════════════════════════
+   EXTRA SMALL — 400px and below (iPhone SE etc)
+   ═══════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .wrap { padding: 0 10px; }
+  .header-wordmark { font-size: 17px; }
+  .header-val { font-size: 13px; }
+  .tab { padding: 10px 9px; font-size: 8px; letter-spacing: 0; }
+  .stock-ticker { font-size: 13px; }
+  .stock-stat-big { font-size: 13px; }
+  .grid-3 { grid-template-columns: 1fr; }
   .verdict-grid { grid-template-columns: 1fr 1fr; }
+  .price-grid { grid-template-columns: 1fr 1fr; }
+  .pills { gap: 3px; }
+  .pill { font-size: 8px; padding: 3px 7px; }
+  .alloc-row { grid-template-columns: 38px 1fr 36px 34px; gap: 4px; }
+  .stock-card-top { grid-template-columns: 64px 1fr; }
+  .stock-stats { grid-template-columns: 1fr 1fr; }
+  .chart-row { grid-template-columns: 44px 1fr 60px; font-size: 10px; }
+  .me-grid { grid-template-columns: 46px 1fr 54px 46px; }
+  .target-input { font-size: 16px; }
+  .stat-val { font-size: 13px; }
 }
 </style>
 </head>
@@ -1013,7 +1171,7 @@ select.styled:focus { border-color: var(--accent); }
 
   <div class="card">
     <div class="card-header"><div class="card-title">Target Lot @ Pensiun</div></div>
-    <table class="t-table">
+    <div class="t-table-wrap"><table class="t-table">
       <thead>
         <tr>
           <th>Saham</th><th>Alokasi</th><th>Target Lot</th>
@@ -1022,12 +1180,12 @@ select.styled:focus { border-color: var(--accent); }
         </tr>
       </thead>
       <tbody class="lot-tbody" id="pensiun-lot"></tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="card">
     <div class="card-header"><div class="card-title">Timeline Compounding</div></div>
-    <table class="t-table">
+    <div class="t-table-wrap"><table class="t-table">
       <thead>
         <tr>
           <th>Tahun</th><th>Umur</th><th>Porto</th>
@@ -1035,7 +1193,7 @@ select.styled:focus { border-color: var(--accent); }
         </tr>
       </thead>
       <tbody id="timeline"></tbody>
-    </table>
+    </table></div>
   </div>
 </div>
 
