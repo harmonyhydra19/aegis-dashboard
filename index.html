@@ -284,16 +284,7 @@ body::before {
   font-size: 11px;
 }
 .btn-primary:hover { opacity: .85; color: #0c0e0c; }
-.btn-nanoclaw {
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 6px; cursor: pointer;
-  transition: all .18s; border: 1px solid var(--accent-dim);
-  background: var(--accent-glow); color: var(--accent); padding: 6px 8px;
-  min-width: 32px;
-}
-.btn-nanoclaw:hover { background: var(--accent); color: #0c0e0c; border-color: var(--accent); }
-.btn-nanoclaw:hover svg path { fill: #0c0e0c; }
-.btn-nanoclaw:hover svg circle { fill: var(--accent); }
+
 
 /* ── TARGET CARD ── */
 .target-card {
@@ -988,39 +979,6 @@ select.styled:focus { border-color: var(--accent); }
 }
 .ai-key-input:focus { border-color: var(--accent); }
 
-/* PIN modal */
-.pin-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.75); z-index: 200;
-  align-items: center; justify-content: center;
-}
-.pin-overlay.open { display: flex; }
-.pin-modal {
-  background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 28px 24px; width: 300px;
-  text-align: center;
-}
-.pin-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-.pin-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 18px; }
-.pin-dots { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
-.pin-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  border: 1.5px solid var(--border2); background: none;
-  transition: background .15s, border-color .15s;
-}
-.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
-.pin-dot.error { background: var(--red); border-color: var(--red); }
-.pin-numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-.pin-key {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700;
-  padding: 12px; border-radius: 8px; cursor: pointer;
-  border: 1px solid var(--border); background: var(--surface2);
-  color: var(--text); transition: all .15s;
-}
-.pin-key:hover { border-color: var(--accent); color: var(--accent); }
-.pin-key.del { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text-dim); }
-.pin-err { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--red); height: 14px; }
-
 /* ═══════════════════════════════════════════
    TABLET — 641px to 900px: Zone Radar 3-col
    ═══════════════════════════════════════════ */
@@ -1157,9 +1115,110 @@ select.styled:focus { border-color: var(--accent); }
   .target-input { font-size: 16px; }
   .stat-val { font-size: 13px; }
 }
+
+/* ══════ PIN SCREEN ══════ */
+#pin-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+#pin-overlay.hidden { display: none; }
+.pin-box {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 36px 40px 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  width: 320px; max-width: 90vw;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+}
+.pin-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800;
+  background: var(--accent); color: #0c0e0c; letter-spacing: -0.02em;
+}
+.pin-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px; font-weight: 800; letter-spacing: -0.02em; text-align: center;
+}
+.pin-title span { color: var(--accent); }
+.pin-sub {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--text-muted); letter-spacing: 0.12em; text-align: center;
+}
+.pin-dots { display: flex; gap: 10px; align-items: center; justify-content: center; }
+.pin-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--border2); background: transparent;
+  transition: background .15s, border-color .15s;
+}
+.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+.pin-dot.error  { background: var(--red);   border-color: var(--red); }
+.pin-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 10px 14px;
+  font-family: 'DM Mono', monospace; font-size: 22px;
+  letter-spacing: 0.5em; text-align: center; color: var(--text);
+  outline: none; transition: border-color .18s;
+}
+.pin-input:focus { border-color: var(--accent); }
+.pin-input.shake { animation: pinShake .35s ease; border-color: var(--red) !important; }
+@keyframes pinShake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+.pin-btn {
+  width: 100%; padding: 10px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--accent); color: #0c0e0c;
+  border: none; border-radius: 8px; cursor: pointer; transition: opacity .15s;
+}
+.pin-btn:hover { opacity: .85; }
+.pin-btn:disabled { opacity: .4; cursor: not-allowed; }
+.pin-msg {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  text-align: center; min-height: 14px; letter-spacing: 0.04em; color: var(--red);
+}
+.pin-lockout {
+  font-family: 'DM Mono', monospace; font-size: 10px; text-align: center;
+  color: var(--text-dim); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 14px; line-height: 1.7; width: 100%;
+}
+#pin-countdown { color: var(--red); font-weight: 700; }
 </style>
 </head>
 <body>
+
+<!-- ══════ PIN OVERLAY ══════ -->
+<div id="pin-overlay">
+  <div class="pin-box">
+    <div class="pin-logo">⚔ AGD</div>
+    <div style="text-align:center;display:flex;flex-direction:column;gap:4px">
+      <div class="pin-title">Aegis <span>Growth</span></div>
+      <div class="pin-sub">IDX · DIVIDEND · AKSES TERBATAS</div>
+    </div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <input class="pin-input" id="pin-input" type="password"
+      inputmode="numeric" maxlength="4" placeholder="····"
+      oninput="onPinInput()" onkeydown="onPinKey(event)" autocomplete="off" />
+    <div class="pin-lockout" id="pin-lockout" style="display:none">
+      🔒 Terlalu banyak percobaan salah.<br>Coba lagi dalam <span id="pin-countdown">—</span>
+    </div>
+    <button class="pin-btn" id="pin-submit-btn" onclick="submitPin()" disabled>Masuk</button>
+    <div class="pin-msg" id="pin-msg"></div>
+  </div>
+</div>
+
+<div id="main-content" style="display:none">
 <div class="wrap">
 
 <!-- HEADER -->
@@ -1187,9 +1246,7 @@ select.styled:focus { border-color: var(--accent); }
         <svg id="theme-icon-moon" viewBox="0 0 18 18" fill="none" width="14" height="14"><path d="M15 10.5A6.5 6.5 0 0 1 7.5 3a6.5 6.5 0 1 0 7.5 7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
       </button>
       <button class="btn btn-icon" id="refresh-btn" onclick="fetchPrices(true)" title="Refresh harga realtime">↻</button>
-      <button class="btn btn-nanoclaw btn-icon" onclick="window.open('nanoclaw.html','_self')" title="NanoClaw — AI Analyst">
-        <svg viewBox="0 0 20 20" fill="none" width="13" height="13"><path d="M10 2L12.5 7H18L13.5 10.5L15.5 16L10 12.5L4.5 16L6.5 10.5L2 7H7.5L10 2Z" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="2.2" fill="var(--bg)"/></svg>
-      </button>
+
     </div>
     <div class="header-porto">
       <div class="header-val" id="hdr-val">—</div>
@@ -1456,40 +1513,8 @@ select.styled:focus { border-color: var(--accent); }
   </div>
 </div>
 
-<!-- PIN MODAL -->
-<div class="pin-overlay" id="pin-overlay" tabindex="-1">
-  <div class="pin-modal">
-    <div class="pin-title">Konfirmasi</div>
-    <div class="pin-hint">// TANGGAL NIKAH</div>
-    <div class="pin-dots" id="pin-dots">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
-      <div class="pin-dot" id="pd4"></div>
-      <div class="pin-dot" id="pd5"></div>
-    </div>
-    <div class="pin-numpad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
-      <button class="pin-key del" onclick="pinKey('cancel')">Batal</button>
-      <button class="pin-key" onclick="pinKey('0')">0</button>
-      <button class="pin-key del" onclick="pinKey('del')">⌫</button>
-    </div>
-    <div class="pin-err" id="pin-err"></div>
-  </div>
-</div>
-
-<div style="text-align:center;padding:28px 0 16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);position:relative;z-index:1">
-  ZenkichiArc · <span style="color:var(--accent)">Aegis Growth Dividend</span> · IDX Compounder
-</div>
+</div><!-- end wrap -->
+</div><!-- end main-content -->
 
 <!-- SUPABASE SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2450,76 +2475,136 @@ async function saveSettings() {
   _syncThemeIcons(theme);
 })();
 
-loadFromSupabase();
+// loadFromSupabase dipanggil setelah PIN berhasil — lihat initPinGate()
 
-// ── PIN SYSTEM ──
+// ══════════════════════════════════════════
+// PIN GATE — Aegis Growth
+// key Supabase: aegis_pin (beda dari app_pin milik Senku)
+// ══════════════════════════════════════════
+const PIN_ATTEMPTS_KEY  = 'aegis_pin_attempts';
+const PIN_LOCKOUT_KEY   = 'aegis_pin_lockout';
+const MAX_ATTEMPTS      = 3;
+const LOCKOUT_DURATION  = 4 * 60 * 60 * 1000; // 4 jam
+let   correctPin        = null;
+let   countdownInterval = null;
+
+function getLockoutRemaining() {
+  return Math.max(0, parseInt(localStorage.getItem(PIN_LOCKOUT_KEY) || '0') - Date.now());
+}
+function formatCountdown(ms) {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function startCountdown() {
+  const input = document.getElementById('pin-input');
+  const lockoutEl = document.getElementById('pin-lockout');
+  const submitBtn = document.getElementById('pin-submit-btn');
+  const cdEl = document.getElementById('pin-countdown');
+  input.disabled = true; submitBtn.disabled = true;
+  lockoutEl.style.display = 'block';
+  clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    const rem = getLockoutRemaining();
+    if (rem <= 0) {
+      clearInterval(countdownInterval);
+      localStorage.removeItem(PIN_LOCKOUT_KEY);
+      localStorage.removeItem(PIN_ATTEMPTS_KEY);
+      lockoutEl.style.display = 'none';
+      input.disabled = false; input.value = '';
+      updatePinDotsGate(0);
+      document.getElementById('pin-msg').textContent = '';
+    } else { cdEl.textContent = formatCountdown(rem); }
+  }, 1000);
+  cdEl.textContent = formatCountdown(getLockoutRemaining());
+}
+function onPinInput() {
+  const val = document.getElementById('pin-input').value.replace(/\D/g,'');
+  document.getElementById('pin-input').value = val;
+  updatePinDotsGate(val.length);
+  document.getElementById('pin-submit-btn').disabled = val.length < 4;
+  document.getElementById('pin-msg').textContent = '';
+}
+function onPinKey(e) { if (e.key === 'Enter') submitPin(); }
+function updatePinDotsGate(count, isError) {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('pd' + i);
+    if (!dot) continue;
+    dot.classList.toggle('filled', i < count && !isError);
+    dot.classList.toggle('error', i < count && !!isError);
+  }
+}
+async function submitPin() {
+  if (!correctPin) { document.getElementById('pin-msg').textContent = 'Memuat konfigurasi…'; return; }
+  if (getLockoutRemaining() > 0) { startCountdown(); return; }
+  const input = document.getElementById('pin-input');
+  const entered = input.value.trim();
+  if (entered.length < 4) return;
+  if (entered === String(correctPin)) {
+    localStorage.removeItem(PIN_ATTEMPTS_KEY);
+    localStorage.removeItem(PIN_LOCKOUT_KEY);
+    document.getElementById('pin-overlay').classList.add('hidden');
+    document.getElementById('main-content').style.display = '';
+    loadFromSupabase(); // init app setelah login
+  } else {
+    let attempts = parseInt(localStorage.getItem(PIN_ATTEMPTS_KEY) || '0') + 1;
+    localStorage.setItem(PIN_ATTEMPTS_KEY, attempts);
+    updatePinDotsGate(entered.length, true);
+    input.classList.add('shake');
+    setTimeout(() => {
+      input.classList.remove('shake'); input.value = '';
+      updatePinDotsGate(0);
+      document.getElementById('pin-submit-btn').disabled = true;
+    }, 400);
+    const remaining = MAX_ATTEMPTS - attempts;
+    if (attempts >= MAX_ATTEMPTS) {
+      localStorage.setItem(PIN_LOCKOUT_KEY, Date.now() + LOCKOUT_DURATION);
+      localStorage.setItem(PIN_ATTEMPTS_KEY, '0');
+      document.getElementById('pin-msg').textContent = '';
+      startCountdown();
+    } else {
+      document.getElementById('pin-msg').textContent = `PIN salah — ${remaining} percobaan tersisa`;
+    }
+  }
+}
+async function initPinGate() {
+  if (getLockoutRemaining() > 0) startCountdown();
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/config?key=eq.aegis_pin&select=value`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const data = await res.json();
+    if (data?.[0]?.value) {
+      correctPin = data[0].value.trim();
+      document.getElementById('pin-msg').textContent = '';
+    } else {
+      document.getElementById('pin-msg').textContent = '⚠️ PIN belum dikonfigurasi — hubungi admin';
+      document.getElementById('pin-submit-btn').disabled = true;
+    }
+  } catch(e) {
+    document.getElementById('pin-msg').textContent = '⚠️ Gagal memuat konfigurasi — coba refresh';
+    document.getElementById('pin-submit-btn').disabled = true;
+  }
+  setTimeout(() => {
+    const input = document.getElementById('pin-input');
+    if (!input.disabled) input.focus();
+  }, 100);
+}
+initPinGate();
+
+// ── PIN SYSTEM (internal — untuk protect fitur inline apply) ──
 let _pinBuffer = '';
 let _pinCallback = null;
 
 function requirePin(callback) {
   _pinBuffer = '';
   _pinCallback = callback;
-  document.getElementById('pin-overlay').classList.add('open');
-  document.getElementById('pin-err').textContent = '';
-  updatePinDots();
-  // Focus trap so keyboard events work immediately
-  setTimeout(() => document.getElementById('pin-overlay').focus(), 50);
+  // Langsung jalankan callback karena user sudah login via gate PIN
+  if (_pinCallback) _pinCallback();
 }
 
-// Global keyboard handler for PIN
-document.addEventListener('keydown', function(e) {
-  if (!document.getElementById('pin-overlay').classList.contains('open')) return;
-  if (e.key >= '0' && e.key <= '9') { e.preventDefault(); pinKey(e.key); }
-  else if (e.key === 'Backspace') { e.preventDefault(); pinKey('del'); }
-  else if (e.key === 'Escape') { e.preventDefault(); pinKey('cancel'); }
-});
-
-function pinKey(k) {
-  if (k === 'cancel') {
-    _pinBuffer = '';
-    document.getElementById('pin-overlay').classList.remove('open');
-    return;
-  }
-  if (k === 'del') {
-    _pinBuffer = _pinBuffer.slice(0, -1);
-    updatePinDots();
-    return;
-  }
-  if (_pinBuffer.length >= 6) return;
-  _pinBuffer += k;
-  updatePinDots();
-  if (_pinBuffer.length === 6) {
-    setTimeout(() => {
-      if (_pinBuffer === '190820') {
-        document.getElementById('pin-overlay').classList.remove('open');
-        if (_pinCallback) _pinCallback();
-        _pinBuffer = '';
-      } else {
-        // shake + error
-        document.getElementById('pin-err').textContent = 'PIN salah, coba lagi';
-        const dots = document.querySelectorAll('.pin-dot');
-        dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
-        setTimeout(() => {
-          dots.forEach(d => d.classList.remove('error'));
-          _pinBuffer = '';
-          updatePinDots();
-          document.getElementById('pin-err').textContent = '';
-        }, 800);
-      }
-    }, 120);
-  }
-}
-
-function updatePinDots() {
-  for (let i = 0; i < 6; i++) {
-    const d = document.getElementById('pd'+i);
-    if (!d) continue;
-    d.classList.toggle('filled', i < _pinBuffer.length);
-    d.classList.remove('error');
-  }
-}
-
-// ── APPLY INLINE WITH PIN ──
 function applyInlineWithPin() {
   requirePin(applyInline);
 }
