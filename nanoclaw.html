@@ -272,7 +272,9 @@ body::before {
   padding: 2px 7px; background: var(--blue-bg);
   border: 1px solid rgba(55,138,221,0.25); color: var(--blue2);
   border-radius: 3px; letter-spacing: 0.03em;
+  text-decoration: none; cursor: pointer; transition: background .15s;
 }
+.msg-doc-ref:hover { background: var(--blue); color: #fff; }
 
 /* Summary bubble */
 .msg-bubble-summary {
@@ -370,12 +372,12 @@ body::before {
     <span class="drive-icon">⬡</span>
     <div>
       <div class="drive-bar-title">Referensi Karantina</div>
-      <div class="drive-bar-sub" id="drive-status-txt">Belum terhubung — masukkan Folder ID</div>
+      <div class="drive-bar-sub" id="drive-status-txt">Belum terhubung — masukkan File ID dari index.json</div>
     </div>
   </div>
   <div class="drive-bar-right">
     <div class="drive-input-wrap" id="drive-input-wrap">
-      <input class="drive-input" id="drive-folder-id" type="text" placeholder="Folder ID dari URL Drive…" spellcheck="false">
+      <input class="drive-input" id="drive-folder-id" type="text" placeholder="File ID dari index.json…" spellcheck="false">
       <button class="drive-connect-btn" onclick="connectDrive()">Hubungkan</button>
     </div>
     <div class="drive-connected" id="drive-connected" style="display:none">
@@ -467,6 +469,111 @@ body::before {
 </div>
 
 <script>
+// ══════════════════════════════════════════
+// CONFIG — Supabase (key storage) + Groq (AI)
+// Key Groq disimpan di Supabase, tidak ada credentials di file ini
+// ══════════════════════════════════════════
+const SUPABASE_URL  = 'https://xwriyfmwzyresycqfayj.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
+
+const GROQ_MODEL    = 'llama-3.3-70b-versatile';
+const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
+let   GROQ_API_KEY  = '';  // diisi saat app load dari Supabase
+
+// ── Fetch Groq key dari Supabase + load JDIH index saat app load ──
+async function loadApiKey() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/config?key=eq.groq_api_key&select=value`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
+    );
+    const data = await res.json();
+    if (data?.[0]?.value) {
+      GROQ_API_KEY = data[0].value;
+    } else {
+      setStatus('⚠️ Gagal memuat konfigurasi — hubungi admin');
+      return;
+    }
+  } catch(e) {
+    setStatus('⚠️ Tidak dapat terhubung ke konfigurasi');
+    return;
+  }
+  // Load JDIH index setelah key siap
+  setStatus('Memuat indeks regulasi JDIH…');
+  await loadJdihIndex();
+  const docCount = jdihIndex ? jdihIndex.length : 0;
+  setStatus(docCount > 0
+    ? `Siap · ${docCount} regulasi JDIH tersedia`
+    : 'Siap · tanya seputar regulasi Barantin'
+  );
+}
+window.addEventListener('DOMContentLoaded', loadApiKey);
+
+// System prompt Senku Ishigami — ahli regulasi karantina Barantin
+const SYS_K = `Kamu adalah Senku Ishigami, asisten AI ahli regulasi karantina Indonesia milik Badan Karantina Indonesia (Barantin).
+
+Kepribadian: cerdas, to-the-point, berbicara dengan percaya diri. Sesekali gunakan frasa khas Senku seperti "10 miliar persen benar" atau "ini soal sains/hukum, bukan opini". Tapi tetap profesional dan akurat.
+
+Keahlian utama:
+- UU No.21 Tahun 2019 tentang Karantina Hewan, Ikan, dan Tumbuhan
+- Peraturan Pemerintah dan Permentan/Permen KP terkait prosedur karantina
+- Tarif PNBP karantina (PP No.35/2016 dan perubahannya)
+- Tindak karantina: pemeriksaan, pengasingan, pengamatan, perlakuan, penahanan, penolakan, pemusnahan, pembebasan
+- OPTK (Organisme Pengganggu Tumbuhan Karantina) kategori A1 dan A2
+- Komoditas wajib karantina: hewan hidup, produk hewan, ikan, tumbuhan, benih
+- Prosedur di Tempat Pemasukan/Pengeluaran (TPI/TPK)
+- Draft surat dinas: surat penolakan, surat perintah perlakuan, sertifikat karantina
+
+Format jawaban:
+- Gunakan **bold** untuk istilah hukum dan nama regulasi
+- Bullet point untuk daftar prosedur atau persyaratan
+- Jika mengutip regulasi dari dokumen referensi, sebut nama dokumennya
+- Jika diminta draft surat, buat format surat resmi lengkap dengan kop, nomor surat, dan tanda tangan
+
+Jika pertanyaan di luar lingkup karantina, arahkan kembali dengan sopan.`;
+
+// ── CORS Proxy — urutan prioritas ──
+// Jika proxy publik kena block, user bisa deploy Apps Script sendiri
+// dan tempel URL-nya di variabel CUSTOM_PROXY di bawah
+const CUSTOM_PROXY = ''; // ← isi URL Apps Script proxy jika ada (lihat panduan di README)
+const CORS_PROXIES = [
+  (url) => CUSTOM_PROXY ? `${CUSTOM_PROXY}?url=${encodeURIComponent(url)}` : null,
+  (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+];
+
+async function fetchWithCorsProxy(driveUrl) {
+  for (const proxyFn of CORS_PROXIES) {
+    const proxied = proxyFn(driveUrl);
+    if (!proxied) continue;
+    try {
+      const res = await fetch(proxied, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) return res;
+    } catch(e) { /* try next */ }
+  }
+  throw new Error('Semua proxy gagal — coba deploy Google Apps Script proxy (lihat panduan)');
+}
+
+// ── AI call via Groq ──
+async function callGroq(messages, maxTokens = 1000) {
+  if (!GROQ_API_KEY) throw new Error('GROQ_API_KEY belum diisi di kode. Daftar gratis di console.groq.com');
+  const res = await fetch(GROQ_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      max_tokens: maxTokens,
+      messages: [{ role: 'system', content: SYS_K }, ...messages]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message || 'Groq error');
+  return data.choices?.[0]?.message?.content || '';
+}
+
 function toggleDriveBar() {
   const bar = document.getElementById('drive-bar');
   const btn = document.getElementById('btn-ref');
@@ -491,37 +598,29 @@ let driveFolderID = '';
 let isChatting  = false;
 
 // ── Drive integration ──
+// Input = File ID dari index.json (bukan Folder ID)
+// Cara dapat File ID: buka index.json di Drive → klik kanan → Bagikan → salin link
+// Link: https://drive.google.com/file/d/FILE_ID_INI/view → ambil bagian FILE_ID_INI
 async function connectDrive() {
   const fid = document.getElementById('drive-folder-id').value.trim();
   if (!fid) return;
   driveFolderID = fid;
   const statusTxt = document.getElementById('drive-status-txt');
   statusTxt.textContent = 'Memuat index.json…';
-  // Try fetching index.json via public Drive export URL
-  const indexUrl = `https://drive.google.com/uc?export=download&id=${fid}`;
-  // Actually we need to find index.json inside the folder
-  // Use a known file naming convention: index.json shared publicly
-  // We'll try a direct download approach with a proxy pattern
-  // For now: ask user to share the index.json file ID directly as well,
-  // OR we look for the file list via Google Drive API (needs API key)
-  // Strategy: check if there's a file called 'index.json' by trying the folder as gid
-  // We'll build a fallback that handles both: folder ID as file ID (if user pastes index.json file ID directly)
   try {
-    // Try treating input as direct file ID for index.json
-    const url = `https://drive.google.com/uc?export=download&id=${fid}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const driveUrl = `https://drive.google.com/uc?export=download&id=${fid}`;
+    const res = await fetchWithCorsProxy(driveUrl);
     const text = await res.text();
-    // Check if it looks like JSON
     let data;
-    try { data = JSON.parse(text); } catch(e) { throw new Error('File bukan JSON valid — pastikan ID yang dimasukkan adalah file ID dari index.json'); }
-    if (!Array.isArray(data) && !data.documents) throw new Error('Format index tidak dikenali');
+    try { data = JSON.parse(text); }
+    catch(e) { throw new Error('File bukan JSON valid — pastikan ini adalah File ID dari index.json, bukan Folder ID'); }
+    if (!Array.isArray(data) && !data.documents) throw new Error('Format index tidak dikenali — pastikan index.json berisi array dokumen');
     driveIndex = Array.isArray(data) ? data : data.documents;
     showDriveConnected(driveIndex.length);
     setStatus(`Basis pengetahuan siap · ${driveIndex.length} dokumen tersedia`);
     appendSystemMsg(`✓ Basis pengetahuan terhubung — ${driveIndex.length} dokumen regulasi dimuat. Silakan tanya tentang regulasi karantina.`);
   } catch(e) {
-    statusTxt.textContent = 'Gagal memuat: ' + e.message;
+    statusTxt.textContent = '✕ Gagal: ' + e.message;
     driveIndex = null;
   }
 }
@@ -531,7 +630,7 @@ function disconnectDrive() {
   document.getElementById('drive-input-wrap').style.display = 'flex';
   document.getElementById('drive-connected').style.display = 'none';
   document.getElementById('drive-folder-id').value = '';
-  document.getElementById('drive-status-txt').textContent = 'Belum terhubung — masukkan Folder ID untuk memuat index regulasi';
+  document.getElementById('drive-status-txt').textContent = 'Belum terhubung — masukkan File ID dari index.json';
   setStatus('Siap · tanya seputar regulasi Barantin');
 }
 
@@ -596,12 +695,14 @@ function appendUserMsg(text) {
   scrollChat();
 }
 
-function appendAIMsg(text, docRef, isSummary) {
+function appendAIMsg(text, docRef, isSummary, docUrl) {
   const ts = new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
   const el = document.createElement('div');
   el.className = 'msg';
   const bubbleCls = isSummary ? 'msg-bubble msg-bubble-summary' : 'msg-bubble msg-bubble-ai';
-  const refHtml = docRef ? `<span class="msg-doc-ref">⬡ ${escHtml(docRef)}</span>` : '';
+  const refHtml = docRef
+    ? `<a class="msg-doc-ref" href="${docUrl||'#'}" target="_blank" rel="noopener" title="Buka di JDIH Barantin">⬡ ${escHtml(docRef.substring(0,60))}${docRef.length>60?'…':''}</a>`
+    : '';
   el.innerHTML = `
     <div class="msg-avatar msg-avatar-ai">K</div>
     <div class="msg-body">
@@ -648,33 +749,80 @@ function formatMsgText(text) {
     .replace(/\n/g, '<br>');
 }
 
-// ── RAG: pick relevant doc from index ──
-async function pickRelevantDoc(question) {
-  if (!driveIndex || !driveIndex.length) return null;
-  const indexSummary = driveIndex.map((d,i) => `${i}: ${d.name} — ${d.description||''}`).join('\n');
-  const pickPrompt = `Dari daftar dokumen regulasi berikut, pilih SATU yang paling relevan untuk pertanyaan user.\n\nDOKUMEN:\n${indexSummary}\n\nPERTANYAAN: ${question}\n\nBalas HANYA dengan angka indeks (0, 1, 2, dst) dari dokumen paling relevan. Tidak ada teks lain.`;
+// ══════════════════════════════════════════
+// JDIH RAG SYSTEM
+// Index dokumen dari Supabase, PDF live dari jdih.karantinaindonesia.go.id
+// ══════════════════════════════════════════
+let jdihIndex = null;  // cached dari Supabase
+
+async function loadJdihIndex() {
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: pickPrompt }] })
-    });
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/jdih_index?select=uuid,title,jenis,tahun,topik,detail_url,pdf_url&order=tahun.desc`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
+    );
     const data = await res.json();
-    const idxStr = (data.content?.[0]?.text || '').trim();
-    const idx = parseInt(idxStr);
-    if (!isNaN(idx) && driveIndex[idx]) return driveIndex[idx];
+    if (Array.isArray(data) && data.length > 0) {
+      jdihIndex = data;
+      console.log(`JDIH index loaded: ${data.length} dokumen`);
+    }
+  } catch(e) {
+    console.warn('Gagal load JDIH index:', e.message);
+  }
+}
+
+// Pilih dokumen relevan dari index via Groq (ringan — cuma kirim titles+topik)
+async function pickJdihDoc(question) {
+  if (!jdihIndex || !jdihIndex.length) return null;
+  const summary = jdihIndex.map((d, i) =>
+    `${i}: [${d.tahun}] ${d.title} | topik: ${d.topik}`
+  ).join('\n');
+  const prompt = `Dari daftar peraturan karantina berikut, pilih SATU yang paling relevan untuk menjawab pertanyaan user.\n\nDOKUMEN:\n${summary}\n\nPERTANYAAN: ${question}\n\nBalas HANYA dengan angka indeks (contoh: 3). Tidak ada teks lain.`;
+  try {
+    const reply = await callGroq([{ role: 'user', content: prompt }], 10);
+    const idx = parseInt(reply.trim());
+    if (!isNaN(idx) && jdihIndex[idx]) return jdihIndex[idx];
   } catch(e) {}
   return null;
 }
 
-// ── Fetch doc from Drive ──
-async function fetchDriveDoc(fileId) {
+// Fetch detail page JDIH → extract PDF URL → fetch PDF text
+async function fetchJdihDocContent(doc) {
   try {
-    const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    const text = await res.text();
-    return text.substring(0, 12000); // cap at 12k chars
-  } catch(e) { return null; }
+    // Step 1: fetch detail page via CORS proxy untuk dapat PDF URL
+    const detailRes = await fetchWithCorsProxy(doc.detail_url);
+    const html = await detailRes.text();
+
+    // Extract PDF URL — pattern: /repository/.../.pdf
+    const pdfMatch = html.match(/href="(https:\/\/jdih\.karantinaindonesia\.go\.id\/repository\/[^"]+\.pdf)"/i)
+                  || html.match(/"(https:\/\/jdih\.karantinaindonesia\.go\.id\/repository\/[^"]+\.pdf)"/i);
+    if (!pdfMatch) return { text: null, pdfUrl: null };
+
+    const pdfUrl = pdfMatch[1];
+
+    // Step 2: fetch PDF via proxy
+    const pdfRes = await fetchWithCorsProxy(pdfUrl);
+    const buffer = await pdfRes.arrayBuffer();
+
+    // Step 3: extract text dari PDF pakai basic text extraction
+    // PDF text extraction sederhana — cari stream BT/ET blocks
+    const bytes = new Uint8Array(buffer);
+    const raw = new TextDecoder('latin1').decode(bytes);
+    // Extract printable text chunks
+    const textChunks = [];
+    const matches = raw.matchAll(/\(([^\)]{3,200})\)/g);
+    for (const m of matches) {
+      const chunk = m[1].replace(/\\[nrt\\()]/g, ' ').trim();
+      if (chunk.length > 5 && /[a-zA-ZА-я\u00C0-\u024F\u0100-\u017F\u00C0-\u00FF]/.test(chunk) || /[a-zA-Z0-9\s,.;:()]{5,}/.test(chunk)) {
+        textChunks.push(chunk);
+      }
+    }
+    const extractedText = textChunks.join(' ').substring(0, 10000);
+    return { text: extractedText || null, pdfUrl };
+  } catch(e) {
+    console.warn('fetchJdihDocContent error:', e.message);
+    return { text: null, pdfUrl: null };
+  }
 }
 
 // ── Main send ──
@@ -683,6 +831,11 @@ async function sendMessage() {
   const text  = input.value.trim();
   if (!text || isChatting) return;
 
+  if (!GROQ_API_KEY) {
+    appendAIMsg('⚠️ Konfigurasi belum siap — tunggu sebentar atau refresh halaman.', null, false);
+    return;
+  }
+
   isChatting = true;
   input.value = ''; input.style.height = 'auto';
   document.getElementById('chat-send-btn').disabled = true;
@@ -690,57 +843,50 @@ async function sendMessage() {
   appendUserMsg(text);
   chatHistory.push({ role: 'user', content: text, ts: new Date().toISOString() });
 
-  let docRef = null, docContent = null;
+  let docRef = null, docContent = null, docUrl = null;
 
-  // RAG step 1: pick doc
-  if (driveIndex) {
-    setStatus('Memilih dokumen relevan…');
-    showThinking('Mencari di basis pengetahuan…');
-    const doc = await pickRelevantDoc(text);
+  // JDIH RAG: pilih + fetch dokumen relevan
+  if (jdihIndex && jdihIndex.length > 0) {
+    setStatus('Mencari regulasi relevan di JDIH…');
+    showThinking('Menelusuri indeks JDIH Barantin…');
+    const doc = await pickJdihDoc(text);
     if (doc) {
-      docRef = doc.name;
-      document.getElementById('doc-ref-badge').textContent = '⬡ ' + doc.name;
+      docRef = doc.title;
+      docUrl = doc.detail_url;
+      document.getElementById('doc-ref-badge').textContent = '⬡ ' + doc.title.substring(0, 60) + '…';
       document.getElementById('doc-ref-badge').style.display = 'inline-flex';
-      // RAG step 2: fetch doc
-      if (doc.fileId) {
-        showThinking(`Membaca: ${doc.name}`);
-        docContent = await fetchDriveDoc(doc.fileId);
-      }
+      showThinking(`Membaca: ${doc.title.substring(0, 50)}…`);
+      const result = await fetchJdihDocContent(doc);
+      docContent = result.text;
+      if (result.pdfUrl) docUrl = result.pdfUrl;
     }
   }
 
-  // Build messages for Claude
+  // Build messages untuk Groq (last 10 turns)
   const messages = chatHistory.slice(-10).map(m => ({ role: m.role, content: m.content }));
 
-  let userContent = text;
   if (docContent) {
-    userContent = `Pertanyaan: ${text}\n\n---\nDOKUMEN REFERENSI (${docRef}):\n${docContent}\n---\nJawab berdasarkan dokumen di atas. Sebut nama dokumen saat mengutip.`;
-    messages[messages.length-1] = { role: 'user', content: userContent };
+    const augmented = `Pertanyaan: ${text}\n\n---\nDOKUMEN REFERENSI:\n${docRef}\nSumber: ${docUrl || 'JDIH Barantin'}\n\n${docContent}\n---\nJawab berdasarkan dokumen di atas. Sebutkan nama peraturan saat mengutip.`;
+    messages[messages.length - 1] = { role: 'user', content: augmented };
+  } else if (docRef) {
+    // Kalau PDF tidak bisa difetch, tetap kasih context judul dokumen
+    const augmented = `Pertanyaan: ${text}\n\nKonteks: Pertanyaan ini kemungkinan terkait dengan "${docRef}" (${docUrl}). Jawab berdasarkan pengetahuanmu tentang regulasi tersebut dan sebutkan sumbernya.`;
+    messages[messages.length - 1] = { role: 'user', content: augmented };
   }
 
   showThinking(docRef ? `Menjawab berdasarkan ${docRef}…` : 'Menyusun jawaban…');
   setStatus('Memproses…');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYS_K, messages })
-    });
-    const data = await res.json();
+    const reply = await callGroq(messages, 1500);
     hideThinking();
-    if (data.content?.[0]?.text) {
-      const reply = data.content[0].text;
-      appendAIMsg(reply, docRef, false);
-      chatHistory.push({ role: 'assistant', content: reply, ts: new Date().toISOString(), docRef });
-      setStatus(docRef ? `Terakhir: ${docRef}` : 'Siap · tanya seputar regulasi Barantin');
-    } else {
-      appendAIMsg('Error: ' + (data.error?.message || 'Tidak ada respons dari API.'), null, false);
-      setStatus('Error — coba lagi');
-    }
+    appendAIMsg(reply, docRef, false, docUrl);
+    chatHistory.push({ role: 'assistant', content: reply, ts: new Date().toISOString(), docRef, docUrl });
+    setStatus(docRef ? `Terakhir: ${docRef.substring(0,50)}…` : 'Siap · tanya seputar regulasi Barantin');
   } catch(e) {
     hideThinking();
-    appendAIMsg('Gagal terhubung ke API. Periksa koneksi internet.', null, false);
-    setStatus('Error koneksi');
+    appendAIMsg('Gagal: ' + e.message, null, false);
+    setStatus('Error — coba lagi');
   }
 
   document.getElementById('doc-ref-badge').style.display = 'none';
@@ -759,16 +905,10 @@ async function runSummary() {
 
   showThinking('Menyusun ringkasan sesi…');
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: summaryPrompt }] })
-    });
-    const data = await res.json();
+    const reply = await callGroq([{ role: 'user', content: summaryPrompt }], 1000);
     hideThinking();
-    if (data.content?.[0]?.text) {
-      appendSystemMsg('— Ringkasan Sesi —');
-      appendAIMsg(data.content[0].text, null, true);
-    }
+    appendSystemMsg('— Ringkasan Sesi —');
+    appendAIMsg(reply, null, true);
   } catch(e) { hideThinking(); }
 
   document.getElementById('btn-summary').disabled = false;
