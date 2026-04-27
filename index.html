@@ -6,8 +6,8 @@
 <title>⚔ Aegis Alpha — Wealth Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
 :root {
@@ -306,6 +306,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Total Kekayaan Bersih</div>
           <div id="hero-nw" class="glow-text-gold" style="font-family:var(--font-cond);font-size:4rem;font-weight:800;line-height:1;margin-bottom:.8rem">Rp —</div>
           <div id="hero-sub" style="font-size:.9rem;color:var(--muted2);">Menghitung aset terminal...</div>
+          
+          <div id="hero-quote" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.15); font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold); font-style: italic; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; opacity: 0.8;">Mengambil transmisi mindset...</div>
         </div>
       </div>
 
@@ -593,9 +595,11 @@ let STOCKS = [
 ];
 let REKSADANA = [
   { id:'r1', name: 'Dana Pendidikan Zahra', value: 25025155 },
-  { id:'r2', name: 'Cicilan Bank BRI HOLD', value: 12013084 },
-  { id:'r3', name: 'Dry Powder Stockbit', value: 4170654 },
-  { id:'r4', name: 'Dana Rumah Impian', value: 3264996 }
+  { id:'r2', name: 'Cicilan Bank (48Jt) / HOLD', value: 12013084 },
+  { id:'r3', name: 'Dry Powder STOCKBIT', value: 4170654 },
+  { id:'r4', name: 'Agya RS (250 Jt)', value: 3264996 },
+  { id:'r5', name: 'BEP Modal 150 Jt or Asuransi', value: 141492 },
+  { id:'r6', name: 'Rumah Impian (300 Jt)', value: 22874 }
 ];
 let RD_SORT = 'val_desc';
 let CASH_ACCOUNTS = [
@@ -698,7 +702,20 @@ function setTarget(juta, btn) {
   saveData();
 }
 
-/* ── AUTH ── */
+/* ── API MINDSET QUOTE ── */
+async function fetchMindsetQuote() {
+  const quoteEl = document.getElementById('hero-quote');
+  try {
+    const res = await fetch('https://dummyjson.com/quotes/random');
+    if (!res.ok) throw new Error('API Error');
+    const data = await res.json();
+    quoteEl.textContent = `"${data.quote}" — ${data.author}`;
+  } catch (e) {
+    quoteEl.textContent = '"Fokus pada stabilitas cashflow dan dividen defensif. Konsistensi selalu mengalahkan intensitas sporadis." — Aegis Principle';
+  }
+}
+
+/* ── AUTH (Diperbarui untuk Cloudflare) ── */
 async function doLogin() {
   if(document.getElementById('pw-input').value.trim() === APP_PASS) {
     sessionStorage.setItem('auth', '1');
@@ -710,12 +727,14 @@ async function doLogin() {
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 function logout() { sessionStorage.removeItem('auth'); location.reload(); }
 
-window.onload = async () => {
+// Menggunakan DOMContentLoaded agar kebal terhadap optimasi script Cloudflare
+document.addEventListener('DOMContentLoaded', async () => {
   if(sessionStorage.getItem('auth') === '1') { 
-    document.getElementById('login-screen').style.display = 'none'; document.getElementById('app').style.display = 'block'; 
+    document.getElementById('login-screen').style.display = 'none'; 
+    document.getElementById('app').style.display = 'block'; 
     await loadData();
   }
-}
+});
 
 /* ── NAV & THEME ── */
 function switchView(view) {
@@ -787,7 +806,6 @@ function renderAll() {
 
   /* PORTO SAHAM (FULL SYNC) */
   const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
-  document.getElementById('porto-total-val').textContent = fmt(totalSaham);
   document.getElementById('t-curr').textContent = fmt(totalSaham);
   document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
   document.getElementById('t-bar').style.width = pctTarget + '%';
@@ -1116,6 +1134,8 @@ async function loadData() {
     document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
     statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
   } catch(e) { statusEl.textContent = '☁ Offline Mode'; statusEl.style.color = 'var(--muted)'; }
+  
+  fetchMindsetQuote();
   renderAll();
 }
 
