@@ -289,6 +289,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
         <button id="nav-rd" onclick="switchView('rd')">Reksa Dana</button>
         <button id="nav-cash" onclick="switchView('cash')">Cash / Giro</button>
         <button id="nav-liab" onclick="switchView('liab')">Liabilitas</button>
+        <button style="color:var(--cyan)" onclick="openModal('modal-crypto')">Crypto</button>
       </nav>
       <span id="cloud-status" style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted)">☁ Disconnected</span>
     </div>
@@ -327,6 +328,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
         <div class="stat-card" onclick="switchView('liab')">
           <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Liabilitas (Utang)</div>
           <div class="stat-value" id="stat-liab" style="color:var(--red)">—</div>
+        </div>
+        <div class="stat-card" onclick="openModal('modal-crypto')">
+          <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Crypto Wallet</div>
+          <div class="stat-value" id="stat-crypto" style="color:var(--cyan)">—</div>
         </div>
       </div>
 
@@ -595,11 +600,9 @@ let STOCKS = [
 ];
 let REKSADANA = [
   { id:'r1', name: 'Dana Pendidikan Zahra', value: 25025155 },
-  { id:'r2', name: 'Cicilan Bank (48Jt) / HOLD', value: 12013084 },
-  { id:'r3', name: 'Dry Powder STOCKBIT', value: 4170654 },
-  { id:'r4', name: 'Agya RS (250 Jt)', value: 3264996 },
-  { id:'r5', name: 'BEP Modal 150 Jt or Asuransi', value: 141492 },
-  { id:'r6', name: 'Rumah Impian (300 Jt)', value: 22874 }
+  { id:'r2', name: 'Cicilan Bank BRI HOLD', value: 12013084 },
+  { id:'r3', name: 'Dry Powder Stockbit', value: 4170654 },
+  { id:'r4', name: 'Dana Rumah Impian', value: 3264996 }
 ];
 let RD_SORT = 'val_desc';
 let CASH_ACCOUNTS = [
@@ -768,6 +771,8 @@ function renderAll() {
   document.getElementById('stat-bibit').textContent = fmtShort(totalRD);
   document.getElementById('stat-cash').textContent = fmtShort(totalCash);
   document.getElementById('stat-liab').textContent = fmtShort(totalLiab);
+  // Update UI untuk Crypto
+  if(document.getElementById('stat-crypto')) document.getElementById('stat-crypto').textContent = fmtShort(CRYPTO_BAL);
   
   let cfIn = (CASHFLOW.gaji||0) + (CASHFLOW.makan||0) + (CASHFLOW.tukin||0) + (CASHFLOW.crypto||0);
   let cfOut = (CASHFLOW.rutin||0) + (CASHFLOW.ccjenius||0) + (CASHFLOW.bri||0) + (CASHFLOW.flexi||0);
