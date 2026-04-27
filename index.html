@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>⚔ Aegis Alpha — Wealth Dashboard</title>
+<title>Aegis Alpha</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚔️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -283,7 +283,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 <div id="app">
   <header>
     <div style="display:flex;align-items:center;gap:2rem;">
-      <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;">⚔ AEGIS</div>
+      <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;cursor:pointer" onclick="switchView('nw')">⚔ AEGIS</div>
       <nav class="nav-pill">
         <button id="nav-nw" class="active" onclick="switchView('nw')">Net Worth</button>
         <button id="nav-porto" onclick="switchView('porto')">Porto Saham</button>
@@ -786,7 +786,7 @@ async function fetchMindsetQuote() {
 function printHistory() {
   let printWindow = window.open('', '', 'width=800,height=600');
   let tableHTML = `<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; font-family: sans-serif; text-align: left;">
-    <tr style="background-color: #f1f5f9;">
+    <tr style="background-color: #f1f5f9; color: #0f172a;">
       <th>Tanggal</th>
       <th>Total Net Worth (Rp)</th>
       <th>Perubahan (+/-)</th>
@@ -796,18 +796,18 @@ function printHistory() {
   histCopy.forEach((h, i) => {
     let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0;
     let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff));
-    let color = diff > 0 ? 'green' : (diff < 0 ? 'red' : 'black');
+    let color = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#64748b');
     tableHTML += `<tr>
       <td>${h.date}</td>
-      <td style="font-weight: bold;">${formatRibuan(Math.round(h.nw))}</td>
-      <td style="color: ${color};">${diffStr}</td>
+      <td style="font-weight: bold; color: #0f172a;">${formatRibuan(Math.round(h.nw))}</td>
+      <td style="color: ${color}; font-weight: 600;">${diffStr}</td>
     </tr>`;
   });
   tableHTML += `</table>`;
 
   printWindow.document.write(`
     <html><head><title>Print Riwayat Kekayaan</title></head>
-    <body style="font-family: sans-serif; padding: 20px;">
+    <body style="font-family: sans-serif; padding: 20px; color: #0f172a;">
       <h2>Aegis Alpha - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2>
       <p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
       ${tableHTML}
@@ -829,7 +829,6 @@ async function doLogin() {
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 function logout() { sessionStorage.removeItem('auth'); location.reload(); }
 
-// Menggunakan DOMContentLoaded agar kebal terhadap optimasi script Cloudflare
 document.addEventListener('DOMContentLoaded', async () => {
   if(sessionStorage.getItem('auth') === '1') { 
     document.getElementById('login-screen').style.display = 'none'; 
@@ -853,7 +852,7 @@ function toggleTheme() {
 
 /* ── RENDER ENGINE ── */
 function renderAll() {
-  _syncInputsToState(); // Simpan input yang belum kesave sebelum re-render!
+  _syncInputsToState(); // Simpan input yang belum kesave sebelum re-render
 
   const totalAlloc = STOCKS.reduce((s, x) => s + (x.alloc||0), 0);
   let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
@@ -1172,11 +1171,10 @@ function drawNWLineChart(currentNW) {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const ctx = document.getElementById('nwChart').getContext('2d');
 
-  let histData = HISTORY.length > 0 ? [...HISTORY] : [ {date:'T-4', nw: currentNW*0.8}, {date:'T-3', nw: currentNW*0.85}, {date:'T-2', nw: currentNW*0.9}, {date:'T-1', nw: currentNW*0.98} ];
-  let lastPoint = histData[histData.length-1];
+  let histData = [...HISTORY];
   let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
   
-  if(!lastPoint || lastPoint.date !== todayStr) {
+  if (histData.length === 0 || histData[histData.length-1].date !== todayStr) {
     histData.push({date: todayStr, nw: currentNW});
   } else {
     histData[histData.length-1].nw = currentNW; 
@@ -1191,7 +1189,8 @@ function drawNWLineChart(currentNW) {
 
   nwInst = new Chart(ctx, {
     type: 'line',
-    data: { labels: labels, datasets: [{ label: 'Net Worth', data: dataNW, borderColor: '#d4af37', borderWidth: 3, pointBackgroundColor: '#d4af37', pointBorderColor: isDark ? '#10131a' : '#ffffff', pointBorderWidth: 2, pointRadius: 6, pointHoverRadius: 8, fill: true, backgroundColor: grad, tension: 0.3 }] },
+    // Tension 0 agar grafiknya tegas/garis lurus antar titik (tidak melengkung palsu)
+    data: { labels: labels, datasets: [{ label: 'Net Worth', data: dataNW, borderColor: '#d4af37', borderWidth: 3, pointBackgroundColor: '#d4af37', pointBorderColor: isDark ? '#10131a' : '#ffffff', pointBorderWidth: 2, pointRadius: 6, pointHoverRadius: 8, fill: true, backgroundColor: grad, tension: 0 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, padding: 12, callbacks: { label: (ctx) => ' ' + fmt(ctx.raw) } } },
@@ -1227,22 +1226,23 @@ function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
-function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); renderAll(); } }
+// Diperbarui: fungsi delete sekarang otomatis manggil _cloudSave() agar data permanen hilang di cloud.
+function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); _cloudSave(); } }
 
 function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
-function delRD(i) { if(confirm('Hapus bucket?')) { _syncInputsToState(); REKSADANA.splice(i, 1); renderAll(); } }
+function delRD(i) { if(confirm('Hapus bucket?')) { _syncInputsToState(); REKSADANA.splice(i, 1); _cloudSave(); } }
 
 function addCash() { _syncInputsToState(); CASH_ACCOUNTS.push({id:'c'+Date.now(), name:'Rekening Baru', value:0}); renderAll(); }
-function delCash(i) { if(confirm('Hapus rekening?')) { _syncInputsToState(); CASH_ACCOUNTS.splice(i, 1); renderAll(); } }
+function delCash(i) { if(confirm('Hapus rekening?')) { _syncInputsToState(); CASH_ACCOUNTS.splice(i, 1); _cloudSave(); } }
 
 function addLiab() { _syncInputsToState(); LIABILITAS.push({id:'l'+Date.now(), name:'Utang Baru', value:0}); renderAll(); }
-function delLiab(i) { if(confirm('Hapus liabilitas?')) { _syncInputsToState(); LIABILITAS.splice(i, 1); renderAll(); } }
+function delLiab(i) { if(confirm('Hapus liabilitas?')) { _syncInputsToState(); LIABILITAS.splice(i, 1); _cloudSave(); } }
 
 function addInflow() { _syncInputsToState(); INFLOWS.push({id:'i'+Date.now(), name:'Pemasukan Baru', value:0}); renderAll(); }
-function delInflow(i) { if(confirm('Hapus pemasukan?')) { _syncInputsToState(); INFLOWS.splice(i, 1); renderAll(); } }
+function delInflow(i) { if(confirm('Hapus pemasukan?')) { _syncInputsToState(); INFLOWS.splice(i, 1); _cloudSave(); } }
 
 function addOutflow() { _syncInputsToState(); OUTFLOWS.push({id:'o'+Date.now(), name:'Pengeluaran Baru', value:0}); renderAll(); }
-function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(); OUTFLOWS.splice(i, 1); renderAll(); } }
+function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(); OUTFLOWS.splice(i, 1); _cloudSave(); } }
 
 function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
 
@@ -1265,14 +1265,15 @@ async function loadData() {
     if (error) throw error;
     if (data && data.length > 0) {
       data.forEach(row => {
-        if(row.key === DB_PREFIX+'stocks') { let p=JSON.parse(row.value); if(p.length) STOCKS=p; }
-        if(row.key === DB_PREFIX+'reksadana') { let p=JSON.parse(row.value); if(p.length) REKSADANA=p; }
-        if(row.key === DB_PREFIX+'cash') { let p=JSON.parse(row.value); if(p.length) CASH_ACCOUNTS=p; }
-        if(row.key === DB_PREFIX+'liabilitas') { let p=JSON.parse(row.value); if(p.length) LIABILITAS=p; }
-        if(row.key === DB_PREFIX+'inflows') { let p=JSON.parse(row.value); if(p.length) INFLOWS=p; }
-        if(row.key === DB_PREFIX+'outflows') { let p=JSON.parse(row.value); if(p.length) OUTFLOWS=p; }
-        if(row.key === DB_PREFIX+'goals') { let p=JSON.parse(row.value); if(p.length) GOALS=p; }
-        if(row.key === DB_PREFIX+'history') { let p=JSON.parse(row.value); if(p.length) HISTORY=p; }
+        // Diperbarui: Gunakan Array.isArray(p) agar tidak reset ke nilai default saat list dihapus hingga kosong
+        if(row.key === DB_PREFIX+'stocks') { let p=JSON.parse(row.value); if(Array.isArray(p)) STOCKS=p; }
+        if(row.key === DB_PREFIX+'reksadana') { let p=JSON.parse(row.value); if(Array.isArray(p)) REKSADANA=p; }
+        if(row.key === DB_PREFIX+'cash') { let p=JSON.parse(row.value); if(Array.isArray(p)) CASH_ACCOUNTS=p; }
+        if(row.key === DB_PREFIX+'liabilitas') { let p=JSON.parse(row.value); if(Array.isArray(p)) LIABILITAS=p; }
+        if(row.key === DB_PREFIX+'inflows') { let p=JSON.parse(row.value); if(Array.isArray(p)) INFLOWS=p; }
+        if(row.key === DB_PREFIX+'outflows') { let p=JSON.parse(row.value); if(Array.isArray(p)) OUTFLOWS=p; }
+        if(row.key === DB_PREFIX+'goals') { let p=JSON.parse(row.value); if(Array.isArray(p)) GOALS=p; }
+        if(row.key === DB_PREFIX+'history') { let p=JSON.parse(row.value); if(Array.isArray(p)) HISTORY=p; }
         if(row.key === DB_PREFIX+'crypto_bal') CRYPTO_BAL = Number(row.value) || 0;
         if(row.key === DB_PREFIX+'porto_target') PORTO_TARGET = Number(row.value) || 100000000;
       });
@@ -1298,9 +1299,9 @@ async function _cloudSave() {
   let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
   
   if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) {
-    HISTORY[HISTORY.length - 1].nw = nw; 
+    HISTORY[HISTORY.length - 1].nw = nw; // Overwrite data hari ini
   } else {
-    HISTORY.push({ date: todayStr, nw: nw }); 
+    HISTORY.push({ date: todayStr, nw: nw }); // Catat hari baru
   }
   
   // Batasi history maksimal 90 hari
