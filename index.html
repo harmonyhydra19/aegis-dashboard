@@ -548,18 +548,21 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
       <button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button>
     </div>
     <div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem">
-      <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;margin-bottom:1rem;text-transform:uppercase">▶ Inflow</div>
-      <div class="form-group"><label class="form-label">Gaji Pokok & Makan</label><input type="text" class="form-input cf-input" id="in-gaji"></div>
-      <div class="form-group"><label class="form-label">Tunjangan Kinerja (Tukin)</label><input type="text" class="form-input cf-input" id="in-tukin"></div>
-      <div class="form-group"><label class="form-label">Crypto Bot (Income Est.)</label><input type="text" class="form-input cf-input" id="in-crypto"></div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;text-transform:uppercase">▶ Inflow</div>
+        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addInflow()">+ Inflow</button>
+      </div>
+      <div id="inflow-list"></div>
       
       <hr style="border:1px solid var(--border);margin:2rem 0">
       
-      <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;margin-bottom:1rem;text-transform:uppercase">◀ Outflow</div>
-      <div class="form-group"><label class="form-label">Pengeluaran Rutin</label><input type="text" class="form-input cf-input" id="ex-rutin"></div>
-      <div class="form-group"><label class="form-label">Cicilan CC Jenius</label><input type="text" class="form-input cf-input" id="ex-ccjenius"></div>
-      <div class="form-group"><label class="form-label">Cicilan Bank BRI</label><input type="text" class="form-input cf-input" id="ex-bri"></div>
-      <div class="form-group"><label class="form-label">Jenius Flexi Cash</label><input type="text" class="form-input cf-input" id="ex-flexi"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;text-transform:uppercase">◀ Outflow</div>
+        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addOutflow()">+ Outflow</button>
+      </div>
+      <div id="outflow-list"></div>
+
     </div>
     <button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button>
   </div>
@@ -642,7 +645,17 @@ let LIABILITAS = [
   { id:'l1', name: 'Kartu Kredit Jenius', value: 3500000 },
   { id:'l2', name: 'KPR / Kredit BRI', value: 120000000 }
 ];
-let CASHFLOW = { gaji:3000000, makan:900000, tukin:3900000, crypto:1500000, rutin:2500000, ccjenius:3500000, bri:500000, flexi:0 };
+let INFLOWS = [
+  { id: 'i1', name: 'Gaji Pokok & Makan', value: 3432900 },
+  { id: 'i2', name: 'Tunjangan Kinerja (Tukin)', value: 3915950 },
+  { id: 'i3', name: 'Crypto Bot (Income Est.)', value: 1500000 }
+];
+let OUTFLOWS = [
+  { id: 'o1', name: 'Pengeluaran Rutin', value: 2750000 },
+  { id: 'o2', name: 'Cicilan CC Jenius', value: 3500000 },
+  { id: 'o3', name: 'Cicilan Bank BRI', value: 2825000 },
+  { id: 'o4', name: 'Jenius Flexi Cash', value: 0 }
+];
 let GOALS = [
   { id:'auto-nw', name:'Terminal Net Worth', target:2000000000, isAuto:true },
   { id:'c1', name:'Dana Darurat 12x', target:60000000, current:27000000 }
@@ -792,6 +805,11 @@ function renderAll() {
   let totalAset = totalSaham + totalRD + totalCash + CRYPTO_BAL;
   let netWorth = totalAset - totalLiab;
 
+  /* CASHFLOW CALCULATION */
+  let cfIn = INFLOWS.reduce((s, x) => s + (x.value||0), 0);
+  let cfOut = OUTFLOWS.reduce((s, x) => s + (x.value||0), 0);
+  let surplus = cfIn - cfOut;
+
   /* DASHBOARD NW */
   document.getElementById('hero-nw').textContent = fmt(netWorth);
   document.getElementById('hero-sub').textContent = `${fmtShort(totalAset)} aset terminal vs ${fmtShort(totalLiab)} liabilitas.`;
@@ -801,9 +819,6 @@ function renderAll() {
   document.getElementById('stat-liab').textContent = fmtShort(totalLiab);
   if(document.getElementById('stat-crypto')) document.getElementById('stat-crypto').textContent = fmtShort(CRYPTO_BAL);
   
-  let cfIn = (CASHFLOW.gaji||0) + (CASHFLOW.makan||0) + (CASHFLOW.tukin||0) + (CASHFLOW.crypto||0);
-  let cfOut = (CASHFLOW.rutin||0) + (CASHFLOW.ccjenius||0) + (CASHFLOW.bri||0) + (CASHFLOW.flexi||0);
-  let surplus = cfIn - cfOut;
   document.getElementById('dashboard-cf-in').textContent = fmt(cfIn);
   document.getElementById('dashboard-cf-out').textContent = fmt(cfOut);
   document.getElementById('dashboard-cf-surplus').textContent = (surplus >= 0 ? '+' : '') + fmt(surplus);
@@ -838,6 +853,7 @@ function renderAll() {
 
   /* PORTO SAHAM (FULL SYNC & SORTING) */
   const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
+  document.getElementById('porto-total-val').textContent = fmt(totalSaham);
   document.getElementById('t-curr').textContent = fmt(totalSaham);
   document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
   document.getElementById('t-bar').style.width = pctTarget + '%';
@@ -1040,6 +1056,23 @@ function renderAll() {
       <button class="btn-delete" onclick="delLiab(${origIdx})">✕</button>
     </div>`
   }).join('');
+
+  /* CASHFLOW LIST (DINAMIS) */
+  document.getElementById('inflow-list').innerHTML = INFLOWS.map((inf, i) => `
+    <div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center">
+      <input type="text" class="form-input" id="inf-n-${i}" value="${inf.name}" placeholder="Nama Pemasukan" style="flex:1; margin-bottom:0">
+      <input type="text" class="form-input cf-input" id="inf-v-${i}" value="${formatRibuan(inf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700">
+      <button class="btn-delete" onclick="delInflow(${i})" style="margin-left:.5rem">✕</button>
+    </div>
+  `).join('');
+
+  document.getElementById('outflow-list').innerHTML = OUTFLOWS.map((outf, i) => `
+    <div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center">
+      <input type="text" class="form-input" id="outf-n-${i}" value="${outf.name}" placeholder="Nama Pengeluaran" style="flex:1; margin-bottom:0">
+      <input type="text" class="form-input cf-input" id="outf-v-${i}" value="${formatRibuan(outf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700; color:var(--red)">
+      <button class="btn-delete" onclick="delOutflow(${i})" style="margin-left:.5rem">✕</button>
+    </div>
+  `).join('');
 }
 
 /* ── CHARTS.JS ── */
@@ -1111,6 +1144,8 @@ function _syncInputsToState() {
   REKSADANA.forEach((r, i) => { let el = document.getElementById(`rd-n-${i}`); if(el){ r.name = el.value; r.value = unformatRibuan(document.getElementById(`rd-v-${i}`).value); } });
   CASH_ACCOUNTS.forEach((c, i) => { let el = document.getElementById(`cash-n-${i}`); if(el){ c.name = el.value; c.value = unformatRibuan(document.getElementById(`cash-v-${i}`).value); } });
   LIABILITAS.forEach((l, i) => { let el = document.getElementById(`liab-n-${i}`); if(el){ l.name = el.value; l.value = unformatRibuan(document.getElementById(`liab-v-${i}`).value); } });
+  INFLOWS.forEach((inf, i) => { let el = document.getElementById(`inf-n-${i}`); if(el){ inf.name = el.value; inf.value = unformatRibuan(document.getElementById(`inf-v-${i}`).value); } });
+  OUTFLOWS.forEach((outf, i) => { let el = document.getElementById(`outf-n-${i}`); if(el){ outf.name = el.value; outf.value = unformatRibuan(document.getElementById(`outf-v-${i}`).value); } });
 }
 
 /* ── ACTIONS ── */
@@ -1138,17 +1173,18 @@ function delCash(i) { if(confirm('Hapus rekening?')) { _syncInputsToState(); CAS
 function addLiab() { _syncInputsToState(); LIABILITAS.push({id:'l'+Date.now(), name:'Utang Baru', value:0}); renderAll(); }
 function delLiab(i) { if(confirm('Hapus liabilitas?')) { _syncInputsToState(); LIABILITAS.splice(i, 1); renderAll(); } }
 
+function addInflow() { _syncInputsToState(); INFLOWS.push({id:'i'+Date.now(), name:'Pemasukan Baru', value:0}); renderAll(); }
+function delInflow(i) { if(confirm('Hapus pemasukan?')) { _syncInputsToState(); INFLOWS.splice(i, 1); renderAll(); } }
+
+function addOutflow() { _syncInputsToState(); OUTFLOWS.push({id:'o'+Date.now(), name:'Pengeluaran Baru', value:0}); renderAll(); }
+function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(); OUTFLOWS.splice(i, 1); renderAll(); } }
+
 function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
 
 function saveCashflow() {
-  CASHFLOW.gaji = unformatRibuan(document.getElementById('in-gaji').value);
-  CASHFLOW.tukin = unformatRibuan(document.getElementById('in-tukin').value);
-  CASHFLOW.crypto = unformatRibuan(document.getElementById('in-crypto').value);
-  CASHFLOW.rutin = unformatRibuan(document.getElementById('ex-rutin').value);
-  CASHFLOW.ccjenius = unformatRibuan(document.getElementById('ex-ccjenius').value);
-  CASHFLOW.bri = unformatRibuan(document.getElementById('ex-bri').value);
-  CASHFLOW.flexi = unformatRibuan(document.getElementById('ex-flexi').value);
-  _cloudSave(); closeModal('modal-cashflow');
+  _syncInputsToState();
+  _cloudSave(); 
+  closeModal('modal-cashflow');
 }
 
 function saveGoal() {
@@ -1163,7 +1199,7 @@ async function loadData() {
   try {
     const { data, error } = await sb.from('settings').select('key,value').in('key', [
       DB_PREFIX+'stocks', DB_PREFIX+'reksadana', DB_PREFIX+'cash', DB_PREFIX+'liabilitas', 
-      DB_PREFIX+'cf', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target'
+      DB_PREFIX+'inflows', DB_PREFIX+'outflows', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target'
     ]);
     if (error) throw error;
     if (data && data.length > 0) {
@@ -1172,7 +1208,8 @@ async function loadData() {
         if(row.key === DB_PREFIX+'reksadana') { let p=JSON.parse(row.value); if(p.length) REKSADANA=p; }
         if(row.key === DB_PREFIX+'cash') { let p=JSON.parse(row.value); if(p.length) CASH_ACCOUNTS=p; }
         if(row.key === DB_PREFIX+'liabilitas') { let p=JSON.parse(row.value); if(p.length) LIABILITAS=p; }
-        if(row.key === DB_PREFIX+'cf') { let p=JSON.parse(row.value); if(p) CASHFLOW=p; }
+        if(row.key === DB_PREFIX+'inflows') { let p=JSON.parse(row.value); if(p.length) INFLOWS=p; }
+        if(row.key === DB_PREFIX+'outflows') { let p=JSON.parse(row.value); if(p.length) OUTFLOWS=p; }
         if(row.key === DB_PREFIX+'goals') { let p=JSON.parse(row.value); if(p.length) GOALS=p; }
         if(row.key === DB_PREFIX+'history') { let p=JSON.parse(row.value); if(p.length) HISTORY=p; }
         if(row.key === DB_PREFIX+'crypto_bal') CRYPTO_BAL = Number(row.value) || 0;
@@ -1181,14 +1218,7 @@ async function loadData() {
     }
     
     document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
-    document.getElementById('in-gaji').value = formatRibuan(CASHFLOW.gaji);
-    document.getElementById('in-tukin').value = formatRibuan(CASHFLOW.tukin);
-    document.getElementById('in-crypto').value = formatRibuan(CASHFLOW.crypto);
-    document.getElementById('ex-rutin').value = formatRibuan(CASHFLOW.rutin);
-    document.getElementById('ex-ccjenius').value = formatRibuan(CASHFLOW.ccjenius);
-    document.getElementById('ex-bri').value = formatRibuan(CASHFLOW.bri);
-    document.getElementById('ex-flexi').value = formatRibuan(CASHFLOW.flexi);
-    document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
+    if(document.getElementById('in-crypto-bal')) document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
     statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
   } catch(e) { statusEl.textContent = '☁ Offline Mode'; statusEl.style.color = 'var(--muted)'; }
   
@@ -1205,7 +1235,8 @@ async function _cloudSave() {
       { key: DB_PREFIX+'reksadana', value: JSON.stringify(REKSADANA) },
       { key: DB_PREFIX+'cash', value: JSON.stringify(CASH_ACCOUNTS) },
       { key: DB_PREFIX+'liabilitas', value: JSON.stringify(LIABILITAS) },
-      { key: DB_PREFIX+'cf', value: JSON.stringify(CASHFLOW) },
+      { key: DB_PREFIX+'inflows', value: JSON.stringify(INFLOWS) },
+      { key: DB_PREFIX+'outflows', value: JSON.stringify(OUTFLOWS) },
       { key: DB_PREFIX+'goals', value: JSON.stringify(GOALS) },
       { key: DB_PREFIX+'history', value: JSON.stringify(HISTORY) },
       { key: DB_PREFIX+'crypto_bal', value: String(CRYPTO_BAL) },
