@@ -35,6 +35,8 @@
     background: var(--cream);
     color: var(--text);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   /* ── SIDEBAR ── */
@@ -110,10 +112,15 @@
   }
 
   /* ── MAIN ── */
-  .main {
+  .main-wrapper {
     margin-left: 240px;
-    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+  }
+  .main {
+    flex: 1;
+    padding: 32px 36px 0 36px;
   }
 
   .page { display:none; }
@@ -457,7 +464,8 @@
   }
   @media (max-width: 900px) {
     .sidebar { width: 200px; }
-    .main { margin-left: 200px; padding: 20px; }
+    .main-wrapper { margin-left: 200px; }
+    .main { padding: 20px; }
     .cards-row { grid-template-columns: 1fr; }
     .cards-row-4 { grid-template-columns: 1fr 1fr; }
   }
@@ -465,7 +473,6 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <nav class="sidebar">
   <div class="sidebar-logo">
     <h1>Griya<br>Simpan Pinjam</h1>
@@ -513,375 +520,348 @@
   </div>
 </nav>
 
-<!-- MAIN -->
-<main class="main">
+<div class="main-wrapper">
+  <main class="main">
 
-  <!-- ══════════════════════════════════════════
-       GSP: DASHBOARD
-  ══════════════════════════════════════════ -->
-  <div class="page active" id="page-dashboard">
-    <div class="page-header">
-      <h2>Dashboard</h2>
-      <p>Ringkasan kondisi keuangan Griya Simpan Pinjam</p>
-    </div>
-    <div style="background:linear-gradient(135deg,#FFF8E7,#FEF3C7);border:1px solid #F6D860;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;line-height:1.2">💡</span>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Tentang Modul ini</div>
-        <div style="font-size:12.5px;color:#78350F;line-height:1.6">Halaman ini menampilkan <b>ringkasan bisnis simpan pinjam (GSP)</b> Anda: total piutang aktif, arus kas bulan ini, dan daftar nasabah yang masih memiliki sisa tagihan. Gunakan sidebar kiri untuk mengakses fitur lainnya.</div>
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h2>Dashboard</h2>
+        <p>Ringkasan kondisi keuangan Griya Simpan Pinjam</p>
       </div>
-    </div>
-    <div class="cards-row">
-      <div class="card gold">
-        <div class="card-label">Total Piutang Aktif</div>
-        <div class="card-value gold" id="stat-dana">Rp 0</div>
-        <div class="card-sub" id="stat-nasabah-count">0 nasabah aktif</div>
+      <div style="background:linear-gradient(135deg,#FFF8E7,#FEF3C7);border:1px solid #F6D860;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;line-height:1.2">💡</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Tentang Modul ini</div>
+          <div style="font-size:12.5px;color:#78350F;line-height:1.6">Halaman ini menampilkan <b>ringkasan bisnis simpan pinjam (GSP)</b> Anda. Pencatatan transaksi pinjaman / pencairan dana tercatat sebagai <b>Uang Keluar</b>, dan pelunasan cicilan tercatat sebagai <b>Uang Masuk</b>.</div>
+        </div>
       </div>
-      <div class="card green">
-        <div class="card-label">Total Masuk (Bulan Ini)</div>
-        <div class="card-value green" id="stat-masuk">Rp 0</div>
-        <div class="card-sub" id="stat-masuk-count">0 transaksi</div>
+      <div class="cards-row-4">
+        <div class="card gold">
+          <div class="card-label">Total Piutang Aktif</div>
+          <div class="card-value gold" id="stat-dana">Rp 0</div>
+          <div class="card-sub" id="stat-nasabah-count">0 nasabah aktif</div>
+        </div>
+        <div class="card green">
+          <div class="card-label">Total Masuk (Bulan Ini)</div>
+          <div class="card-value green" id="stat-masuk">Rp 0</div>
+          <div class="card-sub" id="stat-masuk-count">0 transaksi</div>
+        </div>
+        <div class="card red">
+          <div class="card-label">Total Keluar (Bulan Ini)</div>
+          <div class="card-value red" id="stat-keluar">Rp 0</div>
+          <div class="card-sub" id="stat-keluar-count">0 transaksi</div>
+        </div>
+        <div class="card purple">
+          <div class="card-label">PnL Unrealized (Keseluruhan)</div>
+          <div class="card-value purple" id="stat-pnl">Rp 0</div>
+          <div class="card-sub">Selisih Masuk & Keluar</div>
+        </div>
       </div>
-      <div class="card red">
-        <div class="card-label">Total Keluar (Bulan Ini)</div>
-        <div class="card-value red" id="stat-keluar">Rp 0</div>
-        <div class="card-sub" id="stat-keluar-count">0 transaksi</div>
+
+      <div class="table-card" style="margin-bottom:24px">
+        <div class="table-head">
+          <h3>Status Piutang Nasabah</h3>
+          <span style="font-size:12px;color:var(--text-muted)">Sisa hutang yang belum lunas</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nasabah</th>
+              <th>Total Pinjaman</th>
+              <th>Bunga</th>
+              <th>Biaya Admin</th>
+              <th>Total Tagihan</th>
+              <th>Sudah Dibayar</th>
+              <th>Sisa</th>
+              <th>Progress</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-piutang"></tbody>
+        </table>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <h3>Transaksi Terbaru</h3>
+          <button class="btn btn-primary" onclick="openTransaksiModal()">+ Tambah Transaksi</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th><th>Nasabah</th><th>Jenis</th><th>Metode</th><th>Jumlah</th><th>Catatan</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-transaksi-recent"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- STATUS HUTANG NASABAH -->
-    <div class="table-card" style="margin-bottom:24px">
-      <div class="table-head">
-        <h3>Status Piutang Nasabah</h3>
-        <span style="font-size:12px;color:var(--text-muted)">Sisa hutang yang belum lunas</span>
+    <div class="page" id="page-nasabah">
+      <div class="page-header">
+        <h2>Data Nasabah</h2>
+        <p>Kelola semua nasabah simpan pinjam</p>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Nasabah</th>
-            <th>Total Pinjaman</th>
-            <th>Bunga</th>
-            <th>Biaya Admin</th>
-            <th>Total Tagihan</th>
-            <th>Sudah Dibayar</th>
-            <th>Sisa</th>
-            <th>Progress</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-piutang"></tbody>
-      </table>
+      <div style="background:linear-gradient(135deg,#F0F9FF,#E0F2FE);border:1px solid #BAE6FD;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;line-height:1.2">👥</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#075985;margin-bottom:3px">Manajemen Nasabah</div>
+          <div style="font-size:12.5px;color:#0C4A6E;line-height:1.6">Tambah, edit, dan pantau nasabah Anda. Saat mendaftarkan nasabah baru, sistem akan <b>otomatis mencatat transaksi Keluar (Pencairan)</b> sebesar pinjaman pokok. Sisa hutang berkurang otomatis setiap ada transaksi Masuk.</div>
+        </div>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-nasabah" placeholder="🔍  Cari nama atau no. telepon..." oninput="renderNasabah()">
+        <button class="btn btn-primary" onclick="openNasabahModal()">+ Tambah Nasabah</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Nama</th><th>Telepon</th><th>Total Pinjaman</th><th>Bunga</th><th>Biaya Admin</th><th>Total Tagihan</th><th>Sisa Hutang</th><th>Status</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-nasabah"></tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="table-card">
-      <div class="table-head">
-        <h3>Transaksi Terbaru</h3>
+    <div class="page" id="page-transaksi">
+      <div class="page-header">
+        <h2>Arus Transaksi</h2>
+        <p>Semua riwayat keluar masuk dana</p>
+      </div>
+      <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:1px solid #86EFAC;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;line-height:1.2">💸</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:3px">Pencatatan Transaksi GSP</div>
+          <div style="font-size:12.5px;color:#14532D;line-height:1.6">Catat setiap <b>pembayaran masuk</b> (nasabah bayar cicilan) dan <b>pencairan keluar</b> (dana dipinjamkan ke nasabah). Penambahan transaksi otomatis menyesuaikan <b>Sisa Hutang</b> Nasabah.</div>
+        </div>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-transaksi" placeholder="🔍  Cari nasabah atau catatan..." oninput="renderTransaksi()">
+        <select id="filter-jenis" onchange="renderTransaksi()" style="max-width:150px">
+          <option value="">Semua Jenis</option>
+          <option value="masuk">Masuk</option>
+          <option value="keluar">Keluar</option>
+        </select>
+        <select id="filter-metode" onchange="renderTransaksi()" style="max-width:160px">
+          <option value="">Semua Metode</option>
+          <option value="tunai">Tunai</option>
+          <option value="transfer">Transfer Bank</option>
+          <option value="qris">QRIS</option>
+          <option value="lainnya">Lainnya</option>
+        </select>
         <button class="btn btn-primary" onclick="openTransaksiModal()">+ Tambah Transaksi</button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Tanggal</th><th>Nasabah</th><th>Jenis</th><th>Metode</th><th>Jumlah</th><th>Catatan</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-transaksi-recent"></tbody>
-      </table>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th><th>Nasabah</th><th>Jenis</th><th>Metode</th><th>Jumlah</th><th>Catatan</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-transaksi"></tbody>
+        </table>
+      </div>
     </div>
+
+    <div class="page" id="page-laporan">
+      <div class="page-header">
+        <h2>Laporan Keuangan GSP</h2>
+        <p>Ringkasan dan analisis dana simpan pinjam</p>
+      </div>
+      <div class="cards-row-2">
+        <div class="card green">
+          <div class="card-label">Total Pemasukan</div>
+          <div class="card-value green" id="lap-masuk">Rp 0</div>
+          <div class="card-sub" id="lap-masuk-trx"></div>
+        </div>
+        <div class="card red">
+          <div class="card-label">Total Pengeluaran</div>
+          <div class="card-value red" id="lap-keluar">Rp 0</div>
+          <div class="card-sub" id="lap-keluar-trx"></div>
+        </div>
+      </div>
+      <div class="table-card" style="margin-bottom:24px">
+        <div class="table-head"><h3>Ringkasan Per Nasabah</h3></div>
+        <table>
+          <thead><tr><th>Nama Nasabah</th><th>Total Masuk</th><th>Total Keluar</th><th>Selisih</th><th>Status</th></tr></thead>
+          <tbody id="tbl-laporan-nasabah"></tbody>
+        </table>
+      </div>
+      <div class="table-card">
+        <div class="table-head"><h3>Rekap Per Metode Pembayaran</h3></div>
+        <table>
+          <thead><tr><th>Metode</th><th>Jumlah Transaksi</th><th>Total Volume</th></tr></thead>
+          <tbody id="tbl-laporan-metode"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="page-kk-dashboard">
+      <div style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #A5B4FC;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;line-height:1.2">🏡</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#3730A3;margin-bottom:3px">Keuangan Keluarga — Ringkasan</div>
+          <div style="font-size:12.5px;color:#312E81;line-height:1.6">Modul ini <b>terpisah dari GSP</b> dan digunakan untuk mencatat keuangan rumah tangga pribadi Anda. Profit GSP bulan ini otomatis dihitung dan ditampilkan sebagai referensi pemasukan.</div>
+        </div>
+      </div>
+      <div class="kk-header-band">
+        <div>
+          <h2>Keuangan Keluarga</h2>
+          <p>Saldo bersih bulan ini (pemasukan - pengeluaran)</p>
+          <div class="kk-saldo-big" id="kk-saldo-bersih">Rp 0</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px;opacity:.7;margin-bottom:4px">Profit GSP bulan ini</div>
+          <div style="font-size:22px;font-weight:700;font-family:'Playfair Display',serif;color:#FDE68A" id="kk-gsp-profit-header">Rp 0</div>
+          <div style="font-size:11px;opacity:.6;margin-top:2px">sudah termasuk dalam pemasukan</div>
+        </div>
+      </div>
+
+      <div class="cards-row-4">
+        <div class="card green">
+          <div class="card-label">Pemasukan Bulan Ini</div>
+          <div class="card-value green" id="kk-stat-masuk">Rp 0</div>
+          <div class="card-sub" id="kk-stat-masuk-sub"></div>
+        </div>
+        <div class="card red">
+          <div class="card-label">Pengeluaran Bulan Ini</div>
+          <div class="card-value red" id="kk-stat-keluar">Rp 0</div>
+          <div class="card-sub" id="kk-stat-keluar-sub"></div>
+        </div>
+        <div class="card gold">
+          <div class="card-label">Profit GSP (bulan ini)</div>
+          <div class="card-value gold" id="kk-stat-gsp">Rp 0</div>
+          <div class="card-sub">side hustle income</div>
+        </div>
+        <div class="card blue">
+          <div class="card-label">Total Hutang Keluarga</div>
+          <div class="card-value blue" id="kk-stat-hutang">Rp 0</div>
+          <div class="card-sub" id="kk-stat-hutang-sub"></div>
+        </div>
+      </div>
+
+      <div class="table-card" style="margin-bottom:24px">
+        <div class="table-head">
+          <h3>Hutang &amp; Cicilan Keluarga</h3>
+          <button class="btn btn-blue btn-sm" onclick="showPage('kk-hutang', document.querySelector('[data-page=kk-hutang]'))">Kelola →</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Nama Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Status</th></tr>
+          </thead>
+          <tbody id="kk-tbl-hutang-mini"></tbody>
+        </table>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <h3>Transaksi Keluarga Terbaru</h3>
+          <button class="btn btn-blue btn-sm" onclick="openKKTransaksiModal()">+ Tambah</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th></tr>
+          </thead>
+          <tbody id="kk-tbl-recent"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="page-kk-pemasukan">
+      <div class="page-header">
+        <h2>Pemasukan Keluarga</h2>
+        <p>Gaji, side hustle (termasuk profit GSP), dan sumber lainnya</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-kk-masuk" placeholder="🔍  Cari pemasukan..." oninput="renderKKTransaksi('masuk')">
+        <button class="btn btn-blue" onclick="openKKTransaksiModal('masuk')">+ Tambah Pemasukan</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Keterangan</th><th>Sumber</th><th>Jumlah</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tbl-kk-masuk"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="page-kk-pengeluaran">
+      <div class="page-header">
+        <h2>Pengeluaran Keluarga</h2>
+        <p>Semua pengeluaran rumah tangga per kategori</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-kk-keluar" placeholder="🔍  Cari pengeluaran..." oninput="renderKKTransaksi('keluar')">
+        <select id="filter-kk-kategori" onchange="renderKKTransaksi('keluar')" style="max-width:180px">
+          <option value="">Semua Kategori</option>
+          <option value="makan">🍽 Makan & Minum</option>
+          <option value="tagihan">💡 Tagihan</option>
+          <option value="transportasi">🚗 Transportasi</option>
+          <option value="pendidikan">📚 Pendidikan</option>
+          <option value="kesehatan">🏥 Kesehatan</option>
+          <option value="tabungan">🐷 Tabungan</option>
+          <option value="investasi">📈 Investasi</option>
+          <option value="lainnya">📦 Lainnya</option>
+        </select>
+        <button class="btn btn-blue" onclick="openKKTransaksiModal('keluar')">+ Tambah Pengeluaran</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jumlah</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tbl-kk-keluar"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="page-kk-hutang">
+      <div class="page-header">
+        <h2>Hutang &amp; Cicilan Keluarga</h2>
+        <p>KPR, KTA, kartu kredit, dan hutang personal</p>
+      </div>
+      <div class="search-bar">
+        <button class="btn btn-blue" onclick="openHutangModal()">+ Tambah Hutang / Cicilan</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr><th>Nama Hutang</th><th>Pemberi Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Cicilan/Bln</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tbl-kk-hutang"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="page-kk-anggaran">
+      <div class="page-header">
+        <h2>Anggaran Bulanan</h2>
+        <p>Target pengeluaran per kategori bulan ini</p>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:18px">
+        <button class="btn btn-blue" onclick="openAnggaranModal()">+ Set Anggaran</button>
+      </div>
+      <div class="table-card">
+        <div class="table-head"><h3>Realisasi vs Anggaran Bulan Ini</h3></div>
+        <table>
+          <thead>
+            <tr><th>Kategori</th><th>Anggaran</th><th>Terpakai</th><th>Sisa</th><th>Progress</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tbl-anggaran"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+  
+  <div style="text-align: center; padding: 30px; font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: auto;">
+    Created by ZenkichiArc
   </div>
+</div>
 
-  <!-- ══════════════════════════════════════════
-       GSP: NASABAH
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-nasabah">
-    <div class="page-header">
-      <h2>Data Nasabah</h2>
-      <p>Kelola semua nasabah simpan pinjam</p>
-    </div>
-    <div style="background:linear-gradient(135deg,#F0F9FF,#E0F2FE);border:1px solid #BAE6FD;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;line-height:1.2">👥</span>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:#075985;margin-bottom:3px">Manajemen Nasabah</div>
-        <div style="font-size:12.5px;color:#0C4A6E;line-height:1.6">Tambah, edit, dan pantau semua nasabah Anda. Setiap nasabah menyimpan data <b>pinjaman pokok, bunga, biaya admin, dan sisa tagihan</b>. Klik <b>"+ Tambah Nasabah"</b> untuk mendaftarkan nasabah baru, atau ikon ✏️ untuk mengedit data yang sudah ada.</div>
-      </div>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="search-nasabah" placeholder="🔍  Cari nama atau no. telepon..." oninput="renderNasabah()">
-      <button class="btn btn-primary" onclick="openNasabahModal()">+ Tambah Nasabah</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>Nama</th><th>Telepon</th><th>Total Pinjaman</th><th>Bunga</th><th>Biaya Admin</th><th>Total Tagihan</th><th>Sisa Hutang</th><th>Status</th><th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-nasabah"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       GSP: TRANSAKSI
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-transaksi">
-    <div class="page-header">
-      <h2>Arus Transaksi</h2>
-      <p>Semua riwayat keluar masuk dana</p>
-    </div>
-    <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:1px solid #86EFAC;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;line-height:1.2">💸</span>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:3px">Pencatatan Transaksi GSP</div>
-        <div style="font-size:12.5px;color:#14532D;line-height:1.6">Catat setiap <b>pembayaran masuk</b> (nasabah bayar cicilan/lunasi) dan <b>pencairan keluar</b> (dana dipinjamkan ke nasabah). Pilih nasabah yang terkait, isi jumlah dan metode pembayaran. Gunakan filter di atas tabel untuk menyaring transaksi tertentu.</div>
-      </div>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="search-transaksi" placeholder="🔍  Cari nasabah atau catatan..." oninput="renderTransaksi()">
-      <select id="filter-jenis" onchange="renderTransaksi()" style="max-width:150px">
-        <option value="">Semua Jenis</option>
-        <option value="masuk">Masuk</option>
-        <option value="keluar">Keluar</option>
-      </select>
-      <select id="filter-metode" onchange="renderTransaksi()" style="max-width:160px">
-        <option value="">Semua Metode</option>
-        <option value="tunai">Tunai</option>
-        <option value="transfer">Transfer Bank</option>
-        <option value="qris">QRIS</option>
-        <option value="lainnya">Lainnya</option>
-      </select>
-      <button class="btn btn-primary" onclick="openTransaksiModal()">+ Tambah Transaksi</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr>
-            <th>Tanggal</th><th>Nasabah</th><th>Jenis</th><th>Metode</th><th>Jumlah</th><th>Catatan</th><th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-transaksi"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       GSP: LAPORAN
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-laporan">
-    <div class="page-header">
-      <h2>Laporan Keuangan GSP</h2>
-      <p>Ringkasan dan analisis dana simpan pinjam</p>
-    </div>
-    <div class="cards-row-2">
-      <div class="card green">
-        <div class="card-label">Total Pemasukan</div>
-        <div class="card-value green" id="lap-masuk">Rp 0</div>
-        <div class="card-sub" id="lap-masuk-trx"></div>
-      </div>
-      <div class="card red">
-        <div class="card-label">Total Pengeluaran</div>
-        <div class="card-value red" id="lap-keluar">Rp 0</div>
-        <div class="card-sub" id="lap-keluar-trx"></div>
-      </div>
-    </div>
-    <div class="table-card" style="margin-bottom:24px">
-      <div class="table-head"><h3>Ringkasan Per Nasabah</h3></div>
-      <table>
-        <thead><tr><th>Nama Nasabah</th><th>Total Masuk</th><th>Total Keluar</th><th>Selisih</th><th>Status</th></tr></thead>
-        <tbody id="tbl-laporan-nasabah"></tbody>
-      </table>
-    </div>
-    <div class="table-card">
-      <div class="table-head"><h3>Rekap Per Metode Pembayaran</h3></div>
-      <table>
-        <thead><tr><th>Metode</th><th>Jumlah Transaksi</th><th>Total Volume</th></tr></thead>
-        <tbody id="tbl-laporan-metode"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       KK: DASHBOARD KELUARGA
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-kk-dashboard">
-    <!-- Info banner -->
-    <div style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #A5B4FC;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;line-height:1.2">🏡</span>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:#3730A3;margin-bottom:3px">Keuangan Keluarga — Ringkasan</div>
-        <div style="font-size:12.5px;color:#312E81;line-height:1.6">Modul ini <b>terpisah dari GSP</b> dan digunakan untuk mencatat keuangan rumah tangga pribadi Anda. Profit GSP bulan ini otomatis dihitung dan ditampilkan sebagai referensi pemasukan. Gunakan submenu di kiri untuk kelola pemasukan, pengeluaran, hutang, dan anggaran.</div>
-      </div>
-    </div>
-    <!-- Header band -->
-    <div class="kk-header-band">
-      <div>
-        <h2>Keuangan Keluarga</h2>
-        <p>Saldo bersih bulan ini (pemasukan - pengeluaran)</p>
-        <div class="kk-saldo-big" id="kk-saldo-bersih">Rp 0</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:12px;opacity:.7;margin-bottom:4px">Profit GSP bulan ini</div>
-        <div style="font-size:22px;font-weight:700;font-family:'Playfair Display',serif;color:#FDE68A" id="kk-gsp-profit-header">Rp 0</div>
-        <div style="font-size:11px;opacity:.6;margin-top:2px">sudah termasuk dalam pemasukan</div>
-      </div>
-    </div>
-
-    <div class="cards-row-4">
-      <div class="card green">
-        <div class="card-label">Pemasukan Bulan Ini</div>
-        <div class="card-value green" id="kk-stat-masuk">Rp 0</div>
-        <div class="card-sub" id="kk-stat-masuk-sub"></div>
-      </div>
-      <div class="card red">
-        <div class="card-label">Pengeluaran Bulan Ini</div>
-        <div class="card-value red" id="kk-stat-keluar">Rp 0</div>
-        <div class="card-sub" id="kk-stat-keluar-sub"></div>
-      </div>
-      <div class="card gold">
-        <div class="card-label">Profit GSP (bulan ini)</div>
-        <div class="card-value gold" id="kk-stat-gsp">Rp 0</div>
-        <div class="card-sub">side hustle income</div>
-      </div>
-      <div class="card blue">
-        <div class="card-label">Total Hutang Keluarga</div>
-        <div class="card-value blue" id="kk-stat-hutang">Rp 0</div>
-        <div class="card-sub" id="kk-stat-hutang-sub"></div>
-      </div>
-    </div>
-
-    <!-- Hutang keluarga ringkas -->
-    <div class="table-card" style="margin-bottom:24px">
-      <div class="table-head">
-        <h3>Hutang &amp; Cicilan Keluarga</h3>
-        <button class="btn btn-blue btn-sm" onclick="showPage('kk-hutang', document.querySelector('[data-page=kk-hutang]'))">Kelola →</button>
-      </div>
-      <table>
-        <thead>
-          <tr><th>Nama Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Status</th></tr>
-        </thead>
-        <tbody id="kk-tbl-hutang-mini"></tbody>
-      </table>
-    </div>
-
-    <!-- Pengeluaran terbaru -->
-    <div class="table-card">
-      <div class="table-head">
-        <h3>Transaksi Keluarga Terbaru</h3>
-        <button class="btn btn-blue btn-sm" onclick="openKKTransaksiModal()">+ Tambah</button>
-      </div>
-      <table>
-        <thead>
-          <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th></tr>
-        </thead>
-        <tbody id="kk-tbl-recent"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       KK: PEMASUKAN
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-kk-pemasukan">
-    <div class="page-header">
-      <h2>Pemasukan Keluarga</h2>
-      <p>Gaji, side hustle (termasuk profit GSP), dan sumber lainnya</p>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="search-kk-masuk" placeholder="🔍  Cari pemasukan..." oninput="renderKKTransaksi('masuk')">
-      <button class="btn btn-blue" onclick="openKKTransaksiModal('masuk')">+ Tambah Pemasukan</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr><th>Tanggal</th><th>Keterangan</th><th>Sumber</th><th>Jumlah</th><th>Aksi</th></tr>
-        </thead>
-        <tbody id="tbl-kk-masuk"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       KK: PENGELUARAN
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-kk-pengeluaran">
-    <div class="page-header">
-      <h2>Pengeluaran Keluarga</h2>
-      <p>Semua pengeluaran rumah tangga per kategori</p>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="search-kk-keluar" placeholder="🔍  Cari pengeluaran..." oninput="renderKKTransaksi('keluar')">
-      <select id="filter-kk-kategori" onchange="renderKKTransaksi('keluar')" style="max-width:180px">
-        <option value="">Semua Kategori</option>
-        <option value="makan">🍽 Makan & Minum</option>
-        <option value="tagihan">💡 Tagihan</option>
-        <option value="transportasi">🚗 Transportasi</option>
-        <option value="pendidikan">📚 Pendidikan</option>
-        <option value="kesehatan">🏥 Kesehatan</option>
-        <option value="tabungan">🐷 Tabungan</option>
-        <option value="investasi">📈 Investasi</option>
-        <option value="lainnya">📦 Lainnya</option>
-      </select>
-      <button class="btn btn-blue" onclick="openKKTransaksiModal('keluar')">+ Tambah Pengeluaran</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jumlah</th><th>Aksi</th></tr>
-        </thead>
-        <tbody id="tbl-kk-keluar"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       KK: HUTANG & CICILAN
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-kk-hutang">
-    <div class="page-header">
-      <h2>Hutang &amp; Cicilan Keluarga</h2>
-      <p>KPR, KTA, kartu kredit, dan hutang personal</p>
-    </div>
-    <div class="search-bar">
-      <button class="btn btn-blue" onclick="openHutangModal()">+ Tambah Hutang / Cicilan</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr><th>Nama Hutang</th><th>Pemberi Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Cicilan/Bln</th><th>Status</th><th>Aksi</th></tr>
-        </thead>
-        <tbody id="tbl-kk-hutang"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       KK: ANGGARAN
-  ══════════════════════════════════════════ -->
-  <div class="page" id="page-kk-anggaran">
-    <div class="page-header">
-      <h2>Anggaran Bulanan</h2>
-      <p>Target pengeluaran per kategori bulan ini</p>
-    </div>
-    <div style="display:flex;gap:10px;margin-bottom:18px">
-      <button class="btn btn-blue" onclick="openAnggaranModal()">+ Set Anggaran</button>
-    </div>
-    <div class="table-card">
-      <div class="table-head"><h3>Realisasi vs Anggaran Bulan Ini</h3></div>
-      <table>
-        <thead>
-          <tr><th>Kategori</th><th>Anggaran</th><th>Terpakai</th><th>Sisa</th><th>Progress</th><th>Aksi</th></tr>
-        </thead>
-        <tbody id="tbl-anggaran"></tbody>
-      </table>
-    </div>
-  </div>
-
-</main>
-
-<!-- ════════════════════════════════════════════
-     MODALS — GSP
-════════════════════════════════════════════ -->
-
-<!-- Modal Nasabah -->
 <div class="modal-bg" id="modal-nasabah">
   <div class="modal">
     <h3 id="modal-nasabah-title">Tambah Nasabah Baru</h3>
@@ -920,7 +900,6 @@
     <div id="nasabah-total-preview" style="display:none;background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:#92400E">
       💰 Total tagihan = Pinjaman + Bunga + Admin = <b id="preview-total-tagih">Rp 0</b>
     </div>
-    <!-- Bunga -->
     <div style="background:var(--cream);border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--border)">
       <div style="font-size:12px;font-weight:700;color:var(--brown-mid);margin-bottom:10px;letter-spacing:.5px">⚙️ BUNGA & BIAYA</div>
       <div class="form-row">
@@ -953,7 +932,6 @@
   </div>
 </div>
 
-<!-- Modal Transaksi GSP -->
 <div class="modal-bg" id="modal-transaksi">
   <div class="modal">
     <h3 id="modal-transaksi-title">Tambah Transaksi</h3>
@@ -962,8 +940,8 @@
       <div class="form-group">
         <label>Jenis Transaksi *</label>
         <select id="trx-jenis">
-          <option value="masuk">💚 Masuk (Bayar / Setor)</option>
-          <option value="keluar">❤️ Keluar (Pinjam / Kirim)</option>
+          <option value="masuk">💚 Masuk (Bayar Cicilan / Setor)</option>
+          <option value="keluar">❤️ Keluar (Pencairan / Pinjam Dana)</option>
         </select>
       </div>
       <div class="form-group">
@@ -1001,11 +979,6 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     MODALS — KEUANGAN KELUARGA
-════════════════════════════════════════════ -->
-
-<!-- Modal Transaksi KK -->
 <div class="modal-bg" id="modal-kk-transaksi">
   <div class="modal">
     <h3 id="modal-kk-trx-title">Tambah Transaksi Keluarga</h3>
@@ -1074,7 +1047,6 @@
   </div>
 </div>
 
-<!-- Modal Hutang Keluarga -->
 <div class="modal-bg" id="modal-kk-hutang">
   <div class="modal">
     <h3 id="modal-hutang-title">Tambah Hutang / Cicilan</h3>
@@ -1124,7 +1096,6 @@
   </div>
 </div>
 
-<!-- Modal Anggaran -->
 <div class="modal-bg" id="modal-anggaran">
   <div class="modal">
     <h3>Set Anggaran Bulanan</h3>
@@ -1153,7 +1124,6 @@
   </div>
 </div>
 
-<!-- Modal Hapus -->
 <div class="modal-bg" id="modal-hapus">
   <div class="modal" style="max-width:360px;text-align:center">
     <div style="font-size:44px;margin-bottom:10px">🗑️</div>
@@ -1166,7 +1136,6 @@
   </div>
 </div>
 
-<!-- Modal Panduan Penggunaan -->
 <div class="modal-bg" id="modal-panduan">
   <div class="modal" style="width:600px;max-width:96vw">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
@@ -1174,66 +1143,48 @@
       <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-panduan')">✕ Tutup</button>
     </div>
 
-    <!-- Deskripsi Aplikasi -->
     <div style="background:linear-gradient(135deg,#3D2B1F,#6B4C3B);border-radius:12px;padding:16px 18px;margin-bottom:18px;color:#FAF7F2">
       <div style="font-size:16px;font-weight:700;font-family:'Playfair Display',serif;margin-bottom:6px">Griya Simpan Pinjam</div>
       <div style="font-size:12.5px;opacity:.85;line-height:1.7">Aplikasi manajemen keuangan dua-dalam-satu: mencatat bisnis simpan pinjam (GSP) dan keuangan rumah tangga pribadi Anda. Semua data tersimpan otomatis di browser — tidak perlu internet, tidak ada server, 100% privat.</div>
     </div>
 
-    <!-- Section GSP -->
     <div style="margin-bottom:16px">
       <div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">🏦 Modul Simpan Pinjam (GSP)</div>
       <div style="display:grid;gap:8px">
         <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
           <span style="font-size:16px;margin-top:1px">🏠</span>
-          <div><b style="font-size:13px;color:var(--brown)">Dashboard GSP</b><br><span style="font-size:12px;color:var(--text-muted)">Lihat total piutang aktif, arus kas bulan ini, dan status tagihan semua nasabah dalam satu tampilan.</span></div>
+          <div><b style="font-size:13px;color:var(--brown)">Dashboard GSP</b><br><span style="font-size:12px;color:var(--text-muted)">Lihat total piutang aktif, PnL unrealized, arus kas, dan status tagihan semua nasabah.</span></div>
         </div>
         <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
           <span style="font-size:16px;margin-top:1px">👥</span>
-          <div><b style="font-size:13px;color:var(--brown)">Nasabah</b><br><span style="font-size:12px;color:var(--text-muted)">Daftarkan nasabah baru dengan data pinjaman, bunga (% atau nominal tetap), dan biaya admin. Pantau sisa tagihan setiap nasabah.</span></div>
+          <div><b style="font-size:13px;color:var(--brown)">Nasabah</b><br><span style="font-size:12px;color:var(--text-muted)">Daftarkan nasabah (otomatis mencatat pencairan dana). Sisa tagihan otomatis berkurang tiap pembayaran.</span></div>
         </div>
         <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
           <span style="font-size:16px;margin-top:1px">💸</span>
-          <div><b style="font-size:13px;color:var(--brown)">Transaksi</b><br><span style="font-size:12px;color:var(--text-muted)">Catat setiap dana masuk (nasabah bayar) dan dana keluar (pencairan pinjaman). Pilih nasabah dan metode pembayaran (tunai/transfer/QRIS).</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">📊</span>
-          <div><b style="font-size:13px;color:var(--brown)">Laporan GSP</b><br><span style="font-size:12px;color:var(--text-muted)">Ringkasan total pemasukan dan pengeluaran, rekap per nasabah, dan volume transaksi per metode pembayaran.</span></div>
+          <div><b style="font-size:13px;color:var(--brown)">Transaksi</b><br><span style="font-size:12px;color:var(--text-muted)">Catat setiap cicilan masuk (Masuk) dan pinjaman dicairkan (Keluar).</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Section KK -->
     <div style="margin-bottom:16px">
       <div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#3B82F6;margin-bottom:10px">🏡 Modul Keuangan Keluarga</div>
       <div style="display:grid;gap:8px">
         <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
           <span style="font-size:16px;margin-top:1px">💰</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Pemasukan</b><br><span style="font-size:12px;color:#374151">Catat gaji, side hustle, dan sumber pendapatan lain. Profit GSP otomatis terhitung sebagai referensi pendapatan sampingan.</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">🛒</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Pengeluaran</b><br><span style="font-size:12px;color:#374151">Catat pengeluaran per kategori (makan, tagihan, transportasi, dll). Data ini digunakan untuk membandingkan realisasi vs anggaran.</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">📋</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Hutang & Cicilan</b><br><span style="font-size:12px;color:#374151">Pantau KPR, KTA, kartu kredit, atau hutang personal. Lacak progress pelunasan dan cicilan per bulan.</span></div>
+          <div><b style="font-size:13px;color:#1E3A8A">Pemasukan & Pengeluaran</b><br><span style="font-size:12px;color:#374151">Catat segala arus uang masuk dan keluar per kategori rumah tanggamu.</span></div>
         </div>
         <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
           <span style="font-size:16px;margin-top:1px">🎯</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Anggaran Bulanan</b><br><span style="font-size:12px;color:#374151">Set target pengeluaran per kategori. Aplikasi otomatis menghitung realisasi vs anggaran dan menampilkan progress bar dengan warna peringatan.</span></div>
+          <div><b style="font-size:13px;color:#1E3A8A">Anggaran Bulanan</b><br><span style="font-size:12px;color:#374151">Set target pengeluaran. Realisasi dihitung otomatis beserta warna status pemakaian.</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Tips -->
     <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:13px 15px">
       <div style="font-size:12px;font-weight:700;color:#92400E;margin-bottom:7px">💾 Tips Penting</div>
       <ul style="font-size:12px;color:#78350F;line-height:1.8;padding-left:16px">
         <li>Data tersimpan otomatis di <b>localStorage browser</b> Anda — tidak akan hilang selama tidak hapus cache browser.</li>
-        <li>Untuk backup, gunakan fitur <b>Export/Simpan Halaman</b> di browser Anda (Ctrl+S).</li>
         <li>Gunakan browser yang sama di perangkat yang sama agar data selalu tersedia.</li>
-        <li>Data GSP dan Keuangan Keluarga <b>terpisah namun saling terhubung</b> — profit GSP otomatis muncul di ringkasan keluarga.</li>
       </ul>
     </div>
 
@@ -1262,6 +1213,53 @@ const DB = {
   get kkAnggaran()  { return JSON.parse(localStorage.getItem('kk_anggaran')     || '[]'); },
   set kkAnggaran(v) { localStorage.setItem('kk_anggaran',    JSON.stringify(v)); },
 };
+
+// ══════════════════════════════════════════
+//  MIGRATION & LOGIC FIXING (AUTO-RUN)
+// ══════════════════════════════════════════
+function fixCacheData() {
+  let ns = DB.nasabah;
+  let trx = DB.transaksi;
+  let updated = false;
+
+  ns.forEach(n => {
+    let pinjaman = Number(n.pinjaman || 0);
+
+    // 1. Pastikan setiap nasabah yang punya pinjaman awal sudah ada transaksi "Keluar" (Pencairan)
+    let hasKeluar = trx.some(t => t.nasabahId === n.id && t.jenis === 'keluar');
+    if (!hasKeluar && pinjaman > 0) {
+      trx.unshift({
+        id: uid(),
+        jenis: 'keluar',
+        tanggal: n.createdAt ? n.createdAt.slice(0, 10) : new Date().toISOString().slice(0,10),
+        nasabahId: n.id,
+        jumlah: pinjaman,
+        metode: 'tunai',
+        catatan: 'Pencairan pinjaman pokok (Auto-fix)',
+        createdAt: new Date().toISOString()
+      });
+      updated = true;
+    }
+
+    // 2. Hitung ulang SISA HUTANG dan TOTAL TAGIHAN murni berdasarkan transaksi 'masuk'
+    let totalMasuk = trx.filter(t => t.nasabahId === n.id && t.jenis === 'masuk').reduce((a, b) => a + Number(b.jumlah), 0);
+    let tagihan = pinjaman + Number(n.bungaRp||0) + Number(n.biayaAdmin||0);
+    let sisaReal = tagihan - totalMasuk;
+
+    if (n.sisa !== sisaReal || n.totalTagihan !== tagihan) {
+      n.sisa = sisaReal;
+      n.totalTagihan = tagihan;
+      n.status = (sisaReal <= 0 && tagihan > 0) ? 'lunas' : 'aktif';
+      updated = true;
+    }
+  });
+
+  if (updated) {
+    DB.transaksi = trx;
+    DB.nasabah = ns;
+    console.log("Local cache berhasil disinkronisasi dengan logika baru.");
+  }
+}
 
 // ══════════════════════════════════════════
 //  HELPERS
@@ -1303,7 +1301,6 @@ function sumberLabel(s) {
   return {gaji:'💼 Gaji', sidehustle:'🏦 Side Hustle', lainnya:'📦 Lainnya'}[s] || s;
 }
 
-// ── progress bar color
 function toggleBungaInput() {
   const tipe = document.getElementById('nasabah-bunga-tipe').value;
   const grp  = document.getElementById('nasabah-bunga-input-group');
@@ -1319,20 +1316,38 @@ function toggleBungaInput() {
   }
 }
 
-
 function pbarColor(pct) {
   if (pct >= 100) return 'danger';
   if (pct >= 70)  return 'warn';
   return 'safe';
 }
 
-// ── GSP profit this month (masuk - keluar dari transaksi bulan ini)
 function gspProfitBulanIni() {
   const tm = thisMonth();
   const trx = DB.transaksi;
   const masuk  = trx.filter(t => t.jenis === 'masuk'  && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
   const keluar = trx.filter(t => t.jenis === 'keluar' && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
   return masuk - keluar;
+}
+
+// ══════════════════════════════════════════
+//  SYNC NASABAH DEBT
+// ══════════════════════════════════════════
+function updateNasabahSisa(nasabahId) {
+  let ns = DB.nasabah;
+  let idx = ns.findIndex(n => n.id === nasabahId);
+  if(idx === -1) return;
+  
+  let n = ns[idx];
+  let trx = DB.transaksi.filter(t => t.nasabahId === nasabahId && t.jenis === 'masuk');
+  let totalMasuk = trx.reduce((sum, t) => sum + Number(t.jumlah), 0);
+  
+  n.totalTagihan = Number(n.pinjaman||0) + Number(n.bungaRp||0) + Number(n.biayaAdmin||0);
+  n.sisa = n.totalTagihan - totalMasuk;
+  n.status = (n.sisa <= 0 && n.totalTagihan > 0) ? 'lunas' : 'aktif';
+  
+  ns[idx] = n;
+  DB.nasabah = ns;
 }
 
 // ══════════════════════════════════════════
@@ -1379,6 +1394,21 @@ function renderDashboard() {
   document.getElementById('stat-keluar').textContent       = fmt(keluarBln.reduce((a,t)=>a+Number(t.jumlah),0));
   document.getElementById('stat-keluar-count').textContent = `${keluarBln.length} transaksi`;
 
+  // PnL Unrealized
+  const totalMasukAll = trx.filter(t => t.jenis==='masuk').reduce((a,t)=>a+Number(t.jumlah),0);
+  const totalKeluarAll = trx.filter(t => t.jenis==='keluar').reduce((a,t)=>a+Number(t.jumlah),0);
+  const pnlUnrealized = totalMasukAll - totalKeluarAll;
+
+  const statPnl = document.getElementById('stat-pnl');
+  statPnl.textContent = fmt(Math.abs(pnlUnrealized));
+  if(pnlUnrealized < 0) {
+    statPnl.textContent = "- " + statPnl.textContent;
+    statPnl.className = "card-value red";
+  } else {
+    statPnl.textContent = "+ " + statPnl.textContent;
+    statPnl.className = "card-value green";
+  }
+
   // recent 8
   const recent = [...trx].sort((a,b) => b.tanggal.localeCompare(a.tanggal)).slice(0, 8);
   const tbody = document.getElementById('tbl-transaksi-recent');
@@ -1412,9 +1442,9 @@ function renderPiutang() {
     const pokok      = Number(n.pinjaman   || 0);
     const bungaRp    = Number(n.bungaRp    || 0);
     const biayaAdmin = Number(n.biayaAdmin || 0);
-    const totalTagih = pokok + bungaRp + biayaAdmin;
+    const totalTagih = Number(n.totalTagihan || pokok + bungaRp + biayaAdmin);
     const sisa       = Number(n.sisa       || 0);
-    const dibayar    = totalTagih > 0 ? Math.max(0, totalTagih - sisa) : Math.max(0, pokok - sisa);
+    const dibayar    = Math.max(0, totalTagih - sisa);
     const pct        = totalTagih > 0 ? Math.min(100, Math.round((dibayar / totalTagih) * 100)) : 100;
     const sudahLunas = sisa <= 0 || n.status === 'lunas';
 
@@ -1466,14 +1496,14 @@ function renderNasabah() {
   if (q) ns = ns.filter(n => n.nama.toLowerCase().includes(q) || (n.telepon||'').includes(q));
   const tbody = document.getElementById('tbl-nasabah');
   if (!ns.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">👥</div><p>Belum ada nasabah terdaftar</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty"><div class="empty-icon">👥</div><p>Belum ada nasabah terdaftar</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = ns.map((n,i) => {
     const pokok      = Number(n.pinjaman   || 0);
     const bungaRp    = Number(n.bungaRp    || 0);
     const biayaAdmin = Number(n.biayaAdmin || 0);
-    const totalTagih = pokok + bungaRp + biayaAdmin;
+    const totalTagih = Number(n.totalTagihan || pokok + bungaRp + biayaAdmin);
     const sisa       = Number(n.sisa || 0);
     const sudahLunas = sisa <= 0 || n.status === 'lunas';
     const sisaHtml   = sudahLunas
@@ -1499,7 +1529,7 @@ function renderNasabah() {
       <td>${sisaHtml}</td>
       <td><span class="badge badge-${n.status}">${n.status==='aktif'?'Aktif':'Lunas'}</span></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick='editNasabah("${n.id}")'>✏️ Edit</button>
+        <button class="btn btn-ghost btn-sm" onclick='editNasabah("${n.id}")'>✏️</button>
         <button class="btn btn-danger btn-sm" onclick='confirmHapus("nasabah","${n.id}","${n.nama}")'>🗑️</button>
       </td>
     </tr>`;
@@ -1541,8 +1571,11 @@ function editNasabah(id) {
 function saveNasabah() {
   const nama = document.getElementById('nasabah-nama').value.trim();
   if (!nama) { toast('⚠️ Nama wajib diisi!'); return; }
-  const id = document.getElementById('nasabah-id').value || uid();
-  const sisa       = Number(document.getElementById('nasabah-sisa').value) || 0;
+  
+  const idValue = document.getElementById('nasabah-id').value;
+  const isNew = !idValue;
+  const id = idValue || uid();
+  
   const pinjaman   = Number(document.getElementById('nasabah-pinjaman').value) || 0;
   const bungaTipe  = document.getElementById('nasabah-bunga-tipe').value;
   const bungaNilai = Number(document.getElementById('nasabah-bunga-nilai').value) || 0;
@@ -1552,6 +1585,8 @@ function saveNasabah() {
   let bungaRp = 0;
   if (bungaTipe === 'pct')   bungaRp = Math.round(pinjaman * bungaNilai / 100);
   if (bungaTipe === 'fixed') bungaRp = bungaNilai;
+  
+  const totalTagihan = pinjaman + bungaRp + biayaAdmin;
 
   const data = {
     id, nama,
@@ -1559,19 +1594,48 @@ function saveNasabah() {
     alamat:    document.getElementById('nasabah-alamat').value.trim(),
     catatan:   document.getElementById('nasabah-catatan').value.trim(),
     pinjaman,
-    sisa,
+    sisa: totalTagihan, // Sisa default pada saat daftar adalah full tagihan
     bungaTipe,
     bungaNilai,
     bungaRp,
     biayaAdmin,
-    totalTagihan: pinjaman + bungaRp + biayaAdmin,
-    status:    sisa <= 0 ? 'lunas' : document.getElementById('nasabah-status').value,
+    totalTagihan,
+    status:    document.getElementById('nasabah-status').value,
     createdAt: new Date().toISOString(),
   };
+
   let ns = DB.nasabah;
   const idx = ns.findIndex(n => n.id === id);
-  if (idx >= 0) ns[idx] = data; else ns.unshift(data);
+  if (idx >= 0) {
+    // Pertahankan SISA yang sudah dihitung berdasarkan transaksi jika ini hanya edit
+    data.sisa = ns[idx].sisa;
+    ns[idx] = data;
+  } else {
+    ns.unshift(data);
+  }
   DB.nasabah = ns;
+
+  // AUTO-CREATE TRansaksi Keluar untuk Nasabah Baru
+  if (isNew && pinjaman > 0) {
+    let trx = DB.transaksi;
+    trx.unshift({
+      id: uid(),
+      jenis: 'keluar',
+      tanggal: new Date().toISOString().slice(0,10),
+      nasabahId: id,
+      jumlah: pinjaman,
+      metode: 'tunai',
+      catatan: 'Pencairan pinjaman pokok',
+      createdAt: new Date().toISOString()
+    });
+    DB.transaksi = trx;
+  }
+
+  // Sinkronisasi Sisa jika ada update nilai pinjaman
+  if (!isNew) {
+    updateNasabahSisa(id);
+  }
+
   closeModal('modal-nasabah');
   renderNasabah();
   renderPiutang();
@@ -1671,9 +1735,14 @@ function saveTransaksi() {
   const idx = trx.findIndex(t => t.id === id);
   if (idx >= 0) trx[idx] = data; else trx.unshift(data);
   DB.transaksi = trx;
+
+  // Update logic sisa pinjaman secara dinamis
+  updateNasabahSisa(nasabahId);
+
   closeModal('modal-transaksi');
   renderTransaksi();
   renderDashboard();
+  renderPiutang();
   toast('✅ Transaksi berhasil disimpan');
 }
 
@@ -1723,7 +1792,7 @@ function renderLaporan() {
 }
 
 // ══════════════════════════════════════════
-//  KEUANGAN KELUARGA: DASHBOARD
+//  KEUANGAN KELUARGA
 // ══════════════════════════════════════════
 function renderKKDashboard() {
   const tm   = thisMonth();
@@ -1748,7 +1817,6 @@ function renderKKDashboard() {
   document.getElementById('kk-stat-hutang').textContent       = fmt(totalHutang);
   document.getElementById('kk-stat-hutang-sub').textContent   = `${htAktif} hutang aktif`;
 
-  // Hutang mini table
   const htBody = document.getElementById('kk-tbl-hutang-mini');
   if (!ht.length) {
     htBody.innerHTML = `<tr><td colspan="6"><div class="empty" style="padding:30px"><div class="empty-icon">📋</div><p>Belum ada catatan hutang</p></div></td></tr>`;
@@ -1773,7 +1841,6 @@ function renderKKDashboard() {
     }).join('');
   }
 
-  // Recent KK transaksi
   const recent = [...trx].sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,6);
   const rcBody = document.getElementById('kk-tbl-recent');
   if (!recent.length) {
@@ -1792,9 +1859,6 @@ function renderKKDashboard() {
   }
 }
 
-// ══════════════════════════════════════════
-//  KK: TRANSAKSI
-// ══════════════════════════════════════════
 function toggleKKKategori() {
   const jenis = document.getElementById('kk-trx-jenis').value;
   document.getElementById('kk-kategori-group').style.display = jenis === 'keluar' ? '' : 'none';
@@ -1901,9 +1965,6 @@ function renderKKTransaksi(jenis) {
   }
 }
 
-// ══════════════════════════════════════════
-//  KK: HUTANG
-// ══════════════════════════════════════════
 function openHutangModal() {
   document.getElementById('modal-hutang-title').textContent = 'Tambah Hutang / Cicilan';
   ['hutang-id','hutang-nama','hutang-pemberi','hutang-catatan'].forEach(id => document.getElementById(id).value = '');
@@ -1992,9 +2053,6 @@ function renderKKHutang() {
   }).join('');
 }
 
-// ══════════════════════════════════════════
-//  KK: ANGGARAN
-// ══════════════════════════════════════════
 function openAnggaranModal() {
   document.getElementById('anggaran-id').value = '';
   document.getElementById('anggaran-kategori').value = 'makan';
@@ -2080,10 +2138,14 @@ function hapus(type, id) {
   if (type === 'nasabah') {
     DB.nasabah   = DB.nasabah.filter(n => n.id !== id);
     DB.transaksi = DB.transaksi.filter(t => t.nasabahId !== id);
-    renderNasabah(); renderPiutang();
+    renderNasabah(); renderPiutang(); renderDashboard();
   } else if (type === 'transaksi') {
-    DB.transaksi = DB.transaksi.filter(t => t.id !== id);
-    renderTransaksi(); renderDashboard();
+    const t = DB.transaksi.find(x => x.id === id);
+    if(t) {
+      DB.transaksi = DB.transaksi.filter(x => x.id !== id);
+      updateNasabahSisa(t.nasabahId);
+    }
+    renderTransaksi(); renderDashboard(); renderPiutang();
   } else if (type === 'kktrx') {
     DB.kkTrx = DB.kkTrx.filter(t => t.id !== id);
     renderKKDashboard();
@@ -2102,6 +2164,8 @@ function hapus(type, id) {
 //  INIT
 // ══════════════════════════════════════════
 function init() {
+  fixCacheData(); // Fixes old database state instantly
+  
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
   document.getElementById('sidebarDate').textContent = new Date().toLocaleDateString('id-ID', opts);
   document.getElementById('trx-tanggal').value = new Date().toISOString().slice(0,10);
