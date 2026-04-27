@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚔ Aegis — Net Worth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --bg:        #090b0f;
+  --bg1:       #0e1118;
+  --bg2:       #141820;
+  --bg3:       #1c2230;
+  --border:    #1e2736;
+  --border2:   #2a3447;
+  --text:      #e8edf5;
+  --muted:     #5a6a82;
+  --muted2:    #8a9ab8;
+  --gold:      #c9a84c;
+  --gold2:     #e8c870;
+  --gold-dim:  #c9a84c22;
+  --green:     #3ecf8e;
+  --green-dim: #3ecf8e18;
+  --red:       #f46b6b;
+  --red-dim:   #f46b6b18;
+  --blue:      #4a9eff;
+  --blue-dim:  #4a9eff15;
+  --purple:    #a78bfa;
+  --purple-dim:#a78bfa15;
+  --cyan:      #22d3ee;
+  --orange:    #fb923c;
+  --font-main: 'Syne', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── LOGIN SCREEN ── */
+#login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  flex-direction: column;
+  gap: 2rem;
+}
+.login-box {
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 0 60px #000a;
+}
+.login-logo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: -1px;
+  margin-bottom: .25rem;
+}
+.login-sub {
+  font-size: .72rem;
+  letter-spacing: .2em;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+.login-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: .75rem 1rem;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: .9rem;
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color .2s;
+}
+.login-input:focus { border-color: var(--gold); }
+.login-btn {
+  width: 100%;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: .8rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: pointer;
+  letter-spacing: .05em;
+  transition: background .2s, transform .1s;
+}
+.login-btn:hover { background: var(--gold2); }
+.login-btn:active { transform: scale(.98); }
+.login-err { color: var(--red); font-size: .8rem; margin-top: .5rem; min-height: 1.2em; }
+
+/* ── MAIN APP ── */
+#app { display: none; position: relative; z-index: 1; }
+
+/* ── HEADER ── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 1rem; }
+.brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: -0.5px;
+}
+.brand span { color: var(--muted2); font-weight: 400; }
+.nav-pill {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: .3rem;
+  display: flex;
+  gap: .25rem;
+}
+.nav-pill a {
+  padding: .35rem .9rem;
+  border-radius: 16px;
+  font-size: .75rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--muted2);
+  letter-spacing: .05em;
+  transition: all .2s;
+}
+.nav-pill a.active, .nav-pill a:hover {
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.last-updated { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); }
+.btn-sm {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: .4rem .8rem;
+  color: var(--muted2);
+  font-size: .75rem;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 600;
+  transition: all .2s;
+}
+.btn-sm:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── LAYOUT ── */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── TOP STAT CARDS ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.stat-card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.stat-card:hover { border-color: var(--border2); }
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent-color, var(--gold));
+  opacity: .6;
+}
+.stat-label {
+  font-size: .68rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .6rem;
+}
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: .4rem;
+}
+.stat-value.positive { color: var(--green); }
+.stat-value.negative { color: var(--red); }
+.stat-sub {
+  font-size: .72rem;
+  color: var(--muted2);
+}
+.stat-icon {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  font-size: 1.5rem;
+  opacity: .15;
+}
+
+/* ── 2-COL LAYOUT ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* ── PANEL ── */
+.panel {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.panel-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel-title {
+  font-size: .75rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-weight: 600;
+}
+.panel-body { padding: 1.5rem; }
+
+/* ── CHART CONTAINER ── */
+.chart-wrap {
+  position: relative;
+  height: 260px;
+}
+
+/* ── ALLOCATION DONUT ── */
+.donut-wrap {
+  position: relative;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.donut-center {
+  position: absolute;
+  text-align: center;
+  pointer-events: none;
+}
+.donut-center-val {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.donut-center-label {
+  font-size: .65rem;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ── LEGEND ── */
+.legend { display: flex; flex-direction: column; gap: .6rem; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.legend-left { display: flex; align-items: center; gap: .6rem; }
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-name { font-size: .8rem; color: var(--muted2); }
+.legend-val { font-family: var(--font-mono); font-size: .78rem; color: var(--text); }
+.legend-pct { font-size: .7rem; color: var(--muted); font-family: var(--font-mono); margin-left: .3rem; }
+
+/* ── ASSET TABLE ── */
+.asset-section { margin-bottom: 1.5rem; }
+.asset-section:last-child { margin-bottom: 0; }
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .75rem;
+}
+.section-title {
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.section-total {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--text);
+}
+.asset-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: .5rem;
+  transition: border-color .2s, background .2s;
+  cursor: pointer;
+}
+.asset-item:hover { border-color: var(--border2); background: var(--bg3); }
+.asset-item.liability { border-left: 2px solid var(--red); }
+.asset-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.asset-info { flex: 1; min-width: 0; }
+.asset-name { font-size: .85rem; font-weight: 600; color: var(--text); }
+.asset-meta { font-size: .7rem; color: var(--muted2); margin-top: .1rem; }
+.asset-value-wrap { text-align: right; }
+.asset-value { font-family: var(--font-mono); font-size: .9rem; font-weight: 500; }
+.asset-value.positive { color: var(--green); }
+.asset-value.negative { color: var(--red); }
+.asset-pct { font-size: .68rem; color: var(--muted); font-family: var(--font-mono); }
+
+/* ── ADD BUTTON ── */
+.btn-add {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--border2);
+  border-radius: 8px;
+  padding: .65rem;
+  color: var(--muted);
+  font-size: .78rem;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 600;
+  letter-spacing: .05em;
+  transition: all .2s;
+  margin-top: .25rem;
+}
+.btn-add:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap { margin-bottom: 1rem; }
+.progress-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: .75rem;
+  margin-bottom: .4rem;
+  color: var(--muted2);
+}
+.progress-bar-header span:last-child { font-family: var(--font-mono); }
+.progress-bar-track {
+  height: 6px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  transition: width .8s cubic-bezier(.4,0,.2,1);
+}
+.progress-bar-fill.green { background: linear-gradient(90deg, var(--green), #6ee7b7); }
+.progress-bar-fill.red { background: linear-gradient(90deg, var(--red), #fca5a5); }
+
+/* ── PHASE TRACKER ── */
+.phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.phase-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+}
+.phase-card.active { border-color: var(--gold); }
+.phase-card.done { border-color: var(--green); opacity: .7; }
+.phase-num {
+  font-size: .65rem;
+  letter-spacing: .15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+}
+.phase-name { font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+.phase-status {
+  font-size: .68rem;
+  padding: .2rem .6rem;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: 600;
+}
+.phase-status.active { background: var(--gold-dim); color: var(--gold); }
+.phase-status.done { background: var(--green-dim); color: var(--green); }
+.phase-status.pending { background: var(--bg3); color: var(--muted); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000a;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 480px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 0 80px #0008;
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: .2rem;
+  transition: color .2s;
+}
+.modal-close:hover { color: var(--text); }
+.form-group { margin-bottom: 1.1rem; }
+.form-label {
+  display: block;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .4rem;
+  font-weight: 600;
+}
+.form-input, .form-select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: .7rem .9rem;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  outline: none;
+  transition: border-color .2s;
+  appearance: none;
+}
+.form-input:focus, .form-select:focus { border-color: var(--gold); }
+.form-select option { background: var(--bg2); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.form-actions { display: flex; gap: .75rem; margin-top: 1.5rem; }
+.btn-primary {
+  flex: 1;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: .8rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-primary:hover { background: var(--gold2); }
+.btn-danger {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  padding: .8rem 1.2rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-danger:hover { background: var(--red); color: #fff; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: .8rem 1.2rem;
+  font-size: .82rem;
+  color: var(--text);
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error { border-color: var(--red); color: var(--red); }
+
+/* ── SKELETON ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── CASHFLOW ── */
+.cashflow-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.cashflow-row:last-child { border-bottom: none; }
+.cashflow-label { font-size: .82rem; color: var(--muted2); }
+.cashflow-val { font-family: var(--font-mono); font-size: .85rem; }
+.cashflow-val.in { color: var(--green); }
+.cashflow-val.out { color: var(--red); }
+.cashflow-val.net { color: var(--gold); font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .two-col { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .three-col { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  main { padding: 1rem; }
+  header { padding: .75rem 1rem; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+  .phase-grid { grid-template-columns: 1fr; }
+  .stat-value { font-size: 1.2rem; }
+}
+
+/* ── SPARKLE RING ── */
+.net-worth-hero {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.net-worth-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--gold-dim), transparent 60%);
+  pointer-events: none;
+}
+.nw-label {
+  font-size: .7rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .75rem;
+}
+.nw-value {
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: .5rem;
+  text-shadow: 0 0 40px var(--gold-dim);
+}
+.nw-sub { font-size: .82rem; color: var(--muted2); }
+.nw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .75rem;
+  background: var(--green-dim);
+  border: 1px solid var(--green);
+  border-radius: 20px;
+  padding: .3rem .9rem;
+  font-size: .75rem;
+  color: var(--green);
+  font-weight: 600;
+}
+.nw-divider {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.nw-divider-item { text-align: center; }
+.nw-divider-val { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 500; }
+.nw-divider-val.positive { color: var(--green); }
+.nw-divider-val.negative { color: var(--red); }
+.nw-divider-lbl { font-size: .65rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-top: .2rem; }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">⚔ AGD</div>
+    <div class="login-sub">Net Worth · Akses Terbatas</div>
+    <input id="pw-input" class="login-input" type="password" placeholder="Password" />
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div id="login-err" class="login-err"></div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+
+<header>
+  <div class="header-left">
+    <div class="brand">⚔ AGD <span>/ Net Worth</span></div>
+    <nav class="nav-pill">
+      <a href="index.html">Porto Saham</a>
+      <a href="networth.html" class="active">Net Worth</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="last-updated" id="last-updated-label">—</span>
+    <button class="btn-sm" onclick="openAddModal()">+ Tambah Aset</button>
+    <button class="btn-sm" onclick="openCashflowModal()">⟳ Cash Flow</button>
+    <button class="btn-sm" onclick="logout()">Keluar</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ══ NET WORTH HERO ══ -->
+  <div class="net-worth-hero">
+    <div class="nw-label">Total Kekayaan Bersih</div>
+    <div class="nw-value" id="hero-nw">Rp —</div>
+    <div class="nw-sub" id="hero-sub">Menghitung aset & liabilitas…</div>
+    <div id="hero-badge" class="nw-badge" style="display:none">↑ <span id="hero-badge-text"></span></div>
+    <div class="nw-divider">
+      <div class="nw-divider-item">
+        <div class="nw-divider-val positive" id="hero-total-asset">—</div>
+        <div class="nw-divider-lbl">Total Aset</div>
+      </div>
+      <div class="nw-divider-item">
+        <div class="nw-divider-val negative" id="hero-total-liab">—</div>
+        <div class="nw-divider-lbl">Total Liabilitas</div>
+      </div>
+      <div class="nw-divider-item">
+        <div class="nw-divider-val" id="hero-ratio" style="color:var(--muted2)">—</div>
+        <div class="nw-divider-lbl">Debt Ratio</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STAT CARDS ══ -->
+  <div class="stat-grid">
+    <div class="stat-card" style="--accent-color: var(--green)">
+      <div class="stat-icon">📈</div>
+      <div class="stat-label">Saham IDX</div>
+      <div class="stat-value positive" id="card-saham">—</div>
+      <div class="stat-sub" id="card-saham-sub">via Aegis</div>
+    </div>
+    <div class="stat-card" style="--accent-color: var(--cyan)">
+      <div class="stat-icon">🤖</div>
+      <div class="stat-label">Crypto / Bot</div>
+      <div class="stat-value" id="card-crypto" style="color:var(--cyan)">—</div>
+      <div class="stat-sub" id="card-crypto-sub">Gainium Combo Bot</div>
+    </div>
+    <div class="stat-card" style="--accent-color: var(--purple)">
+      <div class="stat-icon">🪣</div>
+      <div class="stat-label">Reksa Dana (Bibit)</div>
+      <div class="stat-value" id="card-bibit" style="color:var(--purple)">—</div>
+      <div class="stat-sub" id="card-bibit-sub">6 bucket aktif</div>
+    </div>
+    <div class="stat-card" style="--accent-color: var(--blue)">
+      <div class="stat-icon">🏦</div>
+      <div class="stat-label">Cash & Tabungan</div>
+      <div class="stat-value" id="card-cash" style="color:var(--blue)">—</div>
+      <div class="stat-sub" id="card-cash-sub">Dana Darurat + Giro</div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN 2-COL ══ -->
+  <div class="two-col">
+
+    <!-- LEFT: ASSET LIST -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Rincian Aset & Liabilitas</div>
+        <button class="btn-sm" onclick="openAddModal()">+ Tambah</button>
+      </div>
+      <div class="panel-body" id="asset-list-container">
+        <div class="skeleton" style="height:60px;margin-bottom:.5rem"></div>
+        <div class="skeleton" style="height:60px;margin-bottom:.5rem"></div>
+        <div class="skeleton" style="height:60px"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: DONUT + LEGEND -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Alokasi Aset</div>
+        </div>
+        <div class="panel-body">
+          <div class="donut-wrap">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center">
+              <div class="donut-center-val" id="donut-center-val">—</div>
+              <div class="donut-center-label">Total Aset</div>
+            </div>
+          </div>
+          <div class="legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <!-- CASH FLOW SUMMARY -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Cash Flow Bulanan</div>
+          <button class="btn-sm" onclick="openCashflowModal()">Edit</button>
+        </div>
+        <div class="panel-body" id="cashflow-panel">
+          <div class="cashflow-row">
+            <div class="cashflow-label">Gaji + Tukin</div>
+            <div class="cashflow-val in" id="cf-gaji">—</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Crypto Bot (est.)</div>
+            <div class="cashflow-val in" id="cf-crypto">—</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Pengeluaran Rutin</div>
+            <div class="cashflow-val out" id="cf-pengeluaran">—</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Cicilan Utang</div>
+            <div class="cashflow-val out" id="cf-cicilan">—</div>
+          </div>
+          <div class="cashflow-row" style="border-top:1px solid var(--border2);padding-top:.75rem;margin-top:.25rem">
+            <div class="cashflow-label" style="font-weight:700;color:var(--text)">Surplus Bersih</div>
+            <div class="cashflow-val net" id="cf-surplus">—</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ NET WORTH CHART ══ -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Tren Net Worth</div>
+      <div style="font-size:.72rem;color:var(--muted)">Snapshot bulanan</div>
+    </div>
+    <div class="panel-body">
+      <div class="chart-wrap">
+        <canvas id="nwChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3-COL BOTTOM ══ -->
+  <div class="three-col">
+
+    <!-- FASE KEUANGAN -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Fase Keuangan</div>
+      </div>
+      <div class="panel-body">
+        <div class="phase-grid">
+          <div class="phase-card done">
+            <div class="phase-num">Fase 1</div>
+            <div class="phase-name">Triage Utang</div>
+            <div class="phase-status done">✓ Selesai</div>
+          </div>
+          <div class="phase-card active">
+            <div class="phase-num">Fase 2</div>
+            <div class="phase-name">Dana Darurat</div>
+            <div class="phase-status active">⚡ Aktif</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-num">Fase 3</div>
+            <div class="phase-name">Vehicle + Edukasi</div>
+            <div class="phase-status pending">◎ Pending</div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-num">Fase 4</div>
+            <div class="phase-name">Passive Income</div>
+            <div class="phase-status pending">◎ Pending</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARGET PROGRESS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Progress Target</div>
+      </div>
+      <div class="panel-body">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-header">
+            <span>Dana Darurat (Target 6×)</span>
+            <span id="prog-emergency">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill green" id="prog-emergency-bar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-header">
+            <span>Porto Saham (Target 500jt)</span>
+            <span id="prog-saham">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="prog-saham-bar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-header">
+            <span>Crypto Bot (Target 1.6M)</span>
+            <span id="prog-crypto">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width:0%;background:linear-gradient(90deg,var(--cyan),#67e8f9)" id="prog-crypto-bar"></div>
+          </div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-header">
+            <span>Net Worth (Target 2M)</span>
+            <span id="prog-nw">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="prog-nw-bar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSIVE INCOME TRACKER -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Passive Income</div>
+      </div>
+      <div class="panel-body">
+        <div style="text-align:center;padding:1rem 0 1.5rem;">
+          <div style="font-size:.68rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem">Estimasi / Bulan</div>
+          <div style="font-family:var(--font-mono);font-size:2rem;color:var(--gold);font-weight:600;" id="passive-monthly">—</div>
+          <div style="font-size:.75rem;color:var(--muted2);margin-top:.3rem">dari target Rp 10jt/bln</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-header">
+            <span>Progress ke Rp 10jt/bln</span>
+            <span id="prog-passive">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="prog-passive-bar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;">
+          <div class="cashflow-row">
+            <div class="cashflow-label">Dividen Saham (est.)</div>
+            <div class="cashflow-val in" id="passive-dividen">—</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Crypto Bot (est.)</div>
+            <div class="cashflow-val in" id="passive-bot">—</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Reksa Dana Yield</div>
+            <div class="cashflow-val in" id="passive-reksadana">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+</div><!-- /app -->
+
+<!-- ══ MODAL: ADD/EDIT ASSET ══ -->
+<div class="modal-overlay" id="modal-asset">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modal-asset-title">Tambah Aset / Liabilitas</span>
+      <button class="modal-close" onclick="closeModal('modal-asset')">✕</button>
+    </div>
+    <input type="hidden" id="edit-id"/>
+    <div class="form-group">
+      <label class="form-label">Nama</label>
+      <input class="form-input" id="f-name" placeholder="cth: Porto Aegis, KPR BRI, Gainium Bot…"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Kategori</label>
+        <select class="form-select" id="f-category">
+          <option value="saham">📈 Saham IDX</option>
+          <option value="crypto">🤖 Crypto / Bot</option>
+          <option value="bibit">🪣 Reksa Dana (Bibit)</option>
+          <option value="tabungan">🏦 Tabungan / Emergency</option>
+          <option value="kas">💵 Kas / Giro</option>
+          <option value="properti">🏠 Properti</option>
+          <option value="kpr">🏠 KPR (Liabilitas)</option>
+          <option value="kartu_kredit">💳 Kartu Kredit</option>
+          <option value="utang_lain">📋 Utang Lain</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipe</label>
+        <select class="form-select" id="f-type">
+          <option value="asset">Aset</option>
+          <option value="liability">Liabilitas</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nilai (Rp)</label>
+      <input class="form-input" id="f-value" type="number" placeholder="0" min="0"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Suku Bunga / Yield (%/thn)</label>
+        <input class="form-input" id="f-rate" type="number" placeholder="0" step="0.1"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cicilan / Bln (Rp)</label>
+        <input class="form-input" id="f-monthly" type="number" placeholder="0"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Catatan</label>
+      <input class="form-input" id="f-note" placeholder="opsional"/>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" onclick="saveAsset()">💾 Simpan</button>
+      <button class="btn-danger" id="btn-delete-asset" style="display:none" onclick="deleteAsset()">🗑 Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: CASHFLOW ══ -->
+<div class="modal-overlay" id="modal-cashflow">
+  <div class="modal">
+    <div class="modal-title">
+      <span>Edit Cash Flow Bulanan</span>
+      <button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Gaji + Tukin (Rp/bln)</label>
+      <input class="form-input" id="cf-f-gaji" type="number" placeholder="0"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pendapatan Crypto Bot est. (Rp/bln)</label>
+      <input class="form-input" id="cf-f-crypto" type="number" placeholder="0"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pengeluaran Rutin (Rp/bln)</label>
+      <input class="form-input" id="cf-f-pengeluaran" type="number" placeholder="0"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Dividend Saham est. (Rp/bln)</label>
+      <input class="form-input" id="cf-f-dividen" type="number" placeholder="0"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Yield Reksa Dana est. (Rp/bln)</label>
+      <input class="form-input" id="cf-f-reksadana" type="number" placeholder="0"/>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" onclick="saveCashflow()">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG — ganti sesuai Supabase lo
+// ══════════════════════════════════════════
+const SUPABASE_URL  = 'https://xwriyfmwzyresycqfayj.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
+const APP_PASSWORD  = '1908';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let assets    = [];
+let cashflow  = {};
+let donutInst = null;
+let nwInst    = null;
+let editingId = null;
+const FAIL_KEY = 'nw_fail';
+const MAX_FAIL = 5;
+
+// ══════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════
+function doLogin() {
+  const fails = parseInt(localStorage.getItem(FAIL_KEY) || '0');
+  if (fails >= MAX_FAIL) { document.getElementById('login-err').textContent = 'Terlalu banyak percobaan. Refresh halaman.'; return; }
+  const pw = document.getElementById('pw-input').value;
+  if (pw === APP_PASSWORD) {
+    localStorage.removeItem(FAIL_KEY);
+    sessionStorage.setItem('nw_auth', '1');
+    showApp();
+  } else {
+    localStorage.setItem(FAIL_KEY, fails + 1);
+    document.getElementById('login-err').textContent = 'Password salah.';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function logout() {
+  sessionStorage.removeItem('nw_auth');
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  init();
+}
+
+if (sessionStorage.getItem('nw_auth') === '1') showApp();
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+async function init() {
+  await Promise.all([loadAssets(), loadCashflow()]);
+  render();
+}
+
+// ══════════════════════════════════════════
+//  SUPABASE
+// ══════════════════════════════════════════
+async function loadAssets() {
+  try {
+    const { data, error } = await sb.from('nw_assets').select('*').order('created_at', { ascending: true });
+    if (error) throw error;
+    assets = data || [];
+  } catch(e) {
+    console.warn('Supabase error, using demo data:', e.message);
+    assets = getDemoAssets();
+  }
+}
+
+async function loadCashflow() {
+  try {
+    const { data, error } = await sb.from('nw_config').select('*').eq('key', 'cashflow').single();
+    if (error || !data) throw error || new Error('no data');
+    cashflow = JSON.parse(data.value);
+  } catch {
+    cashflow = { gaji: 8000000, crypto: 1500000, pengeluaran: 4000000, dividen: 500000, reksadana: 200000 };
+  }
+}
+
+async function upsertAsset(asset) {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') { showToast('⚠ Set Supabase URL dulu di kode', 'error'); return; }
+  const { error } = asset.id
+    ? await sb.from('nw_assets').update(asset).eq('id', asset.id)
+    : await sb.from('nw_assets').insert(asset);
+  if (error) { showToast('Error: ' + error.message, 'error'); return; }
+  showToast('✓ Tersimpan ke Supabase', 'success');
+  await loadAssets();
+  render();
+}
+
+async function removeAsset(id) {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') { assets = assets.filter(a => a.id !== id); render(); showToast('Dihapus (demo mode)', 'success'); return; }
+  await sb.from('nw_assets').delete().eq('id', id);
+  showToast('✓ Dihapus', 'success');
+  await loadAssets();
+  render();
+}
+
+async function saveCashflowDB() {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') { showToast('Disimpan (demo mode)', 'success'); return; }
+  const { error } = await sb.from('nw_config').upsert({ key: 'cashflow', value: JSON.stringify(cashflow) }, { onConflict: 'key' });
+  if (error) showToast('Error: ' + error.message, 'error');
+  else showToast('✓ Cash flow disimpan', 'success');
+}
+
+// ══════════════════════════════════════════
+//  DEMO DATA (fallback)
+// ══════════════════════════════════════════
+function getDemoAssets() {
+  return [
+    { id: 1, name: 'Porto Aegis (Saham IDX)', category: 'saham', type: 'asset', value: 70000000, rate: 4.5, monthly: 0, note: 'SMSM, SIDO, BMRI, BBCA, TSPC' },
+    { id: 2, name: 'Gainium Combo Bot', category: 'crypto', type: 'asset', value: 72000000, rate: 18, monthly: 1500000, note: '5 pairs, ~$4800 capital' },
+    { id: 3, name: 'Bibit (6 Bucket)', category: 'bibit', type: 'asset', value: 35000000, rate: 7, monthly: 0, note: 'Dana darurat, sekolah, dll' },
+    { id: 4, name: 'Dana Darurat (Jenius)', category: 'tabungan', type: 'asset', value: 40000000, rate: 3.5, monthly: 0, note: 'Target 6× pengeluaran' },
+    { id: 5, name: 'Rekening Giro / Kas', category: 'kas', type: 'asset', value: 10000000, rate: 0, monthly: 0, note: '' },
+    { id: 6, name: 'KPR 1', category: 'kpr', type: 'liability', value: 180000000, rate: 7.5, monthly: 2500000, note: 'Hampir lunas' },
+    { id: 7, name: 'KPR 2 / Renovasi', category: 'kpr', type: 'liability', value: 125000000, rate: 8, monthly: 3200000, note: '48 bulan' },
+    { id: 8, name: 'Kartu Kredit BRI', category: 'kartu_kredit', type: 'liability', value: 15000000, rate: 24, monthly: 2000000, note: 'Target lunas Fase 1' },
+  ];
+}
+
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+const fmt = (n) => 'Rp ' + (n >= 1e9 ? (n/1e9).toFixed(2) + ' M' : n >= 1e6 ? (n/1e6).toFixed(1) + ' jt' : n.toLocaleString('id-ID'));
+const fmtFull = (n) => 'Rp ' + Math.abs(n).toLocaleString('id-ID');
+
+function render() {
+  const aset   = assets.filter(a => a.type === 'asset');
+  const liab   = assets.filter(a => a.type === 'liability');
+  const totalAset = aset.reduce((s,a) => s + Number(a.value), 0);
+  const totalLiab = liab.reduce((s,a) => s + Number(a.value), 0);
+  const nw        = totalAset - totalLiab;
+  const debtRatio = totalAset > 0 ? ((totalLiab / totalAset) * 100).toFixed(1) : 0;
+
+  // HERO
+  document.getElementById('hero-nw').textContent    = fmt(nw);
+  document.getElementById('hero-sub').textContent   = `${fmt(totalAset)} aset — ${fmt(totalLiab)} utang`;
+  document.getElementById('hero-total-asset').textContent = fmt(totalAset);
+  document.getElementById('hero-total-liab').textContent  = '-' + fmt(totalLiab);
+  document.getElementById('hero-ratio').textContent = debtRatio + '%';
+
+  // STAT CARDS
+  const byCategory = (cat) => aset.filter(a => a.category === cat).reduce((s,a) => s + Number(a.value), 0);
+  const cashTotal  = byCategory('kas') + byCategory('tabungan');
+  document.getElementById('card-saham').textContent  = fmt(byCategory('saham'));
+  document.getElementById('card-crypto').textContent = fmt(byCategory('crypto'));
+  document.getElementById('card-bibit').textContent  = fmt(byCategory('bibit'));
+  document.getElementById('card-cash').textContent   = fmt(cashTotal);
+
+  // ASSET LIST
+  renderAssetList(aset, liab, totalAset);
+
+  // DONUT
+  renderDonut(aset, totalAset);
+
+  // CASHFLOW
+  renderCashflow();
+
+  // PROGRESS
+  renderProgress(byCategory, nw, cashTotal);
+
+  // PASSIVE INCOME
+  const passiveTotal = (cashflow.dividen || 0) + (cashflow.crypto || 0) + (cashflow.reksadana || 0);
+  document.getElementById('passive-monthly').textContent = fmt(passiveTotal);
+  document.getElementById('passive-dividen').textContent = fmt(cashflow.dividen || 0);
+  document.getElementById('passive-bot').textContent     = fmt(cashflow.crypto || 0);
+  document.getElementById('passive-reksadana').textContent = fmt(cashflow.reksadana || 0);
+  const passivePct = Math.min((passiveTotal / 10000000) * 100, 100);
+  document.getElementById('prog-passive').textContent    = passivePct.toFixed(1) + '%';
+  document.getElementById('prog-passive-bar').style.width = passivePct + '%';
+
+  // NW CHART (mock trend)
+  renderNWChart(nw);
+
+  // LAST UPDATED
+  document.getElementById('last-updated-label').textContent = 'Update: ' + new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function renderAssetList(aset, liab, totalAset) {
+  const catIcon = { saham:'📈', crypto:'🤖', bibit:'🪣', tabungan:'🏦', kas:'💵', properti:'🏠', kpr:'🏠', kartu_kredit:'💳', utang_lain:'📋' };
+  const catBg   = { saham:'var(--green-dim)', crypto:'var(--blue-dim)', bibit:'var(--purple-dim)', tabungan:'var(--blue-dim)', kas:'var(--blue-dim)', properti:'var(--gold-dim)', kpr:'var(--red-dim)', kartu_kredit:'var(--red-dim)', utang_lain:'var(--red-dim)' };
+  const catCol  = { saham:'var(--green)', crypto:'var(--cyan)', bibit:'var(--purple)', tabungan:'var(--blue)', kas:'var(--blue)', properti:'var(--gold)', kpr:'var(--red)', kartu_kredit:'var(--red)', utang_lain:'var(--red)' };
+
+  let html = '';
+
+  // ASSETS
+  html += `<div class="asset-section">
+    <div class="section-header">
+      <div class="section-title">Aset (${aset.length})</div>
+      <div class="section-total" style="color:var(--green)">${fmt(aset.reduce((s,a)=>s+Number(a.value),0))}</div>
+    </div>`;
+  aset.forEach(a => {
+    const pct = totalAset > 0 ? ((a.value/totalAset)*100).toFixed(1) : 0;
+    html += `<div class="asset-item" onclick="openEditModal(${a.id})">
+      <div class="asset-icon" style="background:${catBg[a.category]||'var(--bg3)'};">${catIcon[a.category]||'◈'}</div>
+      <div class="asset-info">
+        <div class="asset-name">${a.name}</div>
+        <div class="asset-meta">${a.note || (a.rate ? a.rate+'%/thn' : '—')}</div>
+      </div>
+      <div class="asset-value-wrap">
+        <div class="asset-value positive">${fmt(Number(a.value))}</div>
+        <div class="asset-pct">${pct}% aset</div>
+      </div>
+    </div>`;
+  });
+  html += `<button class="btn-add" onclick="openAddModal('asset')">+ Tambah Aset</button></div>`;
+
+  // LIABILITIES
+  html += `<div class="asset-section">
+    <div class="section-header">
+      <div class="section-title">Liabilitas (${liab.length})</div>
+      <div class="section-total" style="color:var(--red)">-${fmt(liab.reduce((s,a)=>s+Number(a.value),0))}</div>
+    </div>`;
+  liab.forEach(a => {
+    html += `<div class="asset-item liability" onclick="openEditModal(${a.id})">
+      <div class="asset-icon" style="background:${catBg[a.category]||'var(--bg3)'};">${catIcon[a.category]||'◈'}</div>
+      <div class="asset-info">
+        <div class="asset-name">${a.name}</div>
+        <div class="asset-meta">${a.rate ? a.rate+'%/thn' : ''} ${a.monthly ? '· Rp '+Number(a.monthly).toLocaleString('id-ID')+'/bln' : ''}</div>
+      </div>
+      <div class="asset-value-wrap">
+        <div class="asset-value negative">-${fmt(Number(a.value))}</div>
+        <div class="asset-pct">${a.note || ''}</div>
+      </div>
+    </div>`;
+  });
+  html += `<button class="btn-add" onclick="openAddModal('liability')">+ Tambah Liabilitas</button></div>`;
+
+  document.getElementById('asset-list-container').innerHTML = html;
+}
+
+function renderDonut(aset, totalAset) {
+  const catLabel = { saham:'Saham IDX', crypto:'Crypto/Bot', bibit:'Reksa Dana', tabungan:'Tabungan', kas:'Kas/Giro', properti:'Properti' };
+  const catColor = { saham:'#3ecf8e', crypto:'#22d3ee', bibit:'#a78bfa', tabungan:'#4a9eff', kas:'#60a5fa', properti:'#c9a84c' };
+
+  const grouped = {};
+  aset.forEach(a => {
+    grouped[a.category] = (grouped[a.category] || 0) + Number(a.value);
+  });
+
+  const labels  = Object.keys(grouped).map(k => catLabel[k] || k);
+  const values  = Object.values(grouped);
+  const colors  = Object.keys(grouped).map(k => catColor[k] || '#888');
+
+  if (donutInst) donutInst.destroy();
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  donutInst = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: '#0e1118', hoverOffset: 6 }] },
+    options: {
+      cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${fmt(ctx.raw)} (${((ctx.raw/totalAset)*100).toFixed(1)}%)`
+        },
+        backgroundColor: '#1c2230',
+        titleColor: '#e8edf5',
+        bodyColor: '#8a9ab8',
+        borderColor: '#2a3447',
+        borderWidth: 1,
+      }},
+      animation: { animateRotate: true, duration: 800 }
+    }
+  });
+
+  document.getElementById('donut-center-val').textContent = fmt(totalAset);
+
+  const legend = document.getElementById('donut-legend');
+  legend.innerHTML = Object.entries(grouped).map(([k,v]) =>
+    `<div class="legend-item">
+      <div class="legend-left">
+        <div class="legend-dot" style="background:${catColor[k]||'#888'}"></div>
+        <div class="legend-name">${catLabel[k]||k}</div>
+      </div>
+      <div>
+        <span class="legend-val">${fmt(v)}</span>
+        <span class="legend-pct">${((v/totalAset)*100).toFixed(1)}%</span>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function renderCashflow() {
+  const cicilan = assets.filter(a => a.type === 'liability').reduce((s,a) => s + Number(a.monthly || 0), 0);
+  const surplus = (cashflow.gaji||0) + (cashflow.crypto||0) - (cashflow.pengeluaran||0) - cicilan;
+  document.getElementById('cf-gaji').textContent       = '+' + fmt(cashflow.gaji || 0);
+  document.getElementById('cf-crypto').textContent     = '+' + fmt(cashflow.crypto || 0);
+  document.getElementById('cf-pengeluaran').textContent = '-' + fmt(cashflow.pengeluaran || 0);
+  document.getElementById('cf-cicilan').textContent    = '-' + fmt(cicilan);
+  document.getElementById('cf-surplus').textContent   = (surplus >= 0 ? '+' : '') + fmt(surplus);
+  document.getElementById('cf-surplus').style.color   = surplus >= 0 ? 'var(--gold)' : 'var(--red)';
+}
+
+function renderProgress(byCategory, nw, cashTotal) {
+  const set = (id, barId, val, target) => {
+    const pct = Math.min((val / target) * 100, 100);
+    document.getElementById(id).textContent    = pct.toFixed(1) + '%';
+    document.getElementById(barId).style.width = pct + '%';
+  };
+  const monthlyExp = cashflow.pengeluaran || 4000000;
+  set('prog-emergency',    'prog-emergency-bar',  cashTotal,                6 * monthlyExp);
+  set('prog-saham',        'prog-saham-bar',       byCategory('saham'),    500000000);
+  set('prog-crypto',       'prog-crypto-bar',      byCategory('crypto'),   1600000000);
+  set('prog-nw',           'prog-nw-bar',          nw,                     2000000000);
+}
+
+function renderNWChart(currentNW) {
+  // Mock 12-month trend ending at current NW
+  const now = new Date();
+  const months = [];
+  const values = [];
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push(d.toLocaleString('id-ID', { month: 'short', year: '2-digit' }));
+    const noise = (Math.random() - 0.3) * currentNW * 0.04;
+    values.push(Math.max(0, currentNW * (0.82 + (11 - i) * 0.016) + noise));
+  }
+  values[11] = currentNW;
+
+  if (nwInst) nwInst.destroy();
+  const ctx = document.getElementById('nwChart').getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, 260);
+  grad.addColorStop(0, 'rgba(201,168,76,0.3)');
+  grad.addColorStop(1, 'rgba(201,168,76,0)');
+
+  nwInst = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Net Worth',
+        data: values,
+        borderColor: '#c9a84c',
+        backgroundColor: grad,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: '#c9a84c',
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: (ctx) => ' ' + fmt(ctx.raw) },
+          backgroundColor: '#1c2230', titleColor: '#e8edf5', bodyColor: '#8a9ab8', borderColor: '#2a3447', borderWidth: 1,
+        }
+      },
+      scales: {
+        x: { grid: { color: '#1e2736' }, ticks: { color: '#5a6a82', font: { size: 11 } } },
+        y: {
+          grid: { color: '#1e2736' },
+          ticks: { color: '#5a6a82', font: { size: 11 }, callback: v => 'Rp ' + (v/1e6).toFixed(0) + 'jt' }
+        }
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════
+function openAddModal(typeHint) {
+  editingId = null;
+  document.getElementById('modal-asset-title').textContent = 'Tambah Aset / Liabilitas';
+  document.getElementById('btn-delete-asset').style.display = 'none';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-name').value  = '';
+  document.getElementById('f-value').value = '';
+  document.getElementById('f-rate').value  = '';
+  document.getElementById('f-monthly').value = '';
+  document.getElementById('f-note').value  = '';
+  if (typeHint === 'liability') document.getElementById('f-type').value = 'liability';
+  else document.getElementById('f-type').value = 'asset';
+  document.getElementById('modal-asset').classList.add('open');
+}
+
+function openEditModal(id) {
+  const a = assets.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById('modal-asset-title').textContent = 'Edit: ' + a.name;
+  document.getElementById('btn-delete-asset').style.display = 'block';
+  document.getElementById('edit-id').value    = a.id;
+  document.getElementById('f-name').value     = a.name;
+  document.getElementById('f-category').value = a.category;
+  document.getElementById('f-type').value     = a.type;
+  document.getElementById('f-value').value    = a.value;
+  document.getElementById('f-rate').value     = a.rate || '';
+  document.getElementById('f-monthly').value  = a.monthly || '';
+  document.getElementById('f-note').value     = a.note || '';
+  document.getElementById('modal-asset').classList.add('open');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function saveAsset() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { showToast('Nama tidak boleh kosong', 'error'); return; }
+  const asset = {
+    name,
+    category: document.getElementById('f-category').value,
+    type:     document.getElementById('f-type').value,
+    value:    parseFloat(document.getElementById('f-value').value) || 0,
+    rate:     parseFloat(document.getElementById('f-rate').value) || 0,
+    monthly:  parseFloat(document.getElementById('f-monthly').value) || 0,
+    note:     document.getElementById('f-note').value.trim(),
+  };
+  if (editingId) asset.id = editingId;
+
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    if (editingId) { const idx = assets.findIndex(a => a.id === editingId); assets[idx] = { ...assets[idx], ...asset }; }
+    else { asset.id = Date.now(); assets.push(asset); }
+    showToast('Disimpan (demo mode)', 'success');
+    closeModal('modal-asset');
+    render();
+    return;
+  }
+  await upsertAsset(asset);
+  closeModal('modal-asset');
+}
+
+async function deleteAsset() {
+  if (!editingId) return;
+  if (!confirm('Hapus aset ini?')) return;
+  closeModal('modal-asset');
+  await removeAsset(editingId);
+}
+
+function openCashflowModal() {
+  document.getElementById('cf-f-gaji').value       = cashflow.gaji || '';
+  document.getElementById('cf-f-crypto').value     = cashflow.crypto || '';
+  document.getElementById('cf-f-pengeluaran').value = cashflow.pengeluaran || '';
+  document.getElementById('cf-f-dividen').value    = cashflow.dividen || '';
+  document.getElementById('cf-f-reksadana').value  = cashflow.reksadana || '';
+  document.getElementById('modal-cashflow').classList.add('open');
+}
+
+async function saveCashflow() {
+  cashflow = {
+    gaji:        parseFloat(document.getElementById('cf-f-gaji').value) || 0,
+    crypto:      parseFloat(document.getElementById('cf-f-crypto').value) || 0,
+    pengeluaran: parseFloat(document.getElementById('cf-f-pengeluaran').value) || 0,
+    dividen:     parseFloat(document.getElementById('cf-f-dividen').value) || 0,
+    reksadana:   parseFloat(document.getElementById('cf-f-reksadana').value) || 0,
+  };
+  closeModal('modal-cashflow');
+  await saveCashflowDB();
+  render();
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  setTimeout(() => t.classList.add('show'), 50);
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
