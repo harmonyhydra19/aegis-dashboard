@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚔ Aegis Alpha — Wealth Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --bg:        #080a0e; 
+  --bg1:       #10131a;
+  --bg2:       #161b24;
+  --bg3:       #1e2532;
+  --border:    #242c3d;
+  --border2:   #303a52;
+  --text:      #e2e8f0;
+  --muted:     #64748b;
+  --muted2:    #94a3b8;
+  
+  /* Aegis Alpha Theme */
+  --gold:      #d4af37;
+  --gold2:     #fde047;
+  --gold-dim:  rgba(212, 175, 55, 0.15);
+  --gold-neon: rgba(212, 175, 55, 0.25);
+  
+  --green:     #34d399;
+  --green-dim: rgba(52, 211, 153, 0.15);
+  --red:       #f87171;
+  --red-dim:   rgba(248, 113, 113, 0.15);
+  --blue:      #60a5fa;
+  --blue-dim:  rgba(96, 165, 250, 0.15);
+  --purple:    #a78bfa;
+  --cyan:      #22d3ee;
+  
+  /* Fonts */
+  --font-main: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-cond: 'Barlow Condensed', sans-serif;
+  
+  /* Radii & Shadows */
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-neon: 0 0 15px var(--gold-neon);
+  --shadow-panel: inset 0 2px 10px rgba(0,0,0,0.4);
+}
+
+[data-theme="light"] {
+  --bg: #f1f5f9; --bg1: #ffffff; --bg2: #f8fafc; --bg3: #e2e8f0;
+  --border: #e2e8f0; --border2: #cbd5e1;
+  --text: #0f172a; --muted: #64748b; --muted2: #475569;
+  --gold: #b48512; --gold2: #d4af37;
+  --gold-dim: rgba(212, 175, 55, 0.15); --gold-neon: rgba(180, 133, 18, 0.2);
+  --green: #10b981; --red: #ef4444; --blue: #3b82f6; --purple: #8b5cf6; --cyan: #06b6d4;
+  --shadow-panel: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-main); min-height: 100vh; overflow-x: hidden; line-height: 1.5; }
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+/* ── BUTTONS & FORMS ── */
+.btn-sm { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .5rem 1rem; color: var(--muted2); font-size: .75rem; cursor: pointer; font-family: var(--font-main); font-weight: 600; transition: all .2s; }
+.btn-sm:hover { border-color: var(--gold); color: var(--gold); box-shadow: var(--shadow-neon); }
+.btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; border: none; border-radius: var(--radius-md); padding: .8rem; font-family: var(--font-main); font-weight: 700; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--gold-neon); }
+.btn-delete { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; padding: 0 0.5rem; }
+.btn-delete:hover { color: var(--red); }
+
+.form-group { margin-bottom: 1.2rem; }
+.form-label { display: block; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; font-weight: 600; }
+.form-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .7rem .9rem; color: var(--text); font-family: var(--font-mono); font-size: .9rem; outline: none; transition: border-color .2s; }
+.form-input:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-neon); }
+
+/* ── PANELS ── */
+.panel { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-panel); }
+.panel-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.panel-title { font-family: var(--font-cond); font-size: 1.2rem; letter-spacing: .05em; text-transform: uppercase; color: var(--gold); font-weight: 700; text-shadow: 0 0 8px var(--gold-neon); }
+.panel-body { padding: 1.5rem; }
+
+/* ── LAYOUT & HEADER ── */
+#login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 2rem; }
+.login-box { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 3rem; width: 380px; text-align: center; box-shadow: var(--shadow-neon), 0 10px 40px rgba(0,0,0,0.5); }
+#app { display: none; position: relative; z-index: 1; }
+header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(16, 19, 26, 0.95); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); overflow-x: auto; }
+main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.nav-pill { background: var(--bg2); border: 1px solid var(--border); border-radius: 30px; padding: .3rem; display: flex; gap: .25rem; white-space: nowrap; }
+.nav-pill button { background: none; border: none; padding: .5rem 1rem; border-radius: 20px; font-size: .75rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .05em;}
+.nav-pill button.active { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; box-shadow: 0 2px 10px var(--gold-neon); }
+
+/* ── GRIDS ── */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+.stat-card { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; position: relative; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; box-shadow: var(--shadow-panel); }
+.stat-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-neon); }
+.stat-value { font-family: var(--font-cond); font-size: 2.2rem; font-weight: 800; color: var(--text); margin-bottom: .2rem; line-height: 1.1;}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+/* ── PROGRESS & FASE ── */
+.progress-bar-wrap { margin-bottom: 1.2rem; }
+.progress-bar-header { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: .5rem; color: var(--muted2); font-weight: 600;}
+.progress-bar-header span:last-child { font-family: var(--font-mono); color: var(--text); }
+.progress-bar-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width .8s ease-out; box-shadow: 0 0 10px var(--gold-neon); }
+.phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; }
+.phase-card.done { border-color: var(--green); opacity: 0.7; }
+.phase-card.active { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-neon); animation: pulseNeon 2s infinite; }
+@keyframes pulseNeon { 0%, 100% { box-shadow: 0 0 15px var(--gold-neon); } 50% { box-shadow: 0 0 5px var(--gold-neon); } }
+
+/* ── UTILS ── */
+.cashflow-row { display: flex; justify-content: space-between; padding: .8rem 0; border-bottom: 1px solid var(--border); font-size: .85rem; font-weight: 500;}
+.cashflow-row:last-child { border-bottom: none; }
+.cashflow-val { font-family: var(--font-mono); font-weight: 600; font-size: .95rem;}
+.in { color: var(--green); } .out { color: var(--red); }
+.glow-text-gold { color: var(--gold); text-shadow: 0 0 10px var(--gold-neon); }
+.view-section { display: none; animation: fadeIn 0.3s; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── CHARTS ── */
+.chart-wrap { position: relative; height: 300px; width: 100%; }
+.donut-wrap { position: relative; height: 240px; display: flex; align-items: center; justify-content: center; }
+.donut-center { position: absolute; text-align: center; pointer-events: none; }
+.donut-center-val { font-family: var(--font-cond); font-size: 1.6rem; font-weight: 700; color: var(--text); }
+.donut-center-label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-top: .2rem;}
+
+/* =======================================================
+   KOTAK EDIT MODERN (Saham/RD/Cash)
+   ======================================================= */
+.edit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow-panel); transition: border-color .2s; }
+.edit-card:focus-within { border-color: var(--gold); box-shadow: var(--shadow-neon); }
+.edit-card-top { display: flex; gap: .75rem; margin-bottom: 1rem; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+.edit-card-top .form-input { margin-bottom: 0; padding: .6rem .8rem; }
+.edit-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
+.edit-field { display: flex; flex-direction: column; gap: .4rem; }
+.edit-field label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); text-transform: uppercase; font-weight: 600;}
+
+.asset-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.asset-icon.rd { background: var(--green-dim); color: var(--green); }
+.asset-icon.bank { background: var(--blue-dim); color: var(--blue); }
+.asset-icon.liab { background: var(--red-dim); color: var(--red); }
+.asset-val-prefix { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.asset-val-in { font-family: var(--font-cond); font-size: 1.6rem !important; font-weight: 700; color: var(--text); background: transparent; border: none; outline: none; width: 100%; }
+.asset-name-in { background: transparent; border: none; outline: none; color: var(--text); font-weight: 700; width: 100%; font-size: 1.1rem; margin-bottom: .2rem; }
+
+/* =======================================================
+   RICH PORTO SAHAM UI (Sesuai Gambar 3)
+   ======================================================= */
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+.pill { font-family: var(--font-mono); font-size: .75rem; padding: .4rem .8rem; border-radius: 20px; cursor: pointer; border: 1px solid var(--border2); background: none; color: var(--muted2); transition: all .2s; }
+.pill:hover { border-color: var(--gold); color: var(--gold); }
+.pill.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+.target-card { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.5rem; overflow: hidden; box-shadow: var(--shadow-panel); }
+.target-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem 1rem; flex-wrap: wrap; gap: 1rem; }
+.target-left .label { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .4rem; }
+.target-input-wrap { display: flex; align-items: baseline; gap: 6px; border-bottom: 2px solid var(--border2); padding-bottom: 4px; }
+.target-prefix { font-family: var(--font-mono); font-size: 1rem; color: var(--muted2); }
+.target-input { background: none; border: none; outline: none; font-family: var(--font-cond); font-size: 2.2rem; font-weight: 700; color: var(--text); width: 100%; min-width: 150px; }
+.target-right { text-align: right; }
+.target-curr { font-family: var(--font-cond); font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+.target-pct { font-family: var(--font-mono); font-size: .75rem; color: var(--muted2); margin-top: 4px; }
+
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.price-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 1rem; transition: border-color .2s; }
+.price-card-label { font-family: var(--font-mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.price-card-ticker { font-family: var(--font-cond); font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; color: var(--gold); }
+.price-field { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+.price-field-label { font-family: var(--font-mono); font-size: .7rem; color: var(--muted2); width: 44px; }
+.price-field-val { font-family: var(--font-mono); font-size: .9rem; font-weight: 500; color: var(--text); }
+.price-field-divider { height: 1px; background: var(--border); margin: 6px 0; }
+
+.gap-strip { margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); }
+.gap-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+.gap-label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); text-transform: uppercase; }
+.gap-pill { font-family: var(--font-mono); font-size: .7rem; padding: 2px 6px; border-radius: 4px; }
+.gap-up { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+.gap-down { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.gap-flat { background: var(--bg3); color: var(--muted2); border: 1px solid var(--border); }
+.gap-bar-track { height: 4px; background: var(--bg3); border-radius: 2px; position: relative; }
+.gap-bar-avg { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--muted2); }
+
+.mos-strip { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); gap: 4px; }
+.mos { display: inline-block; font-family: var(--font-mono); font-size: .65rem; font-weight: 600; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; white-space: nowrap; }
+.mos-strong-buy { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.mos-buy        { background: rgba(184,245,90,.12); color: #b8f55a; border: 1px solid rgba(184,245,90,.25); }
+.mos-accumulate { background: rgba(103,232,249,.11); color: #67e8f9; border: 1px solid rgba(103,232,249,.22); }
+.mos-hold       { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold); }
+.mos-trim       { background: rgba(251,146,60,.11); color: #fb923c; border: 1px solid rgba(251,146,60,.25); }
+.mos-exit       { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+.mos-unknown    { background: var(--bg3); color: var(--muted2); border: 1px solid var(--border); }
+.mos-note { font-family: var(--font-mono); font-size: .65rem; color: var(--muted2); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.stock-card { background: var(--bg1); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; border-left: 4px solid var(--gold); transition: border-color .2s; box-shadow: var(--shadow-panel); }
+.stock-card-top { display: grid; grid-template-columns: 150px 1fr; }
+.stock-identity { padding: 1.2rem; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+.stock-ticker { font-family: var(--font-cond); font-size: 1.8rem; font-weight: 800; color: var(--gold); line-height: 1; }
+.stock-name { font-size: .75rem; color: var(--muted2); margin-top: 4px; font-weight: 600; }
+.stock-role { display: inline-block; font-family: var(--font-mono); font-size: .65rem; padding: 2px 6px; border-radius: 4px; background: var(--gold-dim); color: var(--gold); margin-top: 8px; font-weight: 600; text-transform: uppercase; width: fit-content; }
+
+.stock-stats { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stock-stat { padding: 1rem 1.2rem; border-right: 1px solid var(--border); }
+.stock-stat:last-child { border-right: none; }
+.stock-stat-label { font-family: var(--font-mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.stock-stat-big { font-family: var(--font-cond); font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; }
+.stock-stat-sub { font-family: var(--font-mono); font-size: .75rem; color: var(--muted2); margin-top: 6px; }
+.need-pos { color: var(--green); } .need-zero { color: var(--muted); } .need-neg { color: var(--red); }
+
+.lot-progress { padding: 1rem 1.2rem; border-top: 1px solid var(--border); }
+.lot-bar-track { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.lot-bar-fill { height: 100%; background: var(--gold); transition: width .4s ease; }
+.lot-bar-labels { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: .75rem; color: var(--muted2); }
+
+.buyzone-section { padding: 1.2rem; border-top: 1px solid var(--border); display: none; background: var(--bg2); }
+.buyzone-section.open { display: grid; grid-template-columns: 1fr 2fr auto; gap: 1rem; align-items: start; }
+.bz-moat-label { font-family: var(--font-mono); font-size: .65rem; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.bz-moat-text { font-size: .85rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+.bz-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.chip { font-family: var(--font-mono); font-size: .65rem; padding: 2px 8px; border-radius: 12px; }
+.chip-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.chip-red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+
+.bz-track { display: flex; height: 24px; border-radius: 6px; overflow: hidden; }
+.bz-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: .6rem; font-weight: 700; text-transform: uppercase; }
+.bz-seg.bz-sb { background: var(--green-dim); color: var(--green); }
+.bz-seg.bz-buy { background: rgba(184,245,90,.15); color: #b8f55a; }
+.bz-seg.bz-acc { background: rgba(103,232,249,.12); color: #67e8f9; }
+.bz-seg.bz-hold { background: var(--gold-dim); color: var(--gold); }
+.bz-seg.bz-trim { background: rgba(251,146,60,.12); color: #fb923c; }
+.bz-seg.bz-exit { background: var(--red-dim); color: var(--red); }
+.bz-seg.active { box-shadow: inset 0 0 0 2px currentColor; }
+.bz-labels { display: flex; margin-top: 4px; }
+.bz-label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); text-align: center; }
+
+.toggle-btn { width: 100%; background: var(--bg2); border: none; border-top: 1px solid var(--border); color: var(--muted2); font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: color .2s; }
+.toggle-btn:hover { color: var(--gold); }
+.toggle-icon { transition: transform .2s; }
+.buyzone-section.open ~ .toggle-btn .toggle-icon { transform: rotate(180deg); }
+
+/* =======================================================
+   MODALS (POP-UP)
+   ======================================================= */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+.modal-overlay.open { display: flex; animation: fadeIn .2s; }
+.modal { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 2.5rem; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-neon), 0 20px 40px rgba(0,0,0,0.8); }
+.modal-title-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.modal-title-text { font-family: var(--font-cond); font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; text-transform: uppercase; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; line-height: 1; padding: 0 .5rem; }
+.modal-close:hover { color: var(--red); }
+
+@media (max-width: 1024px) { 
+  .three-col, .two-col { grid-template-columns: 1fr; gap: 1rem; } 
+  .phase-grid { grid-template-columns: 1fr 1fr; } 
+  .stock-card-top { grid-template-columns: 1fr; }
+  .stock-identity { border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; gap: 1rem; }
+  .stock-role { margin-top: 0; margin-left: auto; }
+  .stock-stats { grid-template-columns: 1fr 1fr; }
+  .stock-stat { border-bottom: 1px solid var(--border); }
+  .stock-stat:nth-child(even) { border-right: none; }
+  .buyzone-section.open { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div style="font-family:var(--font-cond);font-size:3rem;font-weight:800;color:var(--gold);margin-bottom:.5rem;letter-spacing:-.02em;">⚔ Aegis Alpha</div>
+    <div style="font-family:var(--font-mono);font-size:.72rem;letter-spacing:.3em;color:var(--muted);margin-bottom:3rem;text-transform:uppercase;">Wealth Dashboard</div>
+    <input id="pw-input" class="form-input" type="password" placeholder="Passcode" style="margin-bottom:1.5rem;text-align:center;letter-spacing:.5em" />
+    <button class="btn-primary" style="width:100%" onclick="doLogin()">Akses Terminal</button>
+    <div id="login-err" style="color:var(--red);font-size:.8rem;margin-top:.8rem;min-height:1.2em;font-weight:600"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div style="display:flex;align-items:center;gap:2rem;">
+      <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;">⚔ AEGIS</div>
+      <nav class="nav-pill">
+        <button id="nav-nw" class="active" onclick="switchView('nw')">Net Worth</button>
+        <button id="nav-porto" onclick="switchView('porto')">Porto Saham</button>
+        <button id="nav-rd" onclick="switchView('rd')">Reksa Dana</button>
+        <button id="nav-cash" onclick="switchView('cash')">Cash / Giro</button>
+        <button id="nav-liab" onclick="switchView('liab')">Liabilitas</button>
+      </nav>
+      <span id="cloud-status" style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted)">☁ Disconnected</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="btn-sm" onclick="toggleTheme()">🌓</button>
+      <button class="btn-sm" onclick="logout()">Keluar</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="view-nw" class="view-section active">
+      <div class="panel" style="text-align:center; position:relative; overflow:hidden;">
+        <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, var(--gold-neon), transparent 70%); pointer-events:none;"></div>
+        <div class="panel-body" style="padding: 3rem 1.5rem;">
+          <div style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Total Kekayaan Bersih</div>
+          <div id="hero-nw" class="glow-text-gold" style="font-family:var(--font-cond);font-size:4rem;font-weight:800;line-height:1;margin-bottom:.8rem">Rp —</div>
+          <div id="hero-sub" style="font-size:.9rem;color:var(--muted2);">Menghitung aset terminal...</div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card" onclick="switchView('porto')">
+          <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Saham IDX</div>
+          <div class="stat-value" id="stat-saham" style="color:var(--green)">—</div>
+        </div>
+        <div class="stat-card" onclick="switchView('rd')">
+          <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Reksa Dana</div>
+          <div class="stat-value" id="stat-bibit" style="color:var(--purple)">—</div>
+        </div>
+        <div class="stat-card" onclick="switchView('cash')">
+          <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Cash / Giro</div>
+          <div class="stat-value" id="stat-cash" style="color:var(--blue)">—</div>
+        </div>
+        <div class="stat-card" onclick="switchView('liab')">
+          <div style="font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;">Liabilitas (Utang)</div>
+          <div class="stat-value" id="stat-liab" style="color:var(--red)">—</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Tren Pertumbuhan Kekayaan</div>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn-sm" onclick="logNetWorth()">Save Snapshot</button>
+              <button class="btn-sm" onclick="openModal('modal-history')">History</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="chart-wrap"><canvas id="nwChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">Alokasi Aset</div></div>
+          <div class="panel-body" style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;">
+            <div class="donut-wrap" style="flex:1;">
+              <canvas id="donutChart"></canvas>
+              <div class="donut-center">
+                <div class="donut-center-val" id="donut-center-val">—</div>
+                <div class="donut-center-label">Total Aset</div>
+              </div>
+            </div>
+            <div id="donut-legend" style="flex:1;min-width:180px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">Terminal Fase</div></div>
+          <div class="panel-body">
+            <div class="phase-grid">
+              <div class="phase-card done"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 0</div><div style="font-weight:700;margin-top:.3rem">Triage Utang</div></div>
+              <div class="phase-card active"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 1</div><div style="font-weight:700;margin-top:.3rem;color:var(--gold)">Benteng Darurat</div></div>
+              <div class="phase-card"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 2</div><div style="font-weight:700;margin-top:.3rem">Dividend</div></div>
+              <div class="phase-card"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 3</div><div style="font-weight:700;margin-top:.3rem">Vehicle Cash</div></div>
+              <div class="phase-card" style="grid-column: 1 / -1;"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 4</div><div style="font-weight:700;margin-top:.3rem">Bebas Finansial</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Cashflow Bulanan</div>
+            <button class="btn-sm" onclick="openModal('modal-cashflow')">Edit</button>
+          </div>
+          <div class="panel-body">
+            <div class="cashflow-row"><span style="color:var(--muted); font-weight:600">INFLOW TOTAL</span><span class="cashflow-val in" id="dashboard-cf-in">—</span></div>
+            <div class="cashflow-row"><span style="color:var(--muted); font-weight:600">OUTFLOW TOTAL</span><span class="cashflow-val out" id="dashboard-cf-out">—</span></div>
+            <div class="cashflow-row" style="margin-top:1rem;border-top:1px solid var(--border);padding-top:1.5rem;">
+              <span style="font-weight:700; color:var(--text); font-size:1rem">NET SURPLUS</span>
+              <span class="cashflow-val glow-text-gold" style="font-weight:800; font-size:1.2rem" id="dashboard-cf-surplus">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Progress Target</div>
+            <button class="btn-sm" onclick="openModal('modal-goal')">+ Goal</button>
+          </div>
+          <div class="panel-body" id="goals-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-porto" class="view-section">
+      <div class="pills">
+        <button class="pill active" onclick="setTarget(100,this)">100 Jt</button>
+        <button class="pill" onclick="setTarget(250,this)">250 Jt</button>
+        <button class="pill" onclick="setTarget(500,this)">500 Jt</button>
+        <button class="pill" onclick="setTarget(1000,this)">1 Miliar</button>
+        <button class="pill" onclick="setTarget(2000,this)">2 Miliar</button>
+        <button class="pill" onclick="setTarget(5000,this)">5 Miliar</button>
+      </div>
+
+      <div class="target-card">
+        <div class="target-inner">
+          <div class="target-left">
+            <span class="label">Target Porto</span>
+            <div class="target-input-wrap">
+              <span class="target-prefix">Rp</span>
+              <input type="text" id="target-display" value="100.000.000" class="target-input cf-input" onchange="parseTarget(this)">
+            </div>
+          </div>
+          <div class="target-right">
+            <div class="target-curr" id="t-curr">Rp 0</div>
+            <div class="target-pct" id="t-pct">0% dari target</div>
+          </div>
+        </div>
+        <div class="progress-bar-wrap" style="margin-bottom:0; height:4px; border-radius:0">
+          <div class="progress-bar-fill" id="t-bar" style="width:0%; border-radius:0"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Zone Radar</div></div>
+        <div class="panel-body" style="padding-bottom:1rem">
+          <div class="price-grid" id="price-cards"></div>
+        </div>
+      </div>
+
+      <div id="stock-breakdown"></div>
+      
+      <div class="panel" style="margin-top:2rem">
+        <div class="panel-header"><div class="panel-title">Arsenal Manajemen Saham</div></div>
+        <div class="panel-body">
+          <div id="kelola-rows"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addStock()">+ Tambah Emiten</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Perubahan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-rd" class="view-section">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Bucket Reksa Dana</div>
+          <select id="rd-sort" class="form-input" style="width:auto;padding:.5rem 1rem;font-size:.85rem; font-weight:700; border-radius:30px" onchange="RD_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Porsi Terbesar</option>
+            <option value="val_asc">▲ Porsi Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div id="rd-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addRD()">+ Tambah Bucket</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Reksa Dana</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-cash" class="view-section">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Terminal Likuiditas (Cash/Giro)</div></div>
+        <div class="panel-body">
+          <div id="cash-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addCash()">+ Tambah Rekening</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Likuiditas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="view-liab" class="view-section">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Terminal Liabilitas (Utang)</div></div>
+        <div class="panel-body">
+          <div id="liab-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addLiab()">+ Tambah Liabilitas</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Liabilitas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="modal-overlay" id="modal-crypto">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Crypto Wallet Terminal</div>
+      <button class="modal-close" onclick="closeModal('modal-crypto')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Total Balance Crypto (Rp)</label>
+      <input type="text" class="form-input cf-input" id="in-crypto-bal">
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveCryptoBal()">Update Terminal</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cashflow">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Konfigurasi Cashflow</div>
+      <button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button>
+    </div>
+    <div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem">
+      <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;margin-bottom:1rem;text-transform:uppercase">▶ Inflow</div>
+      <div class="form-group"><label class="form-label">Gaji Pokok & Makan</label><input type="text" class="form-input cf-input" id="in-gaji"></div>
+      <div class="form-group"><label class="form-label">Tunjangan Kinerja (Tukin)</label><input type="text" class="form-input cf-input" id="in-tukin"></div>
+      <div class="form-group"><label class="form-label">Crypto Bot (Income Est.)</label><input type="text" class="form-input cf-input" id="in-crypto"></div>
+      
+      <hr style="border:1px solid var(--border);margin:2rem 0">
+      
+      <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;margin-bottom:1rem;text-transform:uppercase">◀ Outflow</div>
+      <div class="form-group"><label class="form-label">Pengeluaran Rutin</label><input type="text" class="form-input cf-input" id="ex-rutin"></div>
+      <div class="form-group"><label class="form-label">Cicilan CC Jenius</label><input type="text" class="form-input cf-input" id="ex-ccjenius"></div>
+      <div class="form-group"><label class="form-label">Cicilan Bank BRI</label><input type="text" class="form-input cf-input" id="ex-bri"></div>
+      <div class="form-group"><label class="form-label">Jenius Flexi Cash</label><input type="text" class="form-input cf-input" id="ex-flexi"></div>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-goal">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Custom Goal Terminal</div>
+      <button class="modal-close" onclick="closeModal('modal-goal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Goal (ex: Mobil Cash)</label><input type="text" class="form-input" id="g-name"></div>
+    <div class="form-group"><label class="form-label">Target Nilai (Rp)</label><input type="text" class="form-input cf-input" id="g-target"></div>
+    <div class="form-group"><label class="form-label">Terkumpul Saat Ini (Rp)</label><input type="text" class="form-input cf-input" id="g-current"></div>
+    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveGoal()">Tambahkan Goal</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-history">
+  <div class="modal" style="width: 600px;">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Arsip History Net Worth</div>
+      <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
+    </div>
+    <div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div>
+  </div>
+</div>
+
+<script>
+/* ── SUPABASE CONFIG ── */
+const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const DB_PREFIX = 'aegis_v3_'; // FORCE NEW KEY TO RECOVER DATA
+
+/* ── CONSTANTS & DB ── */
+const APP_PASS = '1908';
+const BUY_ZONES = {
+  bbca: [5900,6300,6700,7200,7800],
+  bmri: [3900,4300,4700,5200,5700],
+  smsm: [1550,1750,1950,2200,2500],
+  tspc: [1950,2200,2500,2750,3000],
+  sido: [420,480,540,630,720],
+};
+const FUNDAMENTALS = {
+  bbca: { moat:'Transaction banking franchise', kekuatan:'CASA ~84.8% · Cost of Fund terendah Big-4 · Switching cost tinggi', kerentanan:'Valuasi premium · NIM compression', roe:'~23%', pe:'18–22x', trigger:'ROE <18% dua tahun berturut' },
+  bmri: { moat:'BUMN ecosystem + digital platform', kekuatan:"Livin' 39jt user +27% YoY · Kopra wholesale · Laba Q1-2026 +16.6%", kerentanan:'Directed lending risk (Danantara) · Political governance', roe:'~22%', pe:'10–13x', trigger:'NIM <4.3% dua kuartal' },
+  smsm: { moat:'Scale + aftermarket distribution global', kekuatan:'Filter no.1 nasional · Ekspor 63% revenue · FCF konsisten', kerentanan:'EV transition jangka panjang · Tarif Trump eksposur', roe:'~28%', pe:'8–11x', trigger:'EV penetration >15% domestik' },
+  tspc: { moat:'Multi-brand + distribusi nasional', kekuatan:'Brand OTC kuat (Bodrex, Hemaviton) · 17 fasilitas manufaktur', kerentanan:'Margin tertekan (laba -2.8% 2025) · Free float concern ⚠', roe:'~13%', pe:'11–14x', trigger:'Free float action / go-private ⚠' },
+  sido: { moat:'Brand monopoly kategori herbal', kekuatan:'Market share 72% masuk angin · FCF besar · Asset-light · 188rb+ outlet', kerentanan:'Ketergantungan Tolak Angin · Single-category risk', roe:'~27%', pe:'16–20x', trigger:'DPS cut dua tahun berturut' },
+};
+
+/* ── DEFAULT DATA (BASED ON SCREENSHOTS) ── */
+let donutInst = null, nwInst = null;
+let PORTO_TARGET = 100000000;
+let STOCKS = [
+  { id:'bbca', name:'Bank Central Asia', lot:35, price:5975, avg:6448.94, dps:300, alloc:30, role:'ANCHOR' },
+  { id:'bmri', name:'Bank Mandiri', lot:32, price:4400, avg:4717.06, dps:353, alloc:25, role:'INCOME CORE' },
+  { id:'sido', name:'Sido Muncul', lot:137, price:496, avg:505.75, dps:39, alloc:15, role:'BALLAST' },
+  { id:'smsm', name:'Selamat Sempurna', lot:72, price:1825, avg:1792.68, dps:135, alloc:20, role:'COMPOUNDER' },
+  { id:'tspc', name:'Tempo Scan Pacific', lot:36, price:2450, avg:2413.61, dps:80, alloc:10, role:'DEFENSIVE ⚠' }
+];
+let REKSADANA = [
+  { id:'r1', name: 'Dana Pendidikan Zahra', value: 25025155 },
+  { id:'r2', name: 'Cicilan Bank BRI HOLD', value: 12013084 },
+  { id:'r3', name: 'Dry Powder Stockbit', value: 4170654 },
+  { id:'r4', name: 'Dana Rumah Impian', value: 3264996 }
+];
+let RD_SORT = 'val_desc';
+let CASH_ACCOUNTS = [
+  { id:'c1', name: 'BCA Prioritas', value: 15000000 },
+  { id:'c2', name: 'Jenius Flexi Maxi', value: 10000000 },
+  { id:'c3', name: 'Dana Brankas Fisik', value: 2000000 }
+];
+let LIABILITAS = [
+  { id:'l1', name: 'Kartu Kredit Jenius', value: 3500000 },
+  { id:'l2', name: 'KPR / Kredit BRI', value: 120000000 }
+];
+let CASHFLOW = { gaji:3000000, makan:900000, tukin:3900000, crypto:1500000, rutin:2500000, ccjenius:3500000, bri:500000, flexi:0 };
+let GOALS = [
+  { id:'auto-nw', name:'Terminal Net Worth', target:2000000000, isAuto:true },
+  { id:'c1', name:'Dana Darurat 12x', target:60000000, current:27000000 }
+];
+let HISTORY = [];
+let CRYPTO_BAL = 15000000;
+
+/* ── FORMATTERS (SAFE FOR COMMA DECIMALS) ── */
+function formatRibuan(num) { 
+  if(num == null || isNaN(num) || num === '') return ""; 
+  let parts = num.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return parts.join(","); 
+}
+function unformatRibuan(str) { 
+  if(!str) return 0;
+  let cleanStr = str.toString().replace(/\./g, '').replace(/,/g, '.');
+  return Number(cleanStr) || 0; 
+}
+const fmt = (n) => 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
+const fmtShort = (n) => 'Rp ' + (n>=1e9 ? (n/1e9).toFixed(2)+'M' : n>=1e6 ? (n/1e6).toFixed(1)+'Jt' : (n || 0).toLocaleString('id-ID'));
+
+document.addEventListener('input', function (e) {
+  if (e.target.classList.contains('cf-input')) {
+    let val = e.target.value.replace(/[^0-9,]/g, '');
+    let parts = val.split(',');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    if(parts.length > 2) parts.pop(); 
+    e.target.value = parts.join(',');
+  }
+});
+
+/* ── HELPERS (MOS & GAP) ── */
+function getMOS(id, price) {
+  const bz = BUY_ZONES[id.toLowerCase()];
+  if (!bz || !price || price <= 0) return { key:'unknown', label:'— N/A', note:'No data' };
+  const [sbz, b, ac, h, t] = bz;
+  if (price <= sbz) return { key:'strong-buy',  label:'⚡ Strong Buy', note:`≤ ${sbz.toLocaleString('id-ID')}` };
+  if (price <= b)   return { key:'buy',         label:'✓ Buy',         note:`${sbz.toLocaleString('id-ID')}–${b.toLocaleString('id-ID')}` };
+  if (price <= ac)  return { key:'accumulate',  label:'◎ Accumulate',  note:`${b.toLocaleString('id-ID')}–${ac.toLocaleString('id-ID')}` };
+  if (price <= h)   return { key:'hold',        label:'◆ Hold',        note:`${ac.toLocaleString('id-ID')}–${h.toLocaleString('id-ID')}` };
+  if (price <= t)   return { key:'trim',        label:'▲ Trim',        note:`${h.toLocaleString('id-ID')}–${t.toLocaleString('id-ID')}` };
+  return            { key:'exit',        label:'✕ Exit',        note:`> ${t.toLocaleString('id-ID')}` };
+}
+
+function renderGapStrip(price, avg) {
+  if (!avg || avg <= 0) return '';
+  const diff = price - avg; const pct = (diff / avg * 100); const absPct = Math.abs(pct);
+  const isUp = diff > 0; const isFlat = absPct < 0.1;
+  const pillCls = isFlat ? 'gap-flat' : isUp ? 'gap-down' : 'gap-up';
+  const arrow = isFlat ? '—' : isUp ? '▲' : '▼';
+  const sign = isFlat ? '' : isUp ? '+' : '';
+  const pillTxt = isFlat ? 'At Cost' : `${arrow} ${sign}${pct.toFixed(1)}%`;
+  const RANGE = 30; const clampedPct = Math.max(-RANGE, Math.min(RANGE, pct));
+  const avgPos = 50; const pricePos = avgPos + (clampedPct / RANGE * 50); 
+  const barLeft = Math.min(avgPos, pricePos); const barWidth = Math.abs(pricePos - avgPos);
+  const barColor = isFlat ? 'var(--muted)' : isUp ? 'var(--green)' : 'var(--red)';
+  return `
+    <div class="gap-row">
+      <span class="gap-label">Gap ke Avg</span>
+      <span class="gap-pill ${pillCls}">${pillTxt}</span>
+    </div>
+    <div class="gap-bar-track">
+      <div style="position:absolute;left:${barLeft.toFixed(1)}%;width:${barWidth.toFixed(1)}%;height:100%;background:${barColor};opacity:0.6;border-radius:2px"></div>
+      <div class="gap-bar-avg" style="left:${avgPos}%"></div>
+    </div>`;
+}
+
+function toggleBZ(btn, id) {
+  const sec = document.getElementById('bz-'+id);
+  if (!sec) return;
+  sec.classList.toggle('open');
+}
+
+function parseTarget(input) {
+  let val = unformatRibuan(input.value);
+  if(!val) val = 0;
+  input.value = formatRibuan(val);
+  PORTO_TARGET = val;
+  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+}
+
+function setTarget(juta, btn) {
+  PORTO_TARGET = juta * 1e6;
+  document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
+  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  saveData();
+}
+
+/* ── AUTH ── */
+async function doLogin() {
+  if(document.getElementById('pw-input').value.trim() === APP_PASS) {
+    sessionStorage.setItem('auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    await loadData();
+  } else { document.getElementById('login-err').textContent = 'TERMINAL ACCESS DENIED: Passcode salah!'; }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+function logout() { sessionStorage.removeItem('auth'); location.reload(); }
+
+window.onload = async () => {
+  if(sessionStorage.getItem('auth') === '1') { 
+    document.getElementById('login-screen').style.display = 'none'; document.getElementById('app').style.display = 'block'; 
+    await loadData();
+  }
+}
+
+/* ── NAV & THEME ── */
+function switchView(view) {
+  document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-pill button').forEach(el => el.classList.remove('active'));
+  document.getElementById(`view-${view}`).classList.add('active');
+  document.getElementById(`nav-${view}`).classList.add('active');
+}
+function toggleTheme() {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  renderAll(); 
+}
+
+/* ── RENDER ENGINE ── */
+function renderAll() {
+  _syncInputsToState(); // Save state from uncommitted inputs
+
+  const totalAlloc = STOCKS.reduce((s, x) => s + (x.alloc||0), 0);
+  let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
+  let totalRD = REKSADANA.reduce((s, x) => s + (x.value||0), 0);
+  let totalCash = CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0);
+  let totalLiab = LIABILITAS.reduce((s, x) => s + (x.value||0), 0);
+  let totalAset = totalSaham + totalRD + totalCash + CRYPTO_BAL;
+  let netWorth = totalAset - totalLiab;
+
+  /* DASHBOARD NW */
+  document.getElementById('hero-nw').textContent = fmt(netWorth);
+  document.getElementById('hero-sub').textContent = `${fmtShort(totalAset)} aset terminal vs ${fmtShort(totalLiab)} liabilitas.`;
+  document.getElementById('stat-saham').textContent = fmtShort(totalSaham);
+  document.getElementById('stat-bibit').textContent = fmtShort(totalRD);
+  document.getElementById('stat-cash').textContent = fmtShort(totalCash);
+  document.getElementById('stat-liab').textContent = fmtShort(totalLiab);
+  
+  let cfIn = (CASHFLOW.gaji||0) + (CASHFLOW.makan||0) + (CASHFLOW.tukin||0) + (CASHFLOW.crypto||0);
+  let cfOut = (CASHFLOW.rutin||0) + (CASHFLOW.ccjenius||0) + (CASHFLOW.bri||0) + (CASHFLOW.flexi||0);
+  let surplus = cfIn - cfOut;
+  document.getElementById('dashboard-cf-in').textContent = fmt(cfIn);
+  document.getElementById('dashboard-cf-out').textContent = fmt(cfOut);
+  document.getElementById('dashboard-cf-surplus').textContent = (surplus >= 0 ? '+' : '') + fmt(surplus);
+  document.getElementById('dashboard-cf-surplus').style.color = surplus >= 0 ? 'var(--gold)' : 'var(--red)';
+
+  document.getElementById('goals-container').innerHTML = GOALS.map(g => {
+    let curr = g.isAuto ? (g.id === 'auto-nw' ? netWorth : totalSaham) : g.current;
+    let pct = Math.min((curr / g.target)*100, 100);
+    return `
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-header"><span>${g.name}</span><span>${pct.toFixed(1)}%</span></div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);text-align:right;margin-top:.4rem">${fmtShort(curr)} / ${fmtShort(g.target)}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('history-container').innerHTML = HISTORY.slice().reverse().map((h, i) => {
+    let origIdx = HISTORY.length - 1 - i;
+    return `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:1.5rem">
+        <span style="font-family:var(--font-mono);color:var(--muted2);display:inline-block;width:90px;font-weight:600">${h.date}</span>
+        <span style="font-family:var(--font-cond);color:var(--gold); font-size:1.4rem; font-weight:700">${fmtShort(h.nw)}</span>
+      </div>
+      <button class="btn-delete" onclick="deleteHistory(${origIdx})">✕</button>
+    </div>`;
+  }).join('');
+
+  drawDonutChart(totalSaham, totalRD, totalCash, CRYPTO_BAL, totalAset);
+  drawNWLineChart(netWorth);
+
+  /* PORTO SAHAM (FULL SYNC) */
+  const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
+  document.getElementById('porto-total-val').textContent = fmt(totalSaham);
+  document.getElementById('t-curr').textContent = fmt(totalSaham);
+  document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
+  document.getElementById('t-bar').style.width = pctTarget + '%';
+
+  // Zone Radar
+  document.getElementById('price-cards').innerHTML = STOCKS.map(s => {
+    const sig = getMOS(s.id, s.price);
+    return `<div class="price-card">
+      <div class="price-card-label">Harga / Avg</div>
+      <div class="price-card-ticker">${s.id.toUpperCase()}</div>
+      <div class="price-field"><span class="price-field-label">Harga</span><span class="price-field-val">${(s.price||0).toLocaleString('id-ID')}</span></div>
+      <div class="price-field-divider"></div>
+      <div class="price-field"><span class="price-field-label">Avg</span><span class="price-field-val" style="color:var(--muted2)">${(s.avg||0).toLocaleString('id-ID')}</span></div>
+      <div class="gap-strip">${renderGapStrip(s.price, s.avg)}</div>
+      <div class="mos-strip">
+        <span class="mos mos-${sig.key}">${sig.label}</span>
+        <span class="mos-note">${sig.note}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Stock Breakdown (Moat, dll)
+  document.getElementById('stock-breakdown').innerHTML = STOCKS.map(s => {
+    const allocFrac = totalAlloc > 0 ? (s.alloc||0) / totalAlloc : 1 / STOCKS.length;
+    const targetLot = Math.floor(PORTO_TARGET * allocFrac / ((s.price||1) * 100));
+    const actualVal = targetLot * (s.price||0) * 100;
+    const needLot = targetLot - (s.lot||0);
+    const yoc = (s.avg||0) > 0 ? ((s.dps||0) / s.avg) * 100 : 0;
+    const lotPct = targetLot > 0 ? Math.min(((s.lot||0) / targetLot) * 100, 100) : 0;
+    
+    const sig = getMOS(s.id, s.price);
+    const fd = FUNDAMENTALS[s.id.toLowerCase()];
+    const bz = BUY_ZONES[s.id.toLowerCase()];
+
+    let bzHtml = '';
+    if (bz) {
+      const [sbz, b, ac, h, t] = bz;
+      const totalRange = t * 1.25;
+      const segs = [{key:'sb',lo:0,hi:sbz,cls:'bz-sb'}, {key:'buy',lo:sbz,hi:b,cls:'bz-buy'}, {key:'acc',lo:b,hi:ac,cls:'bz-acc'}, {key:'hold',lo:ac,hi:h,cls:'bz-hold'}, {key:'trim',lo:h,hi:t,cls:'bz-trim'}, {key:'exit',lo:t,hi:totalRange,cls:'bz-exit'}];
+      const activeCls = {'strong-buy':'sb','buy':'buy','accumulate':'acc','hold':'hold','trim':'trim','exit':'exit'}[sig.key] || '';
+      const segHtml = segs.map(sg => `<div class="bz-seg ${sg.cls} ${sg.key === activeCls ? 'active' : ''}" style="width:${((sg.hi - sg.lo)/totalRange*100)}%">${sg.key}</div>`).join('');
+      const labelHtml = segs.map(sg => `<div class="bz-label" style="width:${((sg.hi - sg.lo)/totalRange*100)}%">${sg.key==='exit'?'>'+t.toLocaleString('id-ID'):sg.hi.toLocaleString('id-ID')}</div>`).join('');
+      
+      const kChips = (fd?.kekuatan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-green">${c}</span>`).join('');
+      const rChips = (fd?.kerentanan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-red">${c}</span>`).join('');
+
+      bzHtml = `
+      <div class="buyzone-section" id="bz-${s.id}">
+        <div>
+          <div class="bz-moat-label">Moat</div>
+          <div class="bz-moat-text">${fd?.moat||'—'}</div>
+          <div class="bz-chips">${kChips}${rChips}</div>
+        </div>
+        <div>
+          <div class="bz-track">${segHtml}</div>
+          <div class="bz-labels">${labelHtml}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted)">Harga</span>
+            <span style="font-family:var(--font-cond);font-size:1.1rem;font-weight:700;color:var(--gold)">Rp ${(s.price||0).toLocaleString('id-ID')}</span>
+            <span class="mos mos-${sig.key}" style="margin-left:auto">${sig.label}</span>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    const needHtml = needLot === 0 ? `<span class="need-zero">Cukup ✓</span>` : needLot < 0 ? `<span class="need-neg">${needLot.toLocaleString('id-ID')} lot</span>` : `<span class="need-pos">+${needLot.toLocaleString('id-ID')} lot</span>`;
+
+    return `
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <div class="stock-identity">
+          <div class="stock-ticker">${s.id.toUpperCase()}</div>
+          <div class="stock-name">${s.name}</div>
+          <span class="stock-role">${s.role || 'ASSET'}</span>
+        </div>
+        <div class="stock-stats">
+          <div class="stock-stat">
+            <div class="stock-stat-label">Target Lot</div>
+            <div class="stock-stat-big">${targetLot.toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div>
+            <div class="stock-stat-sub">${fmtShort(actualVal)}</div>
+          </div>
+          <div class="stock-stat">
+            <div class="stock-stat-label">Punya</div>
+            <div class="stock-stat-big">${(s.lot||0).toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div>
+            <div class="stock-stat-sub">avg Rp ${(s.avg||0).toLocaleString('id-ID')}</div>
+          </div>
+          <div class="stock-stat">
+            <div class="stock-stat-label">YoC</div>
+            <div class="stock-stat-big" style="color:${yoc>=8?'var(--green)':yoc>=5?'var(--gold)':'var(--text)'}">${s.avg>0?yoc.toFixed(1)+'%':'—'}</div>
+            <div class="stock-stat-sub">${(allocFrac*100).toFixed(1)}% porto</div>
+          </div>
+          <div class="stock-stat">
+            <div class="stock-stat-label">Tambah</div>
+            <div class="stock-stat-big">${needHtml}</div>
+            <div class="stock-stat-sub">${needLot>0?fmtShort(needLot*s.price*100):'&nbsp;'}</div>
+          </div>
+        </div>
+      </div>
+      <div class="lot-progress">
+        <div class="lot-bar-track"><div class="lot-bar-fill" style="width:${lotPct}%"></div></div>
+        <div class="lot-bar-labels"><span>${(s.lot||0).toLocaleString('id-ID')} / ${targetLot.toLocaleString('id-ID')} lot</span><span style="color:var(--gold);font-weight:700">${lotPct.toFixed(0)}%</span></div>
+      </div>
+      ${bzHtml}
+      ${bz ? `<button class="toggle-btn" onclick="toggleBZ(this,'${s.id}')"><span class="toggle-icon">▼</span> Sembunyikan Detail</button>` : ''}
+    </div>`;
+  }).join('');
+
+  // Kelola Rows Saham (KOTAK MODERN)
+  document.getElementById('kelola-rows').innerHTML = STOCKS.map((s, i) => `
+    <div class="edit-card">
+      <div class="edit-card-top">
+        <input class="form-input" id="k-id-${i}" value="${s.id.toUpperCase()}" placeholder="TICKER" style="font-size:1.1rem;font-weight:700;color:var(--gold);font-family:var(--font-cond);width:90px">
+        <input class="form-input" id="k-name-${i}" value="${s.name}" placeholder="Nama Perusahaan" style="font-weight:600;flex:1">
+        <button class="btn-delete" onclick="delStock(${i})">✕</button>
+      </div>
+      <div class="edit-card-grid">
+        <div class="edit-field"><label>Lot</label><input class="form-input cf-input" id="k-lot-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.lot)}"></div>
+        <div class="edit-field"><label>Harga (Rp)</label><input class="form-input cf-input" id="k-price-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.price)}"></div>
+        <div class="edit-field"><label>Avg Cost</label><input class="form-input cf-input" id="k-avg-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.avg)}"></div>
+        <div class="edit-field"><label>DPS/yr</label><input class="form-input cf-input" id="k-dps-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.dps)}"></div>
+        <div class="edit-field"><label>Target %</label><input class="form-input cf-input" id="k-alloc-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.alloc)}"></div>
+      </div>
+    </div>
+  `).join('');
+
+  /* REKSA DANA KOTAK MODERN */
+  let sortedRD = [...REKSADANA];
+  if (RD_SORT === 'val_desc') sortedRD.sort((a,b) => b.value - a.value);
+  if (RD_SORT === 'val_asc') sortedRD.sort((a,b) => a.value - b.value);
+  if (RD_SORT === 'name_asc') sortedRD.sort((a,b) => a.name.localeCompare(b.name));
+  if (RD_SORT === 'name_desc') sortedRD.sort((a,b) => b.name.localeCompare(a.name));
+
+  document.getElementById('rd-cards').innerHTML = sortedRD.map(r => {
+    let origIdx = REKSADANA.findIndex(x => x.id === r.id);
+    return `
+    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;">
+      <div class="asset-icon rd">🪣</div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
+        <input type="text" class="asset-name-in" id="rd-n-${origIdx}" value="${r.name}" placeholder="Nama Bucket">
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span class="asset-val-prefix">Rp</span>
+          <input type="text" class="asset-val-in cf-input" id="rd-v-${origIdx}" value="${formatRibuan(r.value)}" inputmode="numeric" placeholder="0">
+        </div>
+      </div>
+      <button class="btn-delete" onclick="delRD(${origIdx})">✕</button>
+    </div>`;
+  }).join('');
+
+  /* CASH KOTAK MODERN */
+  document.getElementById('cash-cards').innerHTML = CASH_ACCOUNTS.map((c, i) => `
+    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;">
+      <div class="asset-icon bank">🏦</div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
+        <input type="text" class="asset-name-in" id="cash-n-${i}" value="${c.name}" placeholder="Nama Bank/Giro">
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span class="asset-val-prefix">Rp</span>
+          <input type="text" class="asset-val-in cf-input" id="cash-v-${i}" value="${formatRibuan(c.value)}" inputmode="numeric" placeholder="0">
+        </div>
+      </div>
+      <button class="btn-delete" onclick="delCash(${i})">✕</button>
+    </div>`
+  ).join('');
+
+  /* LIABILITAS KOTAK MODERN */
+  document.getElementById('liab-cards').innerHTML = LIABILITAS.map((l, i) => `
+    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center; border-left: 3px solid var(--red)">
+      <div class="asset-icon liab">💳</div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
+        <input type="text" class="asset-name-in" id="liab-n-${i}" value="${l.name}" placeholder="Nama Utang / Kredit">
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span class="asset-val-prefix">Rp</span>
+          <input type="text" class="asset-val-in cf-input" id="liab-v-${i}" value="${formatRibuan(l.value)}" inputmode="numeric" placeholder="0" style="color:var(--red)">
+        </div>
+      </div>
+      <button class="btn-delete" onclick="delLiab(${i})">✕</button>
+    </div>`
+  ).join('');
+}
+
+/* ── CHARTS.JS ── */
+function drawDonutChart(saham, rd, cash, crypto, total) {
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  const labels = ['Saham', 'Reksadana', 'Cash', 'Crypto'];
+  const data = [saham, rd, cash, crypto];
+  const colors = ['#34d399', '#a78bfa', '#60a5fa', '#22d3ee'];
+
+  if (donutInst) donutInst.destroy();
+  donutInst = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderColor: isDark ? '#10131a' : '#ffffff', borderWidth: 4, hoverOffset: 12 }] },
+    options: {
+      cutout: '80%', plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, cornerRadius: 8, padding: 12, callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtShort(ctx.raw)} (${total>0?((ctx.raw/total)*100).toFixed(1):0}%)` } } },
+      animation: { animateRotate: true, duration: 1000, easing: 'easeOutQuart' }
+    }
+  });
+  document.getElementById('donut-center-val').textContent = fmtShort(total);
+  document.getElementById('donut-legend').innerHTML = labels.map((l, i) => `
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.8rem; font-size:.9rem; font-weight:600">
+      <div style="display:flex; align-items:center; gap:.8rem"><div style="width:12px; height:12px; border-radius:50%; background:${colors[i]}; box-shadow:0 0 8px ${colors[i]}80"></div><span style="color:var(--muted)">${l}</span></div>
+      <div style="font-family:var(--font-mono); color:var(--text)">${total>0 ? ((data[i]/total)*100).toFixed(1) : 0}%</div>
+    </div>
+  `).join('');
+}
+
+function drawNWLineChart(currentNW) {
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const ctx = document.getElementById('nwChart').getContext('2d');
+
+  let histData = HISTORY.length > 0 ? [...HISTORY] : [ {date:'T-4', nw: currentNW*0.8}, {date:'T-3', nw: currentNW*0.85}, {date:'T-2', nw: currentNW*0.9}, {date:'T-1', nw: currentNW*0.98} ];
+  let lastPoint = histData[histData.length-1];
+  let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
+  if(!lastPoint || lastPoint.date !== todayStr) histData.push({date: todayStr, nw: currentNW});
+  if(histData.length > 10) histData = histData.slice(-10);
+
+  const labels = histData.map(h => h.date); const dataNW = histData.map(h => h.nw);
+  if (nwInst) nwInst.destroy();
+  const grad = ctx.createLinearGradient(0, 0, 0, 300);
+  grad.addColorStop(0, 'rgba(212,175,55,0.25)'); grad.addColorStop(1, 'rgba(212,175,55,0)');
+
+  nwInst = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: [{ label: 'Net Worth', data: dataNW, borderColor: '#d4af37', borderWidth: 3, pointBackgroundColor: '#d4af37', pointBorderColor: isDark ? '#10131a' : '#ffffff', pointBorderWidth: 2, pointRadius: 6, pointHoverRadius: 8, fill: true, backgroundColor: grad, tension: 0.3 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, padding: 12, callbacks: { label: (ctx) => ' ' + fmt(ctx.raw) } } },
+      scales: { x: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11} } }, y: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11}, callback: v => fmtShort(v) } } }
+    }
+  });
+}
+
+/* ── INTERNALS ── */
+function _syncInputsToState() {
+  STOCKS.forEach((s, i) => {
+    let idEl = document.getElementById(`k-id-${i}`);
+    if (idEl) {
+      s.id = idEl.value.toLowerCase();
+      s.name = document.getElementById(`k-name-${i}`).value;
+      s.lot = unformatRibuan(document.getElementById(`k-lot-${i}`).value);
+      s.price = unformatRibuan(document.getElementById(`k-price-${i}`).value);
+      s.avg = unformatRibuan(document.getElementById(`k-avg-${i}`).value);
+      s.dps = unformatRibuan(document.getElementById(`k-dps-${i}`).value);
+      s.alloc = unformatRibuan(document.getElementById(`k-alloc-${i}`).value);
+    }
+  });
+  REKSADANA.forEach((r, i) => { let el = document.getElementById(`rd-n-${i}`); if(el){ r.name = el.value; r.value = unformatRibuan(document.getElementById(`rd-v-${i}`).value); } });
+  CASH_ACCOUNTS.forEach((c, i) => { let el = document.getElementById(`cash-n-${i}`); if(el){ c.name = el.value; c.value = unformatRibuan(document.getElementById(`cash-v-${i}`).value); } });
+  LIABILITAS.forEach((l, i) => { let el = document.getElementById(`liab-n-${i}`); if(el){ l.name = el.value; l.value = unformatRibuan(document.getElementById(`liab-v-${i}`).value); } });
+}
+
+/* ── ACTIONS ── */
+function logNetWorth() {
+  _syncInputsToState();
+  let aset = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0) + REKSADANA.reduce((s, x) => s + (x.value||0), 0) + CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0) + CRYPTO_BAL;
+  let nw = aset - LIABILITAS.reduce((s, x) => s + (x.value||0), 0);
+  HISTORY.push({ date: new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' }), nw: nw });
+  _cloudSave(); alert("Terminal Snapshot tersimpan!");
+}
+
+function deleteHistory(i) { if(confirm('Hapus arsip ini?')) { HISTORY.splice(i, 1); _cloudSave(); } }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
+function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); renderAll(); } }
+
+function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
+function delRD(i) { if(confirm('Hapus bucket?')) { _syncInputsToState(); REKSADANA.splice(i, 1); renderAll(); } }
+
+function addCash() { _syncInputsToState(); CASH_ACCOUNTS.push({id:'c'+Date.now(), name:'Rekening Baru', value:0}); renderAll(); }
+function delCash(i) { if(confirm('Hapus rekening?')) { _syncInputsToState(); CASH_ACCOUNTS.splice(i, 1); renderAll(); } }
+
+function addLiab() { _syncInputsToState(); LIABILITAS.push({id:'l'+Date.now(), name:'Utang Baru', value:0}); renderAll(); }
+function delLiab(i) { if(confirm('Hapus liabilitas?')) { _syncInputsToState(); LIABILITAS.splice(i, 1); renderAll(); } }
+
+function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
+
+function saveCashflow() {
+  CASHFLOW.gaji = unformatRibuan(document.getElementById('in-gaji').value);
+  CASHFLOW.tukin = unformatRibuan(document.getElementById('in-tukin').value);
+  CASHFLOW.crypto = unformatRibuan(document.getElementById('in-crypto').value);
+  CASHFLOW.rutin = unformatRibuan(document.getElementById('ex-rutin').value);
+  CASHFLOW.ccjenius = unformatRibuan(document.getElementById('ex-ccjenius').value);
+  CASHFLOW.bri = unformatRibuan(document.getElementById('ex-bri').value);
+  CASHFLOW.flexi = unformatRibuan(document.getElementById('ex-flexi').value);
+  _cloudSave(); closeModal('modal-cashflow');
+}
+
+function saveGoal() {
+  GOALS.push({ id: 'g'+Date.now(), name: document.getElementById('g-name').value, target: unformatRibuan(document.getElementById('g-target').value), current: unformatRibuan(document.getElementById('g-current').value) || 0 });
+  _cloudSave(); closeModal('modal-goal');
+}
+function saveCryptoBal() { CRYPTO_BAL = unformatRibuan(document.getElementById('in-crypto-bal').value); _cloudSave(); closeModal('modal-crypto'); }
+
+/* ── PERSISTENCE (SUPABASE) ── */
+async function loadData() {
+  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Syncing...'; statusEl.style.color = 'var(--gold)';
+  try {
+    const { data, error } = await sb.from('settings').select('key,value').in('key', [
+      DB_PREFIX+'stocks', DB_PREFIX+'reksadana', DB_PREFIX+'cash', DB_PREFIX+'liabilitas', 
+      DB_PREFIX+'cf', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target'
+    ]);
+    if (error) throw error;
+    if (data && data.length > 0) {
+      data.forEach(row => {
+        if(row.key === DB_PREFIX+'stocks') { let p=JSON.parse(row.value); if(p.length) STOCKS=p; }
+        if(row.key === DB_PREFIX+'reksadana') { let p=JSON.parse(row.value); if(p.length) REKSADANA=p; }
+        if(row.key === DB_PREFIX+'cash') { let p=JSON.parse(row.value); if(p.length) CASH_ACCOUNTS=p; }
+        if(row.key === DB_PREFIX+'liabilitas') { let p=JSON.parse(row.value); if(p.length) LIABILITAS=p; }
+        if(row.key === DB_PREFIX+'cf') { let p=JSON.parse(row.value); if(p) CASHFLOW=p; }
+        if(row.key === DB_PREFIX+'goals') { let p=JSON.parse(row.value); if(p.length) GOALS=p; }
+        if(row.key === DB_PREFIX+'history') { let p=JSON.parse(row.value); if(p.length) HISTORY=p; }
+        if(row.key === DB_PREFIX+'crypto_bal') CRYPTO_BAL = Number(row.value) || 0;
+        if(row.key === DB_PREFIX+'porto_target') PORTO_TARGET = Number(row.value) || 100000000;
+      });
+    }
+    
+    document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
+    document.getElementById('in-gaji').value = formatRibuan(CASHFLOW.gaji);
+    document.getElementById('in-tukin').value = formatRibuan(CASHFLOW.tukin);
+    document.getElementById('in-crypto').value = formatRibuan(CASHFLOW.crypto);
+    document.getElementById('ex-rutin').value = formatRibuan(CASHFLOW.rutin);
+    document.getElementById('ex-ccjenius').value = formatRibuan(CASHFLOW.ccjenius);
+    document.getElementById('ex-bri').value = formatRibuan(CASHFLOW.bri);
+    document.getElementById('ex-flexi').value = formatRibuan(CASHFLOW.flexi);
+    document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
+    statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
+  } catch(e) { statusEl.textContent = '☁ Offline Mode'; statusEl.style.color = 'var(--muted)'; }
+  renderAll();
+}
+
+async function _cloudSave() {
+  renderAll(); 
+  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Saving...'; statusEl.style.color = 'var(--gold)';
+  try {
+    const payloads = [
+      { key: DB_PREFIX+'stocks', value: JSON.stringify(STOCKS) },
+      { key: DB_PREFIX+'reksadana', value: JSON.stringify(REKSADANA) },
+      { key: DB_PREFIX+'cash', value: JSON.stringify(CASH_ACCOUNTS) },
+      { key: DB_PREFIX+'liabilitas', value: JSON.stringify(LIABILITAS) },
+      { key: DB_PREFIX+'cf', value: JSON.stringify(CASHFLOW) },
+      { key: DB_PREFIX+'goals', value: JSON.stringify(GOALS) },
+      { key: DB_PREFIX+'history', value: JSON.stringify(HISTORY) },
+      { key: DB_PREFIX+'crypto_bal', value: String(CRYPTO_BAL) },
+      { key: DB_PREFIX+'porto_target', value: String(PORTO_TARGET) }
+    ];
+    const { error } = await sb.from('settings').upsert(payloads, { onConflict: 'key' });
+    if (error) throw error;
+    statusEl.textContent = '⚡ Synced'; statusEl.style.color = 'var(--green)';
+  } catch(e) { statusEl.textContent = '☁ Fail Sync'; statusEl.style.color = 'var(--red)'; }
+}
+</script>
+</body>
+</html>
