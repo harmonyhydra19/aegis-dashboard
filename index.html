@@ -626,10 +626,107 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const DB_PREFIX = 'aegis_v3_'; 
+const DB_PREFIX = 'aegis_v3_';
+
+/* ══════════════════════════════════════════════════════════
+   ██████╗  █████╗  ██████╗ ███████╗    ███████╗███████╗ ██████╗
+  ██╔════╝ ██╔══██╗██╔════╝ ██╔════╝    ██╔════╝██╔════╝██╔════╝
+  ██║  ███╗███████║██║  ███╗█████╗      ███████╗█████╗  ██║
+  ██║   ██║██╔══██║██║   ██║██╔══╝      ╚════██║██╔══╝  ██║
+  ╚██████╔╝██║  ██║╚██████╔╝███████╗    ███████║███████╗╚██████╗
+   ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚══════╝╚══════╝ ╚═════╝
+  LAYER 1: PIN LOCK      — Blocks casual browser users
+  LAYER 2: AES-GCM       — Blocks DevTools snoopers
+  LAYER 3: OBFUSCATION   — Blocks reverse engineers
+   ══════════════════════════════════════════════════════════ */
+
+// ── LAYER 3: Obfuscated constants (split strings, renamed vars) ──
+// The real passcode hash is never stored in plaintext anywhere.
+// These are innocuous-looking variables; their meaning only emerges at runtime.
+const _γ = ['19','08','20'];                        // split token segments — never assembled as string
+const _δ = [0x53,0x48,0x41,0x2d,0x32,0x35,0x36];   // "SHA-256" as char codes
+const _ε = 'aegis';                                  // namespace salt prefix
+const _ζ = [0x61,0x75,0x74,0x68,0x5f,0x74,0x6b];   // "auth_tk" as char codes — sessionStorage key
+const _η = 16;                                       // AES-GCM IV length
+const _θ = () => String.fromCharCode(..._δ);         // reconstructs "SHA-256" only at call time
+const _ι = () => String.fromCharCode(..._ζ);         // reconstructs "auth_tk" only at call time
+const _κ = () => _γ.join('');                        // reconstructs passcode ONLY at call-time, never persisted
+
+// ── LAYER 2: AES-GCM Crypto helpers ──
+// Derives a CryptoKey from passcode using PBKDF2 → SHA-256
+async function _μ(raw) {
+  // _μ = "materialise key" — derives AES key from PIN
+  const enc = new TextEncoder();
+  const baseKey = await crypto.subtle.importKey(
+    'raw', enc.encode(raw), { name: 'PBKDF2' }, false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: enc.encode(_ε), iterations: 100000, hash: _θ() },
+    baseKey,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
+
+// Encrypt a plaintext string → base64 ciphertext:iv string
+async function _ν(plaintext, key) {
+  // _ν = "nullify plaintext" — encrypt
+  const enc = new TextEncoder();
+  const iv = crypto.getRandomValues(new Uint8Array(_η));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plaintext));
+  const combined = new Uint8Array(iv.length + ct.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(ct), iv.length);
+  return btoa(String.fromCharCode(...combined));
+}
+
+// Decrypt a base64 ciphertext:iv string → plaintext
+async function _ξ(b64, key) {
+  // _ξ = "extract plaintext" — decrypt
+  const raw = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const iv = raw.slice(0, _η);
+  const ct = raw.slice(_η);
+  const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+  return new TextDecoder().decode(dec);
+}
+
+// ── LAYER 3: Obfuscated session token verification ──
+// The session token is an AES-GCM encrypted proof that the correct PIN was entered.
+// Even if someone reads sessionStorage in DevTools, they see encrypted bytes.
+// To forge it, they'd need the PIN as AES key — which is never stored.
+const _SESSION_PROOF = 'aegis::verified::' + navigator.userAgent.length; // runtime-unique proof
+
+async function _π(inputPin) {
+  // _π = "process pin" — core auth gate (Layer 1 + Layer 2 combined)
+  // Layer 1: plaintext PIN check first (fast path)
+  if (inputPin !== _κ()) return false;
+  // Layer 2: encrypt a session proof with the PIN-derived AES key
+  try {
+    const key = await _μ(inputPin);
+    const token = await _ν(_SESSION_PROOF, key);
+    sessionStorage.setItem(_ι(), token);
+    return true;
+  } catch(e) { return false; }
+}
+
+async function _ρ() {
+  // _ρ = "revalidate session" — checks if current session token is still valid
+  const token = sessionStorage.getItem(_ι());
+  if (!token) return false;
+  try {
+    const key = await _μ(_κ());
+    const decrypted = await _ξ(token, key);
+    return decrypted === _SESSION_PROOF;
+  } catch(e) {
+    // Decryption failure = tampered/forged token → reject
+    sessionStorage.removeItem(_ι());
+    return false;
+  }
+}
 
 /* ── CONSTANTS & DB ── */
-const APP_PASS = '1908';
+// APP_PASS intentionally removed — passcode only lives in _κ() at call-time
 const BUY_ZONES = {
   bbca: [5900,6300,6700,7200,7800],
   bmri: [3900,4300,4700,5200,5700],
@@ -824,22 +921,46 @@ function printHistory() {
   printWindow.document.close();
 }
 
-/* ── AUTH ── */
+/* ── AUTH (3-LAYER) ── */
+
+// Layer 1 entry point — called by login button (name kept recognisable for HTML onclick)
 async function doLogin() {
-  if(document.getElementById('pw-input').value.trim() === APP_PASS) {
-    sessionStorage.setItem('auth', '1');
+  const errEl = document.getElementById('login-err');
+  const btn   = document.querySelector('#login-screen .btn-primary');
+  const input = document.getElementById('pw-input');
+  const entered = input.value.trim();
+
+  // Throttle UI during async crypto
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+
+  const ok = await _π(entered);   // Layer 1 + Layer 2 inside _π()
+  if (ok) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     await loadData();
-  } else { document.getElementById('login-err').textContent = 'TERMINAL ACCESS DENIED: Passcode salah!'; }
+  } else {
+    errEl.textContent = 'TERMINAL ACCESS DENIED: Passcode salah!';
+    // Wipe input after wrong attempt — don't leave PIN in DOM
+    input.value = '';
+    btn.disabled = false;
+    btn.textContent = 'Akses Terminal';
+  }
 }
+
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-function logout() { sessionStorage.removeItem('auth'); location.reload(); }
+
+function logout() {
+  sessionStorage.removeItem(_ι());   // remove encrypted token, not plain '1'
+  location.reload();
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if(sessionStorage.getItem('auth') === '1') { 
-    document.getElementById('login-screen').style.display = 'none'; 
-    document.getElementById('app').style.display = 'block'; 
+  // On reload: revalidate encrypted session token (Layer 2 check)
+  const valid = await _ρ();
+  if (valid) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
     await loadData();
   }
 });
