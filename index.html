@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>⚔ Aegis Alpha — Wealth Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚔️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -108,7 +109,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .progress-bar-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width .8s ease-out; box-shadow: 0 0 10px var(--gold-neon); }
 .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-.phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; }
+.phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
 .phase-card.done { border-color: var(--green); opacity: 0.7; }
 .phase-card.active { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-neon); animation: pulseNeon 2s infinite; }
 @keyframes pulseNeon { 0%, 100% { box-shadow: 0 0 15px var(--gold-neon); } 50% { box-shadow: 0 0 5px var(--gold-neon); } }
@@ -150,7 +151,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .asset-name-in { background: transparent; border: none; outline: none; color: var(--text); font-weight: 700; width: 100%; font-size: 1.1rem; margin-bottom: .2rem; }
 
 /* =======================================================
-   RICH PORTO SAHAM UI (Sesuai Gambar 3)
+   RICH PORTO SAHAM UI
    ======================================================= */
 .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
 .pill { font-family: var(--font-mono); font-size: .75rem; padding: .4rem .8rem; border-radius: 20px; cursor: pointer; border: 1px solid var(--border2); background: none; color: var(--muted2); transition: all .2s; }
@@ -340,8 +341,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div class="panel-header">
             <div class="panel-title">Tren Pertumbuhan Kekayaan</div>
             <div style="display:flex;gap:.5rem">
-              <button class="btn-sm" onclick="logNetWorth()">Save Snapshot</button>
-              <button class="btn-sm" onclick="openModal('modal-history')">History</button>
+              <button class="btn-sm" onclick="openModal('modal-history')">History Data</button>
             </div>
           </div>
           <div class="panel-body">
@@ -369,11 +369,31 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div class="panel-header"><div class="panel-title">Terminal Fase</div></div>
           <div class="panel-body">
             <div class="phase-grid">
-              <div class="phase-card done"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 0</div><div style="font-weight:700;margin-top:.3rem">Triage Utang</div></div>
-              <div class="phase-card active"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 1</div><div style="font-weight:700;margin-top:.3rem;color:var(--gold)">Benteng Darurat</div></div>
-              <div class="phase-card"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 2</div><div style="font-weight:700;margin-top:.3rem">Dividend</div></div>
-              <div class="phase-card"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 3</div><div style="font-weight:700;margin-top:.3rem">Vehicle Cash</div></div>
-              <div class="phase-card" style="grid-column: 1 / -1;"><div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 4</div><div style="font-weight:700;margin-top:.3rem">Bebas Finansial</div></div>
+              <div class="phase-card done" title="Fokus melunasi utang konsumtif berbunga tinggi (CC, Paylater).">
+                <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 0</div>
+                <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Triage Utang <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
+                <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Lunasi utang konsumtif & bunga tinggi.</div>
+              </div>
+              <div class="phase-card active" title="Mengumpulkan kas cair untuk pengeluaran tak terduga (3-6 bulan).">
+                <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 1</div>
+                <div style="font-weight:700;margin-top:.3rem;color:var(--gold);display:flex;justify-content:space-between">Benteng Darurat <span style="font-size:.7rem;opacity:0.5;color:var(--text)">ⓘ</span></div>
+                <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Kas cair min 3-6 bulan pengeluaran.</div>
+              </div>
+              <div class="phase-card" title="Akumulasi aset saham/reksadana penghasil cashflow pasif.">
+                <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 2</div>
+                <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Dividend <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
+                <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Akumulasi aset cashflow pasif.</div>
+              </div>
+              <div class="phase-card" title="Menabung untuk pembelian kendaraan tanpa cicilan.">
+                <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 3</div>
+                <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Vehicle Cash <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
+                <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Beli kendaraan tanpa berutang.</div>
+              </div>
+              <div class="phase-card" style="grid-column: 1 / -1;" title="Passive income melebihi pengeluaran rutin bulanan.">
+                <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 4</div>
+                <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Bebas Finansial <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
+                <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Passive income > Pengeluaran rutin.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -585,7 +605,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   <div class="modal" style="width: 600px;">
     <div class="modal-title-bar">
       <div class="modal-title-text">Arsip History Net Worth</div>
-      <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
+      <div>
+        <button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button>
+        <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
+      </div>
     </div>
     <div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div>
   </div>
@@ -615,7 +638,7 @@ const FUNDAMENTALS = {
   sido: { moat:'Brand monopoly kategori herbal', kekuatan:'Market share 72% masuk angin · FCF besar · Asset-light · 188rb+ outlet', kerentanan:'Ketergantungan Tolak Angin · Single-category risk', roe:'~27%', pe:'16–20x', trigger:'DPS cut dua tahun berturut' },
 };
 
-/* ── DEFAULT DATA (BASED ON SCREENSHOTS) ── */
+/* ── DEFAULT DATA ── */
 let donutInst = null, nwInst = null;
 let PORTO_TARGET = 100000000;
 let STOCK_SORT = 'val_desc';
@@ -646,7 +669,7 @@ let LIABILITAS = [
   { id:'l2', name: 'KPR / Kredit BRI', value: 120000000 }
 ];
 let INFLOWS = [
-  { id: 'i1', name: 'Gaji Pokok & Makan', value: 3432900 },
+  { id: 'i1', name: 'Gaji Pokok', value: 3432900 },
   { id: 'i2', name: 'Tunjangan Kinerja (Tukin)', value: 3915950 },
   { id: 'i3', name: 'Crypto Bot (Income Est.)', value: 1500000 }
 ];
@@ -759,7 +782,42 @@ async function fetchMindsetQuote() {
   }
 }
 
-/* ── AUTH (Diperbarui untuk Cloudflare) ── */
+/* ── PRINT HISTORY ── */
+function printHistory() {
+  let printWindow = window.open('', '', 'width=800,height=600');
+  let tableHTML = `<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; font-family: sans-serif; text-align: left;">
+    <tr style="background-color: #f1f5f9;">
+      <th>Tanggal</th>
+      <th>Total Net Worth (Rp)</th>
+      <th>Perubahan (+/-)</th>
+    </tr>`;
+  
+  let histCopy = [...HISTORY]; 
+  histCopy.forEach((h, i) => {
+    let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0;
+    let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff));
+    let color = diff > 0 ? 'green' : (diff < 0 ? 'red' : 'black');
+    tableHTML += `<tr>
+      <td>${h.date}</td>
+      <td style="font-weight: bold;">${formatRibuan(Math.round(h.nw))}</td>
+      <td style="color: ${color};">${diffStr}</td>
+    </tr>`;
+  });
+  tableHTML += `</table>`;
+
+  printWindow.document.write(`
+    <html><head><title>Print Riwayat Kekayaan</title></head>
+    <body style="font-family: sans-serif; padding: 20px;">
+      <h2>Aegis Alpha - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2>
+      <p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
+      ${tableHTML}
+      <script>window.onload = function() { window.print(); window.close(); }<\/script>
+    </body></html>
+  `);
+  printWindow.document.close();
+}
+
+/* ── AUTH ── */
 async function doLogin() {
   if(document.getElementById('pw-input').value.trim() === APP_PASS) {
     sessionStorage.setItem('auth', '1');
@@ -838,11 +896,21 @@ function renderAll() {
 
   document.getElementById('history-container').innerHTML = HISTORY.slice().reverse().map((h, i) => {
     let origIdx = HISTORY.length - 1 - i;
+    let diffHtml = '';
+    if (origIdx > 0) {
+      let diff = h.nw - HISTORY[origIdx - 1].nw;
+      let diffColor = diff >= 0 ? 'var(--green)' : 'var(--red)';
+      let diffSign = diff >= 0 ? '+' : '';
+      diffHtml = `<span style="font-family:var(--font-mono);font-size:.7rem;color:${diffColor};margin-left:.5rem">${diffSign}${fmtShort(diff)}</span>`;
+    }
     return `
     <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border)">
       <div style="display:flex;align-items:center;gap:1.5rem">
         <span style="font-family:var(--font-mono);color:var(--muted2);display:inline-block;width:90px;font-weight:600">${h.date}</span>
-        <span style="font-family:var(--font-cond);color:var(--gold); font-size:1.4rem; font-weight:700">${fmtShort(h.nw)}</span>
+        <div>
+          <span style="font-family:var(--font-cond);color:var(--gold); font-size:1.4rem; font-weight:700">${fmtShort(h.nw)}</span>
+          ${diffHtml}
+        </div>
       </div>
       <button class="btn-delete" onclick="deleteHistory(${origIdx})">✕</button>
     </div>`;
@@ -853,7 +921,6 @@ function renderAll() {
 
   /* PORTO SAHAM (FULL SYNC & SORTING) */
   const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
-  document.getElementById('porto-total-val').textContent = fmt(totalSaham);
   document.getElementById('t-curr').textContent = fmt(totalSaham);
   document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
   document.getElementById('t-bar').style.width = pctTarget + '%';
@@ -1107,9 +1174,15 @@ function drawNWLineChart(currentNW) {
 
   let histData = HISTORY.length > 0 ? [...HISTORY] : [ {date:'T-4', nw: currentNW*0.8}, {date:'T-3', nw: currentNW*0.85}, {date:'T-2', nw: currentNW*0.9}, {date:'T-1', nw: currentNW*0.98} ];
   let lastPoint = histData[histData.length-1];
-  let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
-  if(!lastPoint || lastPoint.date !== todayStr) histData.push({date: todayStr, nw: currentNW});
-  if(histData.length > 10) histData = histData.slice(-10);
+  let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
+  
+  if(!lastPoint || lastPoint.date !== todayStr) {
+    histData.push({date: todayStr, nw: currentNW});
+  } else {
+    histData[histData.length-1].nw = currentNW; 
+  }
+
+  if(histData.length > 30) histData = histData.slice(-30); 
 
   const labels = histData.map(h => h.date); const dataNW = histData.map(h => h.nw);
   if (nwInst) nwInst.destroy();
@@ -1149,19 +1222,11 @@ function _syncInputsToState() {
 }
 
 /* ── ACTIONS ── */
-function logNetWorth() {
-  _syncInputsToState();
-  let aset = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0) + REKSADANA.reduce((s, x) => s + (x.value||0), 0) + CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0) + CRYPTO_BAL;
-  let nw = aset - LIABILITAS.reduce((s, x) => s + (x.value||0), 0);
-  HISTORY.push({ date: new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' }), nw: nw });
-  _cloudSave(); alert("Terminal Snapshot tersimpan!");
-}
-
 function deleteHistory(i) { if(confirm('Hapus arsip ini?')) { HISTORY.splice(i, 1); _cloudSave(); } }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-function addStock() { _syncInputsToState(); STOCKS.push({id:'s'+Date.now(), name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
+function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
 function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); renderAll(); } }
 
 function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
@@ -1181,11 +1246,7 @@ function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(
 
 function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
 
-function saveCashflow() {
-  _syncInputsToState();
-  _cloudSave(); 
-  closeModal('modal-cashflow');
-}
+function saveCashflow() { _syncInputsToState(); _cloudSave(); closeModal('modal-cashflow'); }
 
 function saveGoal() {
   GOALS.push({ id: 'g'+Date.now(), name: document.getElementById('g-name').value, target: unformatRibuan(document.getElementById('g-target').value), current: unformatRibuan(document.getElementById('g-current').value) || 0 });
@@ -1193,7 +1254,7 @@ function saveGoal() {
 }
 function saveCryptoBal() { CRYPTO_BAL = unformatRibuan(document.getElementById('in-crypto-bal').value); _cloudSave(); closeModal('modal-crypto'); }
 
-/* ── PERSISTENCE (SUPABASE) ── */
+/* ── PERSISTENCE (SUPABASE) & AUTO SNAPSHOT ── */
 async function loadData() {
   let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Syncing...'; statusEl.style.color = 'var(--gold)';
   try {
@@ -1227,7 +1288,26 @@ async function loadData() {
 }
 
 async function _cloudSave() {
+  // AUTO SNAPSHOT LOGIC
+  let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
+  let totalRD = REKSADANA.reduce((s, x) => s + (x.value||0), 0);
+  let totalCash = CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0);
+  let totalLiab = LIABILITAS.reduce((s, x) => s + (x.value||0), 0);
+  let nw = (totalSaham + totalRD + totalCash + CRYPTO_BAL) - totalLiab;
+
+  let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
+  
+  if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) {
+    HISTORY[HISTORY.length - 1].nw = nw; 
+  } else {
+    HISTORY.push({ date: todayStr, nw: nw }); 
+  }
+  
+  // Batasi history maksimal 90 hari
+  if (HISTORY.length > 90) HISTORY.shift();
+  
   renderAll(); 
+  
   let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Saving...'; statusEl.style.color = 'var(--gold)';
   try {
     const payloads = [
