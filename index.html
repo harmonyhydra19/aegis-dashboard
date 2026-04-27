@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Aegis Alpha</title>
+<title>Aegis Alpha Wealth</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚔️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -86,9 +86,9 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 /* ── LAYOUT & HEADER ── */
 #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 2rem; }
 .login-box { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 3rem; width: 380px; text-align: center; box-shadow: var(--shadow-neon), 0 10px 40px rgba(0,0,0,0.5); }
-#app { display: none; position: relative; z-index: 1; }
+#app { display: none; position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
 header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(16, 19, 26, 0.95); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); overflow-x: auto; }
-main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; flex: 1; width: 100%; }
 
 .nav-pill { background: var(--bg2); border: 1px solid var(--border); border-radius: 30px; padding: .3rem; display: flex; gap: .25rem; white-space: nowrap; }
 .nav-pill button { background: none; border: none; padding: .5rem 1rem; border-radius: 20px; font-size: .75rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .05em;}
@@ -272,7 +272,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 
 <div id="login-screen">
   <div class="login-box">
-    <div style="font-family:var(--font-cond);font-size:3rem;font-weight:800;color:var(--gold);margin-bottom:.5rem;letter-spacing:-.02em;">⚔ Aegis Alpha</div>
+    <div style="font-family:var(--font-cond);font-size:3rem;font-weight:800;color:var(--gold);margin-bottom:.5rem;letter-spacing:-.02em;">⚔ Aegis Alpha Wealth</div>
     <div style="font-family:var(--font-mono);font-size:.72rem;letter-spacing:.3em;color:var(--muted);margin-bottom:3rem;text-transform:uppercase;">Wealth Dashboard</div>
     <input id="pw-input" class="form-input" type="password" placeholder="Passcode" style="margin-bottom:1.5rem;text-align:center;letter-spacing:.5em" />
     <button class="btn-primary" style="width:100%" onclick="doLogin()">Akses Terminal</button>
@@ -283,7 +283,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 <div id="app">
   <header>
     <div style="display:flex;align-items:center;gap:2rem;">
-      <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;cursor:pointer" onclick="switchView('nw')">⚔ AEGIS</div>
+      <div style="cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="switchView('nw')">
+        <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;line-height:1;">⚔ AEGIS ALPHA WEALTH</div>
+        <div style="font-size:.65rem; color:var(--muted2); font-family:var(--font-mono); font-weight:500; letter-spacing:0.05em; margin-top:4px;">BY ZENKICHIARC</div>
+      </div>
       <nav class="nav-pill">
         <button id="nav-nw" class="active" onclick="switchView('nw')">Net Worth</button>
         <button id="nav-porto" onclick="switchView('porto')">Porto Saham</button>
@@ -545,6 +548,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
     </div>
 
   </main>
+
+  <footer style="text-align:center; padding: 2rem 1rem; border-top: 1px solid var(--border); font-family:var(--font-mono); font-size:.7rem; color:var(--muted); margin-top: auto; letter-spacing: 0.05em;">
+    CREATED BY ZENKICHIARC
+  </footer>
 </div>
 
 <div class="modal-overlay" id="modal-crypto">
@@ -808,7 +815,7 @@ function printHistory() {
   printWindow.document.write(`
     <html><head><title>Print Riwayat Kekayaan</title></head>
     <body style="font-family: sans-serif; padding: 20px; color: #0f172a;">
-      <h2>Aegis Alpha - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2>
+      <h2>Aegis Alpha Wealth - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2>
       <p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
       ${tableHTML}
       <script>window.onload = function() { window.print(); window.close(); }<\/script>
@@ -1226,7 +1233,6 @@ function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
-// Diperbarui: fungsi delete sekarang otomatis manggil _cloudSave() agar data permanen hilang di cloud.
 function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); _cloudSave(); } }
 
 function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
@@ -1265,7 +1271,6 @@ async function loadData() {
     if (error) throw error;
     if (data && data.length > 0) {
       data.forEach(row => {
-        // Diperbarui: Gunakan Array.isArray(p) agar tidak reset ke nilai default saat list dihapus hingga kosong
         if(row.key === DB_PREFIX+'stocks') { let p=JSON.parse(row.value); if(Array.isArray(p)) STOCKS=p; }
         if(row.key === DB_PREFIX+'reksadana') { let p=JSON.parse(row.value); if(Array.isArray(p)) REKSADANA=p; }
         if(row.key === DB_PREFIX+'cash') { let p=JSON.parse(row.value); if(Array.isArray(p)) CASH_ACCOUNTS=p; }
@@ -1299,9 +1304,9 @@ async function _cloudSave() {
   let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
   
   if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) {
-    HISTORY[HISTORY.length - 1].nw = nw; // Overwrite data hari ini
+    HISTORY[HISTORY.length - 1].nw = nw; 
   } else {
-    HISTORY.push({ date: todayStr, nw: nw }); // Catat hari baru
+    HISTORY.push({ date: todayStr, nw: nw }); 
   }
   
   // Batasi history maksimal 90 hari
