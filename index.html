@@ -442,7 +442,15 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
       <div id="stock-breakdown"></div>
       
       <div class="panel" style="margin-top:2rem">
-        <div class="panel-header"><div class="panel-title">Arsenal Manajemen Saham</div></div>
+        <div class="panel-header">
+          <div class="panel-title">Arsenal Manajemen Saham</div>
+          <select id="stock-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="STOCK_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Porsi Terbesar</option>
+            <option value="val_asc">▲ Porsi Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
         <div class="panel-body">
           <div id="kelola-rows"></div>
           <div style="display:flex;gap:1rem;margin-top:1.5rem">
@@ -457,7 +465,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">Bucket Reksa Dana</div>
-          <select id="rd-sort" class="form-input" style="width:auto;padding:.5rem 1rem;font-size:.85rem; font-weight:700; border-radius:30px" onchange="RD_SORT=this.value; renderAll()">
+          <select id="rd-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="RD_SORT=this.value; renderAll()">
             <option value="val_desc">▼ Porsi Terbesar</option>
             <option value="val_asc">▲ Porsi Terkecil</option>
             <option value="name_asc">Alphabet A-Z</option>
@@ -476,7 +484,15 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 
     <div id="view-cash" class="view-section">
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Terminal Likuiditas (Cash/Giro)</div></div>
+        <div class="panel-header">
+          <div class="panel-title">Terminal Likuiditas (Cash/Giro)</div>
+          <select id="cash-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="CASH_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Saldo Terbesar</option>
+            <option value="val_asc">▲ Saldo Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
         <div class="panel-body">
           <div id="cash-cards"></div>
           <div style="display:flex;gap:1rem;margin-top:1.5rem">
@@ -489,7 +505,15 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
     
     <div id="view-liab" class="view-section">
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Terminal Liabilitas (Utang)</div></div>
+        <div class="panel-header">
+          <div class="panel-title">Terminal Liabilitas (Utang)</div>
+          <select id="liab-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="LIAB_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Utang Terbesar</option>
+            <option value="val_asc">▲ Utang Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
         <div class="panel-body">
           <div id="liab-cards"></div>
           <div style="display:flex;gap:1rem;margin-top:1.5rem">
@@ -569,7 +593,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const DB_PREFIX = 'aegis_v3_'; // FORCE NEW KEY TO RECOVER DATA
+const DB_PREFIX = 'aegis_v3_'; 
 
 /* ── CONSTANTS & DB ── */
 const APP_PASS = '1908';
@@ -591,6 +615,11 @@ const FUNDAMENTALS = {
 /* ── DEFAULT DATA (BASED ON SCREENSHOTS) ── */
 let donutInst = null, nwInst = null;
 let PORTO_TARGET = 100000000;
+let STOCK_SORT = 'val_desc';
+let RD_SORT = 'val_desc';
+let CASH_SORT = 'val_desc';
+let LIAB_SORT = 'val_desc';
+
 let STOCKS = [
   { id:'bbca', name:'Bank Central Asia', lot:35, price:5975, avg:6448.94, dps:300, alloc:30, role:'ANCHOR' },
   { id:'bmri', name:'Bank Mandiri', lot:32, price:4400, avg:4717.06, dps:353, alloc:25, role:'INCOME CORE' },
@@ -604,7 +633,6 @@ let REKSADANA = [
   { id:'r3', name: 'Dry Powder Stockbit', value: 4170654 },
   { id:'r4', name: 'Dana Rumah Impian', value: 3264996 }
 ];
-let RD_SORT = 'val_desc';
 let CASH_ACCOUNTS = [
   { id:'c1', name: 'BCA Prioritas', value: 15000000 },
   { id:'c2', name: 'Jenius Flexi Maxi', value: 10000000 },
@@ -754,7 +782,7 @@ function toggleTheme() {
 
 /* ── RENDER ENGINE ── */
 function renderAll() {
-  _syncInputsToState(); // Save state from uncommitted inputs
+  _syncInputsToState(); // Simpan input yang belum kesave sebelum re-render!
 
   const totalAlloc = STOCKS.reduce((s, x) => s + (x.alloc||0), 0);
   let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
@@ -771,7 +799,6 @@ function renderAll() {
   document.getElementById('stat-bibit').textContent = fmtShort(totalRD);
   document.getElementById('stat-cash').textContent = fmtShort(totalCash);
   document.getElementById('stat-liab').textContent = fmtShort(totalLiab);
-  // Update UI untuk Crypto
   if(document.getElementById('stat-crypto')) document.getElementById('stat-crypto').textContent = fmtShort(CRYPTO_BAL);
   
   let cfIn = (CASHFLOW.gaji||0) + (CASHFLOW.makan||0) + (CASHFLOW.tukin||0) + (CASHFLOW.crypto||0);
@@ -809,14 +836,21 @@ function renderAll() {
   drawDonutChart(totalSaham, totalRD, totalCash, CRYPTO_BAL, totalAset);
   drawNWLineChart(netWorth);
 
-  /* PORTO SAHAM (FULL SYNC) */
+  /* PORTO SAHAM (FULL SYNC & SORTING) */
   const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
   document.getElementById('t-curr').textContent = fmt(totalSaham);
   document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
   document.getElementById('t-bar').style.width = pctTarget + '%';
 
+  // Sort Array Saham
+  let sortedStocks = [...STOCKS];
+  if (STOCK_SORT === 'val_desc') sortedStocks.sort((a,b) => ((b.lot||0)*(b.price||0)) - ((a.lot||0)*(a.price||0)));
+  if (STOCK_SORT === 'val_asc')  sortedStocks.sort((a,b) => ((a.lot||0)*(a.price||0)) - ((b.lot||0)*(b.price||0)));
+  if (STOCK_SORT === 'name_asc') sortedStocks.sort((a,b) => a.id.localeCompare(b.id));
+  if (STOCK_SORT === 'name_desc') sortedStocks.sort((a,b) => b.id.localeCompare(a.id));
+
   // Zone Radar
-  document.getElementById('price-cards').innerHTML = STOCKS.map(s => {
+  document.getElementById('price-cards').innerHTML = sortedStocks.map(s => {
     const sig = getMOS(s.id, s.price);
     return `<div class="price-card">
       <div class="price-card-label">Harga / Avg</div>
@@ -833,7 +867,7 @@ function renderAll() {
   }).join('');
 
   // Stock Breakdown (Moat, dll)
-  document.getElementById('stock-breakdown').innerHTML = STOCKS.map(s => {
+  document.getElementById('stock-breakdown').innerHTML = sortedStocks.map(s => {
     const allocFrac = totalAlloc > 0 ? (s.alloc||0) / totalAlloc : 1 / STOCKS.length;
     const targetLot = Math.floor(PORTO_TARGET * allocFrac / ((s.price||1) * 100));
     const actualVal = targetLot * (s.price||0) * 100;
@@ -919,27 +953,29 @@ function renderAll() {
   }).join('');
 
   // Kelola Rows Saham (KOTAK MODERN)
-  document.getElementById('kelola-rows').innerHTML = STOCKS.map((s, i) => `
+  document.getElementById('kelola-rows').innerHTML = sortedStocks.map((s) => {
+    let origIdx = STOCKS.findIndex(x => x.id === s.id);
+    return `
     <div class="edit-card">
       <div class="edit-card-top">
-        <input class="form-input" id="k-id-${i}" value="${s.id.toUpperCase()}" placeholder="TICKER" style="font-size:1.1rem;font-weight:700;color:var(--gold);font-family:var(--font-cond);width:90px">
-        <input class="form-input" id="k-name-${i}" value="${s.name}" placeholder="Nama Perusahaan" style="font-weight:600;flex:1">
-        <button class="btn-delete" onclick="delStock(${i})">✕</button>
+        <input class="form-input" id="k-id-${origIdx}" value="${s.id.toUpperCase()}" placeholder="TICKER" style="font-size:1.1rem;font-weight:700;color:var(--gold);font-family:var(--font-cond);width:90px">
+        <input class="form-input" id="k-name-${origIdx}" value="${s.name}" placeholder="Nama Perusahaan" style="font-weight:600;flex:1">
+        <button class="btn-delete" onclick="delStock(${origIdx})">✕</button>
       </div>
       <div class="edit-card-grid">
-        <div class="edit-field"><label>Lot</label><input class="form-input cf-input" id="k-lot-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.lot)}"></div>
-        <div class="edit-field"><label>Harga (Rp)</label><input class="form-input cf-input" id="k-price-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.price)}"></div>
-        <div class="edit-field"><label>Avg Cost</label><input class="form-input cf-input" id="k-avg-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.avg)}"></div>
-        <div class="edit-field"><label>DPS/yr</label><input class="form-input cf-input" id="k-dps-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.dps)}"></div>
-        <div class="edit-field"><label>Target %</label><input class="form-input cf-input" id="k-alloc-${i}" type="text" inputmode="numeric" value="${formatRibuan(s.alloc)}"></div>
+        <div class="edit-field"><label>Lot</label><input class="form-input cf-input" id="k-lot-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.lot)}"></div>
+        <div class="edit-field"><label>Harga (Rp)</label><input class="form-input cf-input" id="k-price-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.price)}"></div>
+        <div class="edit-field"><label>Avg Cost</label><input class="form-input cf-input" id="k-avg-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.avg)}"></div>
+        <div class="edit-field"><label>DPS/yr</label><input class="form-input cf-input" id="k-dps-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.dps)}"></div>
+        <div class="edit-field"><label>Target %</label><input class="form-input cf-input" id="k-alloc-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.alloc)}"></div>
       </div>
-    </div>
-  `).join('');
+    </div>`
+  }).join('');
 
-  /* REKSA DANA KOTAK MODERN */
+  /* REKSA DANA KOTAK MODERN (SORTING) */
   let sortedRD = [...REKSADANA];
   if (RD_SORT === 'val_desc') sortedRD.sort((a,b) => b.value - a.value);
-  if (RD_SORT === 'val_asc') sortedRD.sort((a,b) => a.value - b.value);
+  if (RD_SORT === 'val_asc')  sortedRD.sort((a,b) => a.value - b.value);
   if (RD_SORT === 'name_asc') sortedRD.sort((a,b) => a.name.localeCompare(b.name));
   if (RD_SORT === 'name_desc') sortedRD.sort((a,b) => b.name.localeCompare(a.name));
 
@@ -959,35 +995,51 @@ function renderAll() {
     </div>`;
   }).join('');
 
-  /* CASH KOTAK MODERN */
-  document.getElementById('cash-cards').innerHTML = CASH_ACCOUNTS.map((c, i) => `
+  /* CASH KOTAK MODERN (SORTING) */
+  let sortedCash = [...CASH_ACCOUNTS];
+  if (CASH_SORT === 'val_desc') sortedCash.sort((a,b) => b.value - a.value);
+  if (CASH_SORT === 'val_asc')  sortedCash.sort((a,b) => a.value - b.value);
+  if (CASH_SORT === 'name_asc') sortedCash.sort((a,b) => a.name.localeCompare(b.name));
+  if (CASH_SORT === 'name_desc') sortedCash.sort((a,b) => b.name.localeCompare(a.name));
+
+  document.getElementById('cash-cards').innerHTML = sortedCash.map(c => {
+    let origIdx = CASH_ACCOUNTS.findIndex(x => x.id === c.id);
+    return `
     <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;">
       <div class="asset-icon bank">🏦</div>
       <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
-        <input type="text" class="asset-name-in" id="cash-n-${i}" value="${c.name}" placeholder="Nama Bank/Giro">
+        <input type="text" class="asset-name-in" id="cash-n-${origIdx}" value="${c.name}" placeholder="Nama Bank/Giro">
         <div style="display:flex;align-items:center;gap:.5rem">
           <span class="asset-val-prefix">Rp</span>
-          <input type="text" class="asset-val-in cf-input" id="cash-v-${i}" value="${formatRibuan(c.value)}" inputmode="numeric" placeholder="0">
+          <input type="text" class="asset-val-in cf-input" id="cash-v-${origIdx}" value="${formatRibuan(c.value)}" inputmode="numeric" placeholder="0">
         </div>
       </div>
-      <button class="btn-delete" onclick="delCash(${i})">✕</button>
+      <button class="btn-delete" onclick="delCash(${origIdx})">✕</button>
     </div>`
-  ).join('');
+  }).join('');
 
-  /* LIABILITAS KOTAK MODERN */
-  document.getElementById('liab-cards').innerHTML = LIABILITAS.map((l, i) => `
+  /* LIABILITAS KOTAK MODERN (SORTING) */
+  let sortedLiab = [...LIABILITAS];
+  if (LIAB_SORT === 'val_desc') sortedLiab.sort((a,b) => b.value - a.value);
+  if (LIAB_SORT === 'val_asc')  sortedLiab.sort((a,b) => a.value - b.value);
+  if (LIAB_SORT === 'name_asc') sortedLiab.sort((a,b) => a.name.localeCompare(b.name));
+  if (LIAB_SORT === 'name_desc') sortedLiab.sort((a,b) => b.name.localeCompare(a.name));
+
+  document.getElementById('liab-cards').innerHTML = sortedLiab.map(l => {
+    let origIdx = LIABILITAS.findIndex(x => x.id === l.id);
+    return `
     <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center; border-left: 3px solid var(--red)">
       <div class="asset-icon liab">💳</div>
       <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
-        <input type="text" class="asset-name-in" id="liab-n-${i}" value="${l.name}" placeholder="Nama Utang / Kredit">
+        <input type="text" class="asset-name-in" id="liab-n-${origIdx}" value="${l.name}" placeholder="Nama Utang / Kredit">
         <div style="display:flex;align-items:center;gap:.5rem">
           <span class="asset-val-prefix">Rp</span>
-          <input type="text" class="asset-val-in cf-input" id="liab-v-${i}" value="${formatRibuan(l.value)}" inputmode="numeric" placeholder="0" style="color:var(--red)">
+          <input type="text" class="asset-val-in cf-input" id="liab-v-${origIdx}" value="${formatRibuan(l.value)}" inputmode="numeric" placeholder="0" style="color:var(--red)">
         </div>
       </div>
-      <button class="btn-delete" onclick="delLiab(${i})">✕</button>
+      <button class="btn-delete" onclick="delLiab(${origIdx})">✕</button>
     </div>`
-  ).join('');
+  }).join('');
 }
 
 /* ── CHARTS.JS ── */
@@ -1074,7 +1126,7 @@ function deleteHistory(i) { if(confirm('Hapus arsip ini?')) { HISTORY.splice(i, 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
+function addStock() { _syncInputsToState(); STOCKS.push({id:'s'+Date.now(), name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
 function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); renderAll(); } }
 
 function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
