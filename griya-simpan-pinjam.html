@@ -8,7 +8,6 @@
 <style>
   /* ── TEMA BANK MANDIRI (LIGHT & DARK) ── */
   :root {
-    /* Light Mode (Default) */
     --bg-main: #F4F7F9;
     --bg-card: #FFFFFF;
     --bg-sidebar: #003D79; /* Mandiri Blue */
@@ -279,24 +278,24 @@
       <div class="info-banner">
         <span style="font-size:20px;line-height:1.2">💡</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:var(--brand-gold-hover);margin-bottom:3px">Logika Perhitungan Baru</div>
+          <div style="font-size:13px;font-weight:700;color:var(--brand-gold-hover);margin-bottom:3px">Perhitungan Profit & Piutang</div>
           <div style="font-size:12.5px;line-height:1.6">
-            <b>Total Piutang</b> dihitung murni dari <b>Dana yang Keluar</b> (Pencairan Pokok) ke nasabah aktif.<br>
-            <b>Estimasi Valuasi (PnL)</b> dihitung dari total <b>Pokok + Bunga + Admin</b> yang diharapkan dari piutang berjalan.
+            <b>Sisa Piutang Berjalan</b> otomatis menampilkan sisa tagihan dari seluruh nasabah yang berstatus Aktif.<br>
+            <b>Total Profit (PnL)</b> menampilkan uang masuk yang sudah melebihi pinjaman pokok. <b>Estimasi Profit</b> mencatat potensi laba yang masih berada di tangan nasabah (belum lunas).
           </div>
         </div>
       </div>
       
       <div class="cards-row-4">
         <div class="card blue">
-          <div class="card-label">Total Piutang (Dana Keluar)</div>
+          <div class="card-label">Sisa Piutang Berjalan</div>
           <div class="card-value blue" id="stat-dana">Rp 0</div>
           <div class="card-sub" id="stat-nasabah-count">0 nasabah aktif</div>
         </div>
         <div class="card gold">
-          <div class="card-label">Estimasi Valuasi (PnL)</div>
+          <div class="card-label">Total Profit (PnL)</div>
           <div class="card-value gold" id="stat-pnl">Rp 0</div>
-          <div class="card-sub">Pokok + Bunga + Admin Aktif</div>
+          <div class="card-sub" id="stat-pnl-sub">Rp 0 estimasi profit</div>
         </div>
         <div class="card green">
           <div class="card-label">Uang Masuk (Bulan Ini)</div>
@@ -645,7 +644,7 @@
     <div style="display:grid;gap:8px;margin-bottom:16px">
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
         <span style="font-size:16px;margin-top:1px">📊</span>
-        <div><b style="font-size:13px;color:var(--text-main)">Definisi Dashboard</b><br><span style="font-size:12px;color:var(--text-muted)"><b>Total Piutang:</b> Akumulasi Dana Keluar (Pokok) ke nasabah aktif.<br><b>Estimasi Valuasi (PnL):</b> Total Pokok + Bunga + Admin yang diharap kembali.</span></div>
+        <div><b style="font-size:13px;color:var(--text-main)">Definisi Dashboard</b><br><span style="font-size:12px;color:var(--text-muted)"><b>Sisa Piutang Berjalan:</b> Murni sisa tagihan dari nasabah aktif.<br><b>Total Profit (PnL):</b> Uang masuk yang telah nyata melebihi pokok (Realisasi). Bunga yang belum dibayar tampil sebagai Estimasi.</span></div>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
         <span style="font-size:16px;margin-top:1px">👥</span>
@@ -853,7 +852,7 @@ function showPage(name, el) {
 }
 
 // ══════════════════════════════════════════
-//  DASHBOARD LOGIC
+//  DASHBOARD LOGIC (Diperbarui PnL Realisasi & Sisa Piutang)
 // ══════════════════════════════════════════
 function renderDashboard() {
   const ns  = DB.nasabah;
@@ -862,20 +861,48 @@ function renderDashboard() {
 
   const nsAktif = ns.filter(n => n.status === 'aktif');
   
-  // 1. Total Piutang (Dana Keluar / Pokok Pinjaman yang berjalan)
-  const totalPokokKeluar = nsAktif.reduce((a,n) => a + Number(n.pinjaman||0), 0);
+  // 1. Sisa Piutang Berjalan (Total tagihan yang belum dibayar dari nasabah aktif)
+  const totalSisaPiutang = nsAktif.reduce((a,n) => a + Number(n.sisa||0), 0);
   
-  // 2. Estimasi Valuasi PnL (Total Tagihan Pokok+Bunga+Admin yang berjalan)
-  const totalValuasi = nsAktif.reduce((a,n) => a + Number(n.totalTagihan||0), 0);
+  // 2. Realized Profit & Estimasi Profit
+  let profitRealisasi = 0;
+  let estimasiProfit = 0;
+
+  ns.forEach(n => {
+    // Total Masuk dan Keluar spesifik untuk nasabah ini dari seluruh riwayat
+    const totalMasuk = trx.filter(t => t.nasabahId === n.id && t.jenis === 'masuk').reduce((a,t) => a + Number(t.jumlah), 0);
+    const totalKeluar = trx.filter(t => t.nasabahId === n.id && t.jenis === 'keluar').reduce((a,t) => a + Number(t.jumlah), 0);
+
+    // PROFIT REALISASI: Selisih uang masuk yang sudah benar-benar melewati uang pokok pencairan
+    if (totalMasuk > totalKeluar) {
+      profitRealisasi += (totalMasuk - totalKeluar);
+    }
+
+    // ESTIMASI PROFIT: Hanya dihitung jika nasabah belum lunas
+    if (n.status === 'aktif') {
+      const expectedProfit = Number(n.bungaRp || 0) + Number(n.biayaAdmin || 0);
+      
+      if (totalMasuk <= totalKeluar) {
+        // Jika uang masuk belum melunasi pokok, maka SELURUH bunga & admin masih jadi "Estimasi"
+        estimasiProfit += expectedProfit;
+      } else {
+        // Jika sudah untung sebagian, sisa profit = total bunga - profit yang sudah masuk
+        const realizedFromThis = totalMasuk - totalKeluar;
+        estimasiProfit += Math.max(0, expectedProfit - realizedFromThis);
+      }
+    }
+  });
 
   // 3 & 4. Arus Kas Bulan Ini
   const masukBln  = trx.filter(t => t.jenis==='masuk'  && t.tanggal.startsWith(tm));
   const keluarBln = trx.filter(t => t.jenis==='keluar' && t.tanggal.startsWith(tm));
 
-  document.getElementById('stat-dana').textContent          = fmt(totalPokokKeluar);
+  // Menampilkan Data ke HTML
+  document.getElementById('stat-dana').textContent          = fmt(totalSisaPiutang);
   document.getElementById('stat-nasabah-count').textContent = `${nsAktif.length} nasabah aktif`;
   
-  document.getElementById('stat-pnl').textContent           = fmt(totalValuasi);
+  document.getElementById('stat-pnl').textContent           = fmt(profitRealisasi);
+  document.getElementById('stat-pnl-sub').textContent       = `+ ${fmt(estimasiProfit)} estimasi profit`;
   
   document.getElementById('stat-masuk').textContent         = fmt(masukBln.reduce((a,t)=>a+Number(t.jumlah),0));
   document.getElementById('stat-masuk-count').textContent   = `${masukBln.length} transaksi`;
@@ -883,7 +910,7 @@ function renderDashboard() {
   document.getElementById('stat-keluar').textContent        = fmt(keluarBln.reduce((a,t)=>a+Number(t.jumlah),0));
   document.getElementById('stat-keluar-count').textContent  = `${keluarBln.length} transaksi`;
 
-  // Recent Trx
+  // Tabel Transaksi Terbaru di Dasboard
   const recent = [...trx].sort((a,b) => b.tanggal.localeCompare(a.tanggal)).slice(0, 8);
   const tbody = document.getElementById('tbl-transaksi-recent');
   if (!recent.length) {
@@ -1006,7 +1033,6 @@ function renderNasabah() {
 function openNasabahModal() {
   document.getElementById('modal-nasabah-title').textContent = 'Tambah Nasabah Baru';
   
-  // BUGFIX: Dihapus id 'nasabah-alamat' yang menyebabkan crash karena referensinya kosong (null) di HTML.
   ['nasabah-id','nasabah-nama','nasabah-telepon','nasabah-catatan'].forEach(id => {
     const el = document.getElementById(id);
     if(el) el.value = '';
@@ -1033,7 +1059,7 @@ function editNasabah(id) {
   document.getElementById('nasabah-tipe').value   = n.tipe || 'anggota';
   document.getElementById('nasabah-telepon').value= n.telepon||'';
   
-  // BUGFIX: Field catatan sekarang memegang value catatan dan fallback alamat jika ada dari database lama
+  // Menangani data lama yang mungkin masih di key 'alamat'
   document.getElementById('nasabah-catatan').value= n.catatan || n.alamat || '';
   
   document.getElementById('nasabah-pinjaman').value = n.pinjaman||'';
@@ -1080,7 +1106,7 @@ function saveNasabah() {
   let ns = DB.nasabah;
   const idx = ns.findIndex(n => n.id === id);
   if (idx >= 0) {
-    data.sisa = ns[idx].sisa; // Preserve current remaining balance
+    data.sisa = ns[idx].sisa; // Pertahankan sisa tagihan terakhir
     ns[idx] = data;
   } else {
     ns.unshift(data);
@@ -1102,7 +1128,7 @@ function saveNasabah() {
   if (!isNew) updateNasabahSisa(id);
 
   closeModal('modal-nasabah');
-  renderNasabah(); renderPiutang(); populateNasabahDropdown();
+  renderNasabah(); renderPiutang(); populateNasabahDropdown(); renderDashboard();
   toast('✅ Data Nasabah disimpan');
 }
 
@@ -1110,7 +1136,6 @@ function exportNasabahCSV() {
   const ns = DB.nasabah;
   if(!ns.length) { toast('⚠️ Tidak ada data untuk di-export'); return; }
   
-  // Add BOM for Excel UTF-8 compatibility
   let csv = "\uFEFF"; 
   csv += "ID,Nama,Tipe,Telepon,Pinjaman Pokok,Total Bunga,Biaya Admin,Total Tagihan,Sisa Tagihan,Status\n";
   
@@ -1292,7 +1317,7 @@ function importJSON(event) {
       if(parsed.nasabah && parsed.transaksi) {
         DB.nasabah = parsed.nasabah;
         DB.transaksi = parsed.transaksi;
-        fixCacheData(); // Fix structure if old version
+        fixCacheData(); 
         alert("✅ Data berhasil dipulihkan! Halaman akan dimuat ulang.");
         location.reload();
       } else {
@@ -1351,7 +1376,7 @@ function init() {
   initTheme();
   checkLock();
   fixCacheData(); 
-  resetIdleTimer(); // Mulai timer inisial
+  resetIdleTimer(); 
   
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
   document.getElementById('sidebarDate').textContent = new Date().toLocaleDateString('id-ID', opts);
