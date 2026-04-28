@@ -17,7 +17,7 @@
   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
-  connect-src 'self' https://xwriyfmwzyresycqfayj.supabase.co wss://xwriyfmwzyresycqfayj.supabase.co https://dummyjson.com;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co https://dummyjson.com;
   img-src 'self' data:;
   frame-ancestors 'none';
   form-action 'none';
@@ -39,10 +39,13 @@
   --text:      #e2e8f0;
   --muted:     #64748b;
   --muted2:    #94a3b8;
+  
+  /* Aegis Alpha Theme */
   --gold:      #d4af37;
   --gold2:     #fde047;
   --gold-dim:  rgba(212, 175, 55, 0.15);
   --gold-neon: rgba(212, 175, 55, 0.25);
+  
   --green:     #34d399;
   --green-dim: rgba(52, 211, 153, 0.15);
   --red:       #f87171;
@@ -51,9 +54,13 @@
   --blue-dim:  rgba(96, 165, 250, 0.15);
   --purple:    #a78bfa;
   --cyan:      #22d3ee;
+  
+  /* Fonts */
   --font-main: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
   --font-cond: 'Barlow Condensed', sans-serif;
+  
+  /* Radii & Shadows */
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
@@ -75,6 +82,7 @@
 body { background: var(--bg); color: var(--text); font-family: var(--font-main); min-height: 100vh; overflow-x: hidden; line-height: 1.5; }
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
 
+/* ── BUTTONS & FORMS ── */
 .btn-sm { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .5rem 1rem; color: var(--muted2); font-size: .75rem; cursor: pointer; font-family: var(--font-main); font-weight: 600; transition: all .2s; }
 .btn-sm:hover { border-color: var(--gold); color: var(--gold); box-shadow: var(--shadow-neon); }
 .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; border: none; border-radius: var(--radius-md); padding: .8rem; font-family: var(--font-main); font-weight: 700; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
@@ -87,11 +95,13 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .form-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .7rem .9rem; color: var(--text); font-family: var(--font-mono); font-size: .9rem; outline: none; transition: border-color .2s; }
 .form-input:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-neon); }
 
+/* ── PANELS ── */
 .panel { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-panel); }
 .panel-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .panel-title { font-family: var(--font-cond); font-size: 1.2rem; letter-spacing: .05em; text-transform: uppercase; color: var(--gold); font-weight: 700; text-shadow: 0 0 8px var(--gold-neon); }
 .panel-body { padding: 1.5rem; }
 
+/* ── LAYOUT & HEADER ── */
 #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 2rem; }
 .login-box { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 3rem; width: 380px; text-align: center; box-shadow: var(--shadow-neon), 0 10px 40px rgba(0,0,0,0.5); }
 #app { display: none; position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
@@ -102,6 +112,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .nav-pill button { background: none; border: none; padding: .5rem 1rem; border-radius: 20px; font-size: .75rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .05em;}
 .nav-pill button.active { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; box-shadow: 0 2px 10px var(--gold-neon); }
 
+/* ── GRIDS ── */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
 .stat-card { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; position: relative; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; box-shadow: var(--shadow-panel); }
 .stat-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-neon); }
@@ -109,18 +120,19 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 
+/* ── PROGRESS & FASE ── */
 .progress-bar-wrap { margin-bottom: 1.2rem; }
 .progress-bar-header { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: .5rem; color: var(--muted2); font-weight: 600;}
 .progress-bar-header span:last-child { font-family: var(--font-mono); color: var(--text); }
 .progress-bar-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width .8s ease-out; box-shadow: 0 0 10px var(--gold-neon); }
-
 .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
 .phase-card.done { border-color: var(--green); opacity: 0.7; }
 .phase-card.active { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-neon); animation: pulseNeon 2s infinite; }
 @keyframes pulseNeon { 0%, 100% { box-shadow: 0 0 15px var(--gold-neon); } 50% { box-shadow: 0 0 5px var(--gold-neon); } }
 
+/* ── UTILS ── */
 .cashflow-row { display: flex; justify-content: space-between; padding: .8rem 0; border-bottom: 1px solid var(--border); font-size: .85rem; font-weight: 500;}
 .cashflow-row:last-child { border-bottom: none; }
 .cashflow-val { font-family: var(--font-mono); font-weight: 600; font-size: .95rem;}
@@ -130,12 +142,16 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .view-section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* ── CHARTS ── */
 .chart-wrap { position: relative; height: 300px; width: 100%; }
 .donut-wrap { position: relative; height: 240px; display: flex; align-items: center; justify-content: center; }
 .donut-center { position: absolute; text-align: center; pointer-events: none; }
 .donut-center-val { font-family: var(--font-cond); font-size: 1.6rem; font-weight: 700; color: var(--text); }
 .donut-center-label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-top: .2rem;}
 
+/* =======================================================
+   KOTAK EDIT MODERN (Saham/RD/Cash)
+   ======================================================= */
 .edit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow-panel); transition: border-color .2s; }
 .edit-card:focus-within { border-color: var(--gold); box-shadow: var(--shadow-neon); }
 .edit-card-top { display: flex; gap: .75rem; margin-bottom: 1rem; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
@@ -152,6 +168,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .asset-val-in { font-family: var(--font-cond); font-size: 1.6rem !important; font-weight: 700; color: var(--text); background: transparent; border: none; outline: none; width: 100%; }
 .asset-name-in { background: transparent; border: none; outline: none; color: var(--text); font-weight: 700; width: 100%; font-size: 1.1rem; margin-bottom: .2rem; }
 
+/* =======================================================
+   RICH PORTO SAHAM UI
+   ======================================================= */
 .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
 .pill { font-family: var(--font-mono); font-size: .75rem; padding: .4rem .8rem; border-radius: 20px; cursor: pointer; border: 1px solid var(--border2); background: none; color: var(--muted2); transition: all .2s; }
 .pill:hover { border-color: var(--gold); color: var(--gold); }
@@ -243,6 +262,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .toggle-icon { transition: transform .2s; }
 .buyzone-section.open ~ .toggle-btn .toggle-icon { transform: rotate(180deg); }
 
+/* =======================================================
+   MODALS (POP-UP)
+   ======================================================= */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
 .modal-overlay.open { display: flex; animation: fadeIn .2s; }
 .modal { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 2.5rem; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-neon), 0 20px 40px rgba(0,0,0,0.8); }
@@ -313,6 +335,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Total Kekayaan Bersih</div>
           <div id="hero-nw" class="glow-text-gold" style="font-family:var(--font-cond);font-size:4rem;font-weight:800;line-height:1;margin-bottom:.8rem">Rp —</div>
           <div id="hero-sub" style="font-size:.9rem;color:var(--muted2);">Menghitung aset terminal...</div>
+          
           <div id="hero-quote" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.15); font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold); font-style: italic; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; opacity: 0.8;">Mengambil transmisi mindset...</div>
         </div>
       </div>
@@ -352,6 +375,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
             <div class="chart-wrap"><canvas id="nwChart"></canvas></div>
           </div>
         </div>
+
         <div class="panel">
           <div class="panel-header"><div class="panel-title">Alokasi Aset</div></div>
           <div class="panel-body" style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;">
@@ -372,27 +396,27 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div class="panel-header"><div class="panel-title">Terminal Fase</div></div>
           <div class="panel-body">
             <div class="phase-grid">
-              <div class="phase-card done">
+              <div class="phase-card done" title="Fokus melunasi utang konsumtif berbunga tinggi (CC, Paylater).">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 0</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Triage Utang <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Lunasi utang konsumtif & bunga tinggi.</div>
               </div>
-              <div class="phase-card active">
+              <div class="phase-card active" title="Mengumpulkan kas cair untuk pengeluaran tak terduga (3-6 bulan).">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 1</div>
                 <div style="font-weight:700;margin-top:.3rem;color:var(--gold);display:flex;justify-content:space-between">Benteng Darurat <span style="font-size:.7rem;opacity:0.5;color:var(--text)">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Kas cair min 3-6 bulan pengeluaran.</div>
               </div>
-              <div class="phase-card">
+              <div class="phase-card" title="Akumulasi aset saham/reksadana penghasil cashflow pasif.">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 2</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Dividend <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Akumulasi aset cashflow pasif.</div>
               </div>
-              <div class="phase-card">
+              <div class="phase-card" title="Menabung untuk pembelian kendaraan tanpa cicilan.">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 3</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Vehicle Cash <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Beli kendaraan tanpa berutang.</div>
               </div>
-              <div class="phase-card" style="grid-column: 1 / -1;">
+              <div class="phase-card" style="grid-column: 1 / -1;" title="Passive income melebihi pengeluaran rutin bulanan.">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 4</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Bebas Finansial <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Passive income > Pengeluaran rutin.</div>
@@ -432,32 +456,119 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
         <button class="pill" onclick="setTarget(250,this)">250 Jt</button>
         <button class="pill" onclick="setTarget(500,this)">500 Jt</button>
         <button class="pill" onclick="setTarget(1000,this)">1 Miliar</button>
+        <button class="pill" onclick="setTarget(2000,this)">2 Miliar</button>
+        <button class="pill" onclick="setTarget(5000,this)">5 Miliar</button>
       </div>
+
       <div class="target-card">
         <div class="target-inner">
           <div class="target-left">
             <span class="label">Target Porto</span>
-            <div class="target-input-wrap"><span class="target-prefix">Rp</span><input type="text" id="target-display" value="100.000.000" class="target-input cf-input" onchange="parseTarget(this)"></div>
+            <div class="target-input-wrap">
+              <span class="target-prefix">Rp</span>
+              <input type="text" id="target-display" value="100.000.000" class="target-input cf-input" onchange="parseTarget(this)">
+            </div>
           </div>
-          <div class="target-right"><div class="target-curr" id="t-curr">Rp 0</div><div class="target-pct" id="t-pct">0% dari target</div></div>
+          <div class="target-right">
+            <div class="target-curr" id="t-curr">Rp 0</div>
+            <div class="target-pct" id="t-pct">0% dari target</div>
+          </div>
         </div>
-        <div class="progress-bar-wrap" style="margin-bottom:0; height:4px; border-radius:0"><div class="progress-bar-fill" id="t-bar" style="width:0%; border-radius:0"></div></div>
+        <div class="progress-bar-wrap" style="margin-bottom:0; height:4px; border-radius:0">
+          <div class="progress-bar-fill" id="t-bar" style="width:0%; border-radius:0"></div>
+        </div>
       </div>
-      <div class="panel"><div class="panel-header"><div class="panel-title">Zone Radar</div></div><div class="panel-body"><div class="price-grid" id="price-cards"></div></div></div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Zone Radar</div></div>
+        <div class="panel-body" style="padding-bottom:1rem">
+          <div class="price-grid" id="price-cards"></div>
+        </div>
+      </div>
+
       <div id="stock-breakdown"></div>
-      <div class="panel"><div class="panel-header"><div class="panel-title">Arsenal Manajemen</div></div><div class="panel-body"><div id="kelola-rows"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
+      
+      <div class="panel" style="margin-top:2rem">
+        <div class="panel-header">
+          <div class="panel-title">Arsenal Manajemen Saham</div>
+          <select id="stock-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="STOCK_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Porsi Terbesar</option>
+            <option value="val_asc">▲ Porsi Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div id="kelola-rows"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addStock()">+ Tambah Emiten</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Perubahan</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="view-rd" class="view-section">
-      <div class="panel"><div class="panel-header"><div class="panel-title">Reksa Dana</div></div><div class="panel-body"><div id="rd-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Bucket Reksa Dana</div>
+          <select id="rd-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="RD_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Porsi Terbesar</option>
+            <option value="val_asc">▲ Porsi Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div id="rd-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addRD()">+ Tambah Bucket</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Reksa Dana</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="view-cash" class="view-section">
-      <div class="panel"><div class="panel-header"><div class="panel-title">Likuiditas</div></div><div class="panel-body"><div id="cash-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Terminal Likuiditas (Cash/Giro)</div>
+          <select id="cash-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="CASH_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Saldo Terbesar</option>
+            <option value="val_asc">▲ Saldo Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div id="cash-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addCash()">+ Tambah Rekening</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Likuiditas</button>
+          </div>
+        </div>
+      </div>
     </div>
-
+    
     <div id="view-liab" class="view-section">
-      <div class="panel"><div class="panel-header"><div class="panel-title">Liabilitas</div></div><div class="panel-body"><div id="liab-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Terminal Liabilitas (Utang)</div>
+          <select id="liab-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="LIAB_SORT=this.value; renderAll()">
+            <option value="val_desc">▼ Utang Terbesar</option>
+            <option value="val_asc">▲ Utang Terkecil</option>
+            <option value="name_asc">Alphabet A-Z</option>
+            <option value="name_desc">Alphabet Z-A</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div id="liab-cards"></div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addLiab()">+ Tambah Liabilitas</button>
+            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Liabilitas</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -467,10 +578,72 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   </footer>
 </div>
 
-<div class="modal-overlay" id="modal-crypto"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Crypto Wallet Terminal</div><button class="modal-close" onclick="closeModal('modal-crypto')">✕</button></div><div class="form-group"><label class="form-label">Total Balance Crypto (Rp)</label><input type="text" class="form-input cf-input" id="in-crypto-bal"></div><button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveCryptoBal()">Update Terminal</button></div></div>
-<div class="modal-overlay" id="modal-cashflow"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Konfigurasi Cashflow</div><button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button></div><div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem"><div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;text-transform:uppercase">▶ Inflow</div><button class="btn-sm" style="padding:.2rem .5rem" onclick="addInflow()">+ Inflow</button></div><div id="inflow-list"></div><hr style="border:1px solid var(--border);margin:2rem 0"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem"><div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;text-transform:uppercase">◀ Outflow</div><button class="btn-sm" style="padding:.2rem .5rem" onclick="addOutflow()">+ Outflow</button></div><div id="outflow-list"></div></div><button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button></div></div>
-<div class="modal-overlay" id="modal-goal"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Custom Goal Terminal</div><button class="modal-close" onclick="closeModal('modal-goal')">✕</button></div><div class="form-group"><label class="form-label">Nama Goal (ex: Mobil Cash)</label><input type="text" class="form-input" id="g-name"></div><div class="form-group"><label class="form-label">Target Nilai (Rp)</label><input type="text" class="form-input cf-input" id="g-target"></div><div class="form-group"><label class="form-label">Terkumpul Saat Ini (Rp)</label><input type="text" class="form-input cf-input" id="g-current"></div><button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveGoal()">Tambahkan Goal</button></div></div>
-<div class="modal-overlay" id="modal-history"><div class="modal" style="width: 600px;"><div class="modal-title-bar"><div class="modal-title-text">Arsip History Net Worth</div><div><button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button><button class="modal-close" onclick="closeModal('modal-history')">✕</button></div></div><div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div></div></div>
+<div class="modal-overlay" id="modal-crypto">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Crypto Wallet Terminal</div>
+      <button class="modal-close" onclick="closeModal('modal-crypto')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Total Balance Crypto (Rp)</label>
+      <input type="text" class="form-input cf-input" id="in-crypto-bal">
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveCryptoBal()">Update Terminal</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cashflow">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Konfigurasi Cashflow</div>
+      <button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button>
+    </div>
+    <div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;text-transform:uppercase">▶ Inflow</div>
+        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addInflow()">+ Inflow</button>
+      </div>
+      <div id="inflow-list"></div>
+      
+      <hr style="border:1px solid var(--border);margin:2rem 0">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;text-transform:uppercase">◀ Outflow</div>
+        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addOutflow()">+ Outflow</button>
+      </div>
+      <div id="outflow-list"></div>
+
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-goal">
+  <div class="modal">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Custom Goal Terminal</div>
+      <button class="modal-close" onclick="closeModal('modal-goal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Goal (ex: Mobil Cash)</label><input type="text" class="form-input" id="g-name"></div>
+    <div class="form-group"><label class="form-label">Target Nilai (Rp)</label><input type="text" class="form-input cf-input" id="g-target"></div>
+    <div class="form-group"><label class="form-label">Terkumpul Saat Ini (Rp)</label><input type="text" class="form-input cf-input" id="g-current"></div>
+    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveGoal()">Tambahkan Goal</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-history">
+  <div class="modal" style="width: 600px;">
+    <div class="modal-title-bar">
+      <div class="modal-title-text">Arsip History Net Worth</div>
+      <div>
+        <button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button>
+        <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
+      </div>
+    </div>
+    <div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div>
+  </div>
+</div>
 
 <script>
 // ── SECURITY SYSTEM TOAST ─────────────────────────────
@@ -607,10 +780,11 @@ let RD_SORT = 'val_desc';
 let CASH_SORT = 'val_desc';
 let LIAB_SORT = 'val_desc';
 
+// Arrays dikosongkan agar menarik murni dari Supabase, bebas sisa-sisa dummy data.
 let STOCKS = [], REKSADANA = [], CASH_ACCOUNTS = [], LIABILITAS = [], INFLOWS = [], OUTFLOWS = [], HISTORY = [];
 let GOALS = [
   { id:'auto-nw', name:'Terminal Net Worth', target:2000000000, isAuto:true },
-  { id:'c1', name:'Dana Darurat 12x', target:60000000, current:500000 }
+  { id:'c1', name:'Dana Darurat 12x', target:60000000, current:0 }
 ];
 let CRYPTO_BAL = 0;
 
@@ -887,7 +1061,7 @@ async function doLogin() {
     document.getElementById('login-screen').style.display = 'none'; 
     document.getElementById('app').style.display = 'flex'; 
     await loadData(); 
-    showSecurityStatus(); // <-- TRIGGER NOTIFIKASI SAAT LOGIN
+    showSecurityStatus(); 
   } 
   else { errEl.textContent = 'TERMINAL ACCESS DENIED: Passcode salah!'; input.value = ''; btn.disabled = false; btn.textContent = 'Akses Terminal'; }
 }
@@ -898,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('login-screen').style.display = 'none'; 
     document.getElementById('app').style.display = 'flex'; 
     await loadData(); 
-    showSecurityStatus(); // <-- TRIGGER NOTIFIKASI SAAT AUTO-LOGIN
+    showSecurityStatus(); 
   } 
 });
 
@@ -927,7 +1101,7 @@ async function loadData() {
     document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
     if(document.getElementById('in-crypto-bal')) document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
     statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
-  } catch(e) { statusEl.textContent = '☁ Offline Mode'; statusEl.style.color = 'var(--muted)'; }
+  } catch(e) { statusEl.textContent = '☁ Fail Sync'; statusEl.style.color = 'var(--red)'; }
   fetchMindsetQuote(); renderAll();
 }
 
