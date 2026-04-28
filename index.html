@@ -158,6 +158,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .edit-field label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); text-transform: uppercase; font-weight: 600;}
 
 .asset-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.asset-icon.rd { background: var(--green-dim); color: var(--green); }
+.asset-icon.bank { background: var(--blue-dim); color: var(--blue); }
+.asset-icon.liab { background: var(--red-dim); color: var(--red); }
 .asset-val-prefix { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
 .asset-val-in { font-family: var(--font-cond); font-size: 1.6rem !important; font-weight: 700; color: var(--text); background: transparent; border: none; outline: none; width: 100%; }
 .asset-name-in { background: transparent; border: none; outline: none; color: var(--text); font-weight: 700; width: 100%; font-size: 1.1rem; margin-bottom: .2rem; }
@@ -267,18 +270,44 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 @keyframes toastOut { from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 
 /* =======================================================
-   RESPONSIVE MOBILE UX
+   RESPONSIVE MOBILE UX (Fix Gaps di Header)
    ======================================================= */
 @media (max-width: 768px) { 
   .nav-pill { display: none !important; } 
-  .mobile-nav-wrap { display: block; width: 100%; margin-top: 15px; }
+  
+  /* Hilangkan margin-top yang bikin ruang kosong (gap) terlalu lebar */
+  .mobile-nav-wrap { display: block; width: 100%; margin-top: 0; }
   .mobile-nav-select { width: 100%; background: var(--bg2); border: 1px solid var(--border2); color: var(--gold); padding: 0.8rem 1rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; appearance: none; text-align: center; text-align-last: center; box-shadow: var(--shadow-panel); outline: none; }
   .mobile-nav-select:focus { border-color: var(--gold); box-shadow: var(--shadow-neon); }
 
-  header { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; padding: 1.2rem 1rem; }
-  .header-left { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
-  #cloud-status { grid-column: 1 / 2; justify-self: start; position: static; margin-top: 0; }
-  .header-right { grid-column: 2 / 3; justify-self: end; position: static; }
+  /* Rapikan Header (Grid Layout yang Padat, No Overlap, No Big Gaps) */
+  header { 
+    display: grid; 
+    grid-template-columns: 1fr auto; 
+    align-items: center; 
+    gap: 0.6rem; /* Gap diperkecil biar padat */
+    padding: 1rem; 
+  }
+  .header-left { 
+    grid-column: 1 / -1; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    width: 100%; 
+    gap: 0.8rem; /* Jarak pas antara Title dan Dropdown Menu */
+  }
+  #cloud-status { 
+    grid-column: 1 / 2; 
+    justify-self: start; 
+    position: static; 
+    margin-top: 0; 
+  }
+  .header-right { 
+    grid-column: 2 / 3; 
+    justify-self: end; 
+    position: static; 
+  }
 
   .login-box { width: 90%; padding: 2rem 1.5rem; }
   .login-box > div:first-child { font-size: 2.2rem !important; }
