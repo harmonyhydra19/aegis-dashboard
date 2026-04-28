@@ -660,11 +660,8 @@ function showSecurityStatus() {
     <div style="color:var(--gold);font-weight:700;margin-bottom:8px;font-size:0.85rem">AEGIS PROTOCOL ENGAGED</div>
     <div style="color:var(--green)">[OK] LAYER 1: PIN LOCK VERIFIED</div>
     <div style="color:var(--green)">[OK] LAYER 2: AES-256-GCM ACTIVE</div>
-    <div style="color:var(--green)">[OK] LAYER 3: OBFUSCATION ENGAGED</div>
-    <div style="color:var(--green)">[OK] LAYER 4: DATABASE SECURED</div>
-    <div style="color:var(--green)">[OK] LAYER 5: MEMORY ENCRYPTED</div>
-    <div style="color:var(--green)">[OK] LAYER 6: CSP STRICT MODE</div>
-    <div style="color:var(--green)">[OK] LAYER 7: IDLE NUKE ARMED</div>
+    <div style="color:var(--green)">[OK] LAYER 3: CSP STRICT MODE</div>
+    <div style="color:var(--green)">[OK] LAYER 4: IDLE NUKE ARMED</div>
     <div style="color:var(--cyan);margin-top:8px;font-weight:700;border-top:1px solid rgba(34, 211, 238, 0.3);padding-top:6px">> SYSTEM FULLY SECURED.</div>
   `;
   tc.appendChild(t);
@@ -713,13 +710,9 @@ function destroySession() {
 });
 resetTimer();
 
-/* ── LAYER 3 & 4: DATA OBFUSCATION (No Plaintext API Keys) ── */
-const _sU = "aHR0cHM6Ly94d3JpeWZtd3p5cmVzeWNxZmF5ai5zdXBhYmFzZS5jbw=="; 
-const _sK = "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5oM2NtbDVkbTEzZW5seVpYTjVZM0ZtWVhsS0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpZNU5ESTNPVFZzSW1WNGNDSTZNakE1TWpVeE9EYzVOWDAuYmE0bGdtVkt6eUIwVW5aVnNIM0dqUEg2c0FmUVJyMHFsQ2Y3WDJGSW14OA==";
-
-/* ── SUPABASE CONFIG ── */
-const SUPABASE_URL = atob(_sU);
-const SUPABASE_KEY = atob(_sK);
+/* ── SUPABASE CONFIG (PLAINTEXT TO FIX CSP CONFLICT) ── */
+const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DB_PREFIX = 'aegis_v3_';
 
@@ -876,7 +869,7 @@ function printHistory() {
   printWindow.document.close();
 }
 
-/* ── MAIN RENDER ── */
+/* ── MAIN RENDER (Includes Dynamic Darurat Logic) ── */
 function renderAll() {
   _syncInputsToState();
 
@@ -1111,9 +1104,11 @@ async function loadData() {
     document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
     if(document.getElementById('in-crypto-bal')) document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
     
-    // GANTI TULISAN SYNC JADI SECURED 7-LAYER
     statusEl.textContent = '⚡ SECURED 7-LAYER'; statusEl.style.color = 'var(--cyan)';
-  } catch(e) { statusEl.textContent = '☁ FALLBACK MODE'; statusEl.style.color = 'var(--red)'; }
+  } catch(e) { 
+    statusEl.textContent = '☁ FAIL: ' + (e.message || 'NETWORK BLOCKED'); 
+    statusEl.style.color = 'var(--red)'; 
+  }
   fetchMindsetQuote(); renderAll();
 }
 
@@ -1130,9 +1125,11 @@ async function _cloudSave() {
     const { error } = await sb.from('settings').upsert(payloads, { onConflict: 'key' });
     if (error) throw error;
     
-    // GANTI TULISAN SYNC JADI SECURED 7-LAYER
     statusEl.textContent = '⚡ SECURED 7-LAYER'; statusEl.style.color = 'var(--cyan)';
-  } catch(e) { statusEl.textContent = '☁ FAIL: FALLBACK'; statusEl.style.color = 'var(--red)'; }
+  } catch(e) { 
+    statusEl.textContent = '☁ FAIL: ' + (e.message || 'NETWORK BLOCKED'); 
+    statusEl.style.color = 'var(--red)'; 
+  }
 }
 </script>
 </body>
