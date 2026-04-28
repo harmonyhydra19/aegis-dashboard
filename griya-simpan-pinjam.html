@@ -1,521 +1,269 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Griya Simpan Pinjam</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* ── TEMA BANK MANDIRI (LIGHT & DARK) ── */
   :root {
-    --cream: #FAF7F2;
-    --cream-dark: #F0EBE1;
-    --brown: #3D2B1F;
-    --brown-mid: #6B4C3B;
-    --gold: #C8962A;
-    --gold-light: #E8B84B;
-    --green: #2D6A4F;
-    --green-light: #52B788;
-    --red: #9B2335;
-    --red-light: #E07070;
-    --blue: #1E3A8A;
-    --blue-light: #3B82F6;
-    --purple: #5B21B6;
-    --purple-light: #8B5CF6;
-    --text: #2C1A0E;
-    --text-muted: #8B6F5E;
-    --border: #DDD3C8;
-    --shadow: 0 4px 24px rgba(61,43,31,0.10);
-    --shadow-lg: 0 8px 40px rgba(61,43,31,0.15);
+    /* Light Mode (Default) */
+    --bg-main: #F4F7F9;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #003D79; /* Mandiri Blue */
+    --sidebar-text: #FFFFFF;
+    --sidebar-hover: rgba(255,255,255,0.1);
+    --text-main: #2C3E50;
+    --text-muted: #7F8C8D;
+    --border: #E0E6ED;
+    --brand-gold: #F2A900; /* Mandiri Gold */
+    --brand-gold-hover: #E59F00;
+    --brand-blue: #003D79;
+    --brand-blue-hover: #002D5A;
+    --accent-green: #27AE60;
+    --accent-red: #E74C3C;
+    --accent-purple: #8E44AD;
+    --shadow: 0 4px 20px rgba(0, 61, 121, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 61, 121, 0.12);
+    --table-hover: #F8FAFC;
+    --input-bg: #FFFFFF;
+  }
+
+  [data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-card: #1E1E1E;
+    --bg-sidebar: #0A192F; 
+    --sidebar-text: #E0E0E0;
+    --sidebar-hover: rgba(255,255,255,0.05);
+    --text-main: #E0E0E0;
+    --text-muted: #A0A0A0;
+    --border: #2C3E50;
+    --brand-gold: #D49400;
+    --brand-gold-hover: #F2A900;
+    --brand-blue: #1E5B99;
+    --brand-blue-hover: #2980B9;
+    --accent-green: #2ECC71;
+    --accent-red: #E74C3C;
+    --accent-purple: #9B59B6;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+    --table-hover: #2A2A2A;
+    --input-bg: #2C2C2C;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
+    background: var(--bg-main);
+    color: var(--text-main);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
   }
+
+  /* ── LOCK SCREEN ── */
+  #lock-screen {
+    position: fixed; inset: 0; background: var(--bg-main);
+    z-index: 99999; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #lock-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .lock-box {
+    background: var(--bg-card); padding: 40px 50px; border-radius: 24px;
+    box-shadow: var(--shadow-lg); text-align: center; border: 1px solid var(--border);
+    max-width: 400px; width: 90%;
+  }
+  .lock-box h1 { font-family: 'Playfair Display', serif; color: var(--brand-blue); font-size: 26px; margin-bottom: 8px; }
+  .lock-box p { color: var(--text-muted); font-size: 13.5px; margin-bottom: 24px; }
+  .passcode-input-wrap { position: relative; margin-bottom: 24px; }
+  #passcode-input {
+    font-size: 32px; text-align: center; letter-spacing: 12px; padding: 16px 20px;
+    border: 2px solid var(--border); border-radius: 16px; width: 100%;
+    color: var(--text-main); font-family: monospace; font-weight: bold;
+    background: var(--input-bg); transition: all 0.3s;
+  }
+  #passcode-input:focus { border-color: var(--brand-gold); box-shadow: 0 0 0 4px rgba(242,169,0,0.15); outline: none; }
 
   /* ── SIDEBAR ── */
   .sidebar {
     position: fixed; left:0; top:0; bottom:0; width:240px;
-    background: var(--brown);
-    display: flex; flex-direction: column;
-    z-index: 100;
-    padding: 0 0 24px;
-    overflow-y: auto;
+    background: var(--bg-sidebar); display: flex; flex-direction: column;
+    z-index: 100; padding: 0 0 24px; overflow-y: auto;
+    transition: background-color 0.3s;
   }
-
-  .sidebar-logo {
-    padding: 28px 24px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-  .sidebar-logo h1 {
-    font-family: 'Playfair Display', serif;
-    color: #FAF7F2;
-    font-size: 18px;
-    line-height: 1.3;
-  }
-  .sidebar-logo span {
-    color: var(--gold-light);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    display: block;
-    margin-top: 4px;
-  }
-
+  .sidebar-logo { padding: 28px 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .sidebar-logo h1 { font-family: 'Playfair Display', serif; color: #FFFFFF; font-size: 18px; line-height: 1.3; }
+  .sidebar-logo span { color: var(--brand-gold); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-top: 4px; }
   .nav { flex:1; padding: 16px 0; }
-
-  .nav-section-label {
-    padding: 8px 24px 4px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    color: rgba(250,247,242,0.28);
-    margin-top: 8px;
-  }
-
+  .nav-section-label { padding: 8px 24px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 8px; }
   .nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 24px;
-    cursor: pointer;
-    transition: all .2s;
-    color: rgba(250,247,242,0.65);
-    font-size: 14px;
-    font-weight: 500;
-    border-left: 3px solid transparent;
+    display: flex; align-items: center; gap: 12px; padding: 11px 24px; cursor: pointer;
+    transition: all .2s; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; border-left: 3px solid transparent;
   }
-  .nav-item:hover { color: #FAF7F2; background: rgba(255,255,255,0.06); }
-  .nav-item.active {
-    color: var(--gold-light);
-    background: rgba(200,150,42,0.12);
-    border-left-color: var(--gold-light);
-  }
-  .nav-item.active.keluarga-nav {
-    color: #93C5FD;
-    background: rgba(59,130,246,0.12);
-    border-left-color: #93C5FD;
-  }
+  .nav-item:hover { color: #FFFFFF; background: var(--sidebar-hover); }
+  .nav-item.active { color: var(--brand-gold); background: rgba(242,169,0,0.1); border-left-color: var(--brand-gold); }
   .nav-icon { font-size: 17px; width:20px; text-align:center; }
-
-  .sidebar-date {
-    padding: 16px 24px 0;
-    color: rgba(250,247,242,0.4);
-    font-size: 11px;
-    line-height: 1.5;
-  }
+  .sidebar-date { padding: 16px 24px 0; color: rgba(255,255,255,0.5); font-size: 11px; line-height: 1.5; }
+  .nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 10px 16px; }
 
   /* ── MAIN ── */
-  .main-wrapper {
-    margin-left: 240px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  .main {
-    flex: 1;
-    padding: 32px 36px 0 36px;
-  }
-
+  .main-wrapper { margin-left: 240px; display: flex; flex-direction: column; min-height: 100vh; }
+  .main { flex: 1; padding: 32px 36px 0 36px; }
   .page { display:none; }
-  .page.active { display:block; }
+  .page.active { display:block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
   .page-header { margin-bottom: 28px; }
-  .page-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    color: var(--brown);
-    margin-bottom: 4px;
-  }
+  .page-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--brand-blue); margin-bottom: 4px; }
   .page-header p { color: var(--text-muted); font-size: 14px; }
 
   /* ── CARDS ── */
-  .cards-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-    margin-bottom: 28px;
-  }
-  .cards-row-4 {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-    margin-bottom: 24px;
-  }
-  .cards-row-2 {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-    margin-bottom: 28px;
-  }
-
+  .cards-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .cards-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
   .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 22px 24px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
+    background: var(--bg-card); border-radius: 16px; padding: 22px 24px;
+    box-shadow: var(--shadow); border: 1px solid var(--border); position: relative; overflow: hidden;
   }
-  .card::before {
-    content:'';
-    position:absolute; top:0; right:0;
-    width:80px; height:80px;
-    border-radius: 0 0 0 80px;
-    opacity:.07;
-  }
-  .card.gold::before { background: var(--gold); }
-  .card.green::before { background: var(--green); }
-  .card.red::before { background: var(--red); }
-  .card.blue::before { background: var(--blue); }
-  .card.purple::before { background: var(--purple); }
+  .card::before { content:''; position:absolute; top:0; right:0; width:80px; height:80px; border-radius: 0 0 0 80px; opacity:.08; }
+  .card.gold::before { background: var(--brand-gold); }
+  .card.green::before { background: var(--accent-green); }
+  .card.red::before { background: var(--accent-red); }
+  .card.blue::before { background: var(--brand-blue); }
 
-  .card-label {
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 1.2px; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 10px;
-  }
-  .card-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px; color: var(--brown);
-    line-height: 1;
-  }
-  .card-value.green { color: var(--green); }
-  .card-value.red { color: var(--red); }
-  .card-value.gold { color: var(--gold); }
-  .card-value.blue { color: var(--blue); }
-  .card-value.purple { color: var(--purple); }
+  .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .card-value { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; line-height: 1; }
+  .card-value.gold { color: var(--brand-gold); }
+  .card-value.green { color: var(--accent-green); }
+  .card-value.red { color: var(--accent-red); }
+  .card-value.blue { color: var(--brand-blue); }
   .card-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
   /* ── TABLE ── */
-  .table-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  .table-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 24px 14px;
-    border-bottom: 1px solid var(--cream-dark);
-    flex-wrap: wrap; gap: 10px;
-  }
-  .table-head h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px; color: var(--brown);
-  }
+  .table-card { background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+  .table-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+  .table-head h3 { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--brand-blue); }
 
   table { width:100%; border-collapse:collapse; }
-  th {
-    text-align:left; padding: 11px 18px;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase;
-    color: var(--text-muted);
-    background: var(--cream);
-    border-bottom: 1px solid var(--border);
-  }
-  td {
-    padding: 13px 18px;
-    font-size: 13.5px;
-    border-bottom: 1px solid var(--cream-dark);
-    color: var(--text);
-    vertical-align: middle;
-  }
+  th { text-align:left; padding: 11px 18px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border); }
+  [data-theme="dark"] th { background: rgba(255,255,255,0.02); }
+  td { padding: 13px 18px; font-size: 13.5px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--cream); }
+  tr:hover td { background: var(--table-hover); }
 
   /* ── BADGES ── */
-  .badge {
-    display: inline-block;
-    padding: 3px 10px; border-radius: 20px;
-    font-size: 11.5px; font-weight: 600;
-  }
-  .badge-masuk { background: #E8F5EE; color: var(--green); }
-  .badge-keluar { background: #FDECEA; color: var(--red); }
-  .badge-tunai { background: #FFF8E7; color: var(--gold); }
-  .badge-transfer { background: #EEF2FF; color: #4F46E5; }
-  .badge-qris { background: #F0FDF4; color: #15803D; }
-  .badge-lainnya { background: #F5F3FF; color: #7C3AED; }
-  .badge-aktif { background: #E8F5EE; color: var(--green); }
-  .badge-lunas { background: #F0F0F0; color: #666; }
-  .badge-hutang { background: #FEF3C7; color: #92400E; }
-
-  /* CLEAR badge — special */
-  .badge-clear {
-    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-    color: #065F46;
-    border: 1.5px solid #6EE7B7;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-  }
-
-  /* Sisa hutang highlight */
-  .sisa-ada { color: var(--red); font-weight: 700; }
-  .sisa-lunas { color: var(--green); font-weight: 600; font-size: 12px; }
-
-  /* Progress bar hutang */
-  .progress-wrap {
-    background: #F0EBE1;
-    border-radius: 100px;
-    height: 6px;
-    margin-top: 5px;
-    overflow: hidden;
-    width: 120px;
-  }
-  .progress-bar {
-    height: 6px;
-    border-radius: 100px;
-    transition: width .4s;
-  }
-  .progress-bar.danger { background: var(--red); }
-  .progress-bar.warn { background: var(--gold); }
-  .progress-bar.safe { background: var(--green); }
-
-  .amount-masuk { color: var(--green); font-weight: 600; }
-  .amount-keluar { color: var(--red); font-weight: 600; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; }
+  .badge-masuk { background: rgba(46,204,113,0.15); color: var(--accent-green); }
+  .badge-keluar { background: rgba(231,76,60,0.15); color: var(--accent-red); }
+  .badge-anggota { background: rgba(0,61,121,0.15); color: var(--brand-blue); border: 1px solid rgba(0,61,121,0.3); }
+  [data-theme="dark"] .badge-anggota { background: rgba(41,128,185,0.2); color: #5DADE2; }
+  .badge-non { background: rgba(127,140,141,0.15); color: var(--text-muted); }
+  .badge-aktif { background: rgba(242,169,0,0.15); color: var(--brand-gold); }
+  .badge-clear { background: rgba(46,204,113,0.15); color: var(--accent-green); border: 1px solid var(--accent-green); font-size: 11px; letter-spacing: 0.5px; }
+  
+  .sisa-ada { color: var(--accent-red); font-weight: 700; }
+  .sisa-lunas { color: var(--accent-green); font-weight: 600; font-size: 12px; }
+  .amount-masuk { color: var(--accent-green); font-weight: 700; }
+  .amount-keluar { color: var(--accent-red); font-weight: 700; }
 
   /* ── BUTTONS ── */
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 9px 16px; border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13.5px; font-weight: 600;
-    cursor: pointer; border: none; transition: all .2s;
-    white-space: nowrap;
-  }
-  .btn-primary { background: var(--brown); color: #FAF7F2; }
-  .btn-primary:hover { background: var(--brown-mid); }
-  .btn-gold { background: var(--gold); color: #fff; }
-  .btn-gold:hover { background: var(--gold-light); }
-  .btn-blue { background: var(--blue); color: #fff; }
-  .btn-blue:hover { background: #1e40af; }
-  .btn-ghost { background: transparent; color: var(--brown); border: 1.5px solid var(--border); }
-  .btn-ghost:hover { background: var(--cream-dark); }
-  .btn-danger { background: #FDECEA; color: var(--red); border: 1.5px solid #f5c6c6; }
-  .btn-danger:hover { background: #fbc8c8; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; border: none; transition: all .2s; white-space: nowrap; }
+  .btn-primary { background: var(--brand-blue); color: #FFF; }
+  .btn-primary:hover { background: var(--brand-blue-hover); }
+  .btn-gold { background: var(--brand-gold); color: #FFF; }
+  .btn-gold:hover { background: var(--brand-gold-hover); }
+  .btn-ghost { background: transparent; color: var(--text-main); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { background: var(--table-hover); }
+  .btn-danger { background: rgba(231,76,60,0.1); color: var(--accent-red); border: 1px solid rgba(231,76,60,0.3); }
+  .btn-danger:hover { background: rgba(231,76,60,0.2); }
   .btn-sm { padding: 5px 11px; font-size: 12px; }
 
-  /* ── MODAL ── */
-  .modal-bg {
-    display:none; position:fixed; inset:0;
-    background: rgba(30,15,5,0.5); z-index:200;
-    align-items:center; justify-content:center;
-    backdrop-filter: blur(2px);
-  }
-  .modal-bg.open { display:flex; }
-  .modal {
-    background: #fff;
-    border-radius: 20px;
-    padding: 30px;
-    width: 480px; max-width: 95vw;
-    max-height: 90vh; overflow-y: auto;
-    box-shadow: var(--shadow-lg);
-  }
-  .modal h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 19px; color: var(--brown);
-    margin-bottom: 20px;
-  }
+  /* ── MODAL & FORMS ── */
+  .modal-bg { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; backdrop-filter: blur(3px); }
+  .modal-bg.open { display:flex; animation: fadeIn 0.2s; }
+  .modal { background: var(--bg-card); border-radius: 20px; padding: 30px; width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--brand-blue); margin-bottom: 20px; }
 
-  /* ── FORM ── */
   .form-group { margin-bottom: 14px; }
-  label {
-    display: block;
-    font-size: 13px; font-weight: 600;
-    color: var(--brown-mid); margin-bottom: 5px;
-  }
-  input, select, textarea {
-    width:100%;
-    padding: 10px 13px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13.5px;
-    color: var(--text);
-    background: #fff;
-    outline: none;
-    transition: border-color .2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(200,150,42,0.10);
-  }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+  input, select, textarea { width:100%; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text-main); background: var(--input-bg); outline: none; transition: border-color .2s; }
+  input:focus, select:focus, textarea:focus { border-color: var(--brand-gold); box-shadow: 0 0 0 3px rgba(242,169,0,0.15); }
   textarea { min-height: 72px; resize: vertical; }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .modal-actions {
-    display:flex; gap:10px; justify-content:flex-end;
-    margin-top: 22px; padding-top: 18px;
-    border-top: 1px solid var(--cream-dark);
-  }
+  .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
 
-  /* ── SEARCH ── */
-  .search-bar {
-    display: flex; gap: 10px; align-items: center;
-    margin-bottom: 18px; flex-wrap: wrap;
-  }
+  .search-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
   .search-bar input { max-width: 260px; }
-
-  /* ── EMPTY STATE ── */
+  
   .empty { text-align: center; padding: 50px 20px; color: var(--text-muted); }
-  .empty-icon { font-size: 44px; margin-bottom: 10px; }
-  .empty p { font-size: 13.5px; }
-
-  /* ── TOAST ── */
-  #toast {
-    position: fixed; bottom: 28px; right: 28px;
-    background: var(--brown);
-    color: #FAF7F2;
-    padding: 11px 18px;
-    border-radius: 10px;
-    font-size: 13.5px;
-    box-shadow: var(--shadow-lg);
-    z-index: 999;
-    transform: translateY(80px);
-    opacity: 0;
-    transition: all .35s cubic-bezier(.34,1.56,.64,1);
-  }
+  .empty-icon { font-size: 44px; margin-bottom: 10px; opacity: 0.5; }
+  
+  #toast { position: fixed; bottom: 28px; right: 28px; background: var(--brand-blue); color: #FFF; padding: 11px 18px; border-radius: 10px; font-size: 13.5px; box-shadow: var(--shadow-lg); z-index: 999; transform: translateY(80px); opacity: 0; transition: all .35s cubic-bezier(.34,1.56,.64,1); }
   #toast.show { transform: translateY(0); opacity: 1; }
 
-  /* ── KEUANGAN KELUARGA SPECIFIC ── */
-  .kk-header-band {
-    background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%);
-    border-radius: 16px;
-    padding: 24px 28px;
-    margin-bottom: 24px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .kk-header-band h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    margin-bottom: 4px;
-  }
-  .kk-header-band p { font-size: 13px; opacity: .75; }
-  .kk-saldo-big {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: #FDE68A;
-  }
+  /* Info Banner */
+  .info-banner { background: rgba(242,169,0,0.1); border: 1px solid rgba(242,169,0,0.3); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; }
+  .info-banner-blue { background: rgba(0,61,121,0.05); border: 1px solid rgba(0,61,121,0.2); border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; }
+  [data-theme="dark"] .info-banner-blue { background: rgba(41,128,185,0.1); border-color: rgba(41,128,185,0.3); }
 
-  .category-chip {
-    display: inline-block;
-    padding: 2px 9px;
-    border-radius: 14px;
-    font-size: 11.5px;
-    font-weight: 600;
-    background: #EEF2FF;
-    color: #4338CA;
-  }
-  .category-chip.makan { background: #FEF3C7; color: #92400E; }
-  .category-chip.tagihan { background: #FEE2E2; color: #991B1B; }
-  .category-chip.transportasi { background: #E0F2FE; color: #075985; }
-  .category-chip.pendidikan { background: #F0FDF4; color: #166534; }
-  .category-chip.kesehatan { background: #FDF4FF; color: #7E22CE; }
-  .category-chip.tabungan { background: #ECFDF5; color: #065F46; }
-  .category-chip.investasi { background: #FEF9EE; color: #92400E; }
-  .category-chip.sidehustle { background: #E0F2FE; color: #0369A1; }
-  .category-chip.lainnya { background: #F3F4F6; color: #4B5563; }
-
-  /* income source tag in dashboard */
-  .source-tag {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 10px;
-    font-size: 11px; font-weight: 600;
-    background: #E0F2FE; color: #075985;
-  }
-  .source-tag.gsp { background: #FEF3C7; color: #92400E; }
-  .source-tag.gaji { background: #ECFDF5; color: #065F46; }
-
-  /* Summary anggaran strip */
-  .anggaran-strip {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--cream);
-    border-radius: 10px;
-    padding: 10px 16px;
-    margin-bottom: 6px;
-    border: 1px solid var(--border);
-  }
-  .anggaran-strip .label { flex: 1; font-size: 13px; font-weight: 600; color: var(--brown); }
-  .anggaran-strip .used { font-size: 13px; color: var(--red); font-weight: 600; }
-  .anggaran-strip .budget { font-size: 12px; color: var(--text-muted); }
-  .anggaran-strip .pbar-wrap { width: 100px; background: #DDD3C8; border-radius: 100px; height: 5px; }
-  .anggaran-strip .pbar { height: 5px; border-radius: 100px; }
-
-  /* Divider in sidebar */
-  .nav-divider {
-    height: 1px;
-    background: rgba(255,255,255,0.08);
-    margin: 10px 16px;
-  }
-
-  @media (max-width: 1100px) {
-    .cards-row-4 { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 900px) {
-    .sidebar { width: 200px; }
-    .main-wrapper { margin-left: 200px; }
-    .main { padding: 20px; }
-    .cards-row { grid-template-columns: 1fr; }
-    .cards-row-4 { grid-template-columns: 1fr 1fr; }
-  }
+  @media (max-width: 1100px) { .cards-row-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 900px) { .sidebar { width: 200px; } .main-wrapper { margin-left: 200px; } .main { padding: 20px; } .cards-row-4 { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body>
 
+<div id="lock-screen">
+  <div class="lock-box">
+    <div style="font-size: 48px; margin-bottom: 16px;">🔐</div>
+    <h1>GSP Terkunci</h1>
+    <p>Masukkan Passcode keamanan untuk mengakses data sistem.</p>
+    <div class="passcode-input-wrap">
+      <input type="password" id="passcode-input" placeholder="••••••" maxlength="6" inputmode="numeric" onkeydown="if(event.key === 'Enter') verifyPasscode()">
+    </div>
+    <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 15px; padding: 12px;" onclick="verifyPasscode()">Buka Kunci</button>
+  </div>
+</div>
+
 <nav class="sidebar">
   <div class="sidebar-logo">
     <h1>Griya<br>Simpan Pinjam</h1>
-    <span>Manajemen Dana</span>
+    <span>Core System</span>
   </div>
   <div class="nav">
-    <div class="nav-section-label">Simpan Pinjam</div>
+    <div class="nav-section-label">Main Menu</div>
     <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard', this)">
       <span class="nav-icon">🏠</span> Dashboard
     </div>
     <div class="nav-item" data-page="nasabah" onclick="showPage('nasabah', this)">
-      <span class="nav-icon">👥</span> Nasabah
+      <span class="nav-icon">👥</span> Data Nasabah
     </div>
     <div class="nav-item" data-page="transaksi" onclick="showPage('transaksi', this)">
-      <span class="nav-icon">💸</span> Transaksi
+      <span class="nav-icon">💸</span> Arus Transaksi
     </div>
     <div class="nav-item" data-page="laporan" onclick="showPage('laporan', this)">
-      <span class="nav-icon">📊</span> Laporan GSP
+      <span class="nav-icon">📊</span> Laporan Keuangan
     </div>
 
     <div class="nav-divider"></div>
-    <div class="nav-section-label">Keuangan Keluarga</div>
-
-    <div class="nav-item keluarga-nav" data-page="kk-dashboard" onclick="showPage('kk-dashboard', this)">
-      <span class="nav-icon">🏡</span> Ringkasan
-    </div>
-    <div class="nav-item keluarga-nav" data-page="kk-pemasukan" onclick="showPage('kk-pemasukan', this)">
-      <span class="nav-icon">💰</span> Pemasukan
-    </div>
-    <div class="nav-item keluarga-nav" data-page="kk-pengeluaran" onclick="showPage('kk-pengeluaran', this)">
-      <span class="nav-icon">🛒</span> Pengeluaran
-    </div>
-    <div class="nav-item keluarga-nav" data-page="kk-hutang" onclick="showPage('kk-hutang', this)">
-      <span class="nav-icon">📋</span> Hutang &amp; Cicilan
-    </div>
-    <div class="nav-item keluarga-nav" data-page="kk-anggaran" onclick="showPage('kk-anggaran', this)">
-      <span class="nav-icon">🎯</span> Anggaran
+    <div class="nav-section-label">Sistem</div>
+    <div class="nav-item" data-page="pengaturan" onclick="showPage('pengaturan', this)">
+      <span class="nav-icon">⚙️</span> Pengaturan
     </div>
   </div>
+  
   <div class="sidebar-date" id="sidebarDate"></div>
-  <div style="padding: 12px 16px 0;">
-    <button class="btn" style="width:100%;background:rgba(255,255,255,0.08);color:rgba(250,247,242,0.75);border:1px solid rgba(255,255,255,0.12);font-size:12.5px;justify-content:center;gap:8px;" onclick="openModal('modal-panduan')">
-      <span>❓</span> Panduan Penggunaan
+  <div style="padding: 12px 16px 0; display:flex; flex-direction:column; gap:8px;">
+    <button class="btn" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.12);justify-content:center;" onclick="toggleTheme()">
+      <span id="theme-icon">🌙</span> Mode Gelap
+    </button>
+    <button class="btn" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.12);justify-content:center;" onclick="openModal('modal-panduan')">
+      <span>❓</span> Panduan
+    </button>
+    <button class="btn btn-danger" style="justify-content:center; border:none;" onclick="lockApp()">
+      <span>🔒</span> Kunci Aplikasi
     </button>
   </div>
 </nav>
@@ -525,55 +273,58 @@
 
     <div class="page active" id="page-dashboard">
       <div class="page-header">
-        <h2>Dashboard</h2>
-        <p>Ringkasan kondisi keuangan Griya Simpan Pinjam</p>
+        <h2>Dashboard Utama</h2>
+        <p>Ringkasan kondisi keuangan & performa Griya Simpan Pinjam</p>
       </div>
-      <div style="background:linear-gradient(135deg,#FFF8E7,#FEF3C7);border:1px solid #F6D860;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
+      <div class="info-banner">
         <span style="font-size:20px;line-height:1.2">💡</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px">Tentang Modul ini</div>
-          <div style="font-size:12.5px;color:#78350F;line-height:1.6">Halaman ini menampilkan <b>ringkasan bisnis simpan pinjam (GSP)</b> Anda. Pencatatan transaksi pinjaman / pencairan dana tercatat sebagai <b>Uang Keluar</b>, dan pelunasan cicilan tercatat sebagai <b>Uang Masuk</b>.</div>
+          <div style="font-size:13px;font-weight:700;color:var(--brand-gold-hover);margin-bottom:3px">Logika Perhitungan Baru</div>
+          <div style="font-size:12.5px;line-height:1.6">
+            <b>Total Piutang</b> dihitung murni dari <b>Dana yang Keluar</b> (Pencairan Pokok) ke nasabah aktif.<br>
+            <b>Estimasi Valuasi (PnL)</b> dihitung dari total <b>Pokok + Bunga + Admin</b> yang diharapkan dari piutang berjalan.
+          </div>
         </div>
       </div>
+      
       <div class="cards-row-4">
-        <div class="card gold">
-          <div class="card-label">Total Piutang Aktif</div>
-          <div class="card-value gold" id="stat-dana">Rp 0</div>
+        <div class="card blue">
+          <div class="card-label">Total Piutang (Dana Keluar)</div>
+          <div class="card-value blue" id="stat-dana">Rp 0</div>
           <div class="card-sub" id="stat-nasabah-count">0 nasabah aktif</div>
         </div>
+        <div class="card gold">
+          <div class="card-label">Estimasi Valuasi (PnL)</div>
+          <div class="card-value gold" id="stat-pnl">Rp 0</div>
+          <div class="card-sub">Pokok + Bunga + Admin Aktif</div>
+        </div>
         <div class="card green">
-          <div class="card-label">Total Masuk (Bulan Ini)</div>
+          <div class="card-label">Uang Masuk (Bulan Ini)</div>
           <div class="card-value green" id="stat-masuk">Rp 0</div>
           <div class="card-sub" id="stat-masuk-count">0 transaksi</div>
         </div>
         <div class="card red">
-          <div class="card-label">Total Keluar (Bulan Ini)</div>
+          <div class="card-label">Uang Keluar (Bulan Ini)</div>
           <div class="card-value red" id="stat-keluar">Rp 0</div>
           <div class="card-sub" id="stat-keluar-count">0 transaksi</div>
-        </div>
-        <div class="card purple">
-          <div class="card-label">PnL Unrealized (Keseluruhan)</div>
-          <div class="card-value purple" id="stat-pnl">Rp 0</div>
-          <div class="card-sub">Selisih Masuk & Keluar</div>
         </div>
       </div>
 
       <div class="table-card" style="margin-bottom:24px">
         <div class="table-head">
-          <h3>Status Piutang Nasabah</h3>
-          <span style="font-size:12px;color:var(--text-muted)">Sisa hutang yang belum lunas</span>
+          <h3>Status Piutang Berjalan</h3>
+          <span style="font-size:12px;color:var(--text-muted)">Nasabah dengan sisa hutang aktif</span>
         </div>
         <table>
           <thead>
             <tr>
               <th>Nasabah</th>
-              <th>Total Pinjaman</th>
-              <th>Bunga</th>
-              <th>Biaya Admin</th>
+              <th>Tipe</th>
+              <th>Pencairan Pokok</th>
+              <th>Bunga & Admin</th>
               <th>Total Tagihan</th>
-              <th>Sudah Dibayar</th>
-              <th>Sisa</th>
-              <th>Progress</th>
+              <th>Terbayar</th>
+              <th>Sisa Tagihan</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -600,24 +351,39 @@
     <div class="page" id="page-nasabah">
       <div class="page-header">
         <h2>Data Nasabah</h2>
-        <p>Kelola semua nasabah simpan pinjam</p>
+        <p>Manajemen data anggota dan pinjaman berjalan</p>
       </div>
-      <div style="background:linear-gradient(135deg,#F0F9FF,#E0F2FE);border:1px solid #BAE6FD;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
+      <div class="info-banner-blue">
         <span style="font-size:20px;line-height:1.2">👥</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#075985;margin-bottom:3px">Manajemen Nasabah</div>
-          <div style="font-size:12.5px;color:#0C4A6E;line-height:1.6">Tambah, edit, dan pantau nasabah Anda. Saat mendaftarkan nasabah baru, sistem akan <b>otomatis mencatat transaksi Keluar (Pencairan)</b> sebesar pinjaman pokok. Sisa hutang berkurang otomatis setiap ada transaksi Masuk.</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:3px">Manajemen Terpusat</div>
+          <div style="font-size:12.5px;line-height:1.6">Tambah, edit, dan export data nasabah. Gunakan filter untuk membedakan <b>Anggota</b> vs <b>Non-Anggota</b>. Saat nasabah baru didaftarkan dengan nilai pinjaman, sistem akan <b>otomatis mencetak transaksi Keluar (Pencairan)</b>.</div>
         </div>
       </div>
       <div class="search-bar">
-        <input type="text" id="search-nasabah" placeholder="🔍  Cari nama atau no. telepon..." oninput="renderNasabah()">
+        <input type="text" id="search-nasabah" placeholder="🔍 Cari nama/telepon..." oninput="renderNasabah()">
+        
+        <select id="filter-nasabah-status" onchange="renderNasabah()" style="max-width:140px">
+          <option value="">Semua Status</option>
+          <option value="aktif">Belum Lunas</option>
+          <option value="lunas">Lunas</option>
+        </select>
+        
+        <select id="filter-nasabah-tipe" onchange="renderNasabah()" style="max-width:140px">
+          <option value="">Semua Tipe</option>
+          <option value="anggota">Anggota</option>
+          <option value="non-anggota">Non-Anggota</option>
+        </select>
+
         <button class="btn btn-primary" onclick="openNasabahModal()">+ Tambah Nasabah</button>
+        <button class="btn btn-ghost" onclick="exportNasabahCSV()">📄 Print CSV</button>
       </div>
+      
       <div class="table-card">
         <table>
           <thead>
             <tr>
-              <th>#</th><th>Nama</th><th>Telepon</th><th>Total Pinjaman</th><th>Bunga</th><th>Biaya Admin</th><th>Total Tagihan</th><th>Sisa Hutang</th><th>Status</th><th>Aksi</th>
+              <th>#</th><th>Nama Lengkap</th><th>Tipe</th><th>Pinjaman Pokok</th><th>Bunga & Biaya</th><th>Total Tagihan</th><th>Sisa Hutang</th><th>Status</th><th>Aksi</th>
             </tr>
           </thead>
           <tbody id="tbl-nasabah"></tbody>
@@ -628,28 +394,14 @@
     <div class="page" id="page-transaksi">
       <div class="page-header">
         <h2>Arus Transaksi</h2>
-        <p>Semua riwayat keluar masuk dana</p>
-      </div>
-      <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:1px solid #86EFAC;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:20px;line-height:1.2">💸</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:3px">Pencatatan Transaksi GSP</div>
-          <div style="font-size:12.5px;color:#14532D;line-height:1.6">Catat setiap <b>pembayaran masuk</b> (nasabah bayar cicilan) dan <b>pencairan keluar</b> (dana dipinjamkan ke nasabah). Penambahan transaksi otomatis menyesuaikan <b>Sisa Hutang</b> Nasabah.</div>
-        </div>
+        <p>Pencatatan uang masuk dan keluar</p>
       </div>
       <div class="search-bar">
-        <input type="text" id="search-transaksi" placeholder="🔍  Cari nasabah atau catatan..." oninput="renderTransaksi()">
+        <input type="text" id="search-transaksi" placeholder="🔍  Cari nasabah/catatan..." oninput="renderTransaksi()">
         <select id="filter-jenis" onchange="renderTransaksi()" style="max-width:150px">
           <option value="">Semua Jenis</option>
-          <option value="masuk">Masuk</option>
-          <option value="keluar">Keluar</option>
-        </select>
-        <select id="filter-metode" onchange="renderTransaksi()" style="max-width:160px">
-          <option value="">Semua Metode</option>
-          <option value="tunai">Tunai</option>
-          <option value="transfer">Transfer Bank</option>
-          <option value="qris">QRIS</option>
-          <option value="lainnya">Lainnya</option>
+          <option value="masuk">Uang Masuk</option>
+          <option value="keluar">Uang Keluar</option>
         </select>
         <button class="btn btn-primary" onclick="openTransaksiModal()">+ Tambah Transaksi</button>
       </div>
@@ -667,197 +419,67 @@
 
     <div class="page" id="page-laporan">
       <div class="page-header">
-        <h2>Laporan Keuangan GSP</h2>
-        <p>Ringkasan dan analisis dana simpan pinjam</p>
+        <h2>Laporan Keuangan</h2>
+        <p>Rekapitulasi total putaran dana GSP</p>
       </div>
       <div class="cards-row-2">
         <div class="card green">
-          <div class="card-label">Total Pemasukan</div>
+          <div class="card-label">Total Volume Pemasukan</div>
           <div class="card-value green" id="lap-masuk">Rp 0</div>
           <div class="card-sub" id="lap-masuk-trx"></div>
         </div>
         <div class="card red">
-          <div class="card-label">Total Pengeluaran</div>
+          <div class="card-label">Total Volume Pengeluaran</div>
           <div class="card-value red" id="lap-keluar">Rp 0</div>
           <div class="card-sub" id="lap-keluar-trx"></div>
         </div>
       </div>
       <div class="table-card" style="margin-bottom:24px">
-        <div class="table-head"><h3>Ringkasan Per Nasabah</h3></div>
+        <div class="table-head"><h3>Rekap Arus Dana Per Nasabah</h3></div>
         <table>
-          <thead><tr><th>Nama Nasabah</th><th>Total Masuk</th><th>Total Keluar</th><th>Selisih</th><th>Status</th></tr></thead>
+          <thead><tr><th>Nama Nasabah</th><th>Tipe</th><th>Total Masuk (Dibayar)</th><th>Total Keluar (Dipinjam)</th><th>Selisih (Net)</th><th>Status</th></tr></thead>
           <tbody id="tbl-laporan-nasabah"></tbody>
         </table>
       </div>
-      <div class="table-card">
-        <div class="table-head"><h3>Rekap Per Metode Pembayaran</h3></div>
-        <table>
-          <thead><tr><th>Metode</th><th>Jumlah Transaksi</th><th>Total Volume</th></tr></thead>
-          <tbody id="tbl-laporan-metode"></tbody>
-        </table>
-      </div>
     </div>
 
-    <div class="page" id="page-kk-dashboard">
-      <div style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #A5B4FC;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:20px;line-height:1.2">🏡</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#3730A3;margin-bottom:3px">Keuangan Keluarga — Ringkasan</div>
-          <div style="font-size:12.5px;color:#312E81;line-height:1.6">Modul ini <b>terpisah dari GSP</b> dan digunakan untuk mencatat keuangan rumah tangga pribadi Anda. Profit GSP bulan ini otomatis dihitung dan ditampilkan sebagai referensi pemasukan.</div>
-        </div>
-      </div>
-      <div class="kk-header-band">
-        <div>
-          <h2>Keuangan Keluarga</h2>
-          <p>Saldo bersih bulan ini (pemasukan - pengeluaran)</p>
-          <div class="kk-saldo-big" id="kk-saldo-bersih">Rp 0</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:12px;opacity:.7;margin-bottom:4px">Profit GSP bulan ini</div>
-          <div style="font-size:22px;font-weight:700;font-family:'Playfair Display',serif;color:#FDE68A" id="kk-gsp-profit-header">Rp 0</div>
-          <div style="font-size:11px;opacity:.6;margin-top:2px">sudah termasuk dalam pemasukan</div>
-        </div>
-      </div>
-
-      <div class="cards-row-4">
-        <div class="card green">
-          <div class="card-label">Pemasukan Bulan Ini</div>
-          <div class="card-value green" id="kk-stat-masuk">Rp 0</div>
-          <div class="card-sub" id="kk-stat-masuk-sub"></div>
-        </div>
-        <div class="card red">
-          <div class="card-label">Pengeluaran Bulan Ini</div>
-          <div class="card-value red" id="kk-stat-keluar">Rp 0</div>
-          <div class="card-sub" id="kk-stat-keluar-sub"></div>
-        </div>
-        <div class="card gold">
-          <div class="card-label">Profit GSP (bulan ini)</div>
-          <div class="card-value gold" id="kk-stat-gsp">Rp 0</div>
-          <div class="card-sub">side hustle income</div>
-        </div>
-        <div class="card blue">
-          <div class="card-label">Total Hutang Keluarga</div>
-          <div class="card-value blue" id="kk-stat-hutang">Rp 0</div>
-          <div class="card-sub" id="kk-stat-hutang-sub"></div>
-        </div>
-      </div>
-
-      <div class="table-card" style="margin-bottom:24px">
-        <div class="table-head">
-          <h3>Hutang &amp; Cicilan Keluarga</h3>
-          <button class="btn btn-blue btn-sm" onclick="showPage('kk-hutang', document.querySelector('[data-page=kk-hutang]'))">Kelola →</button>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Nama Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Status</th></tr>
-          </thead>
-          <tbody id="kk-tbl-hutang-mini"></tbody>
-        </table>
-      </div>
-
-      <div class="table-card">
-        <div class="table-head">
-          <h3>Transaksi Keluarga Terbaru</h3>
-          <button class="btn btn-blue btn-sm" onclick="openKKTransaksiModal()">+ Tambah</button>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th></tr>
-          </thead>
-          <tbody id="kk-tbl-recent"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="page" id="page-kk-pemasukan">
+    <div class="page" id="page-pengaturan">
       <div class="page-header">
-        <h2>Pemasukan Keluarga</h2>
-        <p>Gaji, side hustle (termasuk profit GSP), dan sumber lainnya</p>
+        <h2>Pengaturan Sistem</h2>
+        <p>Manajemen database lokal, backup, dan pemulihan data</p>
       </div>
-      <div class="search-bar">
-        <input type="text" id="search-kk-masuk" placeholder="🔍  Cari pemasukan..." oninput="renderKKTransaksi('masuk')">
-        <button class="btn btn-blue" onclick="openKKTransaksiModal('masuk')">+ Tambah Pemasukan</button>
-      </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr><th>Tanggal</th><th>Keterangan</th><th>Sumber</th><th>Jumlah</th><th>Aksi</th></tr>
-          </thead>
-          <tbody id="tbl-kk-masuk"></tbody>
-        </table>
-      </div>
-    </div>
+      
+      <div class="cards-row-2">
+        <div class="card">
+          <div style="font-size:32px; margin-bottom:12px">💾</div>
+          <h3 style="font-family:'Playfair Display',serif; color:var(--brand-blue); margin-bottom:8px">Backup & Restore</h3>
+          <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px">
+            Simpan seluruh data nasabah dan transaksi Anda ke dalam file JSON untuk cadangan, atau pulihkan data dari file backup sebelumnya.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="exportJSON()">⬇️ Export Data (JSON)</button>
+            <label class="btn btn-ghost" style="cursor:pointer">
+              ⬆️ Import Data
+              <input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+            </label>
+          </div>
+        </div>
 
-    <div class="page" id="page-kk-pengeluaran">
-      <div class="page-header">
-        <h2>Pengeluaran Keluarga</h2>
-        <p>Semua pengeluaran rumah tangga per kategori</p>
-      </div>
-      <div class="search-bar">
-        <input type="text" id="search-kk-keluar" placeholder="🔍  Cari pengeluaran..." oninput="renderKKTransaksi('keluar')">
-        <select id="filter-kk-kategori" onchange="renderKKTransaksi('keluar')" style="max-width:180px">
-          <option value="">Semua Kategori</option>
-          <option value="makan">🍽 Makan & Minum</option>
-          <option value="tagihan">💡 Tagihan</option>
-          <option value="transportasi">🚗 Transportasi</option>
-          <option value="pendidikan">📚 Pendidikan</option>
-          <option value="kesehatan">🏥 Kesehatan</option>
-          <option value="tabungan">🐷 Tabungan</option>
-          <option value="investasi">📈 Investasi</option>
-          <option value="lainnya">📦 Lainnya</option>
-        </select>
-        <button class="btn btn-blue" onclick="openKKTransaksiModal('keluar')">+ Tambah Pengeluaran</button>
-      </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jumlah</th><th>Aksi</th></tr>
-          </thead>
-          <tbody id="tbl-kk-keluar"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="page" id="page-kk-hutang">
-      <div class="page-header">
-        <h2>Hutang &amp; Cicilan Keluarga</h2>
-        <p>KPR, KTA, kartu kredit, dan hutang personal</p>
-      </div>
-      <div class="search-bar">
-        <button class="btn btn-blue" onclick="openHutangModal()">+ Tambah Hutang / Cicilan</button>
-      </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr><th>Nama Hutang</th><th>Pemberi Hutang</th><th>Pokok</th><th>Sudah Bayar</th><th>Sisa</th><th>Progress</th><th>Cicilan/Bln</th><th>Status</th><th>Aksi</th></tr>
-          </thead>
-          <tbody id="tbl-kk-hutang"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="page" id="page-kk-anggaran">
-      <div class="page-header">
-        <h2>Anggaran Bulanan</h2>
-        <p>Target pengeluaran per kategori bulan ini</p>
-      </div>
-      <div style="display:flex;gap:10px;margin-bottom:18px">
-        <button class="btn btn-blue" onclick="openAnggaranModal()">+ Set Anggaran</button>
-      </div>
-      <div class="table-card">
-        <div class="table-head"><h3>Realisasi vs Anggaran Bulan Ini</h3></div>
-        <table>
-          <thead>
-            <tr><th>Kategori</th><th>Anggaran</th><th>Terpakai</th><th>Sisa</th><th>Progress</th><th>Aksi</th></tr>
-          </thead>
-          <tbody id="tbl-anggaran"></tbody>
-        </table>
+        <div class="card" style="border-color: rgba(231,76,60,0.3)">
+          <div style="font-size:32px; margin-bottom:12px">⚠️</div>
+          <h3 style="font-family:'Playfair Display',serif; color:var(--accent-red); margin-bottom:8px">Danger Zone</h3>
+          <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px">
+            Fitur ini akan <b>menghapus seluruh data</b> nasabah dan transaksi dari browser Anda. Pastikan Anda sudah melakukan Export Data sebelum mereset.
+          </p>
+          <button class="btn btn-danger" onclick="confirmReset()">🗑️ Reset Seluruh Data</button>
+        </div>
       </div>
     </div>
 
   </main>
   
-  <div style="text-align: center; padding: 30px; font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: auto;">
+  <div style="text-align: center; padding: 30px; font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: auto;">
+    Griya Simpan Pinjam Core System <br>
     Created by ZenkichiArc
   </div>
 </div>
@@ -866,45 +488,51 @@
   <div class="modal">
     <h3 id="modal-nasabah-title">Tambah Nasabah Baru</h3>
     <input type="hidden" id="nasabah-id">
-    <div class="form-group">
-      <label>Nama Lengkap *</label>
-      <input type="text" id="nasabah-nama" placeholder="Masukkan nama lengkap">
-    </div>
+    
     <div class="form-row">
       <div class="form-group">
-        <label>No. Telepon</label>
-        <input type="text" id="nasabah-telepon" placeholder="08xx-xxxx-xxxx">
+        <label>Nama Lengkap *</label>
+        <input type="text" id="nasabah-nama" placeholder="Sesuai KTP">
       </div>
       <div class="form-group">
-        <label>Status</label>
+        <label>Tipe Nasabah</label>
+        <select id="nasabah-tipe">
+          <option value="anggota">Anggota Koperasi/GSP</option>
+          <option value="non-anggota">Non-Anggota (Umum)</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>No. Telepon / WA</label>
+        <input type="text" id="nasabah-telepon" placeholder="08xx...">
+      </div>
+      <div class="form-group">
+        <label>Status Tagihan</label>
         <select id="nasabah-status">
-          <option value="aktif">Aktif</option>
+          <option value="aktif">Belum Lunas (Aktif)</option>
           <option value="lunas">Lunas</option>
         </select>
       </div>
     </div>
-    <div class="form-group">
-      <label>Alamat</label>
-      <textarea id="nasabah-alamat" placeholder="Alamat nasabah (opsional)"></textarea>
-    </div>
+    
     <div class="form-row">
       <div class="form-group">
-        <label>Total Pinjaman (Rp)</label>
+        <label>Pencairan Pokok (Rp)</label>
         <input type="number" id="nasabah-pinjaman" placeholder="0" oninput="previewTotalTagih()">
       </div>
       <div class="form-group">
-        <label>Sisa Pinjaman (Rp)</label>
-        <input type="number" id="nasabah-sisa" placeholder="0" readonly style="background:var(--cream);color:var(--text-muted);cursor:not-allowed" title="Dihitung otomatis dari transaksi">
+        <label>Sisa Tagihan (Rp)</label>
+        <input type="number" id="nasabah-sisa" placeholder="0" readonly style="background:rgba(0,0,0,0.03);cursor:not-allowed" title="Auto-kalkulasi dari transaksi">
       </div>
     </div>
-    <div id="nasabah-total-preview" style="display:none;background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:#92400E">
-      💰 Total tagihan = Pinjaman + Bunga + Admin = <b id="preview-total-tagih">Rp 0</b>
-    </div>
-    <div style="background:var(--cream);border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--border)">
-      <div style="font-size:12px;font-weight:700;color:var(--brown-mid);margin-bottom:10px;letter-spacing:.5px">⚙️ BUNGA & BIAYA</div>
+
+    <div style="background:var(--table-hover); border-radius:12px; padding:14px 16px; margin-bottom:14px; border:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:700;color:var(--brand-blue);margin-bottom:10px;letter-spacing:.5px">⚙️ KOMPONEN BUNGA & ADMIN</div>
       <div class="form-row">
         <div class="form-group" style="margin-bottom:0">
-          <label>Jenis Bunga</label>
+          <label>Skema Bunga</label>
           <select id="nasabah-bunga-tipe" onchange="toggleBungaInput()">
             <option value="none">— Tanpa Bunga —</option>
             <option value="pct">% dari Pokok</option>
@@ -913,35 +541,42 @@
         </div>
         <div class="form-group" style="margin-bottom:0" id="nasabah-bunga-input-group">
           <label id="nasabah-bunga-label">Nilai Bunga</label>
-          <input type="number" id="nasabah-bunga-nilai" placeholder="0" min="0">
+          <input type="number" id="nasabah-bunga-nilai" placeholder="0" min="0" oninput="previewTotalTagih()">
         </div>
       </div>
       <div class="form-group" style="margin-top:10px;margin-bottom:0">
         <label>Biaya Admin (Rp)</label>
-        <input type="number" id="nasabah-admin" placeholder="0" min="0">
+        <input type="number" id="nasabah-admin" placeholder="0" min="0" oninput="previewTotalTagih()">
       </div>
     </div>
-    <div class="form-group">
-      <label>Catatan</label>
-      <textarea id="nasabah-catatan" placeholder="Keterangan tambahan..."></textarea>
+    
+    <div id="nasabah-total-preview" style="background:rgba(242,169,0,0.1);border:1px solid rgba(242,169,0,0.3);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:var(--brand-gold-hover)">
+      💰 <b>Total Tagihan Diharapkan:</b> <span id="preview-total-tagih">Rp 0</span>
     </div>
+
+    <div class="form-group">
+      <label>Alamat / Catatan Internal</label>
+      <textarea id="nasabah-catatan" placeholder="Detail alamat atau keterangan tambahan..."></textarea>
+    </div>
+    
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-nasabah')">Batal</button>
-      <button class="btn btn-primary" onclick="saveNasabah()">Simpan</button>
+      <button class="btn btn-primary" onclick="saveNasabah()">Simpan Nasabah</button>
     </div>
   </div>
 </div>
 
 <div class="modal-bg" id="modal-transaksi">
   <div class="modal">
-    <h3 id="modal-transaksi-title">Tambah Transaksi</h3>
+    <h3 id="modal-transaksi-title">Catat Transaksi</h3>
     <input type="hidden" id="trx-id">
+    
     <div class="form-row">
       <div class="form-group">
-        <label>Jenis Transaksi *</label>
+        <label>Arah Dana *</label>
         <select id="trx-jenis">
-          <option value="masuk">💚 Masuk (Bayar Cicilan / Setor)</option>
-          <option value="keluar">❤️ Keluar (Pencairan / Pinjam Dana)</option>
+          <option value="masuk">💚 Uang Masuk (Cicilan Dibayar)</option>
+          <option value="keluar">❤️ Uang Keluar (Pencairan Pokok)</option>
         </select>
       </div>
       <div class="form-group">
@@ -949,189 +584,48 @@
         <input type="date" id="trx-tanggal">
       </div>
     </div>
+    
     <div class="form-group">
-      <label>Nasabah *</label>
+      <label>Pilih Nasabah *</label>
       <select id="trx-nasabah"><option value="">-- Pilih Nasabah --</option></select>
     </div>
+    
     <div class="form-row">
       <div class="form-group">
-        <label>Jumlah (Rp) *</label>
+        <label>Jumlah Nominal (Rp) *</label>
         <input type="number" id="trx-jumlah" placeholder="0">
       </div>
       <div class="form-group">
         <label>Metode Pembayaran</label>
         <select id="trx-metode">
-          <option value="tunai">Tunai</option>
-          <option value="transfer">Transfer Bank</option>
+          <option value="transfer">Transfer Bank (Mandiri/dll)</option>
+          <option value="tunai">Tunai / Cash</option>
           <option value="qris">QRIS</option>
           <option value="lainnya">Lainnya</option>
         </select>
       </div>
     </div>
+    
     <div class="form-group">
-      <label>Catatan</label>
-      <textarea id="trx-catatan" placeholder="Keterangan transaksi..."></textarea>
+      <label>Keterangan / Referensi</label>
+      <textarea id="trx-catatan" placeholder="Misal: Cicilan ke-1, atau No. Referensi Transfer..."></textarea>
     </div>
+    
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-transaksi')">Batal</button>
-      <button class="btn btn-primary" onclick="saveTransaksi()">Simpan</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal-kk-transaksi">
-  <div class="modal">
-    <h3 id="modal-kk-trx-title">Tambah Transaksi Keluarga</h3>
-    <input type="hidden" id="kk-trx-id">
-    <div class="form-row">
-      <div class="form-group">
-        <label>Jenis *</label>
-        <select id="kk-trx-jenis" onchange="toggleKKKategori()">
-          <option value="masuk">💚 Pemasukan</option>
-          <option value="keluar">❤️ Pengeluaran</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Tanggal *</label>
-        <input type="date" id="kk-trx-tanggal">
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Keterangan *</label>
-      <input type="text" id="kk-trx-keterangan" placeholder="Contoh: Gaji bulan ini, Belanja dapur...">
-    </div>
-    <div class="form-group" id="kk-kategori-group">
-      <label>Kategori</label>
-      <select id="kk-trx-kategori">
-        <option value="makan">🍽 Makan & Minum</option>
-        <option value="tagihan">💡 Tagihan (Listrik, Air, Internet)</option>
-        <option value="transportasi">🚗 Transportasi</option>
-        <option value="pendidikan">📚 Pendidikan</option>
-        <option value="kesehatan">🏥 Kesehatan</option>
-        <option value="tabungan">🐷 Tabungan</option>
-        <option value="investasi">📈 Investasi</option>
-        <option value="lainnya">📦 Lainnya</option>
-      </select>
-    </div>
-    <div class="form-group" id="kk-sumber-group" style="display:none">
-      <label>Sumber Pemasukan</label>
-      <select id="kk-trx-sumber">
-        <option value="gaji">💼 Gaji / Penghasilan Tetap</option>
-        <option value="sidehustle">🏦 Side Hustle (GSP & lainnya)</option>
-        <option value="lainnya">📦 Lainnya</option>
-      </select>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Jumlah (Rp) *</label>
-        <input type="number" id="kk-trx-jumlah" placeholder="0">
-      </div>
-      <div class="form-group">
-        <label>Metode</label>
-        <select id="kk-trx-metode">
-          <option value="tunai">Tunai</option>
-          <option value="transfer">Transfer</option>
-          <option value="qris">QRIS</option>
-          <option value="lainnya">Lainnya</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Catatan</label>
-      <textarea id="kk-trx-catatan" placeholder="Opsional..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-kk-transaksi')">Batal</button>
-      <button class="btn btn-blue" onclick="saveKKTransaksi()">Simpan</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal-kk-hutang">
-  <div class="modal">
-    <h3 id="modal-hutang-title">Tambah Hutang / Cicilan</h3>
-    <input type="hidden" id="hutang-id">
-    <div class="form-group">
-      <label>Nama Hutang *</label>
-      <input type="text" id="hutang-nama" placeholder="Contoh: KPR BTN, Cicilan Motor, Pinjam ke Pak Budi">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Pemberi Hutang</label>
-        <input type="text" id="hutang-pemberi" placeholder="Bank / Orang">
-      </div>
-      <div class="form-group">
-        <label>Tanggal Mulai</label>
-        <input type="date" id="hutang-tanggal">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Total Pokok (Rp) *</label>
-        <input type="number" id="hutang-pokok" placeholder="0">
-      </div>
-      <div class="form-group">
-        <label>Sudah Dibayar (Rp)</label>
-        <input type="number" id="hutang-dibayar" placeholder="0">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Cicilan per Bulan (Rp)</label>
-        <input type="number" id="hutang-cicilan" placeholder="0">
-      </div>
-      <div class="form-group">
-        <label>Jatuh Tempo (tgl tiap bulan)</label>
-        <input type="number" id="hutang-jatuh" min="1" max="31" placeholder="15">
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Catatan</label>
-      <textarea id="hutang-catatan" placeholder="Opsional..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-kk-hutang')">Batal</button>
-      <button class="btn btn-blue" onclick="saveHutang()">Simpan</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal-anggaran">
-  <div class="modal">
-    <h3>Set Anggaran Bulanan</h3>
-    <input type="hidden" id="anggaran-id">
-    <div class="form-group">
-      <label>Kategori *</label>
-      <select id="anggaran-kategori">
-        <option value="makan">🍽 Makan & Minum</option>
-        <option value="tagihan">💡 Tagihan</option>
-        <option value="transportasi">🚗 Transportasi</option>
-        <option value="pendidikan">📚 Pendidikan</option>
-        <option value="kesehatan">🏥 Kesehatan</option>
-        <option value="tabungan">🐷 Tabungan</option>
-        <option value="investasi">📈 Investasi</option>
-        <option value="lainnya">📦 Lainnya</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Target Anggaran (Rp) *</label>
-      <input type="number" id="anggaran-nominal" placeholder="0">
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-anggaran')">Batal</button>
-      <button class="btn btn-blue" onclick="saveAnggaran()">Simpan</button>
+      <button class="btn btn-primary" onclick="saveTransaksi()">Simpan Transaksi</button>
     </div>
   </div>
 </div>
 
 <div class="modal-bg" id="modal-hapus">
   <div class="modal" style="max-width:360px;text-align:center">
-    <div style="font-size:44px;margin-bottom:10px">🗑️</div>
+    <div style="font-size:44px;margin-bottom:10px">⚠️</div>
     <h3 id="modal-hapus-title">Hapus Data?</h3>
-    <p style="color:var(--text-muted);font-size:13px;margin:10px 0 22px" id="modal-hapus-desc">Data yang dihapus tidak bisa dikembalikan.</p>
+    <p style="color:var(--text-muted);font-size:13px;margin:10px 0 22px" id="modal-hapus-desc">Tindakan ini permanen dan tidak dapat dibatalkan.</p>
     <div class="modal-actions" style="justify-content:center">
       <button class="btn btn-ghost" onclick="closeModal('modal-hapus')">Batal</button>
-      <button class="btn btn-danger" id="btn-hapus-confirm">Ya, Hapus</button>
+      <button class="btn btn-danger" id="btn-hapus-confirm">Ya, Lanjutkan</button>
     </div>
   </div>
 </div>
@@ -1139,57 +633,32 @@
 <div class="modal-bg" id="modal-panduan">
   <div class="modal" style="width:600px;max-width:96vw">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <h3 style="margin-bottom:0">📖 Panduan Penggunaan</h3>
+      <h3 style="margin-bottom:0">📖 Panduan Sistem GSP</h3>
       <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-panduan')">✕ Tutup</button>
     </div>
 
-    <div style="background:linear-gradient(135deg,#3D2B1F,#6B4C3B);border-radius:12px;padding:16px 18px;margin-bottom:18px;color:#FAF7F2">
-      <div style="font-size:16px;font-weight:700;font-family:'Playfair Display',serif;margin-bottom:6px">Griya Simpan Pinjam</div>
-      <div style="font-size:12.5px;opacity:.85;line-height:1.7">Aplikasi manajemen keuangan dua-dalam-satu: mencatat bisnis simpan pinjam (GSP) dan keuangan rumah tangga pribadi Anda. Semua data tersimpan otomatis di browser — tidak perlu internet, tidak ada server, 100% privat.</div>
+    <div style="background:var(--brand-blue); border-radius:12px; padding:16px 18px; margin-bottom:18px; color:#FFF">
+      <div style="font-size:16px;font-weight:700;font-family:'Playfair Display',serif;margin-bottom:6px;color:var(--brand-gold)">Logika Bisnis GSP (Diperbarui)</div>
+      <div style="font-size:12.5px;opacity:.9;line-height:1.7">Sistem ini berfokus murni pada operasional simpan pinjam. Tidak ada koneksi server luar, 100% data tersimpan di browser perangkat Anda untuk privasi maksimal.</div>
     </div>
 
-    <div style="margin-bottom:16px">
-      <div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">🏦 Modul Simpan Pinjam (GSP)</div>
-      <div style="display:grid;gap:8px">
-        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">🏠</span>
-          <div><b style="font-size:13px;color:var(--brown)">Dashboard GSP</b><br><span style="font-size:12px;color:var(--text-muted)">Lihat total piutang aktif, PnL unrealized, arus kas, dan status tagihan semua nasabah.</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">👥</span>
-          <div><b style="font-size:13px;color:var(--brown)">Nasabah</b><br><span style="font-size:12px;color:var(--text-muted)">Daftarkan nasabah (otomatis mencatat pencairan dana). Sisa tagihan otomatis berkurang tiap pembayaran.</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">💸</span>
-          <div><b style="font-size:13px;color:var(--brown)">Transaksi</b><br><span style="font-size:12px;color:var(--text-muted)">Catat setiap cicilan masuk (Masuk) dan pinjaman dicairkan (Keluar).</span></div>
-        </div>
+    <div style="display:grid;gap:8px;margin-bottom:16px">
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
+        <span style="font-size:16px;margin-top:1px">📊</span>
+        <div><b style="font-size:13px;color:var(--text-main)">Definisi Dashboard</b><br><span style="font-size:12px;color:var(--text-muted)"><b>Total Piutang:</b> Akumulasi Dana Keluar (Pokok) ke nasabah aktif.<br><b>Estimasi Valuasi (PnL):</b> Total Pokok + Bunga + Admin yang diharap kembali.</span></div>
       </div>
-    </div>
-
-    <div style="margin-bottom:16px">
-      <div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#3B82F6;margin-bottom:10px">🏡 Modul Keuangan Keluarga</div>
-      <div style="display:grid;gap:8px">
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">💰</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Pemasukan & Pengeluaran</b><br><span style="font-size:12px;color:#374151">Catat segala arus uang masuk dan keluar per kategori rumah tanggamu.</span></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#EEF2FF;border-radius:10px;padding:11px 13px">
-          <span style="font-size:16px;margin-top:1px">🎯</span>
-          <div><b style="font-size:13px;color:#1E3A8A">Anggaran Bulanan</b><br><span style="font-size:12px;color:#374151">Set target pengeluaran. Realisasi dihitung otomatis beserta warna status pemakaian.</span></div>
-        </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
+        <span style="font-size:16px;margin-top:1px">👥</span>
+        <div><b style="font-size:13px;color:var(--text-main)">Anggota vs Non-Anggota</b><br><span style="font-size:12px;color:var(--text-muted)">Anda bisa membedakan status nasabah saat mendaftar. Gunakan Filter di menu Nasabah dan cetak CSV untuk laporan spesifik.</span></div>
       </div>
-    </div>
-
-    <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:13px 15px">
-      <div style="font-size:12px;font-weight:700;color:#92400E;margin-bottom:7px">💾 Tips Penting</div>
-      <ul style="font-size:12px;color:#78350F;line-height:1.8;padding-left:16px">
-        <li>Data tersimpan otomatis di <b>localStorage browser</b> Anda — tidak akan hilang selama tidak hapus cache browser.</li>
-        <li>Gunakan browser yang sama di perangkat yang sama agar data selalu tersedia.</li>
-      </ul>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
+        <span style="font-size:16px;margin-top:1px">⚙️</span>
+        <div><b style="font-size:13px;color:var(--text-main)">Backup JSON Berkala</b><br><span style="font-size:12px;color:var(--text-muted)">Sangat disarankan untuk rutin melakukan <b>Export Data</b> di menu Pengaturan seminggu sekali untuk mencegah hilang data jika browser ter-clear cache.</span></div>
+      </div>
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="closeModal('modal-panduan')">Mengerti, Mulai Gunakan →</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-panduan')">Mengerti</button>
     </div>
   </div>
 </div>
@@ -1198,25 +667,67 @@
 
 <script>
 // ══════════════════════════════════════════
-//  DB LAYER
+//  SECURITY & THEME LOGIC
+// ══════════════════════════════════════════
+const PASSCODE = "999999";
+
+function checkLock() {
+  const isUnlocked = sessionStorage.getItem('gsp_unlocked') === 'true';
+  const lockScreen = document.getElementById('lock-screen');
+  if (!isUnlocked) {
+    lockScreen.classList.remove('hidden');
+    document.getElementById('passcode-input').focus();
+  } else {
+    lockScreen.classList.add('hidden');
+  }
+}
+
+function verifyPasscode() {
+  const inputEl = document.getElementById('passcode-input');
+  if (inputEl.value === PASSCODE) {
+    sessionStorage.setItem('gsp_unlocked', 'true');
+    document.getElementById('lock-screen').classList.add('hidden');
+    inputEl.value = ''; 
+    toast('🔓 Akses Diberikan');
+  } else {
+    toast('❌ Passcode Salah!');
+    inputEl.value = '';
+    inputEl.focus();
+  }
+}
+
+function lockApp() {
+  sessionStorage.removeItem('gsp_unlocked');
+  checkLock();
+  toast('🔒 Sistem Terkunci');
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('gsp_theme', next);
+  document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('gsp_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-icon').textContent = saved === 'dark' ? '☀️' : '🌙';
+}
+
+// ══════════════════════════════════════════
+//  DATABASE LAYER (LOCALSTORAGE)
 // ══════════════════════════════════════════
 const DB = {
   get nasabah()     { return JSON.parse(localStorage.getItem('gsp_nasabah')    || '[]'); },
   set nasabah(v)    { localStorage.setItem('gsp_nasabah',    JSON.stringify(v)); },
   get transaksi()   { return JSON.parse(localStorage.getItem('gsp_transaksi')  || '[]'); },
-  set transaksi(v)  { localStorage.setItem('gsp_transaksi',  JSON.stringify(v)); },
-  // Keuangan Keluarga
-  get kkTrx()       { return JSON.parse(localStorage.getItem('kk_trx')         || '[]'); },
-  set kkTrx(v)      { localStorage.setItem('kk_trx',         JSON.stringify(v)); },
-  get kkHutang()    { return JSON.parse(localStorage.getItem('kk_hutang')       || '[]'); },
-  set kkHutang(v)   { localStorage.setItem('kk_hutang',      JSON.stringify(v)); },
-  get kkAnggaran()  { return JSON.parse(localStorage.getItem('kk_anggaran')     || '[]'); },
-  set kkAnggaran(v) { localStorage.setItem('kk_anggaran',    JSON.stringify(v)); },
+  set transaksi(v)  { localStorage.setItem('gsp_transaksi',  JSON.stringify(v)); }
 };
 
-// ══════════════════════════════════════════
-//  MIGRATION & LOGIC FIXING (AUTO-RUN)
-// ══════════════════════════════════════════
+// Auto-patch missing fields for backward compatibility
 function fixCacheData() {
   let ns = DB.nasabah;
   let trx = DB.transaksi;
@@ -1224,24 +735,23 @@ function fixCacheData() {
 
   ns.forEach(n => {
     let pinjaman = Number(n.pinjaman || 0);
+    
+    // Add missing tipe
+    if (!n.tipe) { n.tipe = 'anggota'; updated = true; }
 
-    // 1. Pastikan setiap nasabah yang punya pinjaman awal sudah ada transaksi "Keluar" (Pencairan)
+    // Auto-create pencairan
     let hasKeluar = trx.some(t => t.nasabahId === n.id && t.jenis === 'keluar');
     if (!hasKeluar && pinjaman > 0) {
       trx.unshift({
-        id: uid(),
-        jenis: 'keluar',
+        id: uid(), jenis: 'keluar',
         tanggal: n.createdAt ? n.createdAt.slice(0, 10) : new Date().toISOString().slice(0,10),
-        nasabahId: n.id,
-        jumlah: pinjaman,
-        metode: 'tunai',
-        catatan: 'Pencairan pinjaman pokok (Auto-fix)',
-        createdAt: new Date().toISOString()
+        nasabahId: n.id, jumlah: pinjaman, metode: 'transfer',
+        catatan: 'Pencairan pinjaman pokok (Sistem)', createdAt: new Date().toISOString()
       });
       updated = true;
     }
 
-    // 2. Hitung ulang SISA HUTANG dan TOTAL TAGIHAN murni berdasarkan transaksi 'masuk'
+    // Sync sisa
     let totalMasuk = trx.filter(t => t.nasabahId === n.id && t.jenis === 'masuk').reduce((a, b) => a + Number(b.jumlah), 0);
     let tagihan = pinjaman + Number(n.bungaRp||0) + Number(n.biayaAdmin||0);
     let sisaReal = tagihan - totalMasuk;
@@ -1254,85 +764,9 @@ function fixCacheData() {
     }
   });
 
-  if (updated) {
-    DB.transaksi = trx;
-    DB.nasabah = ns;
-    console.log("Local cache berhasil disinkronisasi dengan logika baru.");
-  }
+  if (updated) { DB.transaksi = trx; DB.nasabah = ns; }
 }
 
-// ══════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-function fmt(n) { return 'Rp ' + Number(n||0).toLocaleString('id-ID'); }
-function fmtDate(d) {
-  if (!d) return '-';
-  const dt = new Date(d + 'T00:00:00');
-  return dt.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
-}
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function thisMonth() {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-}
-
-function metodeLabel(m) {
-  return {tunai:'Tunai',transfer:'Transfer',qris:'QRIS',lainnya:'Lainnya'}[m] || m;
-}
-
-function kategoriLabel(k) {
-  const map = {
-    makan:'🍽 Makan & Minum', tagihan:'💡 Tagihan',
-    transportasi:'🚗 Transportasi', pendidikan:'📚 Pendidikan',
-    kesehatan:'🏥 Kesehatan', tabungan:'🐷 Tabungan',
-    investasi:'📈 Investasi', sidehustle:'💼 Side Hustle', lainnya:'📦 Lainnya'
-  };
-  return map[k] || k;
-}
-
-function sumberLabel(s) {
-  return {gaji:'💼 Gaji', sidehustle:'🏦 Side Hustle', lainnya:'📦 Lainnya'}[s] || s;
-}
-
-function toggleBungaInput() {
-  const tipe = document.getElementById('nasabah-bunga-tipe').value;
-  const grp  = document.getElementById('nasabah-bunga-input-group');
-  const lbl  = document.getElementById('nasabah-bunga-label');
-  if (tipe === 'none') {
-    grp.style.opacity = '.35';
-    grp.style.pointerEvents = 'none';
-    document.getElementById('nasabah-bunga-nilai').value = '';
-  } else {
-    grp.style.opacity = '1';
-    grp.style.pointerEvents = '';
-    lbl.textContent = tipe === 'pct' ? 'Bunga (%)' : 'Bunga Tetap (Rp)';
-  }
-}
-
-function pbarColor(pct) {
-  if (pct >= 100) return 'danger';
-  if (pct >= 70)  return 'warn';
-  return 'safe';
-}
-
-function gspProfitBulanIni() {
-  const tm = thisMonth();
-  const trx = DB.transaksi;
-  const masuk  = trx.filter(t => t.jenis === 'masuk'  && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
-  const keluar = trx.filter(t => t.jenis === 'keluar' && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
-  return masuk - keluar;
-}
-
-// ══════════════════════════════════════════
-//  SYNC NASABAH DEBT
-// ══════════════════════════════════════════
 function updateNasabahSisa(nasabahId) {
   let ns = DB.nasabah;
   let idx = ns.findIndex(n => n.id === nasabahId);
@@ -1351,7 +785,29 @@ function updateNasabahSisa(nasabahId) {
 }
 
 // ══════════════════════════════════════════
-//  NAV
+//  UTILITIES
+// ══════════════════════════════════════════
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function fmt(n) { return 'Rp ' + Number(n||0).toLocaleString('id-ID'); }
+function fmtDate(d) {
+  if (!d) return '-';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function thisMonth() { const now = new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`; }
+
+function metodeLabel(m) { return {tunai:'Tunai',transfer:'Transfer',qris:'QRIS',lainnya:'Lainnya'}[m] || m; }
+function tipeLabel(t)   { return t === 'anggota' ? 'Anggota' : 'Non-Anggota'; }
+
+// ══════════════════════════════════════════
+//  NAVIGATION
 // ══════════════════════════════════════════
 function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1363,57 +819,47 @@ function showPage(name, el) {
     'dashboard':      () => { renderDashboard(); renderPiutang(); },
     'nasabah':        renderNasabah,
     'transaksi':      () => { populateNasabahDropdown(); renderTransaksi(); },
-    'laporan':        renderLaporan,
-    'kk-dashboard':   renderKKDashboard,
-    'kk-pemasukan':   () => renderKKTransaksi('masuk'),
-    'kk-pengeluaran': () => renderKKTransaksi('keluar'),
-    'kk-hutang':      renderKKHutang,
-    'kk-anggaran':    renderAnggaran,
+    'laporan':        renderLaporan
   };
   if (renders[name]) renders[name]();
 }
 
 // ══════════════════════════════════════════
-//  GSP: DASHBOARD
+//  DASHBOARD LOGIC
 // ══════════════════════════════════════════
 function renderDashboard() {
   const ns  = DB.nasabah;
   const trx = DB.transaksi;
   const tm  = thisMonth();
 
-  const aktif    = ns.filter(n => n.status === 'aktif').length;
-  const totalDana = ns.filter(n => n.status === 'aktif').reduce((a,n) => a + Number(n.sisa||0), 0);
+  const nsAktif = ns.filter(n => n.status === 'aktif');
+  
+  // 1. Total Piutang (Dana Keluar / Pokok Pinjaman yang berjalan)
+  const totalPokokKeluar = nsAktif.reduce((a,n) => a + Number(n.pinjaman||0), 0);
+  
+  // 2. Estimasi Valuasi PnL (Total Tagihan Pokok+Bunga+Admin yang berjalan)
+  const totalValuasi = nsAktif.reduce((a,n) => a + Number(n.totalTagihan||0), 0);
 
+  // 3 & 4. Arus Kas Bulan Ini
   const masukBln  = trx.filter(t => t.jenis==='masuk'  && t.tanggal.startsWith(tm));
   const keluarBln = trx.filter(t => t.jenis==='keluar' && t.tanggal.startsWith(tm));
 
-  document.getElementById('stat-dana').textContent         = fmt(totalDana);
-  document.getElementById('stat-nasabah-count').textContent = `${aktif} nasabah aktif`;
-  document.getElementById('stat-masuk').textContent        = fmt(masukBln.reduce((a,t)=>a+Number(t.jumlah),0));
-  document.getElementById('stat-masuk-count').textContent  = `${masukBln.length} transaksi`;
-  document.getElementById('stat-keluar').textContent       = fmt(keluarBln.reduce((a,t)=>a+Number(t.jumlah),0));
-  document.getElementById('stat-keluar-count').textContent = `${keluarBln.length} transaksi`;
+  document.getElementById('stat-dana').textContent          = fmt(totalPokokKeluar);
+  document.getElementById('stat-nasabah-count').textContent = `${nsAktif.length} nasabah aktif`;
+  
+  document.getElementById('stat-pnl').textContent           = fmt(totalValuasi);
+  
+  document.getElementById('stat-masuk').textContent         = fmt(masukBln.reduce((a,t)=>a+Number(t.jumlah),0));
+  document.getElementById('stat-masuk-count').textContent   = `${masukBln.length} transaksi`;
+  
+  document.getElementById('stat-keluar').textContent        = fmt(keluarBln.reduce((a,t)=>a+Number(t.jumlah),0));
+  document.getElementById('stat-keluar-count').textContent  = `${keluarBln.length} transaksi`;
 
-  // PnL Unrealized
-  const totalMasukAll = trx.filter(t => t.jenis==='masuk').reduce((a,t)=>a+Number(t.jumlah),0);
-  const totalKeluarAll = trx.filter(t => t.jenis==='keluar').reduce((a,t)=>a+Number(t.jumlah),0);
-  const pnlUnrealized = totalMasukAll - totalKeluarAll;
-
-  const statPnl = document.getElementById('stat-pnl');
-  statPnl.textContent = fmt(Math.abs(pnlUnrealized));
-  if(pnlUnrealized < 0) {
-    statPnl.textContent = "- " + statPnl.textContent;
-    statPnl.className = "card-value red";
-  } else {
-    statPnl.textContent = "+ " + statPnl.textContent;
-    statPnl.className = "card-value green";
-  }
-
-  // recent 8
+  // Recent Trx
   const recent = [...trx].sort((a,b) => b.tanggal.localeCompare(a.tanggal)).slice(0, 8);
   const tbody = document.getElementById('tbl-transaksi-recent');
   if (!recent.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">📋</div><p>Belum ada transaksi</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">📋</div><p>Belum ada transaksi tercatat</p></div></td></tr>`;
   } else {
     tbody.innerHTML = recent.map(t => {
       const n = DB.nasabah.find(x => x.id === t.nasabahId);
@@ -1430,106 +876,99 @@ function renderDashboard() {
 }
 
 function renderPiutang() {
-  const ns  = DB.nasabah;
+  const nsAktif  = DB.nasabah.filter(n => n.status === 'aktif');
   const tbody = document.getElementById('tbl-piutang');
 
-  if (!ns.length) {
-    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><div class="empty-icon">👥</div><p>Belum ada nasabah</p></div></td></tr>`;
+  if (!nsAktif.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><div class="empty-icon">🎉</div><p>Semua piutang telah lunas / Belum ada data</p></div></td></tr>`;
     return;
   }
 
-  tbody.innerHTML = ns.map(n => {
+  tbody.innerHTML = nsAktif.map(n => {
     const pokok      = Number(n.pinjaman   || 0);
-    const bungaRp    = Number(n.bungaRp    || 0);
-    const biayaAdmin = Number(n.biayaAdmin || 0);
-    const totalTagih = Number(n.totalTagihan || pokok + bungaRp + biayaAdmin);
-    const sisa       = Number(n.sisa       || 0);
+    const bungaAdmin = Number(n.bungaRp||0) + Number(n.biayaAdmin||0);
+    const totalTagih = Number(n.totalTagihan || pokok + bungaAdmin);
+    const sisa       = Number(n.sisa || 0);
     const dibayar    = Math.max(0, totalTagih - sisa);
-    const pct        = totalTagih > 0 ? Math.min(100, Math.round((dibayar / totalTagih) * 100)) : 100;
-    const sudahLunas = sisa <= 0 || n.status === 'lunas';
-
-    // Bunga label
-    let bungaLabel = '<span style="color:var(--text-muted);font-size:12px">—</span>';
-    if (n.bungaTipe === 'pct')   bungaLabel = `<span style="color:var(--gold);font-weight:600">${n.bungaNilai}% <span style="color:var(--text-muted);font-size:11px">(${fmt(bungaRp)})</span></span>`;
-    if (n.bungaTipe === 'fixed') bungaLabel = `<span style="color:var(--gold);font-weight:600">${fmt(bungaRp)}</span>`;
-
-    const adminLabel = biayaAdmin > 0
-      ? `<span style="color:var(--purple);font-weight:600">${fmt(biayaAdmin)}</span>`
-      : `<span style="color:var(--text-muted);font-size:12px">—</span>`;
-
-    const progressHtml = `
-      <div>
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">${pct}% lunas</div>
-        <div class="progress-wrap">
-          <div class="progress-bar ${pbarColor(pct)}" style="width:${pct}%"></div>
-        </div>
-      </div>`;
-
-    const sisaHtml = sudahLunas
-      ? `<span class="sisa-lunas">✓ Lunas</span>`
-      : `<span class="sisa-ada">${fmt(sisa)}</span>`;
-
-    const statusHtml = sudahLunas
-      ? `<span class="badge-clear">✅ CLEAR</span>`
-      : `<span class="badge badge-hutang">Belum Lunas</span>`;
-
+    
     return `<tr>
-      <td><b>${n.nama}</b><br><span style="font-size:11px;color:var(--text-muted)">${n.telepon||''}</span></td>
+      <td><b>${n.nama}</b><br><span style="font-size:11px;color:var(--text-muted)">${n.telepon||'-'}</span></td>
+      <td><span class="badge badge-${n.tipe==='anggota'?'anggota':'non'}">${tipeLabel(n.tipe)}</span></td>
       <td>${fmt(pokok)}</td>
-      <td>${bungaLabel}</td>
-      <td>${adminLabel}</td>
+      <td style="color:var(--brand-gold)">${bungaAdmin>0 ? '+ '+fmt(bungaAdmin) : '-'}</td>
       <td><b>${fmt(totalTagih)}</b></td>
       <td class="amount-masuk">${totalTagih > 0 ? '+ ' + fmt(dibayar) : '-'}</td>
-      <td>${sisaHtml}</td>
-      <td>${progressHtml}</td>
-      <td>${statusHtml}</td>
+      <td class="sisa-ada">${fmt(sisa)}</td>
+      <td><span class="badge badge-aktif">Aktif</span></td>
     </tr>`;
   }).join('');
 }
 
 // ══════════════════════════════════════════
-//  GSP: NASABAH
+//  NASABAH LOGIC
 // ══════════════════════════════════════════
+function toggleBungaInput() {
+  const tipe = document.getElementById('nasabah-bunga-tipe').value;
+  const grp  = document.getElementById('nasabah-bunga-input-group');
+  const lbl  = document.getElementById('nasabah-bunga-label');
+  if (tipe === 'none') {
+    grp.style.opacity = '.35'; grp.style.pointerEvents = 'none';
+    document.getElementById('nasabah-bunga-nilai').value = '';
+  } else {
+    grp.style.opacity = '1'; grp.style.pointerEvents = '';
+    lbl.textContent = tipe === 'pct' ? 'Bunga (%)' : 'Bunga Tetap (Rp)';
+  }
+  previewTotalTagih();
+}
+
+function previewTotalTagih() {
+  const p = Number(document.getElementById('nasabah-pinjaman').value) || 0;
+  const tipe = document.getElementById('nasabah-bunga-tipe').value;
+  const val = Number(document.getElementById('nasabah-bunga-nilai').value) || 0;
+  const adm = Number(document.getElementById('nasabah-admin').value) || 0;
+  
+  let b = 0;
+  if(tipe === 'pct') b = Math.round(p * val / 100);
+  if(tipe === 'fixed') b = val;
+  
+  document.getElementById('preview-total-tagih').textContent = fmt(p + b + adm);
+}
+
 function renderNasabah() {
   const q  = (document.getElementById('search-nasabah')?.value || '').toLowerCase();
-  let ns   = DB.nasabah;
-  if (q) ns = ns.filter(n => n.nama.toLowerCase().includes(q) || (n.telepon||'').includes(q));
+  const fStatus = document.getElementById('filter-nasabah-status')?.value || '';
+  const fTipe   = document.getElementById('filter-nasabah-tipe')?.value || '';
+  
+  let ns = DB.nasabah;
+  
+  if(fStatus) ns = ns.filter(n => n.status === fStatus);
+  if(fTipe)   ns = ns.filter(n => n.tipe === fTipe);
+  if(q)       ns = ns.filter(n => n.nama.toLowerCase().includes(q) || (n.telepon||'').includes(q));
+  
   const tbody = document.getElementById('tbl-nasabah');
   if (!ns.length) {
-    tbody.innerHTML = `<tr><td colspan="10"><div class="empty"><div class="empty-icon">👥</div><p>Belum ada nasabah terdaftar</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><div class="empty-icon">👥</div><p>Tidak ada nasabah ditemukan</p></div></td></tr>`;
     return;
   }
+  
   tbody.innerHTML = ns.map((n,i) => {
     const pokok      = Number(n.pinjaman   || 0);
-    const bungaRp    = Number(n.bungaRp    || 0);
-    const biayaAdmin = Number(n.biayaAdmin || 0);
-    const totalTagih = Number(n.totalTagihan || pokok + bungaRp + biayaAdmin);
+    const bungaAdmin = Number(n.bungaRp||0) + Number(n.biayaAdmin||0);
+    const totalTagih = Number(n.totalTagihan || pokok + bungaAdmin);
     const sisa       = Number(n.sisa || 0);
-    const sudahLunas = sisa <= 0 || n.status === 'lunas';
-    const sisaHtml   = sudahLunas
-      ? `<span class="badge-clear">✅ CLEAR</span>`
-      : `<span class="sisa-ada">${fmt(sisa)}</span>`;
-
-    let bungaCell = '<span style="color:var(--text-muted);font-size:12px">—</span>';
-    if (n.bungaTipe === 'pct')   bungaCell = `<span style="color:var(--gold);font-weight:600">${n.bungaNilai}%</span>`;
-    if (n.bungaTipe === 'fixed') bungaCell = `<span style="color:var(--gold);font-weight:600">${fmt(bungaRp)}</span>`;
-
-    const adminCell = biayaAdmin > 0
-      ? `<span style="color:var(--purple);font-weight:600">${fmt(biayaAdmin)}</span>`
-      : `<span style="color:var(--text-muted);font-size:12px">—</span>`;
+    const lunas      = sisa <= 0 || n.status === 'lunas';
 
     return `<tr>
       <td style="color:var(--text-muted);font-size:12px">${i+1}</td>
-      <td><b>${n.nama}</b></td>
-      <td>${n.telepon||'-'}</td>
+      <td><b>${n.nama}</b><br><span style="font-size:11px;color:var(--text-muted)">${n.telepon||'-'}</span></td>
+      <td><span class="badge badge-${n.tipe==='anggota'?'anggota':'non'}">${tipeLabel(n.tipe)}</span></td>
       <td>${fmt(pokok)}</td>
-      <td>${bungaCell}</td>
-      <td>${adminCell}</td>
+      <td style="color:var(--text-muted)">${fmt(bungaAdmin)}</td>
       <td><b>${fmt(totalTagih)}</b></td>
-      <td>${sisaHtml}</td>
-      <td><span class="badge badge-${n.status}">${n.status==='aktif'?'Aktif':'Lunas'}</span></td>
+      <td>${lunas ? `<span class="badge-clear">✅ CLEAR</span>` : `<span class="sisa-ada">${fmt(sisa)}</span>`}</td>
+      <td><span class="badge badge-${n.status}">${n.status==='aktif'?'Belum Lunas':'Lunas'}</span></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick='editNasabah("${n.id}")'>✏️</button>
+        <button class="btn btn-ghost btn-sm" onclick='editNasabah("${n.id}")'>✏️ Edit</button>
         <button class="btn btn-danger btn-sm" onclick='confirmHapus("nasabah","${n.id}","${n.nama}")'>🗑️</button>
       </td>
     </tr>`;
@@ -1539,6 +978,7 @@ function renderNasabah() {
 function openNasabahModal() {
   document.getElementById('modal-nasabah-title').textContent = 'Tambah Nasabah Baru';
   ['nasabah-id','nasabah-nama','nasabah-telepon','nasabah-alamat','nasabah-catatan'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('nasabah-tipe').value = 'anggota';
   document.getElementById('nasabah-pinjaman').value = '';
   document.getElementById('nasabah-sisa').value = '';
   document.getElementById('nasabah-status').value = 'aktif';
@@ -1552,9 +992,10 @@ function openNasabahModal() {
 function editNasabah(id) {
   const n = DB.nasabah.find(x => x.id === id);
   if (!n) return;
-  document.getElementById('modal-nasabah-title').textContent = 'Edit Nasabah';
+  document.getElementById('modal-nasabah-title').textContent = 'Edit Data Nasabah';
   document.getElementById('nasabah-id').value     = n.id;
   document.getElementById('nasabah-nama').value   = n.nama;
+  document.getElementById('nasabah-tipe').value   = n.tipe || 'anggota';
   document.getElementById('nasabah-telepon').value= n.telepon||'';
   document.getElementById('nasabah-alamat').value = n.alamat||'';
   document.getElementById('nasabah-catatan').value= n.catatan||'';
@@ -1581,7 +1022,6 @@ function saveNasabah() {
   const bungaNilai = Number(document.getElementById('nasabah-bunga-nilai').value) || 0;
   const biayaAdmin = Number(document.getElementById('nasabah-admin').value) || 0;
 
-  // Hitung bunga nominal
   let bungaRp = 0;
   if (bungaTipe === 'pct')   bungaRp = Math.round(pinjaman * bungaNilai / 100);
   if (bungaTipe === 'fixed') bungaRp = bungaNilai;
@@ -1590,16 +1030,12 @@ function saveNasabah() {
 
   const data = {
     id, nama,
+    tipe:      document.getElementById('nasabah-tipe').value,
     telepon:   document.getElementById('nasabah-telepon').value.trim(),
     alamat:    document.getElementById('nasabah-alamat').value.trim(),
     catatan:   document.getElementById('nasabah-catatan').value.trim(),
-    pinjaman,
-    sisa: totalTagihan, // Sisa default pada saat daftar adalah full tagihan
-    bungaTipe,
-    bungaNilai,
-    bungaRp,
-    biayaAdmin,
-    totalTagihan,
+    pinjaman, sisa: totalTagihan,
+    bungaTipe, bungaNilai, bungaRp, biayaAdmin, totalTagihan,
     status:    document.getElementById('nasabah-status').value,
     createdAt: new Date().toISOString(),
   };
@@ -1607,64 +1043,78 @@ function saveNasabah() {
   let ns = DB.nasabah;
   const idx = ns.findIndex(n => n.id === id);
   if (idx >= 0) {
-    // Pertahankan SISA yang sudah dihitung berdasarkan transaksi jika ini hanya edit
-    data.sisa = ns[idx].sisa;
+    data.sisa = ns[idx].sisa; // Preserve current remaining balance
     ns[idx] = data;
   } else {
     ns.unshift(data);
   }
   DB.nasabah = ns;
 
-  // AUTO-CREATE TRansaksi Keluar untuk Nasabah Baru
   if (isNew && pinjaman > 0) {
     let trx = DB.transaksi;
     trx.unshift({
-      id: uid(),
-      jenis: 'keluar',
+      id: uid(), jenis: 'keluar',
       tanggal: new Date().toISOString().slice(0,10),
-      nasabahId: id,
-      jumlah: pinjaman,
-      metode: 'tunai',
-      catatan: 'Pencairan pinjaman pokok',
+      nasabahId: id, jumlah: pinjaman, metode: 'transfer',
+      catatan: 'Pencairan pinjaman pokok ke Nasabah',
       createdAt: new Date().toISOString()
     });
     DB.transaksi = trx;
   }
 
-  // Sinkronisasi Sisa jika ada update nilai pinjaman
-  if (!isNew) {
-    updateNasabahSisa(id);
-  }
+  if (!isNew) updateNasabahSisa(id);
 
   closeModal('modal-nasabah');
-  renderNasabah();
-  renderPiutang();
-  populateNasabahDropdown();
-  toast('✅ Nasabah berhasil disimpan');
+  renderNasabah(); renderPiutang(); populateNasabahDropdown();
+  toast('✅ Data Nasabah disimpan');
+}
+
+function exportNasabahCSV() {
+  const ns = DB.nasabah;
+  if(!ns.length) { toast('⚠️ Tidak ada data untuk di-export'); return; }
+  
+  // Add BOM for Excel UTF-8 compatibility
+  let csv = "\uFEFF"; 
+  csv += "ID,Nama,Tipe,Telepon,Pinjaman Pokok,Total Bunga,Biaya Admin,Total Tagihan,Sisa Tagihan,Status\n";
+  
+  ns.forEach(n => {
+    const nama = (n.nama||'').replace(/"/g, '""');
+    csv += `"${n.id}","${nama}","${tipeLabel(n.tipe)}","${n.telepon||''}",${n.pinjaman||0},${n.bungaRp||0},${n.biayaAdmin||0},${n.totalTagihan||0},${n.sisa||0},"${n.status==='aktif'?'Belum Lunas':'Lunas'}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `Data_Nasabah_GSP_${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('✅ Berhasil mencetak CSV');
 }
 
 // ══════════════════════════════════════════
-//  GSP: TRANSAKSI
+//  TRANSAKSI LOGIC
 // ══════════════════════════════════════════
 function populateNasabahDropdown() {
   const sel = document.getElementById('trx-nasabah');
   if (!sel) return;
   sel.innerHTML = '<option value="">-- Pilih Nasabah --</option>' +
-    DB.nasabah.map(n => `<option value="${n.id}">${n.nama}</option>`).join('');
+    DB.nasabah.map(n => `<option value="${n.id}">${n.nama} (${tipeLabel(n.tipe)})</option>`).join('');
 }
 
 function renderTransaksi() {
   const q  = (document.getElementById('search-transaksi')?.value || '').toLowerCase();
   const fj = document.getElementById('filter-jenis')?.value || '';
-  const fm = document.getElementById('filter-metode')?.value || '';
   let trx  = DB.transaksi;
+  
   if (fj) trx = trx.filter(t => t.jenis === fj);
-  if (fm) trx = trx.filter(t => t.metode === fm);
   if (q)  trx = trx.filter(t => {
     const n = DB.nasabah.find(x => x.id === t.nasabahId);
     return (n?.nama||'').toLowerCase().includes(q) || (t.catatan||'').toLowerCase().includes(q);
   });
   trx = [...trx].sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+  
   const tbody = document.getElementById('tbl-transaksi');
   if (!trx.length) {
     tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">💸</div><p>Belum ada transaksi</p></div></td></tr>`;
@@ -1675,7 +1125,7 @@ function renderTransaksi() {
     return `<tr>
       <td>${fmtDate(t.tanggal)}</td>
       <td><b>${n ? n.nama : '-'}</b></td>
-      <td><span class="badge badge-${t.jenis}">${t.jenis==='masuk'?'Masuk':'Keluar'}</span></td>
+      <td><span class="badge badge-${t.jenis}">${t.jenis==='masuk'?'Masuk (Cicilan)':'Keluar (Cair)'}</span></td>
       <td><span class="badge badge-${t.metode}">${metodeLabel(t.metode)}</span></td>
       <td class="amount-${t.jenis}">${t.jenis==='masuk'?'+':'-'} ${fmt(t.jumlah)}</td>
       <td style="color:var(--text-muted)">${t.catatan||'-'}</td>
@@ -1688,13 +1138,13 @@ function renderTransaksi() {
 }
 
 function openTransaksiModal() {
-  document.getElementById('modal-transaksi-title').textContent = 'Tambah Transaksi';
+  document.getElementById('modal-transaksi-title').textContent = 'Catat Transaksi';
   document.getElementById('trx-id').value = '';
   document.getElementById('trx-jenis').value = 'masuk';
   document.getElementById('trx-tanggal').value = new Date().toISOString().slice(0,10);
   document.getElementById('trx-nasabah').value = '';
   document.getElementById('trx-jumlah').value = '';
-  document.getElementById('trx-metode').value = 'tunai';
+  document.getElementById('trx-metode').value = 'transfer';
   document.getElementById('trx-catatan').value = '';
   populateNasabahDropdown();
   openModal('modal-transaksi');
@@ -1708,7 +1158,7 @@ function editTransaksi(id) {
   document.getElementById('trx-jenis').value  = t.jenis;
   document.getElementById('trx-tanggal').value= t.tanggal;
   document.getElementById('trx-jumlah').value = t.jumlah;
-  document.getElementById('trx-metode').value = t.metode;
+  document.getElementById('trx-metode').value = t.metode || 'transfer';
   document.getElementById('trx-catatan').value= t.catatan||'';
   populateNasabahDropdown();
   document.getElementById('trx-nasabah').value = t.nasabahId||'';
@@ -1719,41 +1169,41 @@ function saveTransaksi() {
   const jumlah   = Number(document.getElementById('trx-jumlah').value);
   const nasabahId= document.getElementById('trx-nasabah').value;
   if (!jumlah || jumlah <= 0) { toast('⚠️ Jumlah wajib diisi!'); return; }
-  if (!nasabahId)              { toast('⚠️ Pilih nasabah terlebih dahulu!'); return; }
+  if (!nasabahId) { toast('⚠️ Pilih nasabah terlebih dahulu!'); return; }
+  
   const id = document.getElementById('trx-id').value || uid();
   const data = {
     id,
     jenis:    document.getElementById('trx-jenis').value,
     tanggal:  document.getElementById('trx-tanggal').value,
-    nasabahId,
-    jumlah,
+    nasabahId, jumlah,
     metode:   document.getElementById('trx-metode').value,
     catatan:  document.getElementById('trx-catatan').value.trim(),
     createdAt: new Date().toISOString(),
   };
+  
   let trx = DB.transaksi;
   const idx = trx.findIndex(t => t.id === id);
   if (idx >= 0) trx[idx] = data; else trx.unshift(data);
   DB.transaksi = trx;
 
-  // Update logic sisa pinjaman secara dinamis
   updateNasabahSisa(nasabahId);
 
   closeModal('modal-transaksi');
-  renderTransaksi();
-  renderDashboard();
-  renderPiutang();
-  toast('✅ Transaksi berhasil disimpan');
+  renderTransaksi(); renderDashboard(); renderPiutang();
+  toast('✅ Transaksi berhasil dicatat');
 }
 
 // ══════════════════════════════════════════
-//  GSP: LAPORAN
+//  LAPORAN
 // ══════════════════════════════════════════
 function renderLaporan() {
   const trx = DB.transaksi;
   const ns  = DB.nasabah;
+  
   const masuk  = trx.filter(t => t.jenis === 'masuk');
   const keluar = trx.filter(t => t.jenis === 'keluar');
+  
   document.getElementById('lap-masuk').textContent     = fmt(masuk.reduce((a,t)=>a+Number(t.jumlah),0));
   document.getElementById('lap-masuk-trx').textContent = `${masuk.length} transaksi`;
   document.getElementById('lap-keluar').textContent    = fmt(keluar.reduce((a,t)=>a+Number(t.jumlah),0));
@@ -1761,375 +1211,81 @@ function renderLaporan() {
 
   const tbody1 = document.getElementById('tbl-laporan-nasabah');
   if (!ns.length) {
-    tbody1.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">Belum ada data</td></tr>`;
+    tbody1.innerHTML = `<tr><td colspan="6"><div class="empty">Belum ada data</div></td></tr>`;
   } else {
     tbody1.innerHTML = ns.map(n => {
       const nM = trx.filter(t=>t.nasabahId===n.id&&t.jenis==='masuk').reduce((a,t)=>a+Number(t.jumlah),0);
       const nK = trx.filter(t=>t.nasabahId===n.id&&t.jenis==='keluar').reduce((a,t)=>a+Number(t.jumlah),0);
       const s  = nM - nK;
-      const totalTagih = Number(n.totalTagihan||n.pinjaman||0);
       return `<tr>
         <td><b>${n.nama}</b></td>
-        <td>${fmt(totalTagih)}</td>
+        <td><span class="badge badge-${n.tipe==='anggota'?'anggota':'non'}">${tipeLabel(n.tipe)}</span></td>
         <td class="amount-masuk">+ ${fmt(nM)}</td>
         <td class="amount-keluar">- ${fmt(nK)}</td>
         <td class="${s>=0?'amount-masuk':'amount-keluar'}">${s>=0?'+':''} ${fmt(Math.abs(s))}</td>
-        <td><span class="badge badge-${n.status}">${n.status==='aktif'?'Aktif':'Lunas'}</span></td>
+        <td><span class="badge badge-${n.status}">${n.status==='aktif'?'Belum Lunas':'Lunas'}</span></td>
       </tr>`;
     }).join('');
   }
-
-  const metodes = ['tunai','transfer','qris','lainnya'];
-  document.getElementById('tbl-laporan-metode').innerHTML = metodes.map(m => {
-    const mt  = trx.filter(t => t.metode === m);
-    const vol = mt.reduce((a,t)=>a+Number(t.jumlah),0);
-    return `<tr>
-      <td><span class="badge badge-${m}">${metodeLabel(m)}</span></td>
-      <td>${mt.length} transaksi</td>
-      <td><b>${fmt(vol)}</b></td>
-    </tr>`;
-  }).join('');
 }
 
 // ══════════════════════════════════════════
-//  KEUANGAN KELUARGA
+//  PENGATURAN (JSON EXPORT/IMPORT & RESET)
 // ══════════════════════════════════════════
-function renderKKDashboard() {
-  const tm   = thisMonth();
-  const trx  = DB.kkTrx;
-  const ht   = DB.kkHutang;
-
-  const masukBln  = trx.filter(t => t.jenis==='masuk'  && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
-  const keluarBln = trx.filter(t => t.jenis==='keluar' && t.tanggal.startsWith(tm)).reduce((a,t)=>a+Number(t.jumlah),0);
-  const saldo     = masukBln - keluarBln;
-
-  const gspProfit = gspProfitBulanIni();
-  const totalHutang = ht.reduce((a,h) => a + Math.max(0, Number(h.pokok||0) - Number(h.dibayar||0)), 0);
-  const htAktif   = ht.filter(h => (Number(h.pokok||0) - Number(h.dibayar||0)) > 0).length;
-
-  document.getElementById('kk-saldo-bersih').textContent     = fmt(saldo);
-  document.getElementById('kk-gsp-profit-header').textContent= fmt(gspProfit);
-  document.getElementById('kk-stat-masuk').textContent        = fmt(masukBln);
-  document.getElementById('kk-stat-masuk-sub').textContent    = `${trx.filter(t=>t.jenis==='masuk'&&t.tanggal.startsWith(tm)).length} pemasukan`;
-  document.getElementById('kk-stat-keluar').textContent       = fmt(keluarBln);
-  document.getElementById('kk-stat-keluar-sub').textContent   = `${trx.filter(t=>t.jenis==='keluar'&&t.tanggal.startsWith(tm)).length} pengeluaran`;
-  document.getElementById('kk-stat-gsp').textContent          = fmt(gspProfit);
-  document.getElementById('kk-stat-hutang').textContent       = fmt(totalHutang);
-  document.getElementById('kk-stat-hutang-sub').textContent   = `${htAktif} hutang aktif`;
-
-  const htBody = document.getElementById('kk-tbl-hutang-mini');
-  if (!ht.length) {
-    htBody.innerHTML = `<tr><td colspan="6"><div class="empty" style="padding:30px"><div class="empty-icon">📋</div><p>Belum ada catatan hutang</p></div></td></tr>`;
-  } else {
-    htBody.innerHTML = ht.map(h => {
-      const pokok   = Number(h.pokok||0);
-      const dibayar = Number(h.dibayar||0);
-      const sisa    = Math.max(0, pokok - dibayar);
-      const pct     = pokok > 0 ? Math.min(100, Math.round((dibayar/pokok)*100)) : 100;
-      const lunas   = sisa <= 0;
-      return `<tr>
-        <td><b>${h.nama}</b></td>
-        <td>${fmt(pokok)}</td>
-        <td class="amount-masuk">+ ${fmt(dibayar)}</td>
-        <td>${lunas ? `<span class="sisa-lunas">✓ Lunas</span>` : `<span class="sisa-ada">${fmt(sisa)}</span>`}</td>
-        <td>
-          <div style="font-size:11px;color:var(--text-muted)">${pct}%</div>
-          <div class="progress-wrap"><div class="progress-bar ${pbarColor(pct)}" style="width:${pct}%"></div></div>
-        </td>
-        <td>${lunas ? `<span class="badge-clear">✅ CLEAR</span>` : `<span class="badge badge-hutang">Aktif</span>`}</td>
-      </tr>`;
-    }).join('');
-  }
-
-  const recent = [...trx].sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,6);
-  const rcBody = document.getElementById('kk-tbl-recent');
-  if (!recent.length) {
-    rcBody.innerHTML = `<tr><td colspan="5"><div class="empty" style="padding:30px"><div class="empty-icon">💰</div><p>Belum ada transaksi keluarga</p></div></td></tr>`;
-  } else {
-    rcBody.innerHTML = recent.map(t => {
-      const kat = t.jenis === 'keluar' ? t.kategori : t.sumber;
-      return `<tr>
-        <td>${fmtDate(t.tanggal)}</td>
-        <td><b>${t.keterangan}</b></td>
-        <td><span class="category-chip ${kat||''}">${t.jenis==='keluar'?kategoriLabel(t.kategori):sumberLabel(t.sumber)}</span></td>
-        <td><span class="badge badge-${t.jenis}">${t.jenis==='masuk'?'Masuk':'Keluar'}</span></td>
-        <td class="amount-${t.jenis}">${t.jenis==='masuk'?'+':'-'} ${fmt(t.jumlah)}</td>
-      </tr>`;
-    }).join('');
-  }
+function exportJSON() {
+  const data = { nasabah: DB.nasabah, transaksi: DB.transaksi };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `Backup_GSP_${new Date().toISOString().slice(0,10)}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast('✅ File Backup berhasil diunduh');
 }
 
-function toggleKKKategori() {
-  const jenis = document.getElementById('kk-trx-jenis').value;
-  document.getElementById('kk-kategori-group').style.display = jenis === 'keluar' ? '' : 'none';
-  document.getElementById('kk-sumber-group').style.display   = jenis === 'masuk'  ? '' : 'none';
-}
-
-function openKKTransaksiModal(defaultJenis) {
-  document.getElementById('modal-kk-trx-title').textContent = 'Tambah Transaksi Keluarga';
-  document.getElementById('kk-trx-id').value = '';
-  document.getElementById('kk-trx-jenis').value = defaultJenis || 'keluar';
-  document.getElementById('kk-trx-tanggal').value = new Date().toISOString().slice(0,10);
-  document.getElementById('kk-trx-keterangan').value = '';
-  document.getElementById('kk-trx-jumlah').value = '';
-  document.getElementById('kk-trx-catatan').value = '';
-  document.getElementById('kk-trx-kategori').value = 'makan';
-  document.getElementById('kk-trx-sumber').value = 'gaji';
-  document.getElementById('kk-trx-metode').value = 'tunai';
-  toggleKKKategori();
-  openModal('modal-kk-transaksi');
-}
-
-function editKKTransaksi(id) {
-  const t = DB.kkTrx.find(x => x.id === id);
-  if (!t) return;
-  document.getElementById('modal-kk-trx-title').textContent = 'Edit Transaksi';
-  document.getElementById('kk-trx-id').value         = t.id;
-  document.getElementById('kk-trx-jenis').value      = t.jenis;
-  document.getElementById('kk-trx-tanggal').value    = t.tanggal;
-  document.getElementById('kk-trx-keterangan').value = t.keterangan;
-  document.getElementById('kk-trx-jumlah').value     = t.jumlah;
-  document.getElementById('kk-trx-catatan').value    = t.catatan||'';
-  document.getElementById('kk-trx-metode').value     = t.metode||'tunai';
-  if (t.jenis === 'keluar') document.getElementById('kk-trx-kategori').value = t.kategori||'lainnya';
-  if (t.jenis === 'masuk')  document.getElementById('kk-trx-sumber').value   = t.sumber||'gaji';
-  toggleKKKategori();
-  openModal('modal-kk-transaksi');
-}
-
-function saveKKTransaksi() {
-  const jenis     = document.getElementById('kk-trx-jenis').value;
-  const keterangan= document.getElementById('kk-trx-keterangan').value.trim();
-  const jumlah    = Number(document.getElementById('kk-trx-jumlah').value);
-  if (!keterangan) { toast('⚠️ Keterangan wajib diisi!'); return; }
-  if (!jumlah || jumlah <= 0) { toast('⚠️ Jumlah wajib diisi!'); return; }
-
-  const id = document.getElementById('kk-trx-id').value || uid();
-  const data = {
-    id, jenis, keterangan, jumlah,
-    tanggal:  document.getElementById('kk-trx-tanggal').value,
-    kategori: jenis === 'keluar' ? document.getElementById('kk-trx-kategori').value : '',
-    sumber:   jenis === 'masuk'  ? document.getElementById('kk-trx-sumber').value   : '',
-    metode:   document.getElementById('kk-trx-metode').value,
-    catatan:  document.getElementById('kk-trx-catatan').value.trim(),
-    createdAt: new Date().toISOString(),
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if(parsed.nasabah && parsed.transaksi) {
+        DB.nasabah = parsed.nasabah;
+        DB.transaksi = parsed.transaksi;
+        fixCacheData(); // Fix structure if old version
+        alert("✅ Data berhasil dipulihkan! Halaman akan dimuat ulang.");
+        location.reload();
+      } else {
+        alert("❌ Format file JSON tidak dikenali.");
+      }
+    } catch (err) {
+      alert("❌ Gagal membaca file JSON. Pastikan file valid.");
+    }
   };
-  let list = DB.kkTrx;
-  const idx = list.findIndex(t => t.id === id);
-  if (idx >= 0) list[idx] = data; else list.unshift(data);
-  DB.kkTrx = list;
-  closeModal('modal-kk-transaksi');
-  renderKKDashboard();
-  renderKKTransaksi(jenis);
-  toast('✅ Transaksi keluarga disimpan');
+  reader.readAsText(file);
 }
 
-function renderKKTransaksi(jenis) {
-  const q    = (document.getElementById(jenis==='masuk'?'search-kk-masuk':'search-kk-keluar')?.value||'').toLowerCase();
-  const fkat = jenis==='keluar' ? (document.getElementById('filter-kk-kategori')?.value||'') : '';
-  let list   = DB.kkTrx.filter(t => t.jenis === jenis);
-  if (q)    list = list.filter(t => t.keterangan.toLowerCase().includes(q) || (t.catatan||'').toLowerCase().includes(q));
-  if (fkat) list = list.filter(t => t.kategori === fkat);
-  list = [...list].sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-
-  const tbodyId = jenis === 'masuk' ? 'tbl-kk-masuk' : 'tbl-kk-keluar';
-  const tbody   = document.getElementById(tbodyId);
-  if (!list.length) {
-    const icon = jenis === 'masuk' ? '💰' : '🛒';
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">${icon}</div><p>Belum ada data ${jenis==='masuk'?'pemasukan':'pengeluaran'}</p></div></td></tr>`;
-    return;
-  }
-
-  if (jenis === 'masuk') {
-    tbody.innerHTML = list.map(t => `<tr>
-      <td>${fmtDate(t.tanggal)}</td>
-      <td><b>${t.keterangan}</b>${t.catatan ? `<br><span style="font-size:11px;color:var(--text-muted)">${t.catatan}</span>` : ''}</td>
-      <td><span class="source-tag ${t.sumber||''}">${sumberLabel(t.sumber)}</span></td>
-      <td class="amount-masuk">+ ${fmt(t.jumlah)}</td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick='editKKTransaksi("${t.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='confirmHapus("kktrx","${t.id}","transaksi ini")'>🗑️</button>
-      </td>
-    </tr>`).join('');
-  } else {
-    tbody.innerHTML = list.map(t => `<tr>
-      <td>${fmtDate(t.tanggal)}</td>
-      <td><b>${t.keterangan}</b>${t.catatan ? `<br><span style="font-size:11px;color:var(--text-muted)">${t.catatan}</span>` : ''}</td>
-      <td><span class="category-chip ${t.kategori||''}">${kategoriLabel(t.kategori)}</span></td>
-      <td class="amount-keluar">- ${fmt(t.jumlah)}</td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick='editKKTransaksi("${t.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='confirmHapus("kktrx","${t.id}","transaksi ini")'>🗑️</button>
-      </td>
-    </tr>`).join('');
-  }
-}
-
-function openHutangModal() {
-  document.getElementById('modal-hutang-title').textContent = 'Tambah Hutang / Cicilan';
-  ['hutang-id','hutang-nama','hutang-pemberi','hutang-catatan'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('hutang-tanggal').value = new Date().toISOString().slice(0,10);
-  document.getElementById('hutang-pokok').value   = '';
-  document.getElementById('hutang-dibayar').value = '';
-  document.getElementById('hutang-cicilan').value = '';
-  document.getElementById('hutang-jatuh').value   = '';
-  openModal('modal-kk-hutang');
-}
-
-function editHutang(id) {
-  const h = DB.kkHutang.find(x => x.id === id);
-  if (!h) return;
-  document.getElementById('modal-hutang-title').textContent = 'Edit Hutang';
-  document.getElementById('hutang-id').value      = h.id;
-  document.getElementById('hutang-nama').value    = h.nama;
-  document.getElementById('hutang-pemberi').value = h.pemberi||'';
-  document.getElementById('hutang-tanggal').value = h.tanggal||'';
-  document.getElementById('hutang-pokok').value   = h.pokok||'';
-  document.getElementById('hutang-dibayar').value = h.dibayar||'';
-  document.getElementById('hutang-cicilan').value = h.cicilan||'';
-  document.getElementById('hutang-jatuh').value   = h.jatuh||'';
-  document.getElementById('hutang-catatan').value = h.catatan||'';
-  openModal('modal-kk-hutang');
-}
-
-function saveHutang() {
-  const nama  = document.getElementById('hutang-nama').value.trim();
-  const pokok = Number(document.getElementById('hutang-pokok').value);
-  if (!nama)  { toast('⚠️ Nama hutang wajib diisi!'); return; }
-  if (!pokok) { toast('⚠️ Total pokok wajib diisi!'); return; }
-  const id = document.getElementById('hutang-id').value || uid();
-  const data = {
-    id, nama, pokok,
-    pemberi: document.getElementById('hutang-pemberi').value.trim(),
-    tanggal: document.getElementById('hutang-tanggal').value,
-    dibayar: Number(document.getElementById('hutang-dibayar').value) || 0,
-    cicilan: Number(document.getElementById('hutang-cicilan').value) || 0,
-    jatuh:   Number(document.getElementById('hutang-jatuh').value)   || 0,
-    catatan: document.getElementById('hutang-catatan').value.trim(),
-    createdAt: new Date().toISOString(),
+function confirmReset() {
+  document.getElementById('modal-hapus-title').textContent = "Reset Sistem Keseluruhan?";
+  document.getElementById('modal-hapus-desc').textContent  = "Seluruh data Nasabah dan Transaksi akan dihapus permanen. Pastikan Anda sudah Backup Data.";
+  document.getElementById('btn-hapus-confirm').onclick     = () => {
+    localStorage.removeItem('gsp_nasabah');
+    localStorage.removeItem('gsp_transaksi');
+    alert("🗑️ Seluruh data berhasil dihapus. Halaman akan dimuat ulang.");
+    location.reload();
   };
-  let list = DB.kkHutang;
-  const idx = list.findIndex(h => h.id === id);
-  if (idx >= 0) list[idx] = data; else list.unshift(data);
-  DB.kkHutang = list;
-  closeModal('modal-kk-hutang');
-  renderKKHutang();
-  renderKKDashboard();
-  toast('✅ Hutang berhasil disimpan');
-}
-
-function renderKKHutang() {
-  const list  = DB.kkHutang;
-  const tbody = document.getElementById('tbl-kk-hutang');
-  if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><div class="empty-icon">📋</div><p>Belum ada catatan hutang</p></div></td></tr>`;
-    return;
-  }
-  tbody.innerHTML = list.map(h => {
-    const pokok   = Number(h.pokok||0);
-    const dibayar = Number(h.dibayar||0);
-    const sisa    = Math.max(0, pokok - dibayar);
-    const pct     = pokok > 0 ? Math.min(100, Math.round((dibayar/pokok)*100)) : 100;
-    const lunas   = sisa <= 0;
-    const jatuhStr= h.jatuh ? `tgl ${h.jatuh}` : '-';
-    return `<tr>
-      <td><b>${h.nama}</b>${h.catatan?`<br><span style="font-size:11px;color:var(--text-muted)">${h.catatan}</span>`:''}
-      </td>
-      <td style="color:var(--text-muted)">${h.pemberi||'-'}</td>
-      <td>${fmt(pokok)}</td>
-      <td class="amount-masuk">+ ${fmt(dibayar)}</td>
-      <td>${lunas?`<span class="sisa-lunas">✓ Lunas</span>`:`<span class="sisa-ada">${fmt(sisa)}</span>`}</td>
-      <td>
-        <div style="font-size:11px;color:var(--text-muted)">${pct}%</div>
-        <div class="progress-wrap" style="width:90px"><div class="progress-bar ${pbarColor(pct)}" style="width:${pct}%"></div></div>
-      </td>
-      <td style="font-size:13px">${h.cicilan?fmt(h.cicilan):'-'}<br><span style="font-size:10px;color:var(--text-muted)">${jatuhStr}</span></td>
-      <td>${lunas?`<span class="badge-clear">✅ CLEAR</span>`:`<span class="badge badge-hutang">Aktif</span>`}</td>
-      <td style="display:flex;gap:5px">
-        <button class="btn btn-ghost btn-sm" onclick='editHutang("${h.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='confirmHapus("hutang","${h.id}","${h.nama}")'>🗑️</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-function openAnggaranModal() {
-  document.getElementById('anggaran-id').value = '';
-  document.getElementById('anggaran-kategori').value = 'makan';
-  document.getElementById('anggaran-nominal').value = '';
-  openModal('modal-anggaran');
-}
-
-function editAnggaran(id) {
-  const a = DB.kkAnggaran.find(x => x.id === id);
-  if (!a) return;
-  document.getElementById('anggaran-id').value       = a.id;
-  document.getElementById('anggaran-kategori').value = a.kategori;
-  document.getElementById('anggaran-nominal').value  = a.nominal;
-  openModal('modal-anggaran');
-}
-
-function saveAnggaran() {
-  const kategori = document.getElementById('anggaran-kategori').value;
-  const nominal  = Number(document.getElementById('anggaran-nominal').value);
-  if (!nominal || nominal <= 0) { toast('⚠️ Nominal wajib diisi!'); return; }
-  const id = document.getElementById('anggaran-id').value || uid();
-  const data = { id, kategori, nominal, createdAt: new Date().toISOString() };
-  let list = DB.kkAnggaran;
-  // Hanya 1 anggaran per kategori
-  const existing = list.findIndex(a => a.kategori === kategori && a.id !== id);
-  if (existing >= 0) list.splice(existing, 1);
-  const idx = list.findIndex(a => a.id === id);
-  if (idx >= 0) list[idx] = data; else list.push(data);
-  DB.kkAnggaran = list;
-  closeModal('modal-anggaran');
-  renderAnggaran();
-  toast('✅ Anggaran disimpan');
-}
-
-function renderAnggaran() {
-  const list  = DB.kkAnggaran;
-  const trx   = DB.kkTrx;
-  const tm    = thisMonth();
-  const tbody = document.getElementById('tbl-anggaran');
-
-  if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">🎯</div><p>Belum ada anggaran. Klik "+ Set Anggaran" untuk mulai.</p></div></td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = list.map(a => {
-    const terpakai = trx
-      .filter(t => t.jenis==='keluar' && t.kategori===a.kategori && t.tanggal.startsWith(tm))
-      .reduce((acc,t) => acc+Number(t.jumlah), 0);
-    const sisa = a.nominal - terpakai;
-    const pct  = Math.min(100, Math.round((terpakai / a.nominal) * 100));
-    const barColor = pct >= 100 ? '#9B2335' : pct >= 80 ? '#C8962A' : '#2D6A4F';
-    return `<tr>
-      <td><span class="category-chip ${a.kategori}">${kategoriLabel(a.kategori)}</span></td>
-      <td><b>${fmt(a.nominal)}</b></td>
-      <td class="${terpakai>a.nominal?'amount-keluar':''}"><b>${fmt(terpakai)}</b></td>
-      <td class="${sisa<0?'amount-keluar':'amount-masuk'}">${sisa<0?'- '+fmt(Math.abs(sisa)):'+ '+fmt(sisa)}</td>
-      <td>
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px">${pct}% terpakai</div>
-        <div style="background:#DDD3C8;border-radius:100px;height:6px;width:120px;overflow:hidden">
-          <div style="width:${pct}%;height:6px;background:${barColor};border-radius:100px;transition:width .4s"></div>
-        </div>
-      </td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick='editAnggaran("${a.id}")'>✏️ Edit</button>
-        <button class="btn btn-danger btn-sm" onclick='confirmHapus("anggaran","${a.id}","anggaran ${a.kategori}")'>🗑️</button>
-      </td>
-    </tr>`;
-  }).join('');
+  openModal('modal-hapus');
 }
 
 // ══════════════════════════════════════════
-//  HAPUS UNIVERSAL
+//  DELETE UNIVERSAL
 // ══════════════════════════════════════════
 function confirmHapus(type, id, nama) {
   document.getElementById('modal-hapus-title').textContent = `Hapus "${nama}"?`;
-  document.getElementById('modal-hapus-desc').textContent  = 'Data yang dihapus tidak bisa dikembalikan.';
+  document.getElementById('modal-hapus-desc').textContent  = 'Tindakan ini permanen dan tidak dapat dibatalkan.';
   document.getElementById('btn-hapus-confirm').onclick     = () => hapus(type, id);
   openModal('modal-hapus');
 }
@@ -2138,25 +1294,16 @@ function hapus(type, id) {
   if (type === 'nasabah') {
     DB.nasabah   = DB.nasabah.filter(n => n.id !== id);
     DB.transaksi = DB.transaksi.filter(t => t.nasabahId !== id);
-    renderNasabah(); renderPiutang(); renderDashboard();
   } else if (type === 'transaksi') {
     const t = DB.transaksi.find(x => x.id === id);
     if(t) {
       DB.transaksi = DB.transaksi.filter(x => x.id !== id);
       updateNasabahSisa(t.nasabahId);
     }
-    renderTransaksi(); renderDashboard(); renderPiutang();
-  } else if (type === 'kktrx') {
-    DB.kkTrx = DB.kkTrx.filter(t => t.id !== id);
-    renderKKDashboard();
-  } else if (type === 'hutang') {
-    DB.kkHutang = DB.kkHutang.filter(h => h.id !== id);
-    renderKKHutang(); renderKKDashboard();
-  } else if (type === 'anggaran') {
-    DB.kkAnggaran = DB.kkAnggaran.filter(a => a.id !== id);
-    renderAnggaran();
   }
+  
   closeModal('modal-hapus');
+  renderNasabah(); renderTransaksi(); renderDashboard(); renderPiutang();
   toast('🗑️ Data berhasil dihapus');
 }
 
@@ -2164,11 +1311,14 @@ function hapus(type, id) {
 //  INIT
 // ══════════════════════════════════════════
 function init() {
-  fixCacheData(); // Fixes old database state instantly
+  initTheme();
+  checkLock();
+  fixCacheData(); 
   
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
   document.getElementById('sidebarDate').textContent = new Date().toLocaleDateString('id-ID', opts);
   document.getElementById('trx-tanggal').value = new Date().toISOString().slice(0,10);
+  
   renderDashboard();
   renderPiutang();
 }
