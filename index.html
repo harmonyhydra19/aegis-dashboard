@@ -270,44 +270,19 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 @keyframes toastOut { from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 
 /* =======================================================
-   RESPONSIVE MOBILE UX (Fix Gaps di Header)
+   RESPONSIVE MOBILE UX
    ======================================================= */
 @media (max-width: 768px) { 
   .nav-pill { display: none !important; } 
   
-  /* Hilangkan margin-top yang bikin ruang kosong (gap) terlalu lebar */
   .mobile-nav-wrap { display: block; width: 100%; margin-top: 0; }
   .mobile-nav-select { width: 100%; background: var(--bg2); border: 1px solid var(--border2); color: var(--gold); padding: 0.8rem 1rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; appearance: none; text-align: center; text-align-last: center; box-shadow: var(--shadow-panel); outline: none; }
   .mobile-nav-select:focus { border-color: var(--gold); box-shadow: var(--shadow-neon); }
 
-  /* Rapikan Header (Grid Layout yang Padat, No Overlap, No Big Gaps) */
-  header { 
-    display: grid; 
-    grid-template-columns: 1fr auto; 
-    align-items: center; 
-    gap: 0.6rem; /* Gap diperkecil biar padat */
-    padding: 1rem; 
-  }
-  .header-left { 
-    grid-column: 1 / -1; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center; 
-    width: 100%; 
-    gap: 0.8rem; /* Jarak pas antara Title dan Dropdown Menu */
-  }
-  #cloud-status { 
-    grid-column: 1 / 2; 
-    justify-self: start; 
-    position: static; 
-    margin-top: 0; 
-  }
-  .header-right { 
-    grid-column: 2 / 3; 
-    justify-self: end; 
-    position: static; 
-  }
+  header { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.6rem; padding: 1rem; }
+  .header-left { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; gap: 0.8rem; }
+  #cloud-status { grid-column: 1 / 2; justify-self: start; position: static; margin-top: 0; }
+  .header-right { grid-column: 2 / 3; justify-self: end; position: static; }
 
   .login-box { width: 90%; padding: 2rem 1.5rem; }
   .login-box > div:first-child { font-size: 2.2rem !important; }
@@ -336,7 +311,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   .modal { padding: 1.5rem; }
   .modal-title-text { font-size: 1.1rem; }
 
-  /* Sesuaikan letak notifikasi toast di HP biar nggak ketutupan */
   #toast-container { bottom: 10px; right: 10px; left: 10px; }
 }
 </style>
@@ -694,8 +668,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   <div class="modal" style="width: 600px;">
     <div class="modal-title-bar">
       <div class="modal-title-text">Arsip History Net Worth</div>
-      <div>
-        <button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-sm" onclick="printHistory('YTD')" style="color: var(--text); border-color: var(--border);">🖨 YTD</button>
+        <button class="btn-sm" onclick="printHistory('ANNUAL')" style="color: var(--text); border-color: var(--border);">🖨 Annual Report</button>
         <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
       </div>
     </div>
@@ -927,13 +902,28 @@ async function fetchMindsetQuote() {
   catch (e) { quoteEl.textContent = '"Fokus pada stabilitas cashflow dan dividen defensif. Konsistensi selalu mengalahkan intensitas sporadis." — Aegis Principle'; }
 }
 
-function printHistory() {
+function printHistory(type) {
   let printWindow = window.open('', '', 'width=800,height=600');
+  let histCopy = [...HISTORY];
+  let titleExt = "Annual Report (1 Tahun)";
+  
+  if (type === 'YTD') {
+    let currentYear = new Date().getFullYear().toString();
+    histCopy = histCopy.filter(h => h.date.includes(currentYear));
+    titleExt = "Year to Date (" + currentYear + ")";
+  }
+
   let tableHTML = `<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; font-family: sans-serif; text-align: left;"><tr style="background-color: #f1f5f9; color: #0f172a;"><th>Tanggal</th><th>Total Net Worth (Rp)</th><th>Perubahan (+/-)</th></tr>`;
-  let histCopy = [...HISTORY]; 
-  histCopy.forEach((h, i) => { let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0; let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff)); let color = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#64748b'); tableHTML += `<tr><td>${h.date}</td><td style="font-weight: bold; color: #0f172a;">${formatRibuan(Math.round(h.nw))}</td><td style="color: ${color}; font-weight: 600;">${diffStr}</td></tr>`; });
+  
+  histCopy.forEach((h, i) => { 
+    let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0; 
+    let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff)); 
+    let color = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#64748b'); 
+    tableHTML += `<tr><td>${h.date}</td><td style="font-weight: bold; color: #0f172a;">${formatRibuan(Math.round(h.nw))}</td><td style="color: ${color}; font-weight: 600;">${diffStr}</td></tr>`; 
+  });
   tableHTML += `</table>`;
-  printWindow.document.write(`<html><head><title>Print Riwayat Kekayaan</title></head><body style="font-family: sans-serif; padding: 20px; color: #0f172a;"><h2>Aegis Alpha Wealth - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2><p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>${tableHTML}<script>window.onload = function() { window.print(); window.close(); }<\/script></body></html>`);
+  
+  printWindow.document.write(`<html><head><title>Print Riwayat Kekayaan</title></head><body style="font-family: sans-serif; padding: 20px; color: #0f172a;"><h2>Aegis Alpha Wealth - Riwayat Pertumbuhan Kekayaan</h2><p style="color: gray; margin-bottom: 5px;">Tipe Laporan: ${titleExt}</p><p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>${tableHTML}<script>window.onload = function() { window.print(); window.close(); }<\/script></body></html>`);
   printWindow.document.close();
 }
 
@@ -1087,7 +1077,7 @@ function drawNWLineChart(currentNW) {
   const ctx = document.getElementById('nwChart').getContext('2d');
   let histData = [...HISTORY]; let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
   if (histData.length === 0 || histData[histData.length-1].date !== todayStr) histData.push({date: todayStr, nw: currentNW}); else histData[histData.length-1].nw = currentNW; 
-  if(histData.length > 30) histData = histData.slice(-30); 
+  if(histData.length > 365) histData = histData.slice(-365); 
   const labels = histData.map(h => h.date); const dataNW = histData.map(h => h.nw);
   if (nwInst) nwInst.destroy();
   const grad = ctx.createLinearGradient(0, 0, 0, 300); grad.addColorStop(0, 'rgba(212,175,55,0.25)'); grad.addColorStop(1, 'rgba(212,175,55,0)');
@@ -1205,7 +1195,7 @@ async function _cloudSave() {
   let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0); let totalRD = REKSADANA.reduce((s, x) => s + (x.value||0), 0); let totalCash = CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0); let totalLiab = LIABILITAS.reduce((s, x) => s + (x.value||0), 0); let nw = (totalSaham + totalRD + totalCash + CRYPTO_BAL) - totalLiab;
   let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
   if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) { HISTORY[HISTORY.length - 1].nw = nw; } else { HISTORY.push({ date: todayStr, nw: nw }); }
-  if (HISTORY.length > 90) HISTORY.shift();
+  if (HISTORY.length > 365) HISTORY.shift(); // DI-UPGRADE JADI 365 HARI (1 TAHUN)
   renderAll(); 
   
   let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ VERIFYING...'; statusEl.style.color = 'var(--gold)';
