@@ -655,6 +655,10 @@
         <span style="font-size:16px;margin-top:1px">⚙️</span>
         <div><b style="font-size:13px;color:var(--text-main)">Backup JSON Berkala</b><br><span style="font-size:12px;color:var(--text-muted)">Sangat disarankan untuk rutin melakukan <b>Export Data</b> di menu Pengaturan seminggu sekali untuk mencegah hilang data jika browser ter-clear cache.</span></div>
       </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--table-hover);border-radius:10px;padding:11px 13px;border:1px solid var(--border)">
+        <span style="font-size:16px;margin-top:1px">🔒</span>
+        <div><b style="font-size:13px;color:var(--text-main)">Keamanan Layar Auto-Lock</b><br><span style="font-size:12px;color:var(--text-muted)">Untuk menjaga privasi, layar akan otomatis terkunci jika Anda meninggalkan perangkat (tidak ada aktivitas mouse/keyboard) selama <b>1 jam</b>.</span></div>
+      </div>
     </div>
 
     <div class="modal-actions">
@@ -667,7 +671,7 @@
 
 <script>
 // ══════════════════════════════════════════
-//  SECURITY & THEME LOGIC
+//  SECURITY, AUTO-LOCK, & THEME LOGIC
 // ══════════════════════════════════════════
 const PASSCODE = "999999";
 
@@ -689,6 +693,7 @@ function verifyPasscode() {
     document.getElementById('lock-screen').classList.add('hidden');
     inputEl.value = ''; 
     toast('🔓 Akses Diberikan');
+    resetIdleTimer(); // Mulai hitung mundur AFK saat berhasil login
   } else {
     toast('❌ Passcode Salah!');
     inputEl.value = '';
@@ -698,10 +703,33 @@ function verifyPasscode() {
 
 function lockApp() {
   sessionStorage.removeItem('gsp_unlocked');
+  clearTimeout(idleTimer); // Hentikan timer AFK saat layar terkunci
   checkLock();
   toast('🔒 Sistem Terkunci');
 }
 
+// -- FITUR AUTO-LOCK AFK 1 JAM --
+let idleTimer;
+const IDLE_TIMEOUT = 60 * 60 * 1000; // 1 Jam = 3.600.000 milidetik
+
+function resetIdleTimer() {
+  // Hanya reset timer jika aplikasi sedang tidak terkunci
+  if (sessionStorage.getItem('gsp_unlocked') === 'true') {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      lockApp();
+      toast('🔒 Sesi berakhir otomatis karena tidak aktif selama 1 jam');
+    }, IDLE_TIMEOUT);
+  }
+}
+
+// Daftarkan event listener untuk mendeteksi aktivitas user
+['mousemove', 'mousedown', 'keypress', 'touchmove', 'scroll'].forEach(evt => {
+  document.addEventListener(evt, resetIdleTimer, true);
+});
+
+
+// -- TEMA --
 function toggleTheme() {
   const html = document.documentElement;
   const current = html.getAttribute('data-theme');
@@ -977,7 +1005,13 @@ function renderNasabah() {
 
 function openNasabahModal() {
   document.getElementById('modal-nasabah-title').textContent = 'Tambah Nasabah Baru';
-  ['nasabah-id','nasabah-nama','nasabah-telepon','nasabah-alamat','nasabah-catatan'].forEach(id => document.getElementById(id).value = '');
+  
+  // BUGFIX: Dihapus id 'nasabah-alamat' yang menyebabkan crash karena referensinya kosong (null) di HTML.
+  ['nasabah-id','nasabah-nama','nasabah-telepon','nasabah-catatan'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  
   document.getElementById('nasabah-tipe').value = 'anggota';
   document.getElementById('nasabah-pinjaman').value = '';
   document.getElementById('nasabah-sisa').value = '';
@@ -985,6 +1019,7 @@ function openNasabahModal() {
   document.getElementById('nasabah-bunga-tipe').value = 'none';
   document.getElementById('nasabah-bunga-nilai').value = '';
   document.getElementById('nasabah-admin').value = '';
+  
   toggleBungaInput();
   openModal('modal-nasabah');
 }
@@ -997,14 +1032,17 @@ function editNasabah(id) {
   document.getElementById('nasabah-nama').value   = n.nama;
   document.getElementById('nasabah-tipe').value   = n.tipe || 'anggota';
   document.getElementById('nasabah-telepon').value= n.telepon||'';
-  document.getElementById('nasabah-alamat').value = n.alamat||'';
-  document.getElementById('nasabah-catatan').value= n.catatan||'';
+  
+  // BUGFIX: Field catatan sekarang memegang value catatan dan fallback alamat jika ada dari database lama
+  document.getElementById('nasabah-catatan').value= n.catatan || n.alamat || '';
+  
   document.getElementById('nasabah-pinjaman').value = n.pinjaman||'';
   document.getElementById('nasabah-sisa').value     = n.sisa||'';
   document.getElementById('nasabah-status').value   = n.status;
   document.getElementById('nasabah-bunga-tipe').value  = n.bungaTipe||'none';
   document.getElementById('nasabah-bunga-nilai').value = n.bungaNilai||'';
   document.getElementById('nasabah-admin').value       = n.biayaAdmin||'';
+  
   toggleBungaInput();
   openModal('modal-nasabah');
 }
@@ -1032,7 +1070,6 @@ function saveNasabah() {
     id, nama,
     tipe:      document.getElementById('nasabah-tipe').value,
     telepon:   document.getElementById('nasabah-telepon').value.trim(),
-    alamat:    document.getElementById('nasabah-alamat').value.trim(),
     catatan:   document.getElementById('nasabah-catatan').value.trim(),
     pinjaman, sisa: totalTagihan,
     bungaTipe, bungaNilai, bungaRp, biayaAdmin, totalTagihan,
@@ -1314,6 +1351,7 @@ function init() {
   initTheme();
   checkLock();
   fixCacheData(); 
+  resetIdleTimer(); // Mulai timer inisial
   
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
   document.getElementById('sidebarDate').textContent = new Date().toLocaleDateString('id-ID', opts);
