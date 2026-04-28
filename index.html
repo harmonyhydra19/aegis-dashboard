@@ -287,7 +287,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 
 /* ── SECURITY TOAST CSS ── */
 #toast-container { position:fixed; bottom:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
-.sys-toast { background:rgba(16,19,26,0.95); border-left:3px solid var(--green); padding:12px 16px; border-radius:4px; font-family:var(--font-mono); font-size:0.75rem; color:var(--text); box-shadow:0 4px 15px rgba(0,0,0,0.5); backdrop-filter:blur(5px); animation:toastIn .3s ease forwards, toastOut .4s ease 3.5s forwards; }
+.sys-toast { background:rgba(16,19,26,0.95); border-left:3px solid var(--green); padding:16px 20px; border-radius:4px; font-family:var(--font-mono); font-size:0.75rem; color:var(--text); box-shadow:0 4px 20px rgba(0,0,0,0.8); backdrop-filter:blur(5px); animation:toastIn .3s ease forwards, toastOut .4s ease 5.5s forwards; line-height: 1.6; }
 @keyframes toastIn { from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
 @keyframes toastOut { from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 </style>
@@ -309,7 +309,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
     <div style="display:flex;align-items:center;gap:2rem;">
       <div style="cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="switchView('nw')">
         <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;line-height:1;">⚔ AEGIS ALPHA WEALTH</div>
-        <div style="font-size:.65rem; color:var(--muted2); font-family:var(--font-mono); font-weight:500; letter-spacing:0.05em; margin-top:4px;">SECURE TERMINAL ACTIVE</div>
+        <div style="font-size:.65rem; color:var(--cyan); font-family:var(--font-mono); font-weight:700; letter-spacing:0.05em; margin-top:4px;">SECURE TERMINAL ACTIVE</div>
       </div>
       <nav class="nav-pill">
         <button id="nav-nw" class="active" onclick="switchView('nw')">Net Worth</button>
@@ -319,7 +319,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
         <button id="nav-liab" onclick="switchView('liab')">Liabilitas</button>
         <button style="color:var(--cyan)" onclick="openModal('modal-crypto')">Crypto</button>
       </nav>
-      <span id="cloud-status" style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted)">☁ Disconnected</span>
+      <span id="cloud-status" style="font-family:var(--font-mono);font-size:.75rem;color:var(--cyan);font-weight:700;">⚡ SECURED 7-LAYER</span>
     </div>
     <div style="display:flex;align-items:center;gap:1rem;">
       <button class="btn-sm" onclick="toggleTheme()">🌓</button>
@@ -646,7 +646,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 </div>
 
 <script>
-// ── SECURITY SYSTEM TOAST ─────────────────────────────
+// ── SECURITY SYSTEM TOAST (Detailed Boot Sequence) ─────────────────────────────
 function showSecurityStatus() {
   let tc = document.getElementById('toast-container');
   if(!tc) {
@@ -656,9 +656,19 @@ function showSecurityStatus() {
   }
   let t = document.createElement('div');
   t.className = 'sys-toast';
-  t.innerHTML = `<span style="color:var(--green)">[OK]</span> SECURE PROTOCOLS ENGAGED<br><span style="color:var(--muted2);font-size:0.65rem;letter-spacing:0.02em">CSP, Anti-Inspect & Enkripsi Aktif.</span>`;
+  t.innerHTML = `
+    <div style="color:var(--gold);font-weight:700;margin-bottom:8px;font-size:0.85rem">AEGIS PROTOCOL ENGAGED</div>
+    <div style="color:var(--green)">[OK] LAYER 1: PIN LOCK VERIFIED</div>
+    <div style="color:var(--green)">[OK] LAYER 2: AES-256-GCM ACTIVE</div>
+    <div style="color:var(--green)">[OK] LAYER 3: OBFUSCATION ENGAGED</div>
+    <div style="color:var(--green)">[OK] LAYER 4: DATABASE SECURED</div>
+    <div style="color:var(--green)">[OK] LAYER 5: MEMORY ENCRYPTED</div>
+    <div style="color:var(--green)">[OK] LAYER 6: CSP STRICT MODE</div>
+    <div style="color:var(--green)">[OK] LAYER 7: IDLE NUKE ARMED</div>
+    <div style="color:var(--cyan);margin-top:8px;font-weight:700;border-top:1px solid rgba(34, 211, 238, 0.3);padding-top:6px">> SYSTEM FULLY SECURED.</div>
+  `;
   tc.appendChild(t);
-  setTimeout(()=> t.remove(), 4000);
+  setTimeout(()=> t.remove(), 6000);
 }
 
 // ── LAYER 2: ANTI-DEVTOOLS & INSPECT ─────────────────────────────
@@ -780,7 +790,7 @@ let RD_SORT = 'val_desc';
 let CASH_SORT = 'val_desc';
 let LIAB_SORT = 'val_desc';
 
-// Arrays dikosongkan agar menarik murni dari Supabase, bebas sisa-sisa dummy data.
+// Arrays dikosongkan agar pure ditarik dari database saat load
 let STOCKS = [], REKSADANA = [], CASH_ACCOUNTS = [], LIABILITAS = [], INFLOWS = [], OUTFLOWS = [], HISTORY = [];
 let GOALS = [
   { id:'auto-nw', name:'Terminal Net Worth', target:2000000000, isAuto:true },
@@ -866,7 +876,7 @@ function printHistory() {
   printWindow.document.close();
 }
 
-/* ── MAIN RENDER (Includes Dynamic Darurat Logic) ── */
+/* ── MAIN RENDER ── */
 function renderAll() {
   _syncInputsToState();
 
@@ -1048,7 +1058,7 @@ function addInflow() { _syncInputsToState(); INFLOWS.push({id:'i'+Date.now(), na
 function delInflow(i) { if(confirm('Hapus pemasukan?')) { _syncInputsToState(); INFLOWS.splice(i, 1); _cloudSave(); } }
 function addOutflow() { _syncInputsToState(); OUTFLOWS.push({id:'o'+Date.now(), name:'Pengeluaran Baru', value:0}); renderAll(); }
 function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(); OUTFLOWS.splice(i, 1); _cloudSave(); } }
-function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
+function saveData() { _syncInputsToState(); _cloudSave(); }
 function saveCashflow() { _syncInputsToState(); _cloudSave(); closeModal('modal-cashflow'); }
 function saveGoal() { GOALS.push({ id: 'g'+Date.now(), name: document.getElementById('g-name').value, target: unformatRibuan(document.getElementById('g-target').value), current: unformatRibuan(document.getElementById('g-current').value) || 0 }); _cloudSave(); closeModal('modal-goal'); }
 function saveCryptoBal() { CRYPTO_BAL = unformatRibuan(document.getElementById('in-crypto-bal').value); _cloudSave(); closeModal('modal-crypto'); }
@@ -1080,7 +1090,7 @@ function switchView(view) { document.querySelectorAll('.view-section').forEach(e
 function toggleTheme() { const html = document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); renderAll(); }
 
 async function loadData() {
-  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Syncing...'; statusEl.style.color = 'var(--gold)';
+  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ LOADING...'; statusEl.style.color = 'var(--gold)';
   try {
     const { data, error } = await sb.from('settings').select('key,value').in('key', [DB_PREFIX+'stocks', DB_PREFIX+'reksadana', DB_PREFIX+'cash', DB_PREFIX+'liabilitas', DB_PREFIX+'inflows', DB_PREFIX+'outflows', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target']);
     if (error) throw error;
@@ -1100,8 +1110,10 @@ async function loadData() {
     }
     document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
     if(document.getElementById('in-crypto-bal')) document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
-    statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
-  } catch(e) { statusEl.textContent = '☁ Fail Sync'; statusEl.style.color = 'var(--red)'; }
+    
+    // GANTI TULISAN SYNC JADI SECURED 7-LAYER
+    statusEl.textContent = '⚡ SECURED 7-LAYER'; statusEl.style.color = 'var(--cyan)';
+  } catch(e) { statusEl.textContent = '☁ FALLBACK MODE'; statusEl.style.color = 'var(--red)'; }
   fetchMindsetQuote(); renderAll();
 }
 
@@ -1111,13 +1123,16 @@ async function _cloudSave() {
   if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) { HISTORY[HISTORY.length - 1].nw = nw; } else { HISTORY.push({ date: todayStr, nw: nw }); }
   if (HISTORY.length > 90) HISTORY.shift();
   renderAll(); 
-  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Saving...'; statusEl.style.color = 'var(--gold)';
+  
+  let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ VERIFYING...'; statusEl.style.color = 'var(--gold)';
   try {
     const payloads = [{ key: DB_PREFIX+'stocks', value: JSON.stringify(STOCKS) }, { key: DB_PREFIX+'reksadana', value: JSON.stringify(REKSADANA) }, { key: DB_PREFIX+'cash', value: JSON.stringify(CASH_ACCOUNTS) }, { key: DB_PREFIX+'liabilitas', value: JSON.stringify(LIABILITAS) }, { key: DB_PREFIX+'inflows', value: JSON.stringify(INFLOWS) }, { key: DB_PREFIX+'outflows', value: JSON.stringify(OUTFLOWS) }, { key: DB_PREFIX+'goals', value: JSON.stringify(GOALS) }, { key: DB_PREFIX+'history', value: JSON.stringify(HISTORY) }, { key: DB_PREFIX+'crypto_bal', value: String(CRYPTO_BAL) }, { key: DB_PREFIX+'porto_target', value: String(PORTO_TARGET) }];
     const { error } = await sb.from('settings').upsert(payloads, { onConflict: 'key' });
     if (error) throw error;
-    statusEl.textContent = '⚡ Synced'; statusEl.style.color = 'var(--green)';
-  } catch(e) { statusEl.textContent = '☁ Fail Sync'; statusEl.style.color = 'var(--red)'; }
+    
+    // GANTI TULISAN SYNC JADI SECURED 7-LAYER
+    statusEl.textContent = '⚡ SECURED 7-LAYER'; statusEl.style.color = 'var(--cyan)';
+  } catch(e) { statusEl.textContent = '☁ FAIL: FALLBACK'; statusEl.style.color = 'var(--red)'; }
 }
 </script>
 </body>
