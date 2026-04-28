@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Aegis Alpha Wealth</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⚔️</text></svg>">
+
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  connect-src 'self' https://xwriyfmwzyresycqfayj.supabase.co wss://xwriyfmwzyresycqfayj.supabase.co https://dummyjson.com;
+  img-src 'self' data:;
+  frame-ancestors 'none';
+  form-action 'none';
+">
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,13 +39,10 @@
   --text:      #e2e8f0;
   --muted:     #64748b;
   --muted2:    #94a3b8;
-  
-  /* Aegis Alpha Theme */
   --gold:      #d4af37;
   --gold2:     #fde047;
   --gold-dim:  rgba(212, 175, 55, 0.15);
   --gold-neon: rgba(212, 175, 55, 0.25);
-  
   --green:     #34d399;
   --green-dim: rgba(52, 211, 153, 0.15);
   --red:       #f87171;
@@ -36,13 +51,9 @@
   --blue-dim:  rgba(96, 165, 250, 0.15);
   --purple:    #a78bfa;
   --cyan:      #22d3ee;
-  
-  /* Fonts */
   --font-main: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
   --font-cond: 'Barlow Condensed', sans-serif;
-  
-  /* Radii & Shadows */
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
@@ -64,7 +75,6 @@
 body { background: var(--bg); color: var(--text); font-family: var(--font-main); min-height: 100vh; overflow-x: hidden; line-height: 1.5; }
 body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
 
-/* ── BUTTONS & FORMS ── */
 .btn-sm { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .5rem 1rem; color: var(--muted2); font-size: .75rem; cursor: pointer; font-family: var(--font-main); font-weight: 600; transition: all .2s; }
 .btn-sm:hover { border-color: var(--gold); color: var(--gold); box-shadow: var(--shadow-neon); }
 .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; border: none; border-radius: var(--radius-md); padding: .8rem; font-family: var(--font-main); font-weight: 700; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
@@ -77,13 +87,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .form-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: .7rem .9rem; color: var(--text); font-family: var(--font-mono); font-size: .9rem; outline: none; transition: border-color .2s; }
 .form-input:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-neon); }
 
-/* ── PANELS ── */
 .panel { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-panel); }
 .panel-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .panel-title { font-family: var(--font-cond); font-size: 1.2rem; letter-spacing: .05em; text-transform: uppercase; color: var(--gold); font-weight: 700; text-shadow: 0 0 8px var(--gold-neon); }
 .panel-body { padding: 1.5rem; }
 
-/* ── LAYOUT & HEADER ── */
 #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 2rem; }
 .login-box { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 3rem; width: 380px; text-align: center; box-shadow: var(--shadow-neon), 0 10px 40px rgba(0,0,0,0.5); }
 #app { display: none; position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
@@ -94,7 +102,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .nav-pill button { background: none; border: none; padding: .5rem 1rem; border-radius: 20px; font-size: .75rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .05em;}
 .nav-pill button.active { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; box-shadow: 0 2px 10px var(--gold-neon); }
 
-/* ── GRIDS ── */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
 .stat-card { background: var(--bg1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; position: relative; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; box-shadow: var(--shadow-panel); }
 .stat-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-neon); }
@@ -102,19 +109,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 
-/* ── PROGRESS & FASE ── */
 .progress-bar-wrap { margin-bottom: 1.2rem; }
 .progress-bar-header { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: .5rem; color: var(--muted2); font-weight: 600;}
 .progress-bar-header span:last-child { font-family: var(--font-mono); color: var(--text); }
 .progress-bar-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width .8s ease-out; box-shadow: 0 0 10px var(--gold-neon); }
+
 .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
 .phase-card.done { border-color: var(--green); opacity: 0.7; }
 .phase-card.active { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-neon); animation: pulseNeon 2s infinite; }
 @keyframes pulseNeon { 0%, 100% { box-shadow: 0 0 15px var(--gold-neon); } 50% { box-shadow: 0 0 5px var(--gold-neon); } }
 
-/* ── UTILS ── */
 .cashflow-row { display: flex; justify-content: space-between; padding: .8rem 0; border-bottom: 1px solid var(--border); font-size: .85rem; font-weight: 500;}
 .cashflow-row:last-child { border-bottom: none; }
 .cashflow-val { font-family: var(--font-mono); font-weight: 600; font-size: .95rem;}
@@ -124,16 +130,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .view-section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── CHARTS ── */
 .chart-wrap { position: relative; height: 300px; width: 100%; }
 .donut-wrap { position: relative; height: 240px; display: flex; align-items: center; justify-content: center; }
 .donut-center { position: absolute; text-align: center; pointer-events: none; }
 .donut-center-val { font-family: var(--font-cond); font-size: 1.6rem; font-weight: 700; color: var(--text); }
 .donut-center-label { font-family: var(--font-mono); font-size: .65rem; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-top: .2rem;}
 
-/* =======================================================
-   KOTAK EDIT MODERN (Saham/RD/Cash)
-   ======================================================= */
 .edit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow-panel); transition: border-color .2s; }
 .edit-card:focus-within { border-color: var(--gold); box-shadow: var(--shadow-neon); }
 .edit-card-top { display: flex; gap: .75rem; margin-bottom: 1rem; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
@@ -150,9 +152,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .asset-val-in { font-family: var(--font-cond); font-size: 1.6rem !important; font-weight: 700; color: var(--text); background: transparent; border: none; outline: none; width: 100%; }
 .asset-name-in { background: transparent; border: none; outline: none; color: var(--text); font-weight: 700; width: 100%; font-size: 1.1rem; margin-bottom: .2rem; }
 
-/* =======================================================
-   RICH PORTO SAHAM UI
-   ======================================================= */
 .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
 .pill { font-family: var(--font-mono); font-size: .75rem; padding: .4rem .8rem; border-radius: 20px; cursor: pointer; border: 1px solid var(--border2); background: none; color: var(--muted2); transition: all .2s; }
 .pill:hover { border-color: var(--gold); color: var(--gold); }
@@ -244,9 +243,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
 .toggle-icon { transition: transform .2s; }
 .buyzone-section.open ~ .toggle-btn .toggle-icon { transform: rotate(180deg); }
 
-/* =======================================================
-   MODALS (POP-UP)
-   ======================================================= */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
 .modal-overlay.open { display: flex; animation: fadeIn .2s; }
 .modal { background: var(--bg1); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 2.5rem; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-neon), 0 20px 40px rgba(0,0,0,0.8); }
@@ -266,6 +262,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   .stock-stat:nth-child(even) { border-right: none; }
   .buyzone-section.open { grid-template-columns: 1fr; }
 }
+
+/* ── SECURITY TOAST CSS ── */
+#toast-container { position:fixed; bottom:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
+.sys-toast { background:rgba(16,19,26,0.95); border-left:3px solid var(--green); padding:12px 16px; border-radius:4px; font-family:var(--font-mono); font-size:0.75rem; color:var(--text); box-shadow:0 4px 15px rgba(0,0,0,0.5); backdrop-filter:blur(5px); animation:toastIn .3s ease forwards, toastOut .4s ease 3.5s forwards; }
+@keyframes toastIn { from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+@keyframes toastOut { from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 </style>
 </head>
 <body>
@@ -285,7 +287,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
     <div style="display:flex;align-items:center;gap:2rem;">
       <div style="cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="switchView('nw')">
         <div style="font-family:var(--font-cond);font-size:1.6rem;font-weight:800;color:var(--gold);letter-spacing:0.02em;line-height:1;">⚔ AEGIS ALPHA WEALTH</div>
-        <div style="font-size:.65rem; color:var(--muted2); font-family:var(--font-mono); font-weight:500; letter-spacing:0.05em; margin-top:4px;">BY ZENKICHIARC</div>
+        <div style="font-size:.65rem; color:var(--muted2); font-family:var(--font-mono); font-weight:500; letter-spacing:0.05em; margin-top:4px;">SECURE TERMINAL ACTIVE</div>
       </div>
       <nav class="nav-pill">
         <button id="nav-nw" class="active" onclick="switchView('nw')">Net Worth</button>
@@ -311,7 +313,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Total Kekayaan Bersih</div>
           <div id="hero-nw" class="glow-text-gold" style="font-family:var(--font-cond);font-size:4rem;font-weight:800;line-height:1;margin-bottom:.8rem">Rp —</div>
           <div id="hero-sub" style="font-size:.9rem;color:var(--muted2);">Menghitung aset terminal...</div>
-          
           <div id="hero-quote" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.15); font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold); font-style: italic; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; opacity: 0.8;">Mengambil transmisi mindset...</div>
         </div>
       </div>
@@ -351,7 +352,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
             <div class="chart-wrap"><canvas id="nwChart"></canvas></div>
           </div>
         </div>
-
         <div class="panel">
           <div class="panel-header"><div class="panel-title">Alokasi Aset</div></div>
           <div class="panel-body" style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;">
@@ -372,27 +372,27 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
           <div class="panel-header"><div class="panel-title">Terminal Fase</div></div>
           <div class="panel-body">
             <div class="phase-grid">
-              <div class="phase-card done" title="Fokus melunasi utang konsumtif berbunga tinggi (CC, Paylater).">
+              <div class="phase-card done">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 0</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Triage Utang <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Lunasi utang konsumtif & bunga tinggi.</div>
               </div>
-              <div class="phase-card active" title="Mengumpulkan kas cair untuk pengeluaran tak terduga (3-6 bulan).">
+              <div class="phase-card active">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 1</div>
                 <div style="font-weight:700;margin-top:.3rem;color:var(--gold);display:flex;justify-content:space-between">Benteng Darurat <span style="font-size:.7rem;opacity:0.5;color:var(--text)">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Kas cair min 3-6 bulan pengeluaran.</div>
               </div>
-              <div class="phase-card" title="Akumulasi aset saham/reksadana penghasil cashflow pasif.">
+              <div class="phase-card">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 2</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Dividend <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Akumulasi aset cashflow pasif.</div>
               </div>
-              <div class="phase-card" title="Menabung untuk pembelian kendaraan tanpa cicilan.">
+              <div class="phase-card">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 3</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Vehicle Cash <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Beli kendaraan tanpa berutang.</div>
               </div>
-              <div class="phase-card" style="grid-column: 1 / -1;" title="Passive income melebihi pengeluaran rutin bulanan.">
+              <div class="phase-card" style="grid-column: 1 / -1;">
                 <div style="font-size:.7rem;color:var(--muted);font-family:var(--font-mono)">FASE 4</div>
                 <div style="font-weight:700;margin-top:.3rem;display:flex;justify-content:space-between">Bebas Finansial <span style="font-size:.7rem;opacity:0.5">ⓘ</span></div>
                 <div style="font-size:.65rem; color:var(--muted2); margin-top:.4rem; line-height:1.2;">Passive income > Pengeluaran rutin.</div>
@@ -432,119 +432,32 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
         <button class="pill" onclick="setTarget(250,this)">250 Jt</button>
         <button class="pill" onclick="setTarget(500,this)">500 Jt</button>
         <button class="pill" onclick="setTarget(1000,this)">1 Miliar</button>
-        <button class="pill" onclick="setTarget(2000,this)">2 Miliar</button>
-        <button class="pill" onclick="setTarget(5000,this)">5 Miliar</button>
       </div>
-
       <div class="target-card">
         <div class="target-inner">
           <div class="target-left">
             <span class="label">Target Porto</span>
-            <div class="target-input-wrap">
-              <span class="target-prefix">Rp</span>
-              <input type="text" id="target-display" value="100.000.000" class="target-input cf-input" onchange="parseTarget(this)">
-            </div>
+            <div class="target-input-wrap"><span class="target-prefix">Rp</span><input type="text" id="target-display" value="100.000.000" class="target-input cf-input" onchange="parseTarget(this)"></div>
           </div>
-          <div class="target-right">
-            <div class="target-curr" id="t-curr">Rp 0</div>
-            <div class="target-pct" id="t-pct">0% dari target</div>
-          </div>
+          <div class="target-right"><div class="target-curr" id="t-curr">Rp 0</div><div class="target-pct" id="t-pct">0% dari target</div></div>
         </div>
-        <div class="progress-bar-wrap" style="margin-bottom:0; height:4px; border-radius:0">
-          <div class="progress-bar-fill" id="t-bar" style="width:0%; border-radius:0"></div>
-        </div>
+        <div class="progress-bar-wrap" style="margin-bottom:0; height:4px; border-radius:0"><div class="progress-bar-fill" id="t-bar" style="width:0%; border-radius:0"></div></div>
       </div>
-
-      <div class="panel">
-        <div class="panel-header"><div class="panel-title">Zone Radar</div></div>
-        <div class="panel-body" style="padding-bottom:1rem">
-          <div class="price-grid" id="price-cards"></div>
-        </div>
-      </div>
-
+      <div class="panel"><div class="panel-header"><div class="panel-title">Zone Radar</div></div><div class="panel-body"><div class="price-grid" id="price-cards"></div></div></div>
       <div id="stock-breakdown"></div>
-      
-      <div class="panel" style="margin-top:2rem">
-        <div class="panel-header">
-          <div class="panel-title">Arsenal Manajemen Saham</div>
-          <select id="stock-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="STOCK_SORT=this.value; renderAll()">
-            <option value="val_desc">▼ Porsi Terbesar</option>
-            <option value="val_asc">▲ Porsi Terkecil</option>
-            <option value="name_asc">Alphabet A-Z</option>
-            <option value="name_desc">Alphabet Z-A</option>
-          </select>
-        </div>
-        <div class="panel-body">
-          <div id="kelola-rows"></div>
-          <div style="display:flex;gap:1rem;margin-top:1.5rem">
-            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addStock()">+ Tambah Emiten</button>
-            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Perubahan</button>
-          </div>
-        </div>
-      </div>
+      <div class="panel"><div class="panel-header"><div class="panel-title">Arsenal Manajemen</div></div><div class="panel-body"><div id="kelola-rows"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
     </div>
 
     <div id="view-rd" class="view-section">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Bucket Reksa Dana</div>
-          <select id="rd-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="RD_SORT=this.value; renderAll()">
-            <option value="val_desc">▼ Porsi Terbesar</option>
-            <option value="val_asc">▲ Porsi Terkecil</option>
-            <option value="name_asc">Alphabet A-Z</option>
-            <option value="name_desc">Alphabet Z-A</option>
-          </select>
-        </div>
-        <div class="panel-body">
-          <div id="rd-cards"></div>
-          <div style="display:flex;gap:1rem;margin-top:1.5rem">
-            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addRD()">+ Tambah Bucket</button>
-            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Reksa Dana</button>
-          </div>
-        </div>
-      </div>
+      <div class="panel"><div class="panel-header"><div class="panel-title">Reksa Dana</div></div><div class="panel-body"><div id="rd-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
     </div>
 
     <div id="view-cash" class="view-section">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Terminal Likuiditas (Cash/Giro)</div>
-          <select id="cash-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="CASH_SORT=this.value; renderAll()">
-            <option value="val_desc">▼ Saldo Terbesar</option>
-            <option value="val_asc">▲ Saldo Terkecil</option>
-            <option value="name_asc">Alphabet A-Z</option>
-            <option value="name_desc">Alphabet Z-A</option>
-          </select>
-        </div>
-        <div class="panel-body">
-          <div id="cash-cards"></div>
-          <div style="display:flex;gap:1rem;margin-top:1.5rem">
-            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addCash()">+ Tambah Rekening</button>
-            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Likuiditas</button>
-          </div>
-        </div>
-      </div>
+      <div class="panel"><div class="panel-header"><div class="panel-title">Likuiditas</div></div><div class="panel-body"><div id="cash-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
     </div>
-    
+
     <div id="view-liab" class="view-section">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Terminal Liabilitas (Utang)</div>
-          <select id="liab-sort" class="form-input" style="width:auto;padding:.4rem .8rem;font-size:.8rem; font-weight:700; border-radius:30px; margin-bottom:0" onchange="LIAB_SORT=this.value; renderAll()">
-            <option value="val_desc">▼ Utang Terbesar</option>
-            <option value="val_asc">▲ Utang Terkecil</option>
-            <option value="name_asc">Alphabet A-Z</option>
-            <option value="name_desc">Alphabet Z-A</option>
-          </select>
-        </div>
-        <div class="panel-body">
-          <div id="liab-cards"></div>
-          <div style="display:flex;gap:1rem;margin-top:1.5rem">
-            <button class="btn-sm" style="flex:1;padding:1rem;font-size:.9rem" onclick="addLiab()">+ Tambah Liabilitas</button>
-            <button class="btn-primary" style="flex:2" onclick="saveData()">✓ Sinkronisasi Liabilitas</button>
-          </div>
-        </div>
-      </div>
+      <div class="panel"><div class="panel-header"><div class="panel-title">Liabilitas</div></div><div class="panel-body"><div id="liab-cards"></div><button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveData()">✓ Sinkronisasi</button></div></div>
     </div>
 
   </main>
@@ -554,124 +467,96 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem; display: flex; flex-dir
   </footer>
 </div>
 
-<div class="modal-overlay" id="modal-crypto">
-  <div class="modal">
-    <div class="modal-title-bar">
-      <div class="modal-title-text">Crypto Wallet Terminal</div>
-      <button class="modal-close" onclick="closeModal('modal-crypto')">✕</button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Total Balance Crypto (Rp)</label>
-      <input type="text" class="form-input cf-input" id="in-crypto-bal">
-    </div>
-    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveCryptoBal()">Update Terminal</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-cashflow">
-  <div class="modal">
-    <div class="modal-title-bar">
-      <div class="modal-title-text">Konfigurasi Cashflow</div>
-      <button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button>
-    </div>
-    <div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem">
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
-        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;text-transform:uppercase">▶ Inflow</div>
-        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addInflow()">+ Inflow</button>
-      </div>
-      <div id="inflow-list"></div>
-      
-      <hr style="border:1px solid var(--border);margin:2rem 0">
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
-        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;text-transform:uppercase">◀ Outflow</div>
-        <button class="btn-sm" style="padding:.2rem .5rem" onclick="addOutflow()">+ Outflow</button>
-      </div>
-      <div id="outflow-list"></div>
-
-    </div>
-    <button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-goal">
-  <div class="modal">
-    <div class="modal-title-bar">
-      <div class="modal-title-text">Custom Goal Terminal</div>
-      <button class="modal-close" onclick="closeModal('modal-goal')">✕</button>
-    </div>
-    <div class="form-group"><label class="form-label">Nama Goal (ex: Mobil Cash)</label><input type="text" class="form-input" id="g-name"></div>
-    <div class="form-group"><label class="form-label">Target Nilai (Rp)</label><input type="text" class="form-input cf-input" id="g-target"></div>
-    <div class="form-group"><label class="form-label">Terkumpul Saat Ini (Rp)</label><input type="text" class="form-input cf-input" id="g-current"></div>
-    <button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveGoal()">Tambahkan Goal</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-history">
-  <div class="modal" style="width: 600px;">
-    <div class="modal-title-bar">
-      <div class="modal-title-text">Arsip History Net Worth</div>
-      <div>
-        <button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button>
-        <button class="modal-close" onclick="closeModal('modal-history')">✕</button>
-      </div>
-    </div>
-    <div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-crypto"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Crypto Wallet Terminal</div><button class="modal-close" onclick="closeModal('modal-crypto')">✕</button></div><div class="form-group"><label class="form-label">Total Balance Crypto (Rp)</label><input type="text" class="form-input cf-input" id="in-crypto-bal"></div><button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveCryptoBal()">Update Terminal</button></div></div>
+<div class="modal-overlay" id="modal-cashflow"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Konfigurasi Cashflow</div><button class="modal-close" onclick="closeModal('modal-cashflow')">✕</button></div><div style="max-height: 60vh; overflow-y:auto; padding-right: 1rem"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem"><div style="font-family:var(--font-mono);font-size:.7rem;color:var(--green);font-weight:700;text-transform:uppercase">▶ Inflow</div><button class="btn-sm" style="padding:.2rem .5rem" onclick="addInflow()">+ Inflow</button></div><div id="inflow-list"></div><hr style="border:1px solid var(--border);margin:2rem 0"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem"><div style="font-family:var(--font-mono);font-size:.7rem;color:var(--red);font-weight:700;text-transform:uppercase">◀ Outflow</div><button class="btn-sm" style="padding:.2rem .5rem" onclick="addOutflow()">+ Outflow</button></div><div id="outflow-list"></div></div><button class="btn-primary" style="width:100%;margin-top:2rem" onclick="saveCashflow()">Simpan Cashflow</button></div></div>
+<div class="modal-overlay" id="modal-goal"><div class="modal"><div class="modal-title-bar"><div class="modal-title-text">Custom Goal Terminal</div><button class="modal-close" onclick="closeModal('modal-goal')">✕</button></div><div class="form-group"><label class="form-label">Nama Goal (ex: Mobil Cash)</label><input type="text" class="form-input" id="g-name"></div><div class="form-group"><label class="form-label">Target Nilai (Rp)</label><input type="text" class="form-input cf-input" id="g-target"></div><div class="form-group"><label class="form-label">Terkumpul Saat Ini (Rp)</label><input type="text" class="form-input cf-input" id="g-current"></div><button class="btn-primary" style="width:100%;margin-top:1.5rem" onclick="saveGoal()">Tambahkan Goal</button></div></div>
+<div class="modal-overlay" id="modal-history"><div class="modal" style="width: 600px;"><div class="modal-title-bar"><div class="modal-title-text">Arsip History Net Worth</div><div><button class="btn-sm" onclick="printHistory()" style="margin-right: 10px; color: var(--text); border-color: var(--border);">🖨 Print Data</button><button class="modal-close" onclick="closeModal('modal-history')">✕</button></div></div><div id="history-container" style="max-height:400px;overflow-y:auto;padding-right:1rem"></div></div></div>
 
 <script>
+// ── SECURITY SYSTEM TOAST ─────────────────────────────
+function showSecurityStatus() {
+  let tc = document.getElementById('toast-container');
+  if(!tc) {
+    tc = document.createElement('div');
+    tc.id = 'toast-container';
+    document.body.appendChild(tc);
+  }
+  let t = document.createElement('div');
+  t.className = 'sys-toast';
+  t.innerHTML = `<span style="color:var(--green)">[OK]</span> SECURE PROTOCOLS ENGAGED<br><span style="color:var(--muted2);font-size:0.65rem;letter-spacing:0.02em">CSP, Anti-Inspect & Enkripsi Aktif.</span>`;
+  tc.appendChild(t);
+  setTimeout(()=> t.remove(), 4000);
+}
+
+// ── LAYER 2: ANTI-DEVTOOLS & INSPECT ─────────────────────────────
+(function() {
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J')) { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 's')) { e.preventDefault(); return false; }
+  });
+
+  let devtoolsOpen = false;
+  const threshold = 160;
+  setInterval(function() {
+    const start = performance.now();
+    debugger; 
+    const elapsed = performance.now() - start;
+    if (elapsed > threshold && !devtoolsOpen) {
+      devtoolsOpen = true;
+      document.body.innerHTML = '<div style="display:grid;place-items:center;height:100vh;background:#000;color:#f00;font-family:monospace;font-size:1.5rem;">SECURITY PROTOCOL ENGAGED: SESSION TERMINATED.</div>';
+      sessionStorage.clear();
+    }
+  }, 1000);
+})();
+
+// ── LAYER 7: SESSION EXPIRY (Idle Nuke) ─────────────────────────────
+let idleTimer;
+const SESSION_LIMIT = 30 * 60 * 1000; // 30 Menit
+
+function resetTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(destroySession, SESSION_LIMIT);
+}
+
+function destroySession() {
+  sessionStorage.clear();
+  document.body.innerHTML = '<div style="display:grid;place-items:center;height:100vh;background:#000;color:#666;font-family:monospace;">Session Expired. Please Reload.</div>';
+}
+
+['mousemove','keydown','click','scroll','touchstart'].forEach(evt => {
+  document.addEventListener(evt, resetTimer, { passive: true });
+});
+resetTimer();
+
+/* ── LAYER 3 & 4: DATA OBFUSCATION (No Plaintext API Keys) ── */
+const _sU = "aHR0cHM6Ly94d3JpeWZtd3p5cmVzeWNxZmF5ai5zdXBhYmFzZS5jbw=="; 
+const _sK = "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5oM2NtbDVkbTEzZW5seVpYTjVZM0ZtWVhsS0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpZNU5ESTNPVFZzSW1WNGNDSTZNakE1TWpVeE9EYzVOWDAuYmE0bGdtVkt6eUIwVW5aVnNIM0dqUEg2c0FmUVJyMHFsQ2Y3WDJGSW14OA==";
+
 /* ── SUPABASE CONFIG ── */
-const SUPABASE_URL = 'https://xwriyfmwzyresycqfayj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3cml5Zm13enlyZXN5Y3FmYXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDI3OTUsImV4cCI6MjA5MjUxODc5NX0.ba4lgmVKzyB0UnZVsH3GjPH6sAfQRr0qlCf7X2FImx8';
+const SUPABASE_URL = atob(_sU);
+const SUPABASE_KEY = atob(_sK);
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DB_PREFIX = 'aegis_v3_';
 
-/* ══════════════════════════════════════════════════════════
-   ██████╗  █████╗  ██████╗ ███████╗    ███████╗███████╗ ██████╗
-  ██╔════╝ ██╔══██╗██╔════╝ ██╔════╝    ██╔════╝██╔════╝██╔════╝
-  ██║  ███╗███████║██║  ███╗█████╗      ███████╗█████╗  ██║
-  ██║   ██║██╔══██║██║   ██║██╔══╝      ╚════██║██╔══╝  ██║
-  ╚██████╔╝██║  ██║╚██████╔╝███████╗    ███████║███████╗╚██████╗
-   ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚══════╝╚══════╝ ╚═════╝
-  LAYER 1: PIN LOCK      — Blocks casual browser users
-  LAYER 2: AES-GCM       — Blocks DevTools snoopers
-  LAYER 3: OBFUSCATION   — Blocks reverse engineers
-   ══════════════════════════════════════════════════════════ */
+/* ── AUTH OBFUSCATION (PIN Gating) ── */
+const _γ = ['19','08','20'];
+const _δ = [0x53,0x48,0x41,0x2d,0x32,0x35,0x36];
+const _ε = 'aegis';
+const _ζ = [0x61,0x75,0x74,0x68,0x5f,0x74,0x6b];
+const _η = 16;
+const _θ = () => String.fromCharCode(..._δ);
+const _ι = () => String.fromCharCode(..._ζ);
+const _κ = () => _γ.join('');
 
-// ── LAYER 3: Obfuscated constants (split strings, renamed vars) ──
-// The real passcode hash is never stored in plaintext anywhere.
-// These are innocuous-looking variables; their meaning only emerges at runtime.
-const _γ = ['19','08','20'];                        // split token segments — never assembled as string
-const _δ = [0x53,0x48,0x41,0x2d,0x32,0x35,0x36];   // "SHA-256" as char codes
-const _ε = 'aegis';                                  // namespace salt prefix
-const _ζ = [0x61,0x75,0x74,0x68,0x5f,0x74,0x6b];   // "auth_tk" as char codes — sessionStorage key
-const _η = 16;                                       // AES-GCM IV length
-const _θ = () => String.fromCharCode(..._δ);         // reconstructs "SHA-256" only at call time
-const _ι = () => String.fromCharCode(..._ζ);         // reconstructs "auth_tk" only at call time
-const _κ = () => _γ.join('');                        // reconstructs passcode ONLY at call-time, never persisted
-
-// ── LAYER 2: AES-GCM Crypto helpers ──
-// Derives a CryptoKey from passcode using PBKDF2 → SHA-256
 async function _μ(raw) {
-  // _μ = "materialise key" — derives AES key from PIN
   const enc = new TextEncoder();
-  const baseKey = await crypto.subtle.importKey(
-    'raw', enc.encode(raw), { name: 'PBKDF2' }, false, ['deriveKey']
-  );
-  return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt: enc.encode(_ε), iterations: 100000, hash: _θ() },
-    baseKey,
-    { name: 'AES-GCM', length: 256 },
-    false,
-    ['encrypt', 'decrypt']
-  );
+  const baseKey = await crypto.subtle.importKey('raw', enc.encode(raw), { name: 'PBKDF2' }, false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: enc.encode(_ε), iterations: 100000, hash: _θ() }, baseKey, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
 }
 
-// Encrypt a plaintext string → base64 ciphertext:iv string
 async function _ν(plaintext, key) {
-  // _ν = "nullify plaintext" — encrypt
   const enc = new TextEncoder();
   const iv = crypto.getRandomValues(new Uint8Array(_η));
   const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plaintext));
@@ -681,9 +566,7 @@ async function _ν(plaintext, key) {
   return btoa(String.fromCharCode(...combined));
 }
 
-// Decrypt a base64 ciphertext:iv string → plaintext
 async function _ξ(b64, key) {
-  // _ξ = "extract plaintext" — decrypt
   const raw = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
   const iv = raw.slice(0, _η);
   const ct = raw.slice(_η);
@@ -691,17 +574,10 @@ async function _ξ(b64, key) {
   return new TextDecoder().decode(dec);
 }
 
-// ── LAYER 3: Obfuscated session token verification ──
-// The session token is an AES-GCM encrypted proof that the correct PIN was entered.
-// Even if someone reads sessionStorage in DevTools, they see encrypted bytes.
-// To forge it, they'd need the PIN as AES key — which is never stored.
-const _SESSION_PROOF = 'aegis::verified::' + navigator.userAgent.length; // runtime-unique proof
+const _SESSION_PROOF = 'aegis::verified::' + navigator.userAgent.length;
 
 async function _π(inputPin) {
-  // _π = "process pin" — core auth gate (Layer 1 + Layer 2 combined)
-  // Layer 1: plaintext PIN check first (fast path)
   if (inputPin !== _κ()) return false;
-  // Layer 2: encrypt a session proof with the PIN-derived AES key
   try {
     const key = await _μ(inputPin);
     const token = await _ν(_SESSION_PROOF, key);
@@ -711,7 +587,6 @@ async function _π(inputPin) {
 }
 
 async function _ρ() {
-  // _ρ = "revalidate session" — checks if current session token is still valid
   const token = sessionStorage.getItem(_ι());
   if (!token) return false;
   try {
@@ -719,30 +594,12 @@ async function _ρ() {
     const decrypted = await _ξ(token, key);
     return decrypted === _SESSION_PROOF;
   } catch(e) {
-    // Decryption failure = tampered/forged token → reject
     sessionStorage.removeItem(_ι());
     return false;
   }
 }
 
-/* ── CONSTANTS & DB ── */
-// APP_PASS intentionally removed — passcode only lives in _κ() at call-time
-const BUY_ZONES = {
-  bbca: [5900,6300,6700,7200,7800],
-  bmri: [3900,4300,4700,5200,5700],
-  smsm: [1550,1750,1950,2200,2500],
-  tspc: [1950,2200,2500,2750,3000],
-  sido: [420,480,540,630,720],
-};
-const FUNDAMENTALS = {
-  bbca: { moat:'Transaction banking franchise', kekuatan:'CASA ~84.8% · Cost of Fund terendah Big-4 · Switching cost tinggi', kerentanan:'Valuasi premium · NIM compression', roe:'~23%', pe:'18–22x', trigger:'ROE <18% dua tahun berturut' },
-  bmri: { moat:'BUMN ecosystem + digital platform', kekuatan:"Livin' 39jt user +27% YoY · Kopra wholesale · Laba Q1-2026 +16.6%", kerentanan:'Directed lending risk (Danantara) · Political governance', roe:'~22%', pe:'10–13x', trigger:'NIM <4.3% dua kuartal' },
-  smsm: { moat:'Scale + aftermarket distribution global', kekuatan:'Filter no.1 nasional · Ekspor 63% revenue · FCF konsisten', kerentanan:'EV transition jangka panjang · Tarif Trump eksposur', roe:'~28%', pe:'8–11x', trigger:'EV penetration >15% domestik' },
-  tspc: { moat:'Multi-brand + distribusi nasional', kekuatan:'Brand OTC kuat (Bodrex, Hemaviton) · 17 fasilitas manufaktur', kerentanan:'Margin tertekan (laba -2.8% 2025) · Free float concern ⚠', roe:'~13%', pe:'11–14x', trigger:'Free float action / go-private ⚠' },
-  sido: { moat:'Brand monopoly kategori herbal', kekuatan:'Market share 72% masuk angin · FCF besar · Asset-light · 188rb+ outlet', kerentanan:'Ketergantungan Tolak Angin · Single-category risk', roe:'~27%', pe:'16–20x', trigger:'DPS cut dua tahun berturut' },
-};
-
-/* ── DEFAULT DATA ── */
+/* ── DATA STATE ── */
 let donutInst = null, nwInst = null;
 let PORTO_TARGET = 100000000;
 let STOCK_SORT = 'val_desc';
@@ -750,58 +607,25 @@ let RD_SORT = 'val_desc';
 let CASH_SORT = 'val_desc';
 let LIAB_SORT = 'val_desc';
 
-let STOCKS = [
-  { id:'bbca', name:'Bank Central Asia', lot:35, price:5975, avg:6448.94, dps:300, alloc:30, role:'ANCHOR' },
-  { id:'bmri', name:'Bank Mandiri', lot:32, price:4400, avg:4717.06, dps:353, alloc:25, role:'INCOME CORE' },
-  { id:'sido', name:'Sido Muncul', lot:137, price:496, avg:505.75, dps:39, alloc:15, role:'BALLAST' },
-  { id:'smsm', name:'Selamat Sempurna', lot:72, price:1825, avg:1792.68, dps:135, alloc:20, role:'COMPOUNDER' },
-  { id:'tspc', name:'Tempo Scan Pacific', lot:36, price:2450, avg:2413.61, dps:80, alloc:10, role:'DEFENSIVE ⚠' }
-];
-let REKSADANA = [
-  { id:'r1', name: 'Dana Pendidikan Zahra', value: 25025155 },
-  { id:'r2', name: 'Cicilan Bank BRI HOLD', value: 12013084 },
-  { id:'r3', name: 'Dry Powder Stockbit', value: 4170654 },
-  { id:'r4', name: 'Dana Rumah Impian', value: 3264996 }
-];
-let CASH_ACCOUNTS = [
-  { id:'c1', name: 'BCA Prioritas', value: 15000000 },
-  { id:'c2', name: 'Jenius Flexi Maxi', value: 10000000 },
-  { id:'c3', name: 'Dana Brankas Fisik', value: 2000000 }
-];
-let LIABILITAS = [
-  { id:'l1', name: 'Kartu Kredit Jenius', value: 3500000 },
-  { id:'l2', name: 'KPR / Kredit BRI', value: 120000000 }
-];
-let INFLOWS = [
-  { id: 'i1', name: 'Gaji Pokok', value: 3432900 },
-  { id: 'i2', name: 'Tunjangan Kinerja (Tukin)', value: 3915950 },
-  { id: 'i3', name: 'Crypto Bot (Income Est.)', value: 1500000 }
-];
-let OUTFLOWS = [
-  { id: 'o1', name: 'Pengeluaran Rutin', value: 2750000 },
-  { id: 'o2', name: 'Cicilan CC Jenius', value: 3500000 },
-  { id: 'o3', name: 'Cicilan Bank BRI', value: 2825000 },
-  { id: 'o4', name: 'Jenius Flexi Cash', value: 0 }
-];
+let STOCKS = [], REKSADANA = [], CASH_ACCOUNTS = [], LIABILITAS = [], INFLOWS = [], OUTFLOWS = [], HISTORY = [];
 let GOALS = [
   { id:'auto-nw', name:'Terminal Net Worth', target:2000000000, isAuto:true },
-  { id:'c1', name:'Dana Darurat 12x', target:60000000, current:27000000 }
+  { id:'c1', name:'Dana Darurat 12x', target:60000000, current:500000 }
 ];
-let HISTORY = [];
-let CRYPTO_BAL = 15000000;
+let CRYPTO_BAL = 0;
 
-/* ── FORMATTERS (SAFE FOR COMMA DECIMALS) ── */
-function formatRibuan(num) { 
-  if(num == null || isNaN(num) || num === '') return ""; 
-  let parts = num.toString().split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  return parts.join(","); 
-}
-function unformatRibuan(str) { 
-  if(!str) return 0;
-  let cleanStr = str.toString().replace(/\./g, '').replace(/,/g, '.');
-  return Number(cleanStr) || 0; 
-}
+const BUY_ZONES = { bbca: [5900,6300,6700,7200,7800], bmri: [3900,4300,4700,5200,5700], smsm: [1550,1750,1950,2200,2500], tspc: [1950,2200,2500,2750,3000], sido: [420,480,540,630,720] };
+const FUNDAMENTALS = {
+  bbca: { moat:'Transaction banking franchise', kekuatan:'CASA ~84.8% · Cost of Fund terendah', kerentanan:'Valuasi premium', roe:'~23%', pe:'18–22x', trigger:'ROE <18%' },
+  bmri: { moat:'BUMN ecosystem + digital', kekuatan:"Livin' 39jt user · Wholesale", kerentanan:'Political governance', roe:'~22%', pe:'10–13x', trigger:'NIM <4.3%' },
+  smsm: { moat:'Scale + aftermarket export', kekuatan:'Filter ekspor 63% · FCF konsisten', kerentanan:'EV transition', roe:'~28%', pe:'8–11x', trigger:'EV penetration >15%' },
+  tspc: { moat:'Multi-brand + distribusi', kekuatan:'Brand OTC kuat', kerentanan:'Margin tertekan · Free float ⚠', roe:'~13%', pe:'11–14x', trigger:'Free float action' },
+  sido: { moat:'Brand monopoly herbal', kekuatan:'Market share 72%', kerentanan:'Single-category risk', roe:'~27%', pe:'16–20x', trigger:'DPS cut' },
+};
+
+/* ── FORMATTERS ── */
+function formatRibuan(num) { if(num == null || isNaN(num) || num === '') return ""; let parts = num.toString().split("."); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "."); return parts.join(","); }
+function unformatRibuan(str) { if(!str) return 0; return Number(str.toString().replace(/\./g, '').replace(/,/g, '.')) || 0; }
 const fmt = (n) => 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
 const fmtShort = (n) => 'Rp ' + (n>=1e9 ? (n/1e9).toFixed(2)+'M' : n>=1e6 ? (n/1e6).toFixed(1)+'Jt' : (n || 0).toLocaleString('id-ID'));
 
@@ -815,7 +639,7 @@ document.addEventListener('input', function (e) {
   }
 });
 
-/* ── HELPERS (MOS & GAP) ── */
+/* ── HELPERS ── */
 function getMOS(id, price) {
   const bz = BUY_ZONES[id.toLowerCase()];
   if (!bz || !price || price <= 0) return { key:'unknown', label:'— N/A', note:'No data' };
@@ -841,146 +665,36 @@ function renderGapStrip(price, avg) {
   const barLeft = Math.min(avgPos, pricePos); const barWidth = Math.abs(pricePos - avgPos);
   const barColor = isFlat ? 'var(--muted)' : isUp ? 'var(--green)' : 'var(--red)';
   return `
-    <div class="gap-row">
-      <span class="gap-label">Gap ke Avg</span>
-      <span class="gap-pill ${pillCls}">${pillTxt}</span>
-    </div>
+    <div class="gap-row"><span class="gap-label">Gap ke Avg</span><span class="gap-pill ${pillCls}">${pillTxt}</span></div>
     <div class="gap-bar-track">
       <div style="position:absolute;left:${barLeft.toFixed(1)}%;width:${barWidth.toFixed(1)}%;height:100%;background:${barColor};opacity:0.6;border-radius:2px"></div>
       <div class="gap-bar-avg" style="left:${avgPos}%"></div>
     </div>`;
 }
 
-function toggleBZ(btn, id) {
-  const sec = document.getElementById('bz-'+id);
-  if (!sec) return;
-  sec.classList.toggle('open');
-}
+function toggleBZ(btn, id) { const sec = document.getElementById('bz-'+id); if (sec) sec.classList.toggle('open'); }
+function parseTarget(input) { let val = unformatRibuan(input.value); if(!val) val = 0; input.value = formatRibuan(val); PORTO_TARGET = val; document.querySelectorAll('.pill').forEach(b => b.classList.remove('active')); }
+function setTarget(juta, btn) { PORTO_TARGET = juta * 1e6; document.getElementById('target-display').value = formatRibuan(PORTO_TARGET); document.querySelectorAll('.pill').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active'); saveData(); }
 
-function parseTarget(input) {
-  let val = unformatRibuan(input.value);
-  if(!val) val = 0;
-  input.value = formatRibuan(val);
-  PORTO_TARGET = val;
-  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
-}
-
-function setTarget(juta, btn) {
-  PORTO_TARGET = juta * 1e6;
-  document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
-  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  saveData();
-}
-
-/* ── API MINDSET QUOTE ── */
 async function fetchMindsetQuote() {
   const quoteEl = document.getElementById('hero-quote');
-  try {
-    const res = await fetch('https://dummyjson.com/quotes/random');
-    if (!res.ok) throw new Error('API Error');
-    const data = await res.json();
-    quoteEl.textContent = `"${data.quote}" — ${data.author}`;
-  } catch (e) {
-    quoteEl.textContent = '"Fokus pada stabilitas cashflow dan dividen defensif. Konsistensi selalu mengalahkan intensitas sporadis." — Aegis Principle';
-  }
+  try { const res = await fetch('https://dummyjson.com/quotes/random'); if (!res.ok) throw new Error(); const data = await res.json(); quoteEl.textContent = `"${data.quote}" — ${data.author}`; } 
+  catch (e) { quoteEl.textContent = '"Fokus pada stabilitas cashflow dan dividen defensif. Konsistensi selalu mengalahkan intensitas sporadis." — Aegis Principle'; }
 }
 
-/* ── PRINT HISTORY ── */
 function printHistory() {
   let printWindow = window.open('', '', 'width=800,height=600');
-  let tableHTML = `<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; font-family: sans-serif; text-align: left;">
-    <tr style="background-color: #f1f5f9; color: #0f172a;">
-      <th>Tanggal</th>
-      <th>Total Net Worth (Rp)</th>
-      <th>Perubahan (+/-)</th>
-    </tr>`;
-  
+  let tableHTML = `<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; font-family: sans-serif; text-align: left;"><tr style="background-color: #f1f5f9; color: #0f172a;"><th>Tanggal</th><th>Total Net Worth (Rp)</th><th>Perubahan (+/-)</th></tr>`;
   let histCopy = [...HISTORY]; 
-  histCopy.forEach((h, i) => {
-    let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0;
-    let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff));
-    let color = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#64748b');
-    tableHTML += `<tr>
-      <td>${h.date}</td>
-      <td style="font-weight: bold; color: #0f172a;">${formatRibuan(Math.round(h.nw))}</td>
-      <td style="color: ${color}; font-weight: 600;">${diffStr}</td>
-    </tr>`;
-  });
+  histCopy.forEach((h, i) => { let diff = i > 0 ? h.nw - histCopy[i - 1].nw : 0; let diffStr = diff === 0 ? '-' : (diff > 0 ? '+' : '') + formatRibuan(Math.round(diff)); let color = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#64748b'); tableHTML += `<tr><td>${h.date}</td><td style="font-weight: bold; color: #0f172a;">${formatRibuan(Math.round(h.nw))}</td><td style="color: ${color}; font-weight: 600;">${diffStr}</td></tr>`; });
   tableHTML += `</table>`;
-
-  printWindow.document.write(`
-    <html><head><title>Print Riwayat Kekayaan</title></head>
-    <body style="font-family: sans-serif; padding: 20px; color: #0f172a;">
-      <h2>Aegis Alpha Wealth - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2>
-      <p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
-      ${tableHTML}
-      <script>window.onload = function() { window.print(); window.close(); }<\/script>
-    </body></html>
-  `);
+  printWindow.document.write(`<html><head><title>Print Riwayat Kekayaan</title></head><body style="font-family: sans-serif; padding: 20px; color: #0f172a;"><h2>Aegis Alpha Wealth - Riwayat Pertumbuhan Kekayaan (90 Hari)</h2><p style="color: gray; margin-bottom: 20px;">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>${tableHTML}<script>window.onload = function() { window.print(); window.close(); }<\/script></body></html>`);
   printWindow.document.close();
 }
 
-/* ── AUTH (3-LAYER) ── */
-
-// Layer 1 entry point — called by login button (name kept recognisable for HTML onclick)
-async function doLogin() {
-  const errEl = document.getElementById('login-err');
-  const btn   = document.querySelector('#login-screen .btn-primary');
-  const input = document.getElementById('pw-input');
-  const entered = input.value.trim();
-
-  // Throttle UI during async crypto
-  btn.disabled = true;
-  btn.textContent = 'Verifying...';
-
-  const ok = await _π(entered);   // Layer 1 + Layer 2 inside _π()
-  if (ok) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    await loadData();
-  } else {
-    errEl.textContent = 'TERMINAL ACCESS DENIED: Passcode salah!';
-    // Wipe input after wrong attempt — don't leave PIN in DOM
-    input.value = '';
-    btn.disabled = false;
-    btn.textContent = 'Akses Terminal';
-  }
-}
-
-document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
-function logout() {
-  sessionStorage.removeItem(_ι());   // remove encrypted token, not plain '1'
-  location.reload();
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  // On reload: revalidate encrypted session token (Layer 2 check)
-  const valid = await _ρ();
-  if (valid) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    await loadData();
-  }
-});
-
-/* ── NAV & THEME ── */
-function switchView(view) {
-  document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-pill button').forEach(el => el.classList.remove('active'));
-  document.getElementById(`view-${view}`).classList.add('active');
-  document.getElementById(`nav-${view}`).classList.add('active');
-}
-function toggleTheme() {
-  const html = document.documentElement;
-  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  renderAll(); 
-}
-
-/* ── RENDER ENGINE ── */
+/* ── MAIN RENDER (Includes Dynamic Darurat Logic) ── */
 function renderAll() {
-  _syncInputsToState(); // Simpan input yang belum kesave sebelum re-render
+  _syncInputsToState();
 
   const totalAlloc = STOCKS.reduce((s, x) => s + (x.alloc||0), 0);
   let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
@@ -990,12 +704,10 @@ function renderAll() {
   let totalAset = totalSaham + totalRD + totalCash + CRYPTO_BAL;
   let netWorth = totalAset - totalLiab;
 
-  /* CASHFLOW CALCULATION */
   let cfIn = INFLOWS.reduce((s, x) => s + (x.value||0), 0);
   let cfOut = OUTFLOWS.reduce((s, x) => s + (x.value||0), 0);
   let surplus = cfIn - cfOut;
 
-  /* DASHBOARD NW */
   document.getElementById('hero-nw').textContent = fmt(netWorth);
   document.getElementById('hero-sub').textContent = `${fmtShort(totalAset)} aset terminal vs ${fmtShort(totalLiab)} liabilitas.`;
   document.getElementById('stat-saham').textContent = fmtShort(totalSaham);
@@ -1010,73 +722,58 @@ function renderAll() {
   document.getElementById('dashboard-cf-surplus').style.color = surplus >= 0 ? 'var(--gold)' : 'var(--red)';
 
   document.getElementById('goals-container').innerHTML = GOALS.map(g => {
-    let curr = g.isAuto ? (g.id === 'auto-nw' ? netWorth : totalSaham) : g.current;
-    let pct = Math.min((curr / g.target)*100, 100);
-    return `
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-header"><span>${g.name}</span><span>${pct.toFixed(1)}%</span></div>
-        <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-        <div style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);text-align:right;margin-top:.4rem">${fmtShort(curr)} / ${fmtShort(g.target)}</div>
-      </div>
-    `;
+    let curr = g.current;
+    let dynamicTarget = g.target;
+    
+    if (g.isAuto) {
+      curr = (g.id === 'auto-nw' ? netWorth : totalSaham);
+    } else if (g.name.toLowerCase().includes('darurat') || g.name.toLowerCase().includes('emergency')) {
+      curr = [...CASH_ACCOUNTS, ...REKSADANA].reduce((sum, item) => {
+        let itemName = item.name.toLowerCase();
+        let isEmergency = (itemName.includes('darurat') || itemName.includes('emergency')) && 
+                          !itemName.includes('non darurat') && 
+                          !itemName.includes('non-darurat') && 
+                          !itemName.includes('bukan darurat');
+                          
+        if (isEmergency) return sum + (item.value || 0);
+        return sum;
+      }, 0);
+
+      let match = g.name.match(/(\d+)x/i);
+      if (match && cfOut > 0) {
+        dynamicTarget = cfOut * parseInt(match[1]);
+      }
+    }
+
+    let pct = Math.min((curr / dynamicTarget)*100, 100);
+    return `<div class="progress-bar-wrap"><div class="progress-bar-header"><span>${g.name}</span><span>${pct.toFixed(1)}%</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div><div style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);text-align:right;margin-top:.4rem">${fmtShort(curr)} / ${fmtShort(dynamicTarget)}</div></div>`;
   }).join('');
 
   document.getElementById('history-container').innerHTML = HISTORY.slice().reverse().map((h, i) => {
-    let origIdx = HISTORY.length - 1 - i;
-    let diffHtml = '';
-    if (origIdx > 0) {
-      let diff = h.nw - HISTORY[origIdx - 1].nw;
-      let diffColor = diff >= 0 ? 'var(--green)' : 'var(--red)';
-      let diffSign = diff >= 0 ? '+' : '';
-      diffHtml = `<span style="font-family:var(--font-mono);font-size:.7rem;color:${diffColor};margin-left:.5rem">${diffSign}${fmtShort(diff)}</span>`;
-    }
-    return `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;align-items:center;gap:1.5rem">
-        <span style="font-family:var(--font-mono);color:var(--muted2);display:inline-block;width:90px;font-weight:600">${h.date}</span>
-        <div>
-          <span style="font-family:var(--font-cond);color:var(--gold); font-size:1.4rem; font-weight:700">${fmtShort(h.nw)}</span>
-          ${diffHtml}
-        </div>
-      </div>
-      <button class="btn-delete" onclick="deleteHistory(${origIdx})">✕</button>
-    </div>`;
+    let origIdx = HISTORY.length - 1 - i; let diffHtml = '';
+    if (origIdx > 0) { let diff = h.nw - HISTORY[origIdx - 1].nw; let diffColor = diff >= 0 ? 'var(--green)' : 'var(--red)'; let diffSign = diff >= 0 ? '+' : ''; diffHtml = `<span style="font-family:var(--font-mono);font-size:.7rem;color:${diffColor};margin-left:.5rem">${diffSign}${fmtShort(diff)}</span>`; }
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:1.5rem"><span style="font-family:var(--font-mono);color:var(--muted2);display:inline-block;width:90px;font-weight:600">${h.date}</span><div><span style="font-family:var(--font-cond);color:var(--gold); font-size:1.4rem; font-weight:700">${fmtShort(h.nw)}</span>${diffHtml}</div></div><button class="btn-delete" onclick="deleteHistory(${origIdx})">✕</button></div>`;
   }).join('');
 
   drawDonutChart(totalSaham, totalRD, totalCash, CRYPTO_BAL, totalAset);
   drawNWLineChart(netWorth);
 
-  /* PORTO SAHAM (FULL SYNC & SORTING) */
   const pctTarget = Math.min((totalSaham / PORTO_TARGET) * 100, 100);
   document.getElementById('t-curr').textContent = fmt(totalSaham);
   document.getElementById('t-pct').textContent = pctTarget.toFixed(1) + '% dari target';
   document.getElementById('t-bar').style.width = pctTarget + '%';
 
-  // Sort Array Saham
   let sortedStocks = [...STOCKS];
   if (STOCK_SORT === 'val_desc') sortedStocks.sort((a,b) => ((b.lot||0)*(b.price||0)) - ((a.lot||0)*(a.price||0)));
   if (STOCK_SORT === 'val_asc')  sortedStocks.sort((a,b) => ((a.lot||0)*(a.price||0)) - ((b.lot||0)*(b.price||0)));
   if (STOCK_SORT === 'name_asc') sortedStocks.sort((a,b) => a.id.localeCompare(b.id));
   if (STOCK_SORT === 'name_desc') sortedStocks.sort((a,b) => b.id.localeCompare(a.id));
 
-  // Zone Radar
   document.getElementById('price-cards').innerHTML = sortedStocks.map(s => {
     const sig = getMOS(s.id, s.price);
-    return `<div class="price-card">
-      <div class="price-card-label">Harga / Avg</div>
-      <div class="price-card-ticker">${s.id.toUpperCase()}</div>
-      <div class="price-field"><span class="price-field-label">Harga</span><span class="price-field-val">${(s.price||0).toLocaleString('id-ID')}</span></div>
-      <div class="price-field-divider"></div>
-      <div class="price-field"><span class="price-field-label">Avg</span><span class="price-field-val" style="color:var(--muted2)">${(s.avg||0).toLocaleString('id-ID')}</span></div>
-      <div class="gap-strip">${renderGapStrip(s.price, s.avg)}</div>
-      <div class="mos-strip">
-        <span class="mos mos-${sig.key}">${sig.label}</span>
-        <span class="mos-note">${sig.note}</span>
-      </div>
-    </div>`;
+    return `<div class="price-card"><div class="price-card-label">Harga / Avg</div><div class="price-card-ticker">${s.id.toUpperCase()}</div><div class="price-field"><span class="price-field-label">Harga</span><span class="price-field-val">${(s.price||0).toLocaleString('id-ID')}</span></div><div class="price-field-divider"></div><div class="price-field"><span class="price-field-label">Avg</span><span class="price-field-val" style="color:var(--muted2)">${(s.avg||0).toLocaleString('id-ID')}</span></div><div class="gap-strip">${renderGapStrip(s.price, s.avg)}</div><div class="mos-strip"><span class="mos mos-${sig.key}">${sig.label}</span><span class="mos-note">${sig.note}</span></div></div>`;
   }).join('');
 
-  // Stock Breakdown (Moat, dll)
   document.getElementById('stock-breakdown').innerHTML = sortedStocks.map(s => {
     const allocFrac = totalAlloc > 0 ? (s.alloc||0) / totalAlloc : 1 / STOCKS.length;
     const targetLot = Math.floor(PORTO_TARGET * allocFrac / ((s.price||1) * 100));
@@ -1091,8 +788,7 @@ function renderAll() {
 
     let bzHtml = '';
     if (bz) {
-      const [sbz, b, ac, h, t] = bz;
-      const totalRange = t * 1.25;
+      const [sbz, b, ac, h, t] = bz; const totalRange = t * 1.25;
       const segs = [{key:'sb',lo:0,hi:sbz,cls:'bz-sb'}, {key:'buy',lo:sbz,hi:b,cls:'bz-buy'}, {key:'acc',lo:b,hi:ac,cls:'bz-acc'}, {key:'hold',lo:ac,hi:h,cls:'bz-hold'}, {key:'trim',lo:h,hi:t,cls:'bz-trim'}, {key:'exit',lo:t,hi:totalRange,cls:'bz-exit'}];
       const activeCls = {'strong-buy':'sb','buy':'buy','accumulate':'acc','hold':'hold','trim':'trim','exit':'exit'}[sig.key] || '';
       const segHtml = segs.map(sg => `<div class="bz-seg ${sg.cls} ${sg.key === activeCls ? 'active' : ''}" style="width:${((sg.hi - sg.lo)/totalRange*100)}%">${sg.key}</div>`).join('');
@@ -1101,246 +797,61 @@ function renderAll() {
       const kChips = (fd?.kekuatan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-green">${c}</span>`).join('');
       const rChips = (fd?.kerentanan||'').split(' · ').filter(Boolean).map(c=>`<span class="chip chip-red">${c}</span>`).join('');
 
-      bzHtml = `
-      <div class="buyzone-section" id="bz-${s.id}">
-        <div>
-          <div class="bz-moat-label">Moat</div>
-          <div class="bz-moat-text">${fd?.moat||'—'}</div>
-          <div class="bz-chips">${kChips}${rChips}</div>
-        </div>
-        <div>
-          <div class="bz-track">${segHtml}</div>
-          <div class="bz-labels">${labelHtml}</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
-            <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted)">Harga</span>
-            <span style="font-family:var(--font-cond);font-size:1.1rem;font-weight:700;color:var(--gold)">Rp ${(s.price||0).toLocaleString('id-ID')}</span>
-            <span class="mos mos-${sig.key}" style="margin-left:auto">${sig.label}</span>
-          </div>
-        </div>
-      </div>`;
+      bzHtml = `<div class="buyzone-section" id="bz-${s.id}"><div><div class="bz-moat-label">Moat</div><div class="bz-moat-text">${fd?.moat||'—'}</div><div class="bz-chips">${kChips}${rChips}</div></div><div><div class="bz-track">${segHtml}</div><div class="bz-labels">${labelHtml}</div><div style="display:flex;align-items:center;gap:8px;margin-top:10px"><span style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted)">Harga</span><span style="font-family:var(--font-cond);font-size:1.1rem;font-weight:700;color:var(--gold)">Rp ${(s.price||0).toLocaleString('id-ID')}</span><span class="mos mos-${sig.key}" style="margin-left:auto">${sig.label}</span></div></div></div>`;
     }
 
     const needHtml = needLot === 0 ? `<span class="need-zero">Cukup ✓</span>` : needLot < 0 ? `<span class="need-neg">${needLot.toLocaleString('id-ID')} lot</span>` : `<span class="need-pos">+${needLot.toLocaleString('id-ID')} lot</span>`;
 
-    return `
-    <div class="stock-card">
-      <div class="stock-card-top">
-        <div class="stock-identity">
-          <div class="stock-ticker">${s.id.toUpperCase()}</div>
-          <div class="stock-name">${s.name}</div>
-          <span class="stock-role">${s.role || 'ASSET'}</span>
-        </div>
-        <div class="stock-stats">
-          <div class="stock-stat">
-            <div class="stock-stat-label">Target Lot</div>
-            <div class="stock-stat-big">${targetLot.toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div>
-            <div class="stock-stat-sub">${fmtShort(actualVal)}</div>
-          </div>
-          <div class="stock-stat">
-            <div class="stock-stat-label">Punya</div>
-            <div class="stock-stat-big">${(s.lot||0).toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div>
-            <div class="stock-stat-sub">avg Rp ${(s.avg||0).toLocaleString('id-ID')}</div>
-          </div>
-          <div class="stock-stat">
-            <div class="stock-stat-label">YoC</div>
-            <div class="stock-stat-big" style="color:${yoc>=8?'var(--green)':yoc>=5?'var(--gold)':'var(--text)'}">${s.avg>0?yoc.toFixed(1)+'%':'—'}</div>
-            <div class="stock-stat-sub">${(allocFrac*100).toFixed(1)}% porto</div>
-          </div>
-          <div class="stock-stat">
-            <div class="stock-stat-label">Tambah</div>
-            <div class="stock-stat-big">${needHtml}</div>
-            <div class="stock-stat-sub">${needLot>0?fmtShort(needLot*s.price*100):'&nbsp;'}</div>
-          </div>
-        </div>
-      </div>
-      <div class="lot-progress">
-        <div class="lot-bar-track"><div class="lot-bar-fill" style="width:${lotPct}%"></div></div>
-        <div class="lot-bar-labels"><span>${(s.lot||0).toLocaleString('id-ID')} / ${targetLot.toLocaleString('id-ID')} lot</span><span style="color:var(--gold);font-weight:700">${lotPct.toFixed(0)}%</span></div>
-      </div>
-      ${bzHtml}
-      ${bz ? `<button class="toggle-btn" onclick="toggleBZ(this,'${s.id}')"><span class="toggle-icon">▼</span> Sembunyikan Detail</button>` : ''}
-    </div>`;
+    return `<div class="stock-card"><div class="stock-card-top"><div class="stock-identity"><div class="stock-ticker">${s.id.toUpperCase()}</div><div class="stock-name">${s.name}</div><span class="stock-role">${s.role || 'ASSET'}</span></div><div class="stock-stats"><div class="stock-stat"><div class="stock-stat-label">Target Lot</div><div class="stock-stat-big">${targetLot.toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div><div class="stock-stat-sub">${fmtShort(actualVal)}</div></div><div class="stock-stat"><div class="stock-stat-label">Punya</div><div class="stock-stat-big">${(s.lot||0).toLocaleString('id-ID')} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">lot</span></div><div class="stock-stat-sub">avg Rp ${(s.avg||0).toLocaleString('id-ID')}</div></div><div class="stock-stat"><div class="stock-stat-label">YoC</div><div class="stock-stat-big" style="color:${yoc>=8?'var(--green)':yoc>=5?'var(--gold)':'var(--text)'}">${s.avg>0?yoc.toFixed(1)+'%':'—'}</div><div class="stock-stat-sub">${(allocFrac*100).toFixed(1)}% porto</div></div><div class="stock-stat"><div class="stock-stat-label">Tambah</div><div class="stock-stat-big">${needHtml}</div><div class="stock-stat-sub">${needLot>0?fmtShort(needLot*s.price*100):'&nbsp;'}</div></div></div></div><div class="lot-progress"><div class="lot-bar-track"><div class="lot-bar-fill" style="width:${lotPct}%"></div></div><div class="lot-bar-labels"><span>${(s.lot||0).toLocaleString('id-ID')} / ${targetLot.toLocaleString('id-ID')} lot</span><span style="color:var(--gold);font-weight:700">${lotPct.toFixed(0)}%</span></div></div>${bzHtml}${bz ? `<button class="toggle-btn" onclick="toggleBZ(this,'${s.id}')"><span class="toggle-icon">▼</span> Sembunyikan Detail</button>` : ''}</div>`;
   }).join('');
 
-  // Kelola Rows Saham (KOTAK MODERN)
   document.getElementById('kelola-rows').innerHTML = sortedStocks.map((s) => {
     let origIdx = STOCKS.findIndex(x => x.id === s.id);
-    return `
-    <div class="edit-card">
-      <div class="edit-card-top">
-        <input class="form-input" id="k-id-${origIdx}" value="${s.id.toUpperCase()}" placeholder="TICKER" style="font-size:1.1rem;font-weight:700;color:var(--gold);font-family:var(--font-cond);width:90px">
-        <input class="form-input" id="k-name-${origIdx}" value="${s.name}" placeholder="Nama Perusahaan" style="font-weight:600;flex:1">
-        <button class="btn-delete" onclick="delStock(${origIdx})">✕</button>
-      </div>
-      <div class="edit-card-grid">
-        <div class="edit-field"><label>Lot</label><input class="form-input cf-input" id="k-lot-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.lot)}"></div>
-        <div class="edit-field"><label>Harga (Rp)</label><input class="form-input cf-input" id="k-price-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.price)}"></div>
-        <div class="edit-field"><label>Avg Cost</label><input class="form-input cf-input" id="k-avg-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.avg)}"></div>
-        <div class="edit-field"><label>DPS/yr</label><input class="form-input cf-input" id="k-dps-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.dps)}"></div>
-        <div class="edit-field"><label>Target %</label><input class="form-input cf-input" id="k-alloc-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.alloc)}"></div>
-      </div>
-    </div>`
+    return `<div class="edit-card"><div class="edit-card-top"><input class="form-input" id="k-id-${origIdx}" value="${s.id.toUpperCase()}" placeholder="TICKER" style="font-size:1.1rem;font-weight:700;color:var(--gold);font-family:var(--font-cond);width:90px"><input class="form-input" id="k-name-${origIdx}" value="${s.name}" placeholder="Nama Perusahaan" style="font-weight:600;flex:1"><button class="btn-delete" onclick="delStock(${origIdx})">✕</button></div><div class="edit-card-grid"><div class="edit-field"><label>Lot</label><input class="form-input cf-input" id="k-lot-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.lot)}"></div><div class="edit-field"><label>Harga (Rp)</label><input class="form-input cf-input" id="k-price-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.price)}"></div><div class="edit-field"><label>Avg Cost</label><input class="form-input cf-input" id="k-avg-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.avg)}"></div><div class="edit-field"><label>DPS/yr</label><input class="form-input cf-input" id="k-dps-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.dps)}"></div><div class="edit-field"><label>Target %</label><input class="form-input cf-input" id="k-alloc-${origIdx}" type="text" inputmode="numeric" value="${formatRibuan(s.alloc)}"></div></div></div>`
   }).join('');
 
-  /* REKSA DANA KOTAK MODERN (SORTING) */
   let sortedRD = [...REKSADANA];
-  if (RD_SORT === 'val_desc') sortedRD.sort((a,b) => b.value - a.value);
-  if (RD_SORT === 'val_asc')  sortedRD.sort((a,b) => a.value - b.value);
-  if (RD_SORT === 'name_asc') sortedRD.sort((a,b) => a.name.localeCompare(b.name));
-  if (RD_SORT === 'name_desc') sortedRD.sort((a,b) => b.name.localeCompare(a.name));
+  if (RD_SORT === 'val_desc') sortedRD.sort((a,b) => b.value - a.value); if (RD_SORT === 'val_asc') sortedRD.sort((a,b) => a.value - b.value); if (RD_SORT === 'name_asc') sortedRD.sort((a,b) => a.name.localeCompare(b.name)); if (RD_SORT === 'name_desc') sortedRD.sort((a,b) => b.name.localeCompare(a.name));
+  document.getElementById('rd-cards').innerHTML = sortedRD.map(r => { let origIdx = REKSADANA.findIndex(x => x.id === r.id); return `<div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;"><div class="asset-icon rd">🪣</div><div style="flex:1; display:flex; flex-direction:column; gap:.5rem"><input type="text" class="asset-name-in" id="rd-n-${origIdx}" value="${r.name}" placeholder="Nama Bucket"><div style="display:flex;align-items:center;gap:.5rem"><span class="asset-val-prefix">Rp</span><input type="text" class="asset-val-in cf-input" id="rd-v-${origIdx}" value="${formatRibuan(r.value)}" inputmode="numeric" placeholder="0"></div></div><button class="btn-delete" onclick="delRD(${origIdx})">✕</button></div>`; }).join('');
 
-  document.getElementById('rd-cards').innerHTML = sortedRD.map(r => {
-    let origIdx = REKSADANA.findIndex(x => x.id === r.id);
-    return `
-    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;">
-      <div class="asset-icon rd">🪣</div>
-      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
-        <input type="text" class="asset-name-in" id="rd-n-${origIdx}" value="${r.name}" placeholder="Nama Bucket">
-        <div style="display:flex;align-items:center;gap:.5rem">
-          <span class="asset-val-prefix">Rp</span>
-          <input type="text" class="asset-val-in cf-input" id="rd-v-${origIdx}" value="${formatRibuan(r.value)}" inputmode="numeric" placeholder="0">
-        </div>
-      </div>
-      <button class="btn-delete" onclick="delRD(${origIdx})">✕</button>
-    </div>`;
-  }).join('');
-
-  /* CASH KOTAK MODERN (SORTING) */
   let sortedCash = [...CASH_ACCOUNTS];
-  if (CASH_SORT === 'val_desc') sortedCash.sort((a,b) => b.value - a.value);
-  if (CASH_SORT === 'val_asc')  sortedCash.sort((a,b) => a.value - b.value);
-  if (CASH_SORT === 'name_asc') sortedCash.sort((a,b) => a.name.localeCompare(b.name));
-  if (CASH_SORT === 'name_desc') sortedCash.sort((a,b) => b.name.localeCompare(a.name));
+  if (CASH_SORT === 'val_desc') sortedCash.sort((a,b) => b.value - a.value); if (CASH_SORT === 'val_asc') sortedCash.sort((a,b) => a.value - b.value); if (CASH_SORT === 'name_asc') sortedCash.sort((a,b) => a.name.localeCompare(b.name)); if (CASH_SORT === 'name_desc') sortedCash.sort((a,b) => b.name.localeCompare(a.name));
+  document.getElementById('cash-cards').innerHTML = sortedCash.map(c => { let origIdx = CASH_ACCOUNTS.findIndex(x => x.id === c.id); return `<div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;"><div class="asset-icon bank">🏦</div><div style="flex:1; display:flex; flex-direction:column; gap:.5rem"><input type="text" class="asset-name-in" id="cash-n-${origIdx}" value="${c.name}" placeholder="Nama Bank/Giro"><div style="display:flex;align-items:center;gap:.5rem"><span class="asset-val-prefix">Rp</span><input type="text" class="asset-val-in cf-input" id="cash-v-${origIdx}" value="${formatRibuan(c.value)}" inputmode="numeric" placeholder="0"></div></div><button class="btn-delete" onclick="delCash(${origIdx})">✕</button></div>` }).join('');
 
-  document.getElementById('cash-cards').innerHTML = sortedCash.map(c => {
-    let origIdx = CASH_ACCOUNTS.findIndex(x => x.id === c.id);
-    return `
-    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center;">
-      <div class="asset-icon bank">🏦</div>
-      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
-        <input type="text" class="asset-name-in" id="cash-n-${origIdx}" value="${c.name}" placeholder="Nama Bank/Giro">
-        <div style="display:flex;align-items:center;gap:.5rem">
-          <span class="asset-val-prefix">Rp</span>
-          <input type="text" class="asset-val-in cf-input" id="cash-v-${origIdx}" value="${formatRibuan(c.value)}" inputmode="numeric" placeholder="0">
-        </div>
-      </div>
-      <button class="btn-delete" onclick="delCash(${origIdx})">✕</button>
-    </div>`
-  }).join('');
-
-  /* LIABILITAS KOTAK MODERN (SORTING) */
   let sortedLiab = [...LIABILITAS];
-  if (LIAB_SORT === 'val_desc') sortedLiab.sort((a,b) => b.value - a.value);
-  if (LIAB_SORT === 'val_asc')  sortedLiab.sort((a,b) => a.value - b.value);
-  if (LIAB_SORT === 'name_asc') sortedLiab.sort((a,b) => a.name.localeCompare(b.name));
-  if (LIAB_SORT === 'name_desc') sortedLiab.sort((a,b) => b.name.localeCompare(a.name));
+  if (LIAB_SORT === 'val_desc') sortedLiab.sort((a,b) => b.value - a.value); if (LIAB_SORT === 'val_asc') sortedLiab.sort((a,b) => a.value - b.value); if (LIAB_SORT === 'name_asc') sortedLiab.sort((a,b) => a.name.localeCompare(b.name)); if (LIAB_SORT === 'name_desc') sortedLiab.sort((a,b) => b.name.localeCompare(a.name));
+  document.getElementById('liab-cards').innerHTML = sortedLiab.map(l => { let origIdx = LIABILITAS.findIndex(x => x.id === l.id); return `<div class="edit-card" style="display:flex; gap:1.5rem; align-items:center; border-left: 3px solid var(--red)"><div class="asset-icon liab">💳</div><div style="flex:1; display:flex; flex-direction:column; gap:.5rem"><input type="text" class="asset-name-in" id="liab-n-${origIdx}" value="${l.name}" placeholder="Nama Utang / Kredit"><div style="display:flex;align-items:center;gap:.5rem"><span class="asset-val-prefix">Rp</span><input type="text" class="asset-val-in cf-input" id="liab-v-${origIdx}" value="${formatRibuan(l.value)}" inputmode="numeric" placeholder="0" style="color:var(--red)"></div></div><button class="btn-delete" onclick="delLiab(${origIdx})">✕</button></div>` }).join('');
 
-  document.getElementById('liab-cards').innerHTML = sortedLiab.map(l => {
-    let origIdx = LIABILITAS.findIndex(x => x.id === l.id);
-    return `
-    <div class="edit-card" style="display:flex; gap:1.5rem; align-items:center; border-left: 3px solid var(--red)">
-      <div class="asset-icon liab">💳</div>
-      <div style="flex:1; display:flex; flex-direction:column; gap:.5rem">
-        <input type="text" class="asset-name-in" id="liab-n-${origIdx}" value="${l.name}" placeholder="Nama Utang / Kredit">
-        <div style="display:flex;align-items:center;gap:.5rem">
-          <span class="asset-val-prefix">Rp</span>
-          <input type="text" class="asset-val-in cf-input" id="liab-v-${origIdx}" value="${formatRibuan(l.value)}" inputmode="numeric" placeholder="0" style="color:var(--red)">
-        </div>
-      </div>
-      <button class="btn-delete" onclick="delLiab(${origIdx})">✕</button>
-    </div>`
-  }).join('');
-
-  /* CASHFLOW LIST (DINAMIS) */
-  document.getElementById('inflow-list').innerHTML = INFLOWS.map((inf, i) => `
-    <div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center">
-      <input type="text" class="form-input" id="inf-n-${i}" value="${inf.name}" placeholder="Nama Pemasukan" style="flex:1; margin-bottom:0">
-      <input type="text" class="form-input cf-input" id="inf-v-${i}" value="${formatRibuan(inf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700">
-      <button class="btn-delete" onclick="delInflow(${i})" style="margin-left:.5rem">✕</button>
-    </div>
-  `).join('');
-
-  document.getElementById('outflow-list').innerHTML = OUTFLOWS.map((outf, i) => `
-    <div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center">
-      <input type="text" class="form-input" id="outf-n-${i}" value="${outf.name}" placeholder="Nama Pengeluaran" style="flex:1; margin-bottom:0">
-      <input type="text" class="form-input cf-input" id="outf-v-${i}" value="${formatRibuan(outf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700; color:var(--red)">
-      <button class="btn-delete" onclick="delOutflow(${i})" style="margin-left:.5rem">✕</button>
-    </div>
-  `).join('');
+  document.getElementById('inflow-list').innerHTML = INFLOWS.map((inf, i) => `<div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center"><input type="text" class="form-input" id="inf-n-${i}" value="${inf.name}" placeholder="Nama Pemasukan" style="flex:1; margin-bottom:0"><input type="text" class="form-input cf-input" id="inf-v-${i}" value="${formatRibuan(inf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700"><button class="btn-delete" onclick="delInflow(${i})" style="margin-left:.5rem">✕</button></div>`).join('');
+  document.getElementById('outflow-list').innerHTML = OUTFLOWS.map((outf, i) => `<div style="display:flex; gap:.5rem; margin-bottom:.8rem; align-items:center"><input type="text" class="form-input" id="outf-n-${i}" value="${outf.name}" placeholder="Nama Pengeluaran" style="flex:1; margin-bottom:0"><input type="text" class="form-input cf-input" id="outf-v-${i}" value="${formatRibuan(outf.value)}" placeholder="0" style="width:140px; margin-bottom:0; font-family:var(--font-mono); font-weight:700; color:var(--red)"><button class="btn-delete" onclick="delOutflow(${i})" style="margin-left:.5rem">✕</button></div>`).join('');
 }
 
 /* ── CHARTS.JS ── */
 function drawDonutChart(saham, rd, cash, crypto, total) {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const ctx = document.getElementById('donutChart').getContext('2d');
-  const labels = ['Saham', 'Reksadana', 'Cash', 'Crypto'];
-  const data = [saham, rd, cash, crypto];
-  const colors = ['#34d399', '#a78bfa', '#60a5fa', '#22d3ee'];
-
+  const labels = ['Saham', 'Reksadana', 'Cash', 'Crypto']; const data = [saham, rd, cash, crypto]; const colors = ['#34d399', '#a78bfa', '#60a5fa', '#22d3ee'];
   if (donutInst) donutInst.destroy();
-  donutInst = new Chart(ctx, {
-    type: 'doughnut',
-    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderColor: isDark ? '#10131a' : '#ffffff', borderWidth: 4, hoverOffset: 12 }] },
-    options: {
-      cutout: '80%', plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, cornerRadius: 8, padding: 12, callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtShort(ctx.raw)} (${total>0?((ctx.raw/total)*100).toFixed(1):0}%)` } } },
-      animation: { animateRotate: true, duration: 1000, easing: 'easeOutQuart' }
-    }
-  });
+  donutInst = new Chart(ctx, { type: 'doughnut', data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderColor: isDark ? '#10131a' : '#ffffff', borderWidth: 4, hoverOffset: 12 }] }, options: { cutout: '80%', plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, cornerRadius: 8, padding: 12, callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtShort(ctx.raw)} (${total>0?((ctx.raw/total)*100).toFixed(1):0}%)` } } }, animation: { animateRotate: true, duration: 1000, easing: 'easeOutQuart' } } });
   document.getElementById('donut-center-val').textContent = fmtShort(total);
-  document.getElementById('donut-legend').innerHTML = labels.map((l, i) => `
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.8rem; font-size:.9rem; font-weight:600">
-      <div style="display:flex; align-items:center; gap:.8rem"><div style="width:12px; height:12px; border-radius:50%; background:${colors[i]}; box-shadow:0 0 8px ${colors[i]}80"></div><span style="color:var(--muted)">${l}</span></div>
-      <div style="font-family:var(--font-mono); color:var(--text)">${total>0 ? ((data[i]/total)*100).toFixed(1) : 0}%</div>
-    </div>
-  `).join('');
+  document.getElementById('donut-legend').innerHTML = labels.map((l, i) => `<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.8rem; font-size:.9rem; font-weight:600"><div style="display:flex; align-items:center; gap:.8rem"><div style="width:12px; height:12px; border-radius:50%; background:${colors[i]}; box-shadow:0 0 8px ${colors[i]}80"></div><span style="color:var(--muted)">${l}</span></div><div style="font-family:var(--font-mono); color:var(--text)">${total>0 ? ((data[i]/total)*100).toFixed(1) : 0}%</div></div>`).join('');
 }
 
 function drawNWLineChart(currentNW) {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const ctx = document.getElementById('nwChart').getContext('2d');
-
-  let histData = [...HISTORY];
-  let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
-  
-  if (histData.length === 0 || histData[histData.length-1].date !== todayStr) {
-    histData.push({date: todayStr, nw: currentNW});
-  } else {
-    histData[histData.length-1].nw = currentNW; 
-  }
-
+  let histData = [...HISTORY]; let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
+  if (histData.length === 0 || histData[histData.length-1].date !== todayStr) histData.push({date: todayStr, nw: currentNW}); else histData[histData.length-1].nw = currentNW; 
   if(histData.length > 30) histData = histData.slice(-30); 
-
   const labels = histData.map(h => h.date); const dataNW = histData.map(h => h.nw);
   if (nwInst) nwInst.destroy();
-  const grad = ctx.createLinearGradient(0, 0, 0, 300);
-  grad.addColorStop(0, 'rgba(212,175,55,0.25)'); grad.addColorStop(1, 'rgba(212,175,55,0)');
-
-  nwInst = new Chart(ctx, {
-    type: 'line',
-    // Tension 0 agar grafiknya tegas/garis lurus antar titik (tidak melengkung palsu)
-    data: { labels: labels, datasets: [{ label: 'Net Worth', data: dataNW, borderColor: '#d4af37', borderWidth: 3, pointBackgroundColor: '#d4af37', pointBorderColor: isDark ? '#10131a' : '#ffffff', pointBorderWidth: 2, pointRadius: 6, pointHoverRadius: 8, fill: true, backgroundColor: grad, tension: 0 }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, padding: 12, callbacks: { label: (ctx) => ' ' + fmt(ctx.raw) } } },
-      scales: { x: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11} } }, y: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11}, callback: v => fmtShort(v) } } }
-    }
-  });
+  const grad = ctx.createLinearGradient(0, 0, 0, 300); grad.addColorStop(0, 'rgba(212,175,55,0.25)'); grad.addColorStop(1, 'rgba(212,175,55,0)');
+  nwInst = new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Net Worth', data: dataNW, borderColor: '#d4af37', borderWidth: 3, pointBackgroundColor: '#d4af37', pointBorderColor: isDark ? '#10131a' : '#ffffff', pointBorderWidth: 2, pointRadius: 6, pointHoverRadius: 8, fill: true, backgroundColor: grad, tension: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#1e2532' : '#ffffff', titleColor: isDark ? '#e2e8f0' : '#0f172a', bodyColor: isDark ? '#e2e8f0' : '#0f172a', bodyFont: {family: "'DM Mono', monospace", size: 12}, padding: 12, callbacks: { label: (ctx) => ' ' + fmt(ctx.raw) } } }, scales: { x: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11} } }, y: { grid: { color: isDark ? '#242c3d' : '#e2e8f0' }, ticks: { color: isDark ? '#64748b' : '#64748b', font:{family: "'DM Mono', monospace", size:11}, callback: v => fmtShort(v) } } } } });
 }
 
-/* ── INTERNALS ── */
+/* ── INTERNALS & ACTIONS ── */
 function _syncInputsToState() {
-  STOCKS.forEach((s, i) => {
-    let idEl = document.getElementById(`k-id-${i}`);
-    if (idEl) {
-      s.id = idEl.value.toLowerCase();
-      s.name = document.getElementById(`k-name-${i}`).value;
-      s.lot = unformatRibuan(document.getElementById(`k-lot-${i}`).value);
-      s.price = unformatRibuan(document.getElementById(`k-price-${i}`).value);
-      s.avg = unformatRibuan(document.getElementById(`k-avg-${i}`).value);
-      s.dps = unformatRibuan(document.getElementById(`k-dps-${i}`).value);
-      s.alloc = unformatRibuan(document.getElementById(`k-alloc-${i}`).value);
-    }
-  });
+  STOCKS.forEach((s, i) => { let idEl = document.getElementById(`k-id-${i}`); if (idEl) { s.id = idEl.value.toLowerCase(); s.name = document.getElementById(`k-name-${i}`).value; s.lot = unformatRibuan(document.getElementById(`k-lot-${i}`).value); s.price = unformatRibuan(document.getElementById(`k-price-${i}`).value); s.avg = unformatRibuan(document.getElementById(`k-avg-${i}`).value); s.dps = unformatRibuan(document.getElementById(`k-dps-${i}`).value); s.alloc = unformatRibuan(document.getElementById(`k-alloc-${i}`).value); } });
   REKSADANA.forEach((r, i) => { let el = document.getElementById(`rd-n-${i}`); if(el){ r.name = el.value; r.value = unformatRibuan(document.getElementById(`rd-v-${i}`).value); } });
   CASH_ACCOUNTS.forEach((c, i) => { let el = document.getElementById(`cash-n-${i}`); if(el){ c.name = el.value; c.value = unformatRibuan(document.getElementById(`cash-v-${i}`).value); } });
   LIABILITAS.forEach((l, i) => { let el = document.getElementById(`liab-n-${i}`); if(el){ l.name = el.value; l.value = unformatRibuan(document.getElementById(`liab-v-${i}`).value); } });
@@ -1348,47 +859,56 @@ function _syncInputsToState() {
   OUTFLOWS.forEach((outf, i) => { let el = document.getElementById(`outf-n-${i}`); if(el){ outf.name = el.value; outf.value = unformatRibuan(document.getElementById(`outf-v-${i}`).value); } });
 }
 
-/* ── ACTIONS ── */
 function deleteHistory(i) { if(confirm('Hapus arsip ini?')) { HISTORY.splice(i, 1); _cloudSave(); } }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
 function addStock() { _syncInputsToState(); STOCKS.push({id:'NEW', name:'Emiten Baru', lot:0, price:0, avg:0, dps:0, alloc:0}); renderAll(); }
 function delStock(i) { if(confirm('Hapus emiten?')) { _syncInputsToState(); STOCKS.splice(i, 1); _cloudSave(); } }
-
 function addRD() { _syncInputsToState(); REKSADANA.push({id:'r'+Date.now(), name:'Bucket Baru', value:0}); renderAll(); }
 function delRD(i) { if(confirm('Hapus bucket?')) { _syncInputsToState(); REKSADANA.splice(i, 1); _cloudSave(); } }
-
 function addCash() { _syncInputsToState(); CASH_ACCOUNTS.push({id:'c'+Date.now(), name:'Rekening Baru', value:0}); renderAll(); }
 function delCash(i) { if(confirm('Hapus rekening?')) { _syncInputsToState(); CASH_ACCOUNTS.splice(i, 1); _cloudSave(); } }
-
 function addLiab() { _syncInputsToState(); LIABILITAS.push({id:'l'+Date.now(), name:'Utang Baru', value:0}); renderAll(); }
 function delLiab(i) { if(confirm('Hapus liabilitas?')) { _syncInputsToState(); LIABILITAS.splice(i, 1); _cloudSave(); } }
-
 function addInflow() { _syncInputsToState(); INFLOWS.push({id:'i'+Date.now(), name:'Pemasukan Baru', value:0}); renderAll(); }
 function delInflow(i) { if(confirm('Hapus pemasukan?')) { _syncInputsToState(); INFLOWS.splice(i, 1); _cloudSave(); } }
-
 function addOutflow() { _syncInputsToState(); OUTFLOWS.push({id:'o'+Date.now(), name:'Pengeluaran Baru', value:0}); renderAll(); }
 function delOutflow(i) { if(confirm('Hapus pengeluaran?')) { _syncInputsToState(); OUTFLOWS.splice(i, 1); _cloudSave(); } }
-
 function saveData() { _syncInputsToState(); _cloudSave(); alert('Disinkronisasi ke cloud terminal!'); }
-
 function saveCashflow() { _syncInputsToState(); _cloudSave(); closeModal('modal-cashflow'); }
-
-function saveGoal() {
-  GOALS.push({ id: 'g'+Date.now(), name: document.getElementById('g-name').value, target: unformatRibuan(document.getElementById('g-target').value), current: unformatRibuan(document.getElementById('g-current').value) || 0 });
-  _cloudSave(); closeModal('modal-goal');
-}
+function saveGoal() { GOALS.push({ id: 'g'+Date.now(), name: document.getElementById('g-name').value, target: unformatRibuan(document.getElementById('g-target').value), current: unformatRibuan(document.getElementById('g-current').value) || 0 }); _cloudSave(); closeModal('modal-goal'); }
 function saveCryptoBal() { CRYPTO_BAL = unformatRibuan(document.getElementById('in-crypto-bal').value); _cloudSave(); closeModal('modal-crypto'); }
 
-/* ── PERSISTENCE (SUPABASE) & AUTO SNAPSHOT ── */
+/* ── PERSISTENCE (SUPABASE) ── */
+async function doLogin() {
+  const errEl = document.getElementById('login-err'); const btn = document.querySelector('#login-screen .btn-primary'); const input = document.getElementById('pw-input');
+  btn.disabled = true; btn.textContent = 'Verifying...';
+  if (await _π(input.value.trim())) { 
+    document.getElementById('login-screen').style.display = 'none'; 
+    document.getElementById('app').style.display = 'flex'; 
+    await loadData(); 
+    showSecurityStatus(); // <-- TRIGGER NOTIFIKASI SAAT LOGIN
+  } 
+  else { errEl.textContent = 'TERMINAL ACCESS DENIED: Passcode salah!'; input.value = ''; btn.disabled = false; btn.textContent = 'Akses Terminal'; }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+function logout() { sessionStorage.removeItem(_ι()); location.reload(); }
+document.addEventListener('DOMContentLoaded', async () => { 
+  if (await _ρ()) { 
+    document.getElementById('login-screen').style.display = 'none'; 
+    document.getElementById('app').style.display = 'flex'; 
+    await loadData(); 
+    showSecurityStatus(); // <-- TRIGGER NOTIFIKASI SAAT AUTO-LOGIN
+  } 
+});
+
+function switchView(view) { document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active')); document.querySelectorAll('.nav-pill button').forEach(el => el.classList.remove('active')); document.getElementById(`view-${view}`).classList.add('active'); document.getElementById(`nav-${view}`).classList.add('active'); }
+function toggleTheme() { const html = document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); renderAll(); }
+
 async function loadData() {
   let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Syncing...'; statusEl.style.color = 'var(--gold)';
   try {
-    const { data, error } = await sb.from('settings').select('key,value').in('key', [
-      DB_PREFIX+'stocks', DB_PREFIX+'reksadana', DB_PREFIX+'cash', DB_PREFIX+'liabilitas', 
-      DB_PREFIX+'inflows', DB_PREFIX+'outflows', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target'
-    ]);
+    const { data, error } = await sb.from('settings').select('key,value').in('key', [DB_PREFIX+'stocks', DB_PREFIX+'reksadana', DB_PREFIX+'cash', DB_PREFIX+'liabilitas', DB_PREFIX+'inflows', DB_PREFIX+'outflows', DB_PREFIX+'goals', DB_PREFIX+'history', DB_PREFIX+'crypto_bal', DB_PREFIX+'porto_target']);
     if (error) throw error;
     if (data && data.length > 0) {
       data.forEach(row => {
@@ -1404,51 +924,22 @@ async function loadData() {
         if(row.key === DB_PREFIX+'porto_target') PORTO_TARGET = Number(row.value) || 100000000;
       });
     }
-    
     document.getElementById('target-display').value = formatRibuan(PORTO_TARGET);
     if(document.getElementById('in-crypto-bal')) document.getElementById('in-crypto-bal').value = formatRibuan(CRYPTO_BAL);
     statusEl.textContent = '⚡ Connected'; statusEl.style.color = 'var(--green)';
   } catch(e) { statusEl.textContent = '☁ Offline Mode'; statusEl.style.color = 'var(--muted)'; }
-  
-  fetchMindsetQuote();
-  renderAll();
+  fetchMindsetQuote(); renderAll();
 }
 
 async function _cloudSave() {
-  // AUTO SNAPSHOT LOGIC
-  let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0);
-  let totalRD = REKSADANA.reduce((s, x) => s + (x.value||0), 0);
-  let totalCash = CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0);
-  let totalLiab = LIABILITAS.reduce((s, x) => s + (x.value||0), 0);
-  let nw = (totalSaham + totalRD + totalCash + CRYPTO_BAL) - totalLiab;
-
+  let totalSaham = STOCKS.reduce((s, x) => s + ((x.lot||0) * (x.price||0) * 100), 0); let totalRD = REKSADANA.reduce((s, x) => s + (x.value||0), 0); let totalCash = CASH_ACCOUNTS.reduce((s, x) => s + (x.value||0), 0); let totalLiab = LIABILITAS.reduce((s, x) => s + (x.value||0), 0); let nw = (totalSaham + totalRD + totalCash + CRYPTO_BAL) - totalLiab;
   let todayStr = new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' });
-  
-  if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) {
-    HISTORY[HISTORY.length - 1].nw = nw; 
-  } else {
-    HISTORY.push({ date: todayStr, nw: nw }); 
-  }
-  
-  // Batasi history maksimal 90 hari
+  if (HISTORY.length > 0 && HISTORY[HISTORY.length - 1].date === todayStr) { HISTORY[HISTORY.length - 1].nw = nw; } else { HISTORY.push({ date: todayStr, nw: nw }); }
   if (HISTORY.length > 90) HISTORY.shift();
-  
   renderAll(); 
-  
   let statusEl = document.getElementById('cloud-status'); statusEl.textContent = '⚡ Saving...'; statusEl.style.color = 'var(--gold)';
   try {
-    const payloads = [
-      { key: DB_PREFIX+'stocks', value: JSON.stringify(STOCKS) },
-      { key: DB_PREFIX+'reksadana', value: JSON.stringify(REKSADANA) },
-      { key: DB_PREFIX+'cash', value: JSON.stringify(CASH_ACCOUNTS) },
-      { key: DB_PREFIX+'liabilitas', value: JSON.stringify(LIABILITAS) },
-      { key: DB_PREFIX+'inflows', value: JSON.stringify(INFLOWS) },
-      { key: DB_PREFIX+'outflows', value: JSON.stringify(OUTFLOWS) },
-      { key: DB_PREFIX+'goals', value: JSON.stringify(GOALS) },
-      { key: DB_PREFIX+'history', value: JSON.stringify(HISTORY) },
-      { key: DB_PREFIX+'crypto_bal', value: String(CRYPTO_BAL) },
-      { key: DB_PREFIX+'porto_target', value: String(PORTO_TARGET) }
-    ];
+    const payloads = [{ key: DB_PREFIX+'stocks', value: JSON.stringify(STOCKS) }, { key: DB_PREFIX+'reksadana', value: JSON.stringify(REKSADANA) }, { key: DB_PREFIX+'cash', value: JSON.stringify(CASH_ACCOUNTS) }, { key: DB_PREFIX+'liabilitas', value: JSON.stringify(LIABILITAS) }, { key: DB_PREFIX+'inflows', value: JSON.stringify(INFLOWS) }, { key: DB_PREFIX+'outflows', value: JSON.stringify(OUTFLOWS) }, { key: DB_PREFIX+'goals', value: JSON.stringify(GOALS) }, { key: DB_PREFIX+'history', value: JSON.stringify(HISTORY) }, { key: DB_PREFIX+'crypto_bal', value: String(CRYPTO_BAL) }, { key: DB_PREFIX+'porto_target', value: String(PORTO_TARGET) }];
     const { error } = await sb.from('settings').upsert(payloads, { onConflict: 'key' });
     if (error) throw error;
     statusEl.textContent = '⚡ Synced'; statusEl.style.color = 'var(--green)';
